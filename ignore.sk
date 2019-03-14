@@ -1,0 +1,54 @@
+function showall(player: player):
+	reveal all players to {_player}
+	
+on region enter:
+	if "%event-region%" contains "hub_pvp":
+		showall(player)
+	else if "%event-region%" contains "pvp_nodrop":
+		hideall(player)
+function hideall(player: player):
+	set {_uuid} to uuid of {_player}
+	loop {hidden::%{_uuid}%::*}:
+		hide loop-index parsed as player from {_player}
+	loop all players:
+		if {hidden::%uuid of loop-player%::%{_player}%} is set:
+			hide {_player} from loop-player
+
+
+on join:
+	if "%regions at player%" does not contain "hub_pvp":
+		if player's world is not "OITC":
+			hideall(player)
+
+command /hide [<text>]:
+	trigger:
+		if arg-1 is not set:
+			message "&cUsage &b/hide (player)"
+			stop
+		if arg-1 is "list":
+			message "&8[&7Hide&8] &eAll Hidden Playes&7:"
+			set {_i} to 0
+			loop {hidden::%uuid of player%::*}:
+				add 1 to {_i}
+				message "&3%{_i}%&b. &d%loop-index%"
+			stop
+		if arg-1 is "help":
+			message "&8[&7Hide&8] &e/hide (player) &7Hide a player from sight."
+			message "&8[&7Hide&8] &e/hide list &7List players you are blocking."
+			stop
+		if arg-1 parsed as player = player:
+			message "....no"
+			stop
+		if {uuid::%arg-1%} is not set:
+			message "&8[&7Hide&8] &cThat player has never joined the server"
+			stop
+		if {hidden::%uuid of player%::%arg-1%} is not set:
+				
+			set {hidden::%uuid of player%::%arg-1%} to true
+			hide arg-1 parsed as player from player
+			message "&8[&7Hide&8] &7You will no longer see that player outside of pvp"
+		else:
+			delete {hidden::%uuid of player%::%arg-1%}
+			message "&8[&7Hide&8] &7You can now see &e%arg-1% &7again."
+			reveal arg-1 parsed as player to player
+		

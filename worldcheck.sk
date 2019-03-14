@@ -1,0 +1,11 @@
+command /checkworld <player>:
+	trigger:
+		message "&8[&bSnap&8] &a&l%arg-1% &eis in the world &d%arg-1's world%&e."
+		
+		
+command /worldcheck <text>:
+	permission: is.op
+	trigger:
+		loop all players:
+			if "%loop-player's world%" is "%arg-1%":
+				message "  %loop-player%"

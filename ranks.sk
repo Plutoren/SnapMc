@@ -1,0 +1,29 @@
+command /pro:
+	trigger:
+		message "&7&m-----------------------"
+		message "&b/setwarp "
+		message "&7&m-----------------------"
+		
+		
+command /hero:
+	trigger:
+		message "&7&m-----------------------"
+		message "&b/setwarp "
+		message "&7&m-----------------------"
+		
+		
+		
+command /legend:
+	trigger:
+		message "&7&m-----------------------"
+		message "&b/setwarp "
+		message "&7&m-----------------------"
+		
+		
+		
+command /ultimate:
+	trigger:
+		message "&7&m-----------------------"
+		message "&b/setwarp "
+		message "&7&m-----------------------"
+		

@@ -1,0 +1,6 @@
+command /pet [<text>]:
+	trigger:
+		if arguments are set:
+			execute player command "/mpet %arguments%"
+		else:
+			execute player command "/mpet"

@@ -1,0 +1,56 @@
+command /roll [<int>]:
+	trigger:
+		if {roll::%player%} is not set:
+			set {roll::%player%} to now
+		else if {roll::%player%} was less than 20 seconds ago:
+			message "&8[&bDice&8] &7Please wait a few seconds to do that again"
+			stop
+		if {roll.global} is not set:
+			set {roll.global} to now
+		else if {roll.global} was less than 5 seconds ago:
+			message "&8[&bDice&8] &7Someone else just rolled please wait a few seconds"
+			stop
+		set {roll.global} to now
+		set {roll::%player%} to now
+		if arg-1 is not set:
+			message "&8[&bDice&8] &7Roll any sided die with &a/roll (size)"
+			stop
+			
+		if arg-1 > 100:
+			message "&8[&bDice&8] &7Size must be less than 100"
+			stop
+			
+		if arg-1 < 2:
+			message "&8[&bDice&8] &7Size must be at least 2"
+			stop
+		
+		set {_roll} to random integer from 1 to arg-1
+		broadcast "&8[&bDice&8] &f%player% &7just rolled a &e%{_roll}% &7on a &3%arg-1% sided die"
+		
+		
+		
+		
+		
+command /coinflip:
+	aliases: cf
+	trigger:
+		if {roll::%player%} is not set:
+			set {roll::%player%} to now
+		else if {roll::%player%} was less than 20 seconds ago:
+			message "&8[&bDice&8] &7Please wait a few seconds to do that again"
+			stop
+		if {roll.global} is not set:
+			set {roll.global} to now
+		else if {roll.global} was less than 5 seconds ago:
+			message "&8[&bDice&8] &7Someone else just rolled please wait a few seconds"
+			stop
+		set {roll.global} to now
+		set {roll::%player%} to now
+		chance of .05%:
+			broadcast "&8[&bDice&8] &f%player% &7just flipped a coin &eon its side!"
+			stop
+		chance of 50%:
+			broadcast "&8[&bDice&8] &f%player% &7just flipped a coin and got &eHeads"
+			stop
+		broadcast "&8[&bDice&8] &f%player% &7just flipped a coin and got &eTails"
+	

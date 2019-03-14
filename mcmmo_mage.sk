@@ -1,0 +1,215 @@
+
+function checkSpell(player: player):
+	set {_uuid} to uuid of {_player}
+	set {_spell} to {mcmmo.mage.currentspell::%{_uuid}%}
+	set {_left} to "&a&nL&r"
+	set {_right} to "&a&nR&r"
+	set {_blank} to "&7_"
+	set {_subtitle} to ""
+	if {_spell} is "left":
+		send {_player} title "" with subtitle "%{_left}% %{_blank}% %{_blank}%" for 1 seconds with 0 second fade in and 1 second fade out
+		stop
+	else if {_spell} is "right":
+		send {_player} title "" with subtitle "%{_right}% %{_blank}% %{_blank}%" for 1 seconds with 0 second fade in and 1 second fade out
+		stop
+	else if {_spell} is "leftright":
+		send {_player} title "" with subtitle "%{_left}% %{_right}% %{_blank}%" for 1 seconds with 0 second fade in and 1 second fade out
+		stop
+	else if {_spell} is "leftleft":
+		send {_player} title "" with subtitle "%{_left}% %{_left}% %{_blank}%" for 1 seconds with 0 second fade in and 1 second fade out
+		stop
+	else if {_spell} is "rightleft":
+		send {_player} title "" with subtitle "%{_right}% %{_left}% %{_blank}%" for 1 seconds with 0 second fade in and 1 second fade out
+		stop
+	else if {_spell} is "rightright":
+		send {_player} title "" with subtitle "%{_right}% %{_right}% %{_blank}%" for 1 seconds with 0 second fade in and 1 second fade out
+		stop
+	else if {_spell} is "rightrightright":
+		send {_player} title "" with subtitle "%{_right}% %{_right}% %{_right}%" for 1 seconds with 0 second fade in and 1 second fade out
+		delete {mcmmo.mage.currentspell::%{_uuid}%}
+		stop
+	else if {_spell} is "rightrightleft":
+		send {_player} title "&cHeal" with subtitle "%{_right}% %{_right}% %{_left}%" for 1 seconds with 0 second fade in and 1 second fade out
+		delete {mcmmo.mage.currentspell::%{_uuid}%}
+		heal({_player})
+		stop
+	else if {_spell} is "rightleftright":
+		send {_player} title "&eLaunch" with subtitle "%{_right}% %{_left}% %{_right}%" for 1 seconds with 0 second fade in and 1 second fade out
+		delete {mcmmo.mage.currentspell::%{_uuid}%}
+		launchForward({_player})
+		stop
+	else if {_spell} is "rightleftleft":
+		send {_player} title "&cFireball" with subtitle "%{_right}% %{_left}% %{_left}%" for 1 seconds with 0 second fade in and 1 second fade out
+		delete {mcmmo.mage.currentspell::%{_uuid}%}
+		smallExplosion({_player})
+		stop
+	else if {_spell} is "leftrightright":
+		send {_player} title "" with subtitle "%{_left}% %{_right}% %{_right}%" for 1 seconds with 0 second fade in and 1 second fade out
+		delete {mcmmo.mage.currentspell::%{_uuid}%}
+		stop
+	else if {_spell} is "leftrightleft":
+		send {_player} title "" with subtitle "%{_left}% %{_right}% %{_left}%" for 1 seconds with 0 second fade in and 1 second fade out
+		delete {mcmmo.mage.currentspell::%{_uuid}%}
+		meteorShower({_player})
+		stop
+	else if {_spell} is "leftleftright":
+		send {_player} title "&bIce Snake" with subtitle "%{_left}% %{_left}% %{_right}%" for 1 seconds with 0 second fade in and 1 second fade out
+		delete {mcmmo.mage.currentspell::%{_uuid}%}
+		icesnake({_player})
+		stop
+	else if {_spell} is "leftleftleft":
+		send {_player} title "" with subtitle "%{_left}% %{_left}% %{_left}%" for 1 seconds with 0 second fade in and 1 second fade out
+		delete {mcmmo.mage.currentspell::%{_uuid}%}
+		stop
+
+command /relore:
+	trigger:
+		set {_lore} to lore of player's tool
+		replace all "apocalypse" with "Radioactive" in {_lore}
+		set lore of player's tool to {_lore}
+function launchForward(player: player):
+	set {_velocity} to {_player}.getEyeLocation().getDirection().multiply(3.0)
+	{_velocity}.setY(.7)
+	{_player}.setVelocity({_velocity})
+	
+	
+function smallExplosion(player: player):
+	shoot fireball from {_player}
+	
+function heal(player: player):
+	apply regeneration 1 to {_player} for 1 second
+	
+function icesnake(player: player):
+	set {_i} to 0
+	loop blocks in front of {_player}:
+		add 1 to {_i}
+		if {_i} != 1 or 2:
+			set {_block} to location of loop-block
+			add 1 to y coordinate of {_block}
+			set {_blocks::%{_i}%} to {_block}
+			make players in radius 35 of block at {_block} see block at {_block} as ice
+			play sound "BLOCK_GLASS_BREAK" at {_block} for all players in radius 35 of {_block}
+			wait 1 ticks
+			loop players in radius 1 of {_block}:
+				if loop-player is not {_player}:
+					apply slowness 3 to loop-player for 4 seconds
+		if {_i} is 20:
+			stop loop
+	wait 1 second
+	loop {_blocks::*}:
+		loop players in radius 60 of block at loop-value:
+			make loop-player see block at loop-value-1 as block at loop-value-1
+
+			
+			
+
+function meteorShower(player: player):
+	set {_i} to 0
+	loop blocks in front of {_player}:
+		add 1 to {_i}
+		create 2 of flame particles at location of loop-block
+		chance of 30%:
+			firework(loop-block)
+		wait 1 tick
+		if {_i} is 18:
+			set {_start} to location of loop-block
+			stop loop
+	loop blocks in radius 4 of {_start}:
+		chance of 5%:
+			wait 1 ticks
+		chance of 3%:
+			firework(loop-block)
+	loop blocks in radius 7 of {_start}:
+		chance of 4%:
+			chance of 30%:
+				wait 5 ticks
+			meteor(loop-block, {_player})
+			playSound("ENTITY_GHAST_SHOOT", loop-block)
+	
+function meteor(location: location, player: player):
+	set {_i} to 1
+	add 15 to y coordinate of {_location}
+	loop blocks below {_location}:
+		add 1 to {_i}
+		set {_block} to location of loop-block
+		add 1 to y coordinate of {_block}
+		set {_blocks::%{_i}%} to {_block}
+		set {_chance} to random integer from 1 to 3
+		if {_chance} is 1:
+			make players in radius 35 of block at {_block} see block at {_block} as gray wool
+		else if {_chance} is 2:
+			make players in radius 35 of block at {_block} see block at {_block} as nether brick block
+		else if {_chance} is 3:
+			make players in radius 35 of block at {_block} see block at {_block} as obsidian
+		chance of 80%:
+			wait 1 ticks
+		if {_i} > 10:
+			loop players in radius 1 of {_block}:
+				if loop-player is not {_player}:
+					apply wither to loop-player for 4 seconds
+		if {_i} is 28:
+			stop loop
+	wait 8 ticks
+	loop {_blocks::*}:
+		loop players in radius 60 of block at loop-value:
+			make loop-player see block at loop-value-1 as block at loop-value-1
+	
+		
+function playSound(text: text, location: location):
+	play sound {_text} at {_location} for all players in radius 35 of {_location}
+	
+
+function firework(location: location):	
+	set {_i} to random integer from 1 to 15
+	if {_i} is 1:
+		launch burst firework colored red at block above {_location} timed 1	
+	else if {_i} is 2:
+		launch burst firework colored blue at block above {_location} timed 1	
+	else if {_i} is 3:
+		launch creeper firework colored green at block above {_location} timed 1	
+	else if {_i} is 4:
+		launch burst firework colored purple at block above {_location} timed 1	
+	else if {_i} is 5:
+		launch star firework colored yellow at block above {_location} timed 1	
+	else if {_i} is 6:
+		launch ball firework colored yellow at block above {_location} timed 1	
+	else if {_i} is 7:
+		launch ball firework colored yellow at block above {_location} timed 1	
+	else if {_i} is 8:
+		launch ball large firework colored yellow at block above {_location} timed 1	
+	else if {_i} is 9:
+		launch creeper firework colored red at block above {_location} timed 1	
+	else if {_i} is 10:
+		launch ball large firework colored blue at block above {_location} timed 1	
+	else if {_i} is 11:
+		launch ball large firework colored red at block above {_location} timed 1	
+	else if {_i} is 12:
+		launch ball large firework colored white at block above {_location} timed 1	
+	else if {_i} is 13:
+		launch ball large firework colored black at block above {_location} timed 1	
+	else if {_i} is 14:
+		launch ball large firework colored red at block above {_location} timed 1	
+	else if {_i} is 15:
+		launch star firework colored red at block above {_location} timed 1	
+		
+command /sound <text>:
+	trigger:
+		loop 5 times:
+			play sound "%arg-1%" at player
+			wait 1 second
+on left click with blaze rod:
+	name of player's tool contains "Magic Wand"
+	lore of player's tool contains "Click to cast spells"
+	if {mcmmo.mage.currentspell::%uuid of player%} is not set:
+		set {mcmmo.mage.currentspell::%uuid of player%} to ""
+	set {mcmmo.mage.currentspell::%uuid of player%} to "%{mcmmo.mage.currentspell::%uuid of player%}%left"
+	checkSpell(player)
+	
+on right click with blaze rod:
+	name of player's tool contains "Magic Wand"
+	lore of player's tool contains "Click to cast spells"
+	if {mcmmo.mage.currentspell::%uuid of player%} is not set:
+		set {mcmmo.mage.currentspell::%uuid of player%} to ""
+	set {mcmmo.mage.currentspell::%uuid of player%} to "%{mcmmo.mage.currentspell::%uuid of player%}%right"
+	checkSpell(player)
+	

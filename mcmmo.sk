@@ -1,0 +1,848 @@
+function earnXp(player: player, skill: text):
+	if {mcmmo.doublexp.minutes} is not set:
+		add 1 to {mcmmo.%{_skill}%.xp::%{uuid::%{_player}%}%}
+	else if {mcmmo.doublexp.minutes} > 0:
+		add 2 to {mcmmo.%{_skill}%.xp::%{uuid::%{_player}%}%}
+	else:
+		add 1 to {mcmmo.%{_skill}%.xp::%{uuid::%{_player}%}%}
+	set {_xp} to {mcmmo.%{_skill}%.xp::%{uuid::%{_player}%}%}
+	
+	if {mcmmo.%{_skill}%.level::%{uuid::%{_player}%}%} is not set:
+		set {_level} to 0
+	else:
+		set {_level} to {mcmmo.%{_skill}%.level::%{uuid::%{_player}%}%}
+	if {mcmmo.neededxp::%{_level}%} is not set:
+		stop
+	if {_xp} >= {mcmmo.neededxp::%{_level}%}:
+		levelUp({_player}, {_skill})
+		
+function levelUp(player: player, skill: text):
+	add 1 to {mcmmo.%{_skill}%.level::%{uuid::%{_player}%}%}
+	set {_level} to {mcmmo.%{_skill}%.level::%{uuid::%{_player}%}%}
+	send "&8[&6RPG&8] &aYou just leveled up your &f%{_skill}% &askill." to {_player}
+	send "&8[&6RPG&8] &aNew Level&7: &f%{_level}%" to {_player}
+	send "&8[&6RPG&8] &aType &b/%{_skill}% &ato learn more about this skill." to {_player}
+	firework(location of {_player})
+
+	
+function firework(location: location):	
+	set {_i} to random integer from 1 to 15
+	if {_i} is 1:
+		launch burst firework colored red at block above {_location} timed 1	
+	else if {_i} is 2:
+		launch burst firework colored blue at block above {_location} timed 1	
+	else if {_i} is 3:
+		launch creeper firework colored green at block above {_location} timed 1	
+	else if {_i} is 4:
+		launch burst firework colored purple at block above {_location} timed 1	
+	else if {_i} is 5:
+		launch star firework colored yellow at block above {_location} timed 1	
+	else if {_i} is 6:
+		launch ball firework colored yellow at block above {_location} timed 1	
+	else if {_i} is 7:
+		launch ball firework colored yellow at block above {_location} timed 1	
+	else if {_i} is 8:
+		launch ball large firework colored yellow at block above {_location} timed 1	
+	else if {_i} is 9:
+		launch creeper firework colored red at block above {_location} timed 1	
+	else if {_i} is 10:
+		launch ball large firework colored blue at block above {_location} timed 1	
+	else if {_i} is 11:
+		launch ball large firework colored red at block above {_location} timed 1	
+	else if {_i} is 12:
+		launch ball large firework colored white at block above {_location} timed 1	
+	else if {_i} is 13:
+		launch ball large firework colored black at block above {_location} timed 1	
+	else if {_i} is 14:
+		launch ball large firework colored red at block above {_location} timed 1	
+	else if {_i} is 15:
+		launch star firework colored red at block above {_location} timed 1	
+		
+command /mcmmosetxpforlevel <int> <int>:
+	permission: is.Pluto
+	trigger:
+		set {mcmmo.neededxp::%arg-1%} to arg-2
+		message "&8[&6RPG&8] &aSet Xp needed for level &f%arg-1% &ato &f%arg-2%."
+command /mcmmolistlevels [<int>]:
+	permission: is.Pluto
+	trigger:
+		if arg-1 is set:
+			message "&8[&6RPG&8] &aXp Needed from level &d%arg-1% &ais &e%{mcmmo.neededxp::%arg-1%}%"
+			stop
+		loop {mcmmo.neededxp::*}:
+			
+			message "&8[&6RPG&8] &a%loop-index%. &e%loop-value%"
+	
+command /skills [<text>] [<text>]:
+	aliases: skill, stat, stats, mcmmo
+	trigger:
+		if arg-1 is not set:
+			execute player command "skills %player%"
+			stop
+		if arg-1 is "top":
+			if arg-2 is not set:
+			
+				open chest with 6 row named "       -=[ &lSkills Top &8]=-" to player
+				wait 1 tick
+				if name of current inventory of player != "       -=[ &lSkills Top &8]=-":
+					close inventory of player
+					stop
+					
+				
+				set {_i} to 0
+				loop 10 times:
+					format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skills top"]
+					add 1 to {_i}				
+				format slot 17 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skills top"]
+				format slot 36 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skills top"]
+				set {_i} to 44
+				loop 10 times:
+					format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skills top"]
+					add 1 to {_i}
+				set {_slot} to 19
+				set {_i} to 0
+				
+				
+				set {_skill} to "Mining"
+				format slot 12 of player with iron pickaxe named "&6&n%{_skill}% Skill" with lore "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top mining"]
+					
+				set {_skill} to "Acrobatics"
+				format slot 13 of player with slime block named "&6&n%{_skill}% Skill" with lore "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top acrobatics"]
+					
+					
+				set {_skill} to "Fishing"
+				format slot 14 of player with fishing rod named "&6&n%{_skill}% Skill" with lore "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top fishing"]
+					
+					
+				set {_skill} to "Woodcutting"
+				format slot 21 of player with oak wood log named "&6&n%{_skill}% Skill" with lore "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top woodcutting"]
+					
+					
+				set {_skill} to "Unarmed"
+				format slot 22 of player with chain helmet named "&6&n%{_skill}% Skill" with lore "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top unarmed"]
+					
+					
+				set {_skill} to "Swords"
+				format slot 23 of player with diamond sword named "&6&n%{_skill}% Skill" with lore "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top swords"]
+					
+					
+				set {_skill} to "Axes"
+				format slot 29 of player with iron axe named "&6&n%{_skill}% Skill" with lore "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top axes"]
+					
+					
+				set {_skill} to "Archery"
+				format slot 30 of player with bow named "&6&n%{_skill}% Skill" with lore "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top archery"]
+					
+					
+				set {_skill} to "Gliding"
+				format slot 31 of player with elytra named "&6&n%{_skill}% Skill" with lore "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top gliding"]
+					
+				
+				set {_skill} to "Excavation"
+				format slot 32 of player with gold shovel named "&6&n%{_skill}% Skill" with lore "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top excavation"]
+					
+				set {_skill} to "Taming"
+				format slot 33 of player with apple named "&6&n%{_skill}% Skill" with lore "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top taming"]
+					
+				
+				set {_skill} to "Slayer"
+				format slot 39 of player with iron sword named "&6&n%{_skill}% Skill" with lore "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top slayer"]
+					
+				
+				set {_skill} to "Voting"
+				format slot 41 of player with clock named "&6&n%{_skill}% Skill" with lore "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top voting"]
+					
+				stop
+				
+			set {_skill} to arg-2
+			if {_skill} is not "acrobatics" or "fishing" or "mining" or "woodcutting" or "unarmed" or "swords" or "axes" or "archery" or "gliding" or "excavation" or "taming" or "slayer" or "voting":
+				message "&8[&6RPG&8] &7%arg-2% is not a skill."
+				message "&8[&6RPG&8] &eAcrobatics, fishing, mining, woodcutting, unarmed, swords, axes, archery, gliding, excavation, slayer, voting, and taming."
+				stop
+			loop {mcmmo.%{_skill}%.xp::*}:
+				if loop-value >= 50:
+					add 1 to {_size}
+					if {_low.to.high.list::%loop-value%} is not set:
+						set {_low.to.high.list::%loop-value%} to loop-index
+					else:
+						set {_n} to 0
+						loop {_size} times:
+							set {_n} to {_n}+1
+							{_low.to.high.list::%loop-value-1%.%{_n}%} is not set
+							set {_low.to.high.list::%loop-value-1%.%{_n}%} to loop-index
+							
+							stop loop
+			wait 1 tick
+			set {_n} to size of {_low.to.high.list::*}
+			loop {_low.to.high.list::*}:
+				set {_high.to.low.list::%{_n}%} to loop-value
+				set {_n} to {_n}-1
+			
+			open chest with 6 row named "        -=[ &lSkills Top &8]=-" to player
+			wait 1 tick
+			if name of current inventory of player != "        -=[ &lSkills Top &8]=-":
+				close inventory of player
+				stop
+				
+			set {_i} to 0
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skills top"]
+				add 1 to {_i}				
+			format slot 17 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skills top"]
+			format slot 36 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skills top"]
+			set {_i} to 44
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skills top"]
+				add 1 to {_i}
+			format slot 40 of player with nether star named "&eBack To All Skills" to run [make player execute command "/skills top"]
+			set {_slot} to 19
+			set {_i} to 0
+			loop {_high.to.low.list::*}:
+				
+				add 1 to {_slot}
+				add 1 to {_i}
+				if {mcmmo.%{_skill}%.level::%loop-value%} is not set:
+					set {_level} to 0
+				else:
+					set {_level} to {mcmmo.%{_skill}%.level::%loop-value%}
+				set {_xp} to {mcmmo.%{_skill}%.xp::%loop-value%}
+				
+				format slot {_slot} of player with {item::head_number%{_i}%} named "&6&n%{uuidName::%loop-value%}%&r &7(##%{_i}%)" with lore "", " &6* &e&lSkill &7%{_skill}%", "", " &6* &e&lLevel &7%{_level}% ", "", " &6* &e&lXP &7%{_xp}%", "", "&fLeft-Click &7to view all stats", "&7for this player" to run [make player execute command "/skills %{uuidName::%loop-value%}%"]
+		
+				if {_slot} is 24:
+					set {_slot} to 28 
+				if {_slot} is 33:
+					stop
+		else:
+			open chest with 6 row named "           -=[ &lSkills &8]=-" to player
+			wait 1 tick
+			if name of current inventory of player != "           -=[ &lSkills &8]=-":
+				close inventory of player
+				stop		
+			set {_i} to 0
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skills %arg-1%"]
+				add 1 to {_i}				
+			format slot 17 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skills %arg-1%"]
+			format slot 36 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skills %arg-1%"]
+			set {_i} to 44
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run "emptycommand"
+				add 1 to {_i}
+			if {uuid::%arg-1%} is not set:
+				message "&8[&6RPG&8] &cThat player has never joined the server!"
+				stop
+			set {_uuid} to {uuid::%arg-1%}
+			set {_skill} to "Mining"
+			
+			if {mcmmo.%{_skill}%.xp::%{_uuid}%} is not set:
+				set {_xp} to 0
+				set {_level} to 0
+			else:
+				set {_xp} to {mcmmo.%{_skill}%.xp::%{_uuid}%}
+				if {mcmmo.%{_skill}%.level::%{_uuid}%} is not set:
+					set {_level} to 0
+				else:
+					set {_level} to {mcmmo.%{_skill}%.level::%{_uuid}%}
+			format slot 12 of player with iron pickaxe named "&6&n%{_skill}% Skill" with lore "", " &6* &e&lPlayer &7%{uuidName::%{_uuid}%}%", "", " &6* &e&lLevel &7%{_level}% ", "", " &6* &e&lXP &7%{_xp}%", "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top mining"]
+				
+			set {_skill} to "Acrobatics"
+			if {mcmmo.%{_skill}%.xp::%{_uuid}%} is not set:
+				set {_xp} to 0
+				set {_level} to 0
+			else:
+				set {_xp} to {mcmmo.%{_skill}%.xp::%{_uuid}%}
+				if {mcmmo.%{_skill}%.level::%{_uuid}%} is not set:
+					set {_level} to 0
+				else:
+					set {_level} to {mcmmo.%{_skill}%.level::%{_uuid}%}
+			format slot 13 of player with slime block named "&6&n%{_skill}% Skill" with lore "", " &6* &e&lPlayer &7%{uuidName::%{_uuid}%}%", "", " &6* &e&lLevel &7%{_level}% ", "", " &6* &e&lXP &7%{_xp}%", "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top acrobatics"]
+				
+				
+			set {_skill} to "Fishing"
+			if {mcmmo.%{_skill}%.xp::%{_uuid}%} is not set:
+				set {_xp} to 0
+				set {_level} to 0
+			else:
+				set {_xp} to {mcmmo.%{_skill}%.xp::%{_uuid}%}
+				if {mcmmo.%{_skill}%.level::%{_uuid}%} is not set:
+					set {_level} to 0
+				else:
+					set {_level} to {mcmmo.%{_skill}%.level::%{_uuid}%}
+			format slot 14 of player with fishing rod named "&6&n%{_skill}% Skill" with lore "", " &6* &e&lPlayer &7%{uuidName::%{_uuid}%}%", "", " &6* &e&lLevel &7%{_level}% ", "", " &6* &e&lXP &7%{_xp}%", "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top fishing"]
+				
+				
+			set {_skill} to "Woodcutting"
+			if {mcmmo.%{_skill}%.xp::%{_uuid}%} is not set:
+				set {_xp} to 0
+				set {_level} to 0
+			else:
+				set {_xp} to {mcmmo.%{_skill}%.xp::%{_uuid}%}
+				if {mcmmo.%{_skill}%.level::%{_uuid}%} is not set:
+					set {_level} to 0
+				else:
+					set {_level} to {mcmmo.%{_skill}%.level::%{_uuid}%}
+			format slot 21 of player with oak wood log named "&6&n%{_skill}% Skill" with lore "", " &6* &e&lPlayer &7%{uuidName::%{_uuid}%}%", "", " &6* &e&lLevel &7%{_level}% ", "", " &6* &e&lXP &7%{_xp}%", "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top woodcutting"]
+				
+				
+			set {_skill} to "Unarmed"
+			if {mcmmo.%{_skill}%.xp::%{_uuid}%} is not set:
+				set {_xp} to 0
+				set {_level} to 0
+			else:
+				set {_xp} to {mcmmo.%{_skill}%.xp::%{_uuid}%}
+				if {mcmmo.%{_skill}%.level::%{_uuid}%} is not set:
+					set {_level} to 0
+				else:
+					set {_level} to {mcmmo.%{_skill}%.level::%{_uuid}%}
+			format slot 22 of player with chain helmet named "&6&n%{_skill}% Skill" with lore "", " &6* &e&lPlayer &7%{uuidName::%{_uuid}%}%", "", " &6* &e&lLevel &7%{_level}% ", "", " &6* &e&lXP &7%{_xp}%", "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top unarmed"]
+				
+				
+			set {_skill} to "Swords"
+			if {mcmmo.%{_skill}%.xp::%{_uuid}%} is not set:
+				set {_xp} to 0
+				set {_level} to 0
+			else:
+				set {_xp} to {mcmmo.%{_skill}%.xp::%{_uuid}%}
+				if {mcmmo.%{_skill}%.level::%{_uuid}%} is not set:
+					set {_level} to 0
+				else:
+					set {_level} to {mcmmo.%{_skill}%.level::%{_uuid}%}
+			format slot 23 of player with diamond sword named "&6&n%{_skill}% Skill" with lore "", " &6* &e&lPlayer &7%{uuidName::%{_uuid}%}%", "", " &6* &e&lLevel &7%{_level}% ", "", " &6* &e&lXP &7%{_xp}%", "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top swords"]
+				
+				
+			set {_skill} to "Axes"
+			if {mcmmo.%{_skill}%.xp::%{_uuid}%} is not set:
+				set {_xp} to 0
+				set {_level} to 0
+			else:
+				set {_xp} to {mcmmo.%{_skill}%.xp::%{_uuid}%}
+				if {mcmmo.%{_skill}%.level::%{_uuid}%} is not set:
+					set {_level} to 0
+				else:
+					set {_level} to {mcmmo.%{_skill}%.level::%{_uuid}%}
+			format slot 29 of player with iron axe named "&6&n%{_skill}% Skill" with lore "", " &6* &e&lPlayer &7%{uuidName::%{_uuid}%}%", "", " &6* &e&lLevel &7%{_level}% ", "", " &6* &e&lXP &7%{_xp}%", "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top axes"]
+				
+				
+			set {_skill} to "Archery"
+			if {mcmmo.%{_skill}%.xp::%{_uuid}%} is not set:
+				set {_xp} to 0
+				set {_level} to 0
+			else:
+				set {_xp} to {mcmmo.%{_skill}%.xp::%{_uuid}%}
+				if {mcmmo.%{_skill}%.level::%{_uuid}%} is not set:
+					set {_level} to 0
+				else:
+					set {_level} to {mcmmo.%{_skill}%.level::%{_uuid}%}
+			format slot 30 of player with bow named "&6&n%{_skill}% Skill" with lore "", " &6* &e&lPlayer &7%{uuidName::%{_uuid}%}%", "", " &6* &e&lLevel &7%{_level}% ", "", " &6* &e&lXP &7%{_xp}%", "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top archery"]
+				
+				
+			set {_skill} to "Gliding"
+			if {mcmmo.%{_skill}%.xp::%{_uuid}%} is not set:
+				set {_xp} to 0
+				set {_level} to 0
+			else:
+				set {_xp} to {mcmmo.%{_skill}%.xp::%{_uuid}%}
+				if {mcmmo.%{_skill}%.level::%{_uuid}%} is not set:
+					set {_level} to 0
+				else:
+					set {_level} to {mcmmo.%{_skill}%.level::%{_uuid}%}
+			format slot 31 of player with elytra named "&6&n%{_skill}% Skill" with lore "", " &6* &e&lPlayer &7%{uuidName::%{_uuid}%}%", "", " &6* &e&lLevel &7%{_level}% ", "", " &6* &e&lXP &7%{_xp}%", "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top gliding"]
+				
+			
+			set {_skill} to "Excavation"
+			if {mcmmo.%{_skill}%.xp::%{_uuid}%} is not set:
+				set {_xp} to 0
+				set {_level} to 0
+			else:
+				set {_xp} to {mcmmo.%{_skill}%.xp::%{_uuid}%}
+				if {mcmmo.%{_skill}%.level::%{_uuid}%} is not set:
+					set {_level} to 0
+				else:
+					set {_level} to {mcmmo.%{_skill}%.level::%{_uuid}%}
+			format slot 32 of player with gold shovel named "&6&n%{_skill}% Skill" with lore "", " &6* &e&lPlayer &7%{uuidName::%{_uuid}%}%", "", " &6* &e&lLevel &7%{_level}% ", "", " &6* &e&lXP &7%{_xp}%", "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top excavation"]
+				
+			set {_skill} to "Taming"
+			if {mcmmo.%{_skill}%.xp::%{_uuid}%} is not set:
+				set {_xp} to 0
+				set {_level} to 0
+			else:
+				set {_xp} to {mcmmo.%{_skill}%.xp::%{_uuid}%}
+				if {mcmmo.%{_skill}%.level::%{_uuid}%} is not set:
+					set {_level} to 0
+				else:
+					set {_level} to {mcmmo.%{_skill}%.level::%{_uuid}%}
+			format slot 33 of player with apple named "&6&n%{_skill}% Skill" with lore "", " &6* &e&lPlayer &7%{uuidName::%{_uuid}%}%", "", " &6* &e&lLevel &7%{_level}% ", "", " &6* &e&lXP &7%{_xp}%", "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top taming"]
+				
+			
+			set {_skill} to "Slayer"
+			if {mcmmo.%{_skill}%.xp::%{_uuid}%} is not set:
+				set {_xp} to 0
+				set {_level} to 0
+			else:
+				set {_xp} to {mcmmo.%{_skill}%.xp::%{_uuid}%}
+				if {mcmmo.%{_skill}%.level::%{_uuid}%} is not set:
+					set {_level} to 0
+				else:
+					set {_level} to {mcmmo.%{_skill}%.level::%{_uuid}%}
+			format slot 39 of player with iron sword named "&6&n%{_skill}% Skill" with lore "", " &6* &e&lPlayer &7%{uuidName::%{_uuid}%}%", "", " &6* &e&lLevel &7%{_level}% ", "", " &6* &e&lXP &7%{_xp}%", "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top slayer"]
+				
+			set {_skill} to "Voting"
+			if {mcmmo.%{_skill}%.xp::%{_uuid}%} is not set:
+				set {_xp} to 0
+				set {_level} to 0
+			else:
+				set {_xp} to {mcmmo.%{_skill}%.xp::%{_uuid}%}
+				if {mcmmo.%{_skill}%.level::%{_uuid}%} is not set:
+					set {_level} to 0
+				else:
+					set {_level} to {mcmmo.%{_skill}%.level::%{_uuid}%}
+			format slot 41 of player with clock named "&6&n%{_skill}% Skill" with lore "", " &6* &e&lPlayer &7%{uuidName::%{_uuid}%}%", "", " &6* &e&lLevel &7%{_level}% ", "", " &6* &e&lXP &7%{_xp}%", "", "&fLeft-Click &7to view top players", "&7for the %{_skill}% skill" to run [make player execute command "/skills top voting"]
+				
+			
+			
+			
+					
+					
+# #####################
+# #### Acrobatics #####		
+# #####################
+# on jump:
+#	chance of 3%:
+#		earnXp(player, "acrobatics")
+			
+command /acrobatics:
+	trigger:
+		set {_skill} to "acrobatics"
+		message ""
+		message "&6&lAcrobatics Skill"
+		message ""
+		if {mcmmo.%{_skill}%.xp::%uuid of player%} is not set:
+			set {_xp} to 0
+		else:
+			set {_xp} to {mcmmo.%{_skill}%.xp::%uuid of player%}
+		
+		if {mcmmo.%{_skill}%.level::%uuid of player%} is not set:
+			set {_level} to 0
+		else:
+			set {_level} to {mcmmo.%{_skill}%.level::%uuid of player%}
+		set {_xpNeeded} to {mcmmo.neededxp::%{_level}%} - {_xp}
+		message "&aCurrent XP&7: &f%{_xp}%"
+		message "&aXP Left&7: &f%{_xpNeeded}%"
+		message "&aLevel&7: &f%{_level}%"
+		message ""
+		message "&7Acrobatics experience can be gained by Jumping"
+		message ""
+			
+			
+# #####################
+# #### Woodcutting ####	
+# #####################
+on break:
+	if "%event-block%" contains "log":
+		if player is not in world "Creative":
+			wait 1 tick
+			if block at event-block is air or obsidian: 
+				chance of 38%:
+					earnXp(player, "woodcutting")
+
+command /woodcutting:
+	trigger:
+		set {_skill} to "woodcutting"
+		message ""
+		message "&6&lWoodcutting Skill"
+		message ""
+		if {mcmmo.%{_skill}%.xp::%uuid of player%} is not set:
+			set {_xp} to 0
+		else:
+			set {_xp} to {mcmmo.%{_skill}%.xp::%uuid of player%}
+		
+		if {mcmmo.%{_skill}%.level::%uuid of player%} is not set:
+			set {_level} to 0
+		else:
+			set {_level} to {mcmmo.%{_skill}%.level::%uuid of player%}
+		set {_xpNeeded} to {mcmmo.neededxp::%{_level}%} - {_xp}
+		message "&aCurrent XP&7: &f%{_xp}%"
+		message "&aXP Left&7: &f%{_xpNeeded}%"
+		message "&aLevel&7: &f%{_level}%"
+		message ""
+		message "&7Woodcutting experienced can be gained by breaking logs"
+		message ""			
+					
+# #####################
+# ####   Mining    ####	
+# #####################
+on break of iron ore:
+	if player is not in world "Creative":
+		wait 1 tick
+		if block at event-block is air or obsidian:
+			chance of 25%:
+				earnXp(player, "mining")
+on break of coal ore:
+	if player is not in world "Creative":
+		wait 1 tick
+		if block at event-block is air or obsidian: 
+			chance of 20%:
+				earnXp(player, "mining")
+on break of redstone ore:
+	if player is not in world "Creative":
+		wait 1 tick
+		if block at event-block is air or obsidian: 
+			chance of 25%:
+				earnXp(player, "mining")
+on break of diamond ore:
+	if player is not in world "Creative":
+		wait 1 tick
+		if block at event-block is air or obsidian: 
+			chance of 28%:
+				earnXp(player, "mining")
+on break of gold ore:
+	if player is not in world "Creative":
+		wait 1 tick
+		if block at event-block is air or obsidian: 
+			chance of 25%:
+				earnXp(player, "mining")
+on break of emerald ore:
+	if player is not in world "Creative":
+		wait 1 tick
+		if block at event-block is air or obsidian: 
+			chance of 28%:
+				earnXp(player, "mining")
+on break of lapis ore:
+	if player is not in world "Creative":
+		wait 1 tick
+		if block at event-block is air or obsidian: 
+			chance of 25%:
+				earnXp(player, "mining")
+command /mining:
+	trigger:
+		set {_skill} to "mining"
+		message ""
+		message "&6&lMining Skill"
+		message ""
+		if {mcmmo.%{_skill}%.xp::%uuid of player%} is not set:
+			set {_xp} to 0
+		else:
+			set {_xp} to {mcmmo.%{_skill}%.xp::%uuid of player%}
+		
+		if {mcmmo.%{_skill}%.level::%uuid of player%} is not set:
+			set {_level} to 0
+		else:
+			set {_level} to {mcmmo.%{_skill}%.level::%uuid of player%}
+		set {_xpNeeded} to {mcmmo.neededxp::%{_level}%} - {_xp}
+		message "&aCurrent XP&7: &f%{_xp}%"
+		message "&aXP Left&7: &f%{_xpNeeded}%"
+		message "&aLevel&7: &f%{_level}%"
+		message ""
+		message "&7Mining experienced can be gained by breaking"
+		message "&7Iron Ore, Gold Ore, Redstone Ore, Lapis Ore,"
+		message "&7Diamond Ore, Emerald Ore, and Coal Ore"
+		message ""
+					
+					
+# #####################
+# ####   Combat    ####	
+# #####################
+on damage of a player:
+	if attacker is a player:
+		if "%regions at victim%" contains "hub_pvp":
+			if "%regions at attacker%" contains "hub_pvp":
+				if attacker's tool is air:
+					chance of 20%:
+						earnXp(attacker, "unarmed")
+				else if attacker's tool is a sword:
+					chance of 20%:
+						earnXp(attacker, "swords")
+				else if attacker's tool is an axe:
+					chance of 20%:
+						earnXp(attacker, "axes")
+				else if attacker's tool is a bow:
+					if "%damage cause%" = "projectile":
+						chance of 20%:
+							earnXp(attacker, "archery")
+	
+command /unarmed:
+	trigger:
+		set {_skill} to "unarmed"
+		message ""
+		message "&6&lUnarmed Skill"
+		message ""
+		if {mcmmo.%{_skill}%.xp::%uuid of player%} is not set:
+			set {_xp} to 0
+		else:
+			set {_xp} to {mcmmo.%{_skill}%.xp::%uuid of player%}
+		
+		if {mcmmo.%{_skill}%.level::%uuid of player%} is not set:
+			set {_level} to 0
+		else:
+			set {_level} to {mcmmo.%{_skill}%.level::%uuid of player%}
+		set {_xpNeeded} to {mcmmo.neededxp::%{_level}%} - {_xp}
+		message "&aCurrent XP&7: &f%{_xp}%"
+		message "&aXP Left&7: &f%{_xpNeeded}%"
+		message "&aLevel&7: &f%{_level}%"
+		message ""
+		message "&7Unarmed experienced can be gained with your fists at &b/pvp"
+		message ""
+		
+command /swords:
+	trigger:
+		set {_skill} to "swords"
+		message ""
+		message "&6&lSwords Skill"
+		message ""
+		if {mcmmo.%{_skill}%.xp::%uuid of player%} is not set:
+			set {_xp} to 0
+		else:
+			set {_xp} to {mcmmo.%{_skill}%.xp::%uuid of player%}
+		
+		if {mcmmo.%{_skill}%.level::%uuid of player%} is not set:
+			set {_level} to 0
+		else:
+			set {_level} to {mcmmo.%{_skill}%.level::%uuid of player%}
+		set {_xpNeeded} to {mcmmo.neededxp::%{_level}%} - {_xp}
+		message "&aCurrent XP&7: &f%{_xp}%"
+		message "&aXP Left&7: &f%{_xpNeeded}%"
+		message "&aLevel&7: &f%{_level}%"
+		message ""
+		message "&7Swords experienced can be gained with a sword at &b/pvp"
+		message ""
+		
+command /axes:
+	trigger:
+		set {_skill} to "axes"
+		message ""
+		message "&6&lAxes Skill"
+		message ""
+		if {mcmmo.%{_skill}%.xp::%uuid of player%} is not set:
+			set {_xp} to 0
+		else:
+			set {_xp} to {mcmmo.%{_skill}%.xp::%uuid of player%}
+		
+		if {mcmmo.%{_skill}%.level::%uuid of player%} is not set:
+			set {_level} to 0
+		else:
+			set {_level} to {mcmmo.%{_skill}%.level::%uuid of player%}
+		set {_xpNeeded} to {mcmmo.neededxp::%{_level}%} - {_xp}
+		message "&aCurrent XP&7: &f%{_xp}%"
+		message "&aXP Left&7: &f%{_xpNeeded}%"
+		message "&aLevel&7: &f%{_level}%"
+		message ""
+		message "&7Unarmed experienced can be gained with an axe at &b/pvp"
+		message ""
+		
+		
+command /archery:
+	trigger:
+		set {_skill} to "archery"
+		message ""
+		message "&6&lArchery Skill"
+		message ""
+		if {mcmmo.%{_skill}%.xp::%uuid of player%} is not set:
+			set {_xp} to 0
+		else:
+			set {_xp} to {mcmmo.%{_skill}%.xp::%uuid of player%}
+		
+		if {mcmmo.%{_skill}%.level::%uuid of player%} is not set:
+			set {_level} to 0
+		else:
+			set {_level} to {mcmmo.%{_skill}%.level::%uuid of player%}
+		set {_xpNeeded} to {mcmmo.neededxp::%{_level}%} - {_xp}
+		message "&aCurrent XP&7: &f%{_xp}%"
+		message "&aXP Left&7: &f%{_xpNeeded}%"
+		message "&aLevel&7: &f%{_level}%"
+		message ""
+		message "&7Archery experienced can be gained with a bow at &b/pvp"
+		message ""
+		
+		
+# #####################
+# #### Excavation ####	
+# #####################
+on break:
+	if event-block is dirt or grass block or gravel or sand or gravel:
+		if player is not in world "Creative":
+			wait 1 tick
+			if block at event-block is air: 
+				chance of 15%:
+					earnXp(player, "excavation")
+					
+command /excavation:
+	trigger:
+		set {_skill} to "excavation"
+		message ""
+		message "&6&lExcavation Skill"
+		message ""
+		if {mcmmo.%{_skill}%.xp::%uuid of player%} is not set:
+			set {_xp} to 0
+		else:
+			set {_xp} to {mcmmo.%{_skill}%.xp::%uuid of player%}
+		
+		if {mcmmo.%{_skill}%.level::%uuid of player%} is not set:
+			set {_level} to 0
+		else:
+			set {_level} to {mcmmo.%{_skill}%.level::%uuid of player%}
+		set {_xpNeeded} to {mcmmo.neededxp::%{_level}%} - {_xp}
+		message "&aCurrent XP&7: &f%{_xp}%"
+		message "&aXP Left&7: &f%{_xpNeeded}%"
+		message "&aLevel&7: &f%{_level}%"
+		message ""
+		message "&7Excavation experience can be gained by digging dirt,"
+		message "&7grass, sand, and gravel"
+		message ""
+					
+# #####################
+# ####   Fishing   ####	
+# #####################
+on fishing:
+	if player is not in world "Creative":
+		if "%caught entity%" is "dropped item":
+			earnXp(player, "fishing")	
+					
+command /fishing:
+	trigger:
+		set {_skill} to "fishing"
+		message ""
+		message "&6&lFishing Skill"
+		message ""
+		if {mcmmo.%{_skill}%.xp::%uuid of player%} is not set:
+			set {_xp} to 0
+		else:
+			set {_xp} to {mcmmo.%{_skill}%.xp::%uuid of player%}
+		
+		if {mcmmo.%{_skill}%.level::%uuid of player%} is not set:
+			set {_level} to 0
+		else:
+			set {_level} to {mcmmo.%{_skill}%.level::%uuid of player%}
+		set {_xpNeeded} to {mcmmo.neededxp::%{_level}%} - {_xp}
+		message "&aCurrent XP&7: &f%{_xp}%"
+		message "&aXP Left&7: &f%{_xpNeeded}%"
+		message "&aLevel&7: &f%{_level}%"
+		message ""
+		message "&7Fishing experience can be gained by catching fish"
+		message ""
+					
+# #####################
+# ####   Taming    ####	
+# #####################
+on tame:
+	if tamer is not in world "Creative":
+		chance of 100%:
+			earnXp(tamer, "taming")	
+command /taming:
+	trigger:
+		set {_skill} to "taming"
+		message ""
+		message "&6&lTaming Skill"
+		message ""
+		if {mcmmo.%{_skill}%.xp::%uuid of player%} is not set:
+			set {_xp} to 0
+		else:
+			set {_xp} to {mcmmo.%{_skill}%.xp::%uuid of player%}
+		
+		if {mcmmo.%{_skill}%.level::%uuid of player%} is not set:
+			set {_level} to 0
+		else:
+			set {_level} to {mcmmo.%{_skill}%.level::%uuid of player%}
+		set {_xpNeeded} to {mcmmo.neededxp::%{_level}%} - {_xp}
+		message "&aCurrent XP&7: &f%{_xp}%"
+		message "&aXP Left&7: &f%{_xpNeeded}%"
+		message "&aLevel&7: &f%{_level}%"
+		message ""
+		message "&7Taming experience can be gained by Taming Pets"
+		message ""
+				
+				
+# #####################
+# ####   Gliding    ####	
+# #####################
+
+# See Elytra.sk	for xp event
+command /gliding:
+	trigger:
+		set {_skill} to "gliding"
+		message ""
+		message "&6&lGliding Skill"
+		message ""
+		if {mcmmo.%{_skill}%.xp::%uuid of player%} is not set:
+			set {_xp} to 0
+		else:
+			set {_xp} to {mcmmo.%{_skill}%.xp::%uuid of player%}
+		
+		if {mcmmo.%{_skill}%.level::%uuid of player%} is not set:
+			set {_level} to 0
+		else:
+			set {_level} to {mcmmo.%{_skill}%.level::%uuid of player%}
+		set {_xpNeeded} to {mcmmo.neededxp::%{_level}%} - {_xp}
+		message "&aCurrent XP&7: &f%{_xp}%"
+		message "&aXP Left&7: &f%{_xpNeeded}%"
+		message "&aLevel&7: &f%{_level}%"
+		message ""
+		message "&7Gliding experience can be gained through &b/elytra"
+		message ""
+					
+	
+					
+# #####################
+# ####   Slayer    ####	
+# #####################
+on death of zombie:
+	if attacker is a player:
+		if attacker is in world "MobArena":
+			chance of 80%:
+				earnXp(attacker, "slayer")	
+command /slayer:
+	trigger:
+		set {_skill} to "slayer"
+		message ""
+		message "&6&lSlayer Skill"
+		message ""
+		if {mcmmo.%{_skill}%.xp::%uuid of player%} is not set:
+			set {_xp} to 0
+		else:
+			set {_xp} to {mcmmo.%{_skill}%.xp::%uuid of player%}
+		
+		if {mcmmo.%{_skill}%.level::%uuid of player%} is not set:
+			set {_level} to 0
+		else:
+			set {_level} to {mcmmo.%{_skill}%.level::%uuid of player%}
+		set {_xpNeeded} to {mcmmo.neededxp::%{_level}%} - {_xp}
+		message "&aCurrent XP&7: &f%{_xp}%"
+		message "&aXP Left&7: &f%{_xpNeeded}%"
+		message "&aLevel&7: &f%{_level}%"
+		message ""
+		message "&7Slayer experience can be earned during MobArena &b/pve"
+		message ""	
+		
+		
+		
+					
+# #####################
+# ####   Voting    ####	
+# #####################
+
+# see vote.sk for xp earning
+
+command /voting:
+	trigger:
+		set {_skill} to "voting"
+		message ""
+		message "&6&lVoting Skill"
+		message ""
+		if {mcmmo.%{_skill}%.xp::%uuid of player%} is not set:
+			set {_xp} to 0
+		else:
+			set {_xp} to {mcmmo.%{_skill}%.xp::%uuid of player%}
+		
+		if {mcmmo.%{_skill}%.level::%uuid of player%} is not set:
+			set {_level} to 0
+		else:
+			set {_level} to {mcmmo.%{_skill}%.level::%uuid of player%}
+		set {_xpNeeded} to {mcmmo.neededxp::%{_level}%} - {_xp}
+		message "&aCurrent XP&7: &f%{_xp}%"
+		message "&aXP Left&7: &f%{_xpNeeded}%"
+		message "&aLevel&7: &f%{_level}%"
+		message ""
+		message "&7Voting experience can be earned by voting daily &b/vote"
+		message ""	
+					
+					

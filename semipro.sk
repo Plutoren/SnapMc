@@ -1,0 +1,24 @@
+command /semiproredeemer:
+	permission: is.op
+	trigger:
+		give player 1 paper named "&a&lSemi-Pro &f&lRank Redeemer" with lore "&e  Right Click to Redeem", "", "&e  &4Access to&7: &c/nick", "&e  &4Access to&7: &c/nightvision", "&e  &4Access to&7: &c/kit semipro &8(&71 Day Delay&8)", "&e    &8- &dProtection 3 &bDiamond Armor", "&e    &8- &dSharpness 3 &bDiamond Sword", "&e  &4Access to&7: &c/prefix", "&e    &8- &8[&7Semi-Pro&8]", "&e    &8- &8[&aSemi-Pro&8]", "&e    &8- &8[&bSemi-Pro&8]", "&e    &8- &8[&dSemi-Pro&8]", "&e    &8- &8[&eSemi-Pro&8]", "&e"
+		
+on right click with paper:
+	if 1 of player's tool is paper named "&a&lSemi-Pro &f&lRank Redeemer" with lore "&e  Right Click to Redeem", "", "&e  &4Access to&7: &c/nick", "&e  &4Access to&7: &c/nightvision", "&e  &4Access to&7: &c/kit semipro &8(&71 Day Delay&8)", "&e    &8- &dProtection 3 &bDiamond Armor", "&e    &8- &dSharpness 3 &bDiamond Sword", "&e  &4Access to&7: &c/prefix", "&e    &8- &8[&7Semi-Pro&8]", "&e    &8- &8[&aSemi-Pro&8]", "&e    &8- &8[&bSemi-Pro&8]", "&e    &8- &8[&dSemi-Pro&8]", "&e    &8- &8[&eSemi-Pro&8]", "&e":
+		if player has permission "is.donator":
+			message "&8&bSnap&8] &eYou already have a higher rank"
+			stop
+		if player has permission "is.staff":
+			message "&8&bSnap&8] &eYou already have a staff rank"
+			stop
+		if player has permission "is.semi-pro":
+			message "&8&bSnap&8] &eYou already have this rank"
+			stop
+		if player is in world "Creative":
+			message "&8Yikes"
+			stop
+			
+		remove 1 of player's tool from player
+		execute console command "/pex user %player% group add semi-pro"
+		execute console command "/pex user %player% prefix """""
+		message "&8[&bSnap&8] &eRank Redeemed"

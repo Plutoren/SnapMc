@@ -1,0 +1,52 @@
+import:
+	org.bukkit.Bukkit
+	
+on script load:
+  set {apis::gp} to Bukkit.getPluginManager().getPlugin("GriefPrevention")
+  set {apis::gp::dataStore} to {apis::gp}.dataStore!
+  
+function claimAt(location: location) :: object:
+  set {_args::*} to {_location}, true, null
+  return {apis::gp::dataStore}.getClaimAt({_args::*})
+  
+  
+every 5 seconds:
+	loop all players:
+		if {claim.hated::%uuid of loop-player%} is set:
+			delete {_claim}
+			delete {_claimOwner}
+			set {_claim} to claimAt(location of loop-player)
+			set {_claimOwner} to {_claim}.getOwnerName()
+			if {_claimOwner} is set:
+				set {_uuid} to {uuid::%{_claimOwner}%}
+				if {_uuid} is set:
+					loop {claim.banned::%{_uuid}%::*}:
+						if loop-value-2 is uuid of loop-player:
+							teleport loop-player to {pos::spawn}
+							send "&cYou are banned from that claim" to loop-player
+		
+  
+command /claimban [<text>]:
+	permission: claim.ban
+	trigger:
+		if arg-1 is not set:
+			message "/claimban (player)"
+			stop
+		if {uuid::%arg-1%} is not set:
+			message "&cThat player has not joined the server before"
+			stop
+		set {_uuid} to {uuid::%arg-1%}
+		if {claim.banned::%uuid of player%::%{_uuid}%} is set:
+			delete {claim.banned::%uuid of player%::%{_uuid}%}
+			message "&e%arg-1% &7is no longer banned from your claim"
+			stop
+		set {claim.hated::%{_uuid}%} to true
+		
+		set {claim.banned::%uuid of player%::%{_uuid}%} to {_uuid}
+		message "&e%arg-1% &cis now banned from your claim"
+		
+
+	
+		
+		
+		

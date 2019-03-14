@@ -1,0 +1,3 @@
+command /snapbucks:
+	trigger:
+		message "&4SnapBucks &fYou have %player's balance%"

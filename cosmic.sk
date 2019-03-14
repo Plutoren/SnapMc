@@ -1,0 +1,1745 @@
+on inventory click:
+	if player does not have permission "is.op":
+		if name of player's current inventory contains "cosmic shop":
+			cancel event
+		
+command /shop [<text>] [<text>] [<int>] [<int>]:
+	trigger:
+		if player is in world "Wilderness":
+			message "&8[&bSnap&8] &7Redirecting to &a/wildshop &7since &b/shop&7 is for normal survival"
+			execute player command "/wildshop"
+			stop
+			
+		if player does not have permission "is.cosmic":
+			message "&8[&bSnap&8] &7Redirecting to &a/ah &7since &b/shop&7 is a Cosmic rank perk"
+			execute player command "/ah"
+			stop
+			
+		
+		if arg-1 is not set:
+			open chest with 6 row named "         -=[ &1Cosmic Shop &8]=-" to player
+			wait 1 tick
+			if name of current inventory of player != "         -=[ &1Cosmic Shop &8]=-":
+				close inventory of player
+				stop
+			execute player command "shop blocks"
+			stop
+				
+			set {_i} to 0
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/shop"]
+				add 1 to {_i}				
+			format slot 17 of player with blue stained glass pane named "&c&l*" to run [make player execute command "/shop"]
+			format slot 36 of player with blue stained glass pane named "&c&l*" to run [make player execute command "/shop"]
+			set {_i} to 44
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&c&l*" to run [make player execute command "/shop"]
+				add 1 to {_i}
+				
+			# ########################################################
+			# ################## Shop Categories #####################
+			# ########################################################
+			
+			format slot 10 of player with brick block named "&fBuilding Blocks" to run [make player execute command "/shop blocks"]
+			format slot 12 of player with 1 peony named "&fDecoration Blocks" to run [make player execute command "/shop decoration"]
+			format slot 14 of player with 1 redstone named "&fRedstone" with lore " &6COMING SOON ", " &7Buildings Blocks only" to run [make player execute command "/shop blocks"]
+			format slot 16 of player with 1 powered rail named "&fTransportation" with lore " &6COMING SOON ", " &7Buildings Blocks only" to run [make player execute command "/shop blocks"]
+			format slot 37 of player with 1 lava bucket named "&fMiscellaneous" with lore " &6COMING SOON ", " &7Buildings Blocks only" to run [make player execute command "/shop blocks"]
+			format slot 39 of player with 1 apple named "&fFoodstuff" with lore " &6COMING SOON ", " &7Buildings Blocks only" to run [make player execute command "/shop blocks"]
+			format slot 41 of player with 1 iron axe named "&fTools" with lore " &6COMING SOON ", " &7Buildings Blocks only" to run [make player execute command "/shop blocks"]
+			format slot 43 of player with 1 gold sword named "&fCombat" with lore " &6COMING SOON ", " &7Buildings Blocks only" to run [make player execute command "/shop blocks"]
+			
+			stop
+				
+		if name of current inventory of player != "         -=[ &1Cosmic Shop &8]=-" :
+			close inventory of player
+			stop
+			
+		
+		if arg-2 is not set:
+			set {_i} to 0	
+			loop 54 times:
+				format slot {_i} of player with air named "" to close
+				add 1 to {_i}
+			# ################################################
+			# ######### Decoration Block Shop ################
+			# ################################################
+			if arg-1 contains "decoration":
+				if name of current inventory of player = "         -=[ &1Cosmic Shop &8]=-" :	
+				
+				#	format slot 45 of player with ender crystal named "&fCategories" to run [make player execute command "/shop"]
+					format slot 46 of player with air named "" to run [make player execute command "/shop"]
+					format slot 47 of player with 1 red stained glass pane named "&cPage 1" to run [make player execute command "/shop decoration"]
+					format slot 48 of player with 2 orange stained glass pane named "&6Page 2" to run [make player execute command "/shop decoration"]
+					format slot 49 of player with 3 yellow stained glass pane named "&ePage 3" to run [make player execute command "/shop decoration"]
+					format slot 50 of player with 4 light green stained glass pane named "&aPage 4" to run [make player execute command "/shop decoration"]
+					format slot 51 of player with air named "" to run [make player execute command "/shop"]
+					format slot 52 of player with air named "" to run [make player execute command "/shop"]
+					format slot 53 of player with air named "" to run [make player execute command "/shop"]
+			
+			
+			if arg-1 is "decoration":
+				if name of current inventory of player = "         -=[ &1Cosmic Shop &8]=-" :	
+					
+					format slot 0 of player with oak sapling named "&fOak Sapling" to run [make player execute command "/shop decoration oaksapling"]
+					format slot 1 of player with spruce sapling named "&fSpruce Sapling" to run [make player execute command "/shop decoration sprucesapling"]
+					
+					stop
+			# ################################################
+			# ################ Block Shop ####################
+			# ################################################
+			if arg-1 contains "blocks":
+				if name of current inventory of player = "         -=[ &1Cosmic Shop &8]=-" :	
+				
+				#	format slot 45 of player with ender crystal named "&fCategories" to run [make player execute command "/shop"]
+					format slot 46 of player with air named "" to run [make player execute command "/shop"]
+					format slot 47 of player with 1 red stained glass pane named "&cPage 1" to run [make player execute command "/shop blocks"]
+					format slot 48 of player with 2 orange stained glass pane named "&6Page 2" to run [make player execute command "/shop blocks2"]
+					format slot 49 of player with 3 yellow stained glass pane named "&ePage 3" to run [make player execute command "/shop blocks3"]
+					format slot 50 of player with 4 light green stained glass pane named "&aPage 4" to run [make player execute command "/shop blocks4"]
+					format slot 51 of player with 5 light blue stained glass pane named "&bPage 5" to run [make player execute command "/shop blocks5"]
+					format slot 52 of player with air named "" to run [make player execute command "/shop"]
+					format slot 53 of player with air named "" to run [make player execute command "/shop"]
+			if arg-1 is "blocks":
+				if name of current inventory of player = "         -=[ &1Cosmic Shop &8]=-" :	
+					
+					format slot 0 of player with stone named "&fStone" to run [make player execute command "/shop blocks stone"]
+					format slot 1 of player with granite named "&fGranite" to run [make player execute command "/shop blocks granite"]
+					format slot 2 of player with polished granite named "&fPolished Granite" to run [make player execute command "/shop blocks polishedgranite"]
+					format slot 3 of player with diorite named "&fDiorite" to run [make player execute command "/shop blocks diorite"]
+					format slot 4 of player with polished diorite named "&fPolished Diorite" to run [make player execute command "/shop blocks polisheddiorite"]
+					format slot 5 of player with andesite named "&fAndesite" to run [make player execute command "/shop blocks andesite"]
+					format slot 6 of player with polished andesite named "&fPolished Andesite" to run [make player execute command "/shop blocks polishedandesite"]
+					format slot 7 of player with grass block named "&fGrass" to run [make player execute command "/shop blocks grass"]
+					format slot 8 of player with dirt named "&fDirt" to run [make player execute command "/shop blocks dirt"]
+					format slot 9 of player with coarse dirt named "&fCoarse Dirt" to run [make player execute command "/shop blocks coarsedirt"]
+					format slot 10 of player with podzol named "&fPodzol" to run [make player execute command "/shop blocks podzol"]
+					format slot 11 of player with cobblestone named "&fCobblestone" to run [make player execute command "/shop blocks cobblestone"]
+					format slot 12 of player with oak wood planks named "&fOak Wood Planks" to run [make player execute command "/shop blocks oakwoodplanks"]
+					format slot 13 of player with spruce wood planks named "&fSpruce Wood Planks" to run [make player execute command "/shop blocks sprucewoodplanks"]
+					format slot 14 of player with birch wood planks named "&fBirch Wood Planks" to run [make player execute command "/shop blocks birchwoodplanks"]
+					format slot 15 of player with Acacia wood planks named "&fAcacia Oak Wood Planks" to run [make player execute command "/shop blocks acaciawoodplanks"]
+					format slot 16 of player with jungle wood planks named "&fJungle Wood Planks" to run [make player execute command "/shop blocks junglewoodplanks"]
+					format slot 17 of player with dark oak wood planks named "&fDark Oak Wood Planks" to run [make player execute command "/shop blocks darkoakwoodplanks"]
+					format slot 18 of player with block of coal named "&fBlock of Coal" to run [make player execute command "/shop blocks coalblock"]
+					format slot 19 of player with sand named "&fSand" to run [make player execute command "/shop blocks sand"]
+					format slot 20 of player with red sand named "&fRed Sand" to run [make player execute command "/shop blocks redsand"]
+					format slot 21 of player with gravel named "&fGravel" to run [make player execute command "/shop blocks gravel"]
+					format slot 22 of player with gold ore named "&fGold Ore" to run [make player execute command "/shop blocks goldore"]
+					format slot 23 of player with iron ore named "&fIron Ore" to run [make player execute command "/shop blocks ironore"]
+					format slot 24 of player with coal ore named "&fCoal Ore" to run [make player execute command "/shop blocks coalore"]
+					format slot 25 of player with oak wood log named "&fOak Wood" to run [make player execute command "/shop blocks oakwood"]
+					format slot 26 of player with spruce wood log named "&fSpruce Wood" to run [make player execute command "/shop blocks sprucewood"]
+					format slot 27 of player with birch wood log named "&fBirch Wood" to run [make player execute command "/shop blocks birchwood"]
+					format slot 28 of player with jungle wood log named "&fJungle Wood" to run [make player execute command "/shop blocks junglewood"]
+					format slot 29 of player with sponge named "&fSponge" to run [make player execute command "/shop blocks sponge"]
+					format slot 30 of player with wet sponge named "&fWet Sponge" to run [make player execute command "/shop blocks wetsponge"]
+					format slot 31 of player with glass block named "&fGlass" to run [make player execute command "/shop blocks glass"]
+					format slot 32 of player with lapis lazuli ore named "&fLapis Lazuli Ore" to run [make player execute command "/shop blocks lapislazuliore"]
+					format slot 33 of player with lapis lazuli block named "&fLapis Lazuli Block" to run [make player execute command "/shop blocks lapislazuliblock"]
+					format slot 34 of player with sandstone named "&fSandstone" to run [make player execute command "/shop blocks sandstone"]
+					format slot 35 of player with chiseled sandstone named "&fChiseled Sandstone" to run [make player execute command "/shop blocks chiseledsandstone"]
+					format slot 36 of player with smooth sandstone named "&fSmooth Sandstone" to run [make player execute command "/shop blocks smoothsandstone"]
+					format slot 37 of player with white wool block named "&fWhite Wool" to run [make player execute command "/shop blocks whitewool"]
+					format slot 38 of player with orange wool block named "&fOrange Wool" to run [make player execute command "/shop blocks orangewool"]
+					format slot 39 of player with magenta wool block named "&fMagenta Wool" to run [make player execute command "/shop blocks magentawool"]
+					format slot 40 of player with light blue wool block named "&fLight Blue Wool" to run [make player execute command "/shop blocks lightbluewool"]
+					format slot 41 of player with yellow wool block named "&fYellow Wool" to run [make player execute command "/shop blocks yellowwool"]
+					format slot 42 of player with light green wool block named "&fLime Wool" to run [make player execute command "/shop blocks limewool"]
+					format slot 43 of player with pink wool block named "&fPink Wool" to run [make player execute command "/shop blocks pinkwool"]
+					format slot 44 of player with gray wool block named "&fGray Wool" to run [make player execute command "/shop blocks graywool"]
+					
+					stop
+					
+			else if arg-1 is "blocks2":
+				if name of current inventory of player = "         -=[ &1Cosmic Shop &8]=-" :	
+					
+					format slot 0 of player with light gray wool block named "&fLight Gray Wool" to run [make player execute command "/shop blocks lightgraywool"]
+					format slot 1 of player with cyan wool block named "&fCyan Wool" to run [make player execute command "/shop blocks cyanwool"]
+					format slot 2 of player with purple wool block named "&fPurple Wool" to run [make player execute command "/shop blocks purplewool"]
+					format slot 3 of player with blue wool block named "&fBlue Wool" to run [make player execute command "/shop blocks bluewool"]
+					format slot 4 of player with brown wool block named "&fBrown Wool" to run [make player execute command "/shop blocks brownwool"]
+					format slot 5 of player with green wool block named "&fGreen Wool" to run [make player execute command "/shop blocks greenwool"]
+					format slot 6 of player with red wool block named "&fRed Wool" to run [make player execute command "/shop blocks redwool"]
+					format slot 7 of player with black wool block named "&fBlack Wool" to run [make player execute command "/shop blocks blackwool"]
+					format slot 8 of player with gold block named "&fGold Block" to run [make player execute command "/shop blocks goldblock"]
+					format slot 9 of player with iron block named "&fIron Block" to run [make player execute command "/shop blocks ironblock"]
+					format slot 10 of player with bottom stone slab named "&fStone Slab" to run [make player execute command "/shop blocks stoneslab"]
+					format slot 11 of player with 1 of {item::sandstoneslab} named "&fSandstone Slab" to run [make player execute command "/shop blocks sandstoneslab"]
+					format slot 12 of player with bottom cobble slab named "&fCobblestone Slab" to run [make player execute command "/shop blocks cobblestoneslab"]
+					format slot 13 of player with bottom brick slab named "&fBrick Slab" to run [make player execute command "/shop blocks brickslab"]
+					format slot 14 of player with bottom stone brick slab named "&fStonebrick Slab" to run [make player execute command "/shop blocks stonebrickslab"]
+					format slot 15 of player with bottom nether brick slab named "&fNether Brick Slab" to run [make player execute command "/shop blocks netherbrickslab"]
+					format slot 16 of player with bottom nether quartz slab named "&fQuartz Slab" to run [make player execute command "/shop blocks quartzslab"]
+					format slot 17 of player with brick block named "&fBrick" to run [make player execute command "/shop blocks brick"]
+					format slot 18 of player with bookshelf named "&fBookshelf" to run [make player execute command "/shop blocks bookshelf"]
+					format slot 19 of player with mossy cobblestone named "&fMoss Stone" to run [make player execute command "/shop blocks mossstone"]
+					format slot 20 of player with obsidian named "&fObsidian" to run [make player execute command "/shop blocks obsidian"]
+					format slot 21 of player with oak wood stairs named "&fOak Wood Stairs" to run [make player execute command "/shop blocks oakwoodstairs"]
+					format slot 22 of player with diamond ore named "&fDiamond Ore" to run [make player execute command "/shop blocks diamondore"]
+					format slot 23 of player with diamond block named "&fDiamond Block" to run [make player execute command "/shop blocks diamondblock"]
+					format slot 24 of player with cobblestone stairs named "&fCobblestone Stairs" to run [make player execute command "/shop blocks cobblestonestairs"]
+					format slot 25 of player with redstone ore named "&fRedstone Ore" to run [make player execute command "/shop blocks redstoneore"]
+					format slot 26 of player with ice block named "&fIce Block" to run [make player execute command "/shop blocks ice"]
+					format slot 27 of player with snow block named "&fSnow Block" to run [make player execute command "/shop blocks snowblock"]
+					format slot 28 of player with clay block named "&fClay Block" to run [make player execute command "/shop blocks clay"]
+					format slot 29 of player with pumpkin named "&fPumpkin" to run [make player execute command "/shop blocks pumpkin"]
+					format slot 30 of player with netherrack named "&fNetherrack" to run [make player execute command "/shop blocks netherrack"]
+					format slot 31 of player with soul sand named "&fSoul Sand" to run [make player execute command "/shop blocks soulsand"]
+					format slot 32 of player with glowstone named "&fGlowstone" to run [make player execute command "/shop blocks glowstone"]
+					format slot 33 of player with jack-o-lantern named "&fJack o'Lantern" to run [make player execute command "/shop blocks jackolantern"]
+					format slot 34 of player with white glass block named "&fWhite Stained Glass" to run [make player execute command "/shop blocks whitestainedglass"]
+					format slot 35 of player with orange glass block named "&fOrange Stained Glass" to run [make player execute command "/shop blocks orangestainedglass"]
+					format slot 36 of player with magenta glass block named "&fMagenta Stained Glass" to run [make player execute command "/shop blocks magentastainedglass"]
+					format slot 37 of player with light blue glass block named "&f" to run [make player execute command "/shop blocks lightbluestainedglass"]
+					format slot 38 of player with yellow glass block named "&f" to run [make player execute command "/shop blocks yellowstainedglass"]
+					format slot 39 of player with light green glass block named "&f" to run [make player execute command "/shop blocks lightgreenstainedglass"]
+					format slot 40 of player with pink glass block named "&fPink Stained Glass" to run [make player execute command "/shop blocks pinkstainedglass"]
+					format slot 41 of player with gray glass block named "&fGray Stained Glass" to run [make player execute command "/shop blocks graystainedglass"]
+					format slot 42 of player with light gray glass block named "&fLight Gray Stained Glass" to run [make player execute command "/shop blocks lightgraystainedglass"]
+					format slot 43 of player with cyan glass block named "&fCyan Stained Glass" to run [make player execute command "/shop blocks cyanstainedglass"]
+					format slot 44 of player with purple glass block named "&fPurple Stained Glass" to run [make player execute command "/shop blocks purplestainedglass"]
+					
+					stop
+					
+			else if arg-1 is "blocks3":
+				if name of current inventory of player = "         -=[ &1Cosmic Shop &8]=-" :	
+					
+					format slot 0 of player with blue glass block named "&fBlue Stained Glass" to run [make player execute command "/shop blocks bluestainedglass"]
+					format slot 1 of player with brown glass block named "&fBrown Stained Glass" to run [make player execute command "/shop blocks brownstainedglass"]
+					format slot 2 of player with green glass block named "&fGreen Stained Glass" to run [make player execute command "/shop blocks greenstainedglass"]
+					format slot 3 of player with red glass block named "&fRed Stained Glass" to run [make player execute command "/shop blocks redstainedglass"]
+					format slot 4 of player with black glass block named "&fBlack Stained Glass" to run [make player execute command "/shop blocks blackstainedglass"]
+					format slot 5 of player with stone brick named "&fStone Brick" to run [make player execute command "/shop blocks stonebrick"]
+					format slot 6 of player with mossy stone bricks named "&fMossy Stone Brick" to run [make player execute command "/shop blocks mossystonebrick"]
+					format slot 7 of player with cracked stone bricks named "&fCracked Stone Brick" to run [make player execute command "/shop blocks crackedstonebrick"]
+					format slot 8 of player with chiseled stone brick named "&fChiseled Stone Brick" to run [make player execute command "/shop blocks chiseledstonebrick"]
+					format slot 9 of player with melon block named "&fWatermelon" to run [make player execute command "/shop blocks watermelon"]
+					format slot 10 of player with brick stairs named "&fBrick Stairs" to run [make player execute command "/shop blocks brickstairs"]
+					format slot 11 of player with stone brick stairs named "&fStone Brick Stairs" to run [make player execute command "/shop blocks stonebrickstairs"]
+					format slot 12 of player with mycelium named "&fMycelium" to run [make player execute command "/shop blocks mycelium"]
+					format slot 13 of player with nether brick block named "&fNether Brick" to run [make player execute command "/shop blocks netherbrick"]
+					format slot 14 of player with nether brick stairs named "&fNether Brick Stairs" to run [make player execute command "/shop blocks netherbrickstairs"]
+					format slot 15 of player with end stone named "&fEnd Stone" to run [make player execute command "/shop blocks endstone"]
+					format slot 16 of player with bottom oak slab named "&fOak Wood Slab" to run [make player execute command "/shop blocks oakwoodslab"]
+					format slot 17 of player with bottom spruce slab named "&fSpruce Wood Slab" to run [make player execute command "/shop blocks sprucewoodslab"]
+					format slot 18 of player with bottom birch slab named "&fBirch Wood Slab" to run [make player execute command "/shop blocks birchwoodslab"]
+					format slot 19 of player with bottom jungle slab named "&fJungle Wood Slab" to run [make player execute command "/shop blocks junglewoodslab"]
+					format slot 20 of player with bottom acacia slab named "&fAcacia Wood Slab" to run [make player execute command "/shop blocks acaciawoodslab"]
+					format slot 21 of player with bottom dark oak slab named "&fDark Oak Wood Slab" to run [make player execute command "/shop blocks darkoakwoodslab"]
+					format slot 22 of player with sandstone stairs named "&fSandstone Stairs" to run [make player execute command "/shop blocks sandstonestairs"]
+					format slot 23 of player with emerald ore named "&fEmerald Ore" to run [make player execute command "/shop blocks emeraldore"]
+					format slot 24 of player with emerald block named "&fEmerald Block" to run [make player execute command "/shop blocks emeraldblock"]
+					format slot 25 of player with spruce stairs named "&fSpruce Wood Stairs" to run [make player execute command "/shop blocks sprucewoodstairs"]
+					format slot 26 of player with birch stairs named "&fBirch Wood Stairs" to run [make player execute command "/shop blocks birchwoodstairs"]
+					format slot 27 of player with jungle stairs named "&fJungle Wood Stairs" to run [make player execute command "/shop blocks junglewoodstairs"]
+					format slot 28 of player with nether quartz ore named "&fNether Quartz Ore" to run [make player execute command "/shop blocks quartzore"]
+					format slot 29 of player with quartz block named "&fQuartz Block" to run [make player execute command "/shop blocks quartzblock"]
+					format slot 30 of player with chiseled quartz named "&fChiseled Quartz" to run [make player execute command "/shop blocks chiseledquartz"]
+					format slot 31 of player with 1 of {item::quartzpillar} named "&fQuartz Pillar" to run [make player execute command "/shop blocks quartzpillar"]
+					format slot 32 of player with quartz stairs named "&fQuartz Stairs" to run [make player execute command "/shop blocks quartzstairs"]
+					format slot 33 of player with white stained clay named "&fWhite Terracotta" to run [make player execute command "/shop blocks whiteterracotta"]
+					format slot 34 of player with orange stained clay named "&fOrange Terracotta" to run [make player execute command "/shop blocks orangeterracotta"]
+					format slot 35 of player with magenta stained clay named "&fMagenta Terracotta" to run [make player execute command "/shop blocks magentaterracotta"]
+					format slot 36 of player with light blue stained clay named "&fLight Blue Terracotta" to run [make player execute command "/shop blocks lightblueterracotta"]
+					format slot 37 of player with yellow stained clay named "&fYellow Terracotta" to run [make player execute command "/shop blocks yellowterracotta"]
+					format slot 38 of player with light green stained clay named "&fLight Green Terracotta" to run [make player execute command "/shop blocks lightgreenterracotta"]
+					format slot 39 of player with pink stained clay named "&fPink Terracotta" to run [make player execute command "/shop blocks pinkterracotta"]
+					format slot 40 of player with gray stained clay named "&fGray Terracotta" to run [make player execute command "/shop blocks grayterracotta"]
+					format slot 41 of player with light gray stained clay named "&fLight Gray Terracotta" to run [make player execute command "/shop blocks lightgrayterracotta"]
+					format slot 42 of player with cyan stained clay named "&fCyan Terracotta" to run [make player execute command "/shop blocks cyanterracotta"]
+					format slot 43 of player with purple stained clay named "&fPurple Terracotta" to run [make player execute command "/shop blocks purpleterracotta"]
+					format slot 44 of player with blue stained clay named "&fBlue Terracotta" to run [make player execute command "/shop blocks blueterracotta"]
+			
+					stop
+					
+			else if arg-1 is "blocks4":
+				if name of current inventory of player = "         -=[ &1Cosmic Shop &8]=-" :	
+					
+					format slot 0 of player with brown stained clay named "&fBrown Terracotta" to run [make player execute command "/shop blocks brownterracotta"]
+					format slot 1 of player with green stained clay named "&fGreen Terracotta" to run [make player execute command "/shop blocks greenterracotta"]
+					format slot 2 of player with red stained clay named "&fRed Terracotta" to run [make player execute command "/shop blocks redterracotta"]
+					format slot 3 of player with black stained clay named "&fBlack Terracotta" to run [make player execute command "/shop blocks blackterracotta"]
+					format slot 4 of player with 1 of {item::acaciawood} named "&fAcacia Wood" to run [make player execute command "/shop blocks acaciawood"]
+					format slot 5 of player with 1 of {item::darkoakwood} named "&fDark Oak Wood" to run [make player execute command "/shop blocks darkoakwood"]				
+					format slot 6 of player with acacia stairs named "&fAcacia Stairs" to run [make player execute command "/shop blocks acaciawoodstairs"]
+					format slot 7 of player with dark oak stairs named "&fDark Oak Stairs" to run [make player execute command "/shop blocks darkoakwoodstairs"]
+					format slot 8 of player with prismarine named "&fPrismarine" to run [make player execute command "/shop blocks prismarine"]
+					format slot 9 of player with 1 of {item::prismarinebrick} named "&fPrismarine Brick" to run [make player execute command "/shop blocks prismarinebblock"]
+					format slot 10 of player with dark prismarine named "&fDark Prismarine" to run [make player execute command "/shop blocks darkprismarine"]
+					format slot 11 of player with sea lantern named "&fSea Lantern" to run [make player execute command "/shop blocks sealantern"]
+					format slot 12 of player with hay block named "&fHay Bale" to run [make player execute command "/shop blocks haybale"]
+					format slot 13 of player with hardened clay named "&fTerracotta" to run [make player execute command "/shop blocks terracotta"]
+					format slot 14 of player with coal block named "&fCoal Block" to run [make player execute command "/shop blocks coalblock"]
+					format slot 15 of player with packed ice named "&fPacked Ice" to run [make player execute command "/shop blocks packedice"]
+					format slot 16 of player with red sandstone named "&fRed Sandstone" to run [make player execute command "/shop blocks redsandstone"]
+					format slot 17 of player with red chiseled sandstone named "&fChiseled Red Sandstone" to run [make player execute command "/shop blocks chiseledredsandstone"]
+					format slot 18 of player with smooth red sandstone named "&fRed Smooth Sandstone" to run [make player execute command "/shop blocks redsmoothsandstone"]
+					format slot 19 of player with red sandstone stairs named "&fRed Sandstone Stairs" to run [make player execute command "/shop blocks redsandstonestairs"]
+					format slot 20 of player with 1 of {item::redsandstoneslab} named "&fRed Sandstone Slab" to run [make player execute command "/shop blocks redsandstoneslab"]
+					format slot 21 of player with purpur block named "&fPurpur Block" to run [make player execute command "/shop blocks purpurblock"]
+					format slot 22 of player with purpur pillar named "&fPurpur Pillar" to run [make player execute command "/shop blocks purpurpillar"]
+					format slot 23 of player with purpur stairs named "&fPurpur Stairs" to run [make player execute command "/shop blocks purpurstairs"]
+					format slot 24 of player with 1 of {item::purpurslab} named "&fPurpur Slab" to run [make player execute command "/shop blocks purpurslab"]
+					format slot 25 of player with endstone bricks named "&fEnd Stone Bricks" to run [make player execute command "/shop blocks endstonebrick"]
+					format slot 26 of player with magma block named "&fMagma Block" to run [make player execute command "/shop blocks magmablock"]
+					format slot 27 of player with 1 of {item::netherwartblock} named "&fNether Wart Block" to run [make player execute command "/shop blocks netherwartblock"]
+					format slot 28 of player with red nether brick named "&fRed Nether Brick" to run [make player execute command "/shop blocks rednetherbrick"]
+					format slot 29 of player with bone block named "&fBone Block" to run [make player execute command "/shop blocks boneblock"]
+					format slot 30 of player with white concrete named "&fWhite Concrete" to run [make player execute command "/shop blocks whiteconcrete"]
+					format slot 31 of player with orange concrete named "&fOrange Concrete" to run [make player execute command "/shop blocks orangeconcrete"]
+					format slot 32 of player with magenta concrete named "&fMagenta Concrete" to run [make player execute command "/shop blocks magentaconcrete"]
+					format slot 33 of player with light blue concrete named "&fLight Blue Concrete" to run [make player execute command "/shop blocks lightblueconcrete"]
+					format slot 34 of player with yellow concrete named "&fYellow Concrete" to run [make player execute command "/shop blocks yellowconcrete"]
+					format slot 35 of player with light green concrete named "&fLight Green Concrete" to run [make player execute command "/shop blocks lightgreenconcrete"]
+					format slot 36 of player with pink concrete named "&fPink Concrete" to run [make player execute command "/shop blocks pinkconcrete"]
+					format slot 37 of player with gray concrete named "&fGray Concrete" to run [make player execute command "/shop blocks grayconcrete"]
+					format slot 38 of player with light gray concrete named "&fLight Gray Concrete" to run [make player execute command "/shop blocks lightgrayconcrete"]
+					format slot 39 of player with cyan concrete named "&fCyan Concrete" to run [make player execute command "/shop blocks cyanconcrete"]
+					format slot 40 of player with purple concrete named "&fPurple Concrete" to run [make player execute command "/shop blocks purpleconcrete"]
+					format slot 41 of player with blue concrete named "&fBlue Concrete" to run [make player execute command "/shop blocks blueconcrete"]
+					format slot 42 of player with brown concrete named "&fBrown Concrete" to run [make player execute command "/shop blocks brownconcrete"]
+					format slot 43 of player with green concrete named "&fGreen Concrete" to run [make player execute command "/shop blocks greenconcrete"]
+					format slot 44 of player with red concrete named "&fRed Concrete" to run [make player execute command "/shop blocks redconcrete"]				
+					stop
+					
+			else if arg-1 is "blocks5":
+				if name of current inventory of player = "         -=[ &1Cosmic Shop &8]=-" :	
+				
+					format slot 0 of player with black concrete named "&fBlack Concrete" to run [make player execute command "/shop blocks blackconcrete"]
+					format slot 1 of player with white concrete powder named "&fWhite Concrete Powder" to run [make player execute command "/shop blocks whiteconcretepowder"]
+					format slot 2 of player with orange concrete powder named "&fOrange Concrete Powder" to run [make player execute command "/shop blocks orangeconcretepowder"]
+					format slot 3 of player with magenta concrete powder named "&fMagenta Concrete Powder" to run [make player execute command "/shop blocks magentaconcretepowder"]
+					format slot 4 of player with light blue concrete powder named "&fLight Blue Concrete Powder" to run [make player execute command "/shop blocks lightblueconcretepowder"]
+					format slot 5 of player with yellow concrete powder named "&fYellow Concrete Powder" to run [make player execute command "/shop blocks yellowconcretepowder"]
+					format slot 6 of player with light green concrete powder named "&fGreen Concrete Powder" to run [make player execute command "/shop blocks lightgreenconcretepowder"]
+					format slot 7 of player with pink concrete powder named "&fPink Concrete Powder" to run [make player execute command "/shop blocks pinkconcretepowder"]
+					format slot 8 of player with gray concrete powder named "&fGray Concrete Powder" to run [make player execute command "/shop blocks grayconcretepowder"]
+					format slot 9 of player with light gray concrete powder named "&fLight Gray Concrete Powder" to run [make player execute command "/shop blocks lightgrayconcretepowder"]
+					format slot 10 of player with cyan concrete powder named "&fCyan Concrete Powder" to run [make player execute command "/shop blocks cyanconcretepowder"]
+					format slot 11 of player with purple concrete powder named "&fPurple Concrete Powder" to run [make player execute command "/shop blocks purpleconcretepowder"]
+					format slot 12 of player with blue concrete powder named "&fBlue Concrete Powder" to run [make player execute command "/shop blocks blueconcretepowder"]
+					format slot 13 of player with brown concrete powder named "&fBrown Concrete Powder" to run [make player execute command "/shop blocks brownconcretepowder"]
+					format slot 14 of player with green concrete powder named "&fGreen Concrete Powder" to run [make player execute command "/shop blocks greenconcretepowder"]
+					format slot 15 of player with red concrete powder named "&fRed Concrete Powder" to run [make player execute command "/shop blocks redconcretepowder"]
+					format slot 16 of player with black concrete powder named "&fBlack Concrete Powder" to run [make player execute command "/shop blocks blackconcretepowder"]
+	
+					stop
+			
+		if arg-2 is not set:
+			
+				
+			stop
+		
+		if arg-1 is "resetamount":
+		
+			set metadata "shop.quantity" of player to 0
+			make player execute command "/shop quantity 0"
+			
+		if arg-1 is "sellall":
+		
+			set {_shop.item} to metadata "shop.item" of player
+			set metadata "shop.quantity" of player to amount of {_shop.item} in player's inventory * -1 
+		#	set {_shop.quantity} to amount of {_shop.item} in player's inventory * -1
+			make player execute command "/shop quantity 0"
+			
+			
+			
+		if arg-1 is "quantity":
+		
+			set {_shop.item} to metadata "shop.item" of player
+			
+			set {_shop.item.name} to metadata "shop.item.name" of player
+			set {_shop.quantity} to metadata "shop.quantity" of player
+			if arg-2 is not "0" or "1" or "-1" or "16" or "-16" or "64" or "-64":
+				
+				stop
+			set {_price} to metadata "shop.price" of player 
+			set {_sellPrice} to metadata "shop.sellPrice" of player
+		 	
+			if arg-2 = "1":
+				set {_quantity} to 1
+			else if arg-2 is "-1":
+				set {_quantity} to -1
+			else if arg-2 is "16":
+				set {_quantity} to 16
+			else if arg-2 is "-16":
+				set {_quantity} to -16
+			else if arg-2 is "64":
+				set {_quantity} to 64
+			else if arg-2 is "-64":
+				set {_quantity} to -64
+			else if arg-2 is "0":
+				set {_quantity} to 0
+			if {_shop.quantity} is not set:
+				set {_shop.quantity} to {_quantity}
+				set metadata "shop.quantity" of player to {_shop.quantity}
+			else:	
+				add {_quantity} to {_shop.quantity} 
+				set metadata "shop.quantity" of player to {_shop.quantity}
+			if {_shop.item.name} is not set:
+				message "Error 404"
+				stop
+				
+			set {_shop.item.name} to metadata "shop.item.name" of player
+			# set {_shop.item.nospacename} to {_shop.item.name}
+			set {_shop.item.nospacename} to {_shop.item.name}
+			replace all " " with "" in {_shop.item.nospacename}
+			set metadata "shop.item.nospacename" of player to {_shop.item.nospacename}
+			
+			if {_shop.quantity} < 0:
+				set {_currentPrice} to {_shop.quantity} * {_sellPrice}
+				set {_quantity} to {_shop.quantity} * -1
+				if name of current inventory of player = "         -=[ &1Cosmic Shop &8]=-" :	
+					format slot 30 of player with air named "" to close
+					format slot 31 of player with air named "" to close
+					format slot 32 of player with air named "" to close
+					format slot 38 of player with air named "" to close
+					format slot 39 of player with air named "" to close
+					format slot 40 of player with air named "" to close
+					format slot 41 of player with air named "" to close
+					format slot 42 of player with air named "" to close
+					format slot 13 of player with air named "" to close
+					format slot 12 of player with air named "" to close
+					format slot 14 of player with air named "" to close
+					format slot 4 of player with air named "" to close
+					format slot 3 of player with air named "" to close
+					format slot 5 of player with air named "" to close
+					format slot 2 of player with air named "" to close
+					format slot 6 of player with air named "" to close
+					
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 31 of player with 64 of {_shop.item} with lore "&c&lPrice&8: &4$&c%{_shop.quantity} * {_sellPrice} * -1% ", " ", "&e&lBalance&7: %player's balance%" named "&c&lSell&7: &e&l%-1 * {_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks sell"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 30 of player with 64 of {_shop.item} with lore "&c&lPrice&8: &4$&c%{_shop.quantity} * {_sellPrice} * -1% ", " ", "&e&lBalance&7: %player's balance%" named "&c&lSell&7: &e&l%-1 * {_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks sell"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 32 of player with 64 of {_shop.item} with lore "&c&lPrice&8: &4$&c%{_shop.quantity} * {_sellPrice} * -1% ", " ", "&e&lBalance&7: %player's balance%" named "&c&lSell&7: &e&l%-1 * {_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks sell"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 40 of player with 64 of {_shop.item} with lore "&c&lPrice&8: &4$&c%{_shop.quantity} * {_sellPrice} * -1% ", " ", "&e&lBalance&7: %player's balance%" named "&c&lSell&7: &e&l%-1 * {_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks sell"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 39 of player with 64 of {_shop.item} with lore "&c&lPrice&8: &4$&c%{_shop.quantity} * {_sellPrice} * -1% ", " ", "&e&lBalance&7: %player's balance%" named "&c&lSell&7: &e&l%-1 * {_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks sell"]
+			
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 41 of player with 64 of {_shop.item} with lore "&c&lPrice&8: &4$&c%{_shop.quantity} * {_sellPrice} * -1% ", " ", "&e&lBalance&7: %player's balance%" named "&c&lSell&7: &e&l%-1 * {_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks sell"]
+			
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 38 of player with 64 of {_shop.item} with lore "&c&lPrice&8: &4$&c%{_shop.quantity} * {_sellPrice} * -1% ", " ", "&e&lBalance&7: %player's balance%" named "&c&lSell&7: &e&l%-1 * {_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks sell"]
+			
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 42 of player with 64 of {_shop.item} with lore "&c&lPrice&8: &4$&c%{_shop.quantity} * {_sellPrice} * -1% ", " ", "&e&lBalance&7: %player's balance%" named "&c&lSell&7: &e&l%-1 * {_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks sell"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 13 of player with 64 of {_shop.item} with lore "&c&lPrice&8: &4$&c%{_shop.quantity} * {_sellPrice} * -1% ", " ", "&e&lBalance&7: %player's balance%" named "&c&lSell&7: &e&l%-1 * {_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks sell"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 12 of player with 64 of {_shop.item} with lore "&c&lPrice&8: &4$&c%{_shop.quantity} * {_sellPrice} * -1% ", " ", "&e&lBalance&7: %player's balance%" named "&c&lSell&7: &e&l%-1 * {_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks sell"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 14 of player with 64 of {_shop.item} with lore "&c&lPrice&8: &4$&c%{_shop.quantity} * {_sellPrice} * -1% ", " ", "&e&lBalance&7: %player's balance%" named "&c&lSell&7: &e&l%-1 * {_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks sell"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 4 of player with 64 of {_shop.item} with lore "&c&lPrice&8: &4$&c%{_shop.quantity} * {_sellPrice} * -1% ", " ", "&e&lBalance&7: %player's balance%" named "&c&lSell&7: &e&l%-1 * {_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks sell"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 3 of player with 64 of {_shop.item} with lore "&c&lPrice&8: &4$&c%{_shop.quantity} * {_sellPrice} * -1% ", " ", "&e&lBalance&7: %player's balance%" named "&c&lSell&7: &e&l%-1 * {_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks sell"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 5 of player with 64 of {_shop.item} with lore "&c&lPrice&8: &4$&c%{_shop.quantity} * {_sellPrice} * -1% ", " ", "&e&lBalance&7: %player's balance%" named "&c&lSell&7: &e&l%-1 * {_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks sell"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 2 of player with 64 of {_shop.item} with lore "&c&lPrice&8: &4$&c%{_shop.quantity} * {_sellPrice} * -1% ", " ", "&e&lBalance&7: %player's balance%" named "&c&lSell&7: &e&l%-1 * {_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks sell"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 6 of player with 64 of {_shop.item} with lore "&c&lPrice&8: &4$&c%{_shop.quantity} * {_sellPrice} * -1% ", " ", "&e&lBalance&7: %player's balance%" named "&c&lSell&7: &e&l%-1 * {_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks sell"]
+					if {_quantity} <= 64:
+						format slot 22 of player with {_quantity} of {_shop.item} with lore "&c&lPrice&8: &4$&c%{_shop.quantity} * {_sellPrice} * -1% ", " ", "&e&lBalance&7: %player's balance%" named "&c&lSell&7: &e&l%-1 * {_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks sell"]
+					else:
+						format slot 22 of player with 64 of {_shop.item} with lore "&c&lPrice&8: &4$&c%{_shop.quantity} * {_sellPrice} * -1% ", " ", "&e&lBalance&7: %player's balance%" named "&c&lSell&7: &e&l%-1 * {_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks sell"]
+					
+			else:
+				set {_shop.quantity} to metadata "shop.quantity" of player
+				set {_currentPrice} to {_shop.quantity} * {_price}
+				set {_quantity} to {_shop.quantity}
+				set {_shop.item.name} to metadata "shop.item.name" of player
+				set {_shop.item.nospacename} to {_shop.item.name}
+				replace all " " with "" in {_shop.item.nospacename}
+				if name of current inventory of player = "         -=[ &1Cosmic Shop &8]=-" :	
+					format slot 30 of player with air named "" to close
+					format slot 31 of player with air named "" to close
+					format slot 32 of player with air named "" to close
+					format slot 38 of player with air named "" to close
+					format slot 39 of player with air named "" to close
+					format slot 40 of player with air named "" to close
+					format slot 41 of player with air named "" to close
+					format slot 42 of player with air named "" to close
+					
+					format slot 13 of player with air named "" to close
+					format slot 12 of player with air named "" to close
+					format slot 14 of player with air named "" to close
+					format slot 4 of player with air named "" to close
+					format slot 3 of player with air named "" to close
+					format slot 5 of player with air named "" to close
+					format slot 2 of player with air named "" to close
+					format slot 6 of player with air named "" to close
+					
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 31 of player with 64 of {_shop.item} with lore "&a&lPrice&8: &2$&a%{_shop.quantity} * {_price}% ", " ", "&e&lBalance&7: %player's balance%" named "&a&lBuy&7: &e&l%{_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks buy"]
+			
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 30 of player with 64 of {_shop.item} with lore "&a&lPrice&8: &2$&a%{_shop.quantity} * {_price}% ", " ", "&e&lBalance&7: %player's balance%" named "&a&lBuy&7: &e&l%{_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks buy"]
+			
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 32 of player with 64 of {_shop.item} with lore "&a&lPrice&8: &2$&a%{_shop.quantity} * {_price}% ", " ", "&e&lBalance&7: %player's balance%" named "&a&lBuy&7: &e&l%{_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks buy"]
+			
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 40 of player with 64 of {_shop.item} with lore "&a&lPrice&8: &2$&a%{_shop.quantity} * {_price}% ", " ", "&e&lBalance&7: %player's balance%" named "&a&lBuy&7: &e&l%{_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks buy"]
+			
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 39 of player with 64 of {_shop.item} with lore "&a&lPrice&8: &2$&a%{_shop.quantity} * {_price}% ", " ", "&e&lBalance&7: %player's balance%" named "&a&lBuy&7: &e&l%{_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks buy"]
+			
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 41 of player with 64 of {_shop.item} with lore "&a&lPrice&8: &2$&a%{_shop.quantity} * {_price}% ", " ", "&e&lBalance&7: %player's balance%" named "&a&lBuy&7: &e&l%{_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks buy"]
+			
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 38 of player with 64 of {_shop.item} with lore "&a&lPrice&8: &2$&a%{_shop.quantity} * {_price}% ", " ", "&e&lBalance&7: %player's balance%" named "&a&lBuy&7: &e&l%{_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks buy"]
+			
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 42 of player with 64 of {_shop.item} with lore "&a&lPrice&8: &2$&a%{_shop.quantity} * {_price}% ", " ", "&e&lBalance&7: %player's balance%" named "&a&lBuy&7: &e&l%{_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks buy"]
+					
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 13 of player with 64 of {_shop.item} with lore "&a&lPrice&8: &2$&a%{_shop.quantity} * {_price}% ", " ", "&e&lBalance&7: %player's balance%" named "&a&lBuy&7: &e&l%{_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks buy"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 12 of player with 64 of {_shop.item} with lore "&a&lPrice&8: &2$&a%{_shop.quantity} * {_price}% ", " ", "&e&lBalance&7: %player's balance%" named "&a&lBuy&7: &e&l%{_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks buy"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 14 of player with 64 of {_shop.item} with lore "&a&lPrice&8: &2$&a%{_shop.quantity} * {_price}% ", " ", "&e&lBalance&7: %player's balance%" named "&a&lBuy&7: &e&l%{_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks buy"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 4 of player with 64 of {_shop.item} with lore "&a&lPrice&8: &2$&a%{_shop.quantity} * {_price}% ", " ", "&e&lBalance&7: %player's balance%" named "&a&lBuy&7: &e&l%{_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks buy"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 3 of player with 64 of {_shop.item} with lore "&a&lPrice&8: &2$&a%{_shop.quantity} * {_price}% ", " ", "&e&lBalance&7: %player's balance%" named "&a&lBuy&7: &e&l%{_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks buy"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 5 of player with 64 of {_shop.item} with lore "&a&lPrice&8: &2$&a%{_shop.quantity} * {_price}% ", " ", "&e&lBalance&7: %player's balance%" named "&a&lBuy&7: &e&l%{_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks buy"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 2 of player with 64 of {_shop.item} with lore "&a&lPrice&8: &2$&a%{_shop.quantity} * {_price}% ", " ", "&e&lBalance&7: %player's balance%" named "&a&lBuy&7: &e&l%{_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks buy"]
+					if {_quantity} > 64:
+						subtract 64 from {_quantity}
+						format slot 6 of player with 64 of {_shop.item} with lore "&a&lPrice&8: &2$&a%{_shop.quantity} * {_price}% ", " ", "&e&lBalance&7: %player's balance%" named "&a&lBuy&7: &e&l%{_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks buy"]
+				
+					
+					if {_quantity} <= 64:
+					
+						format slot 22 of player with {_quantity} of {_shop.item} with lore "&a&lPrice&8: &2$&a%{_shop.quantity} * {_price}% ", " ", "&e&lBalance&7: %player's balance%" named "&a&lBuy&7: &e&l%{_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks buy"]
+					else:
+						format slot 22 of player with 64 of {_shop.item} with lore "&a&lPrice&8: &2$&a%{_shop.quantity} * {_price}% ", " ", "&e&lBalance&7: %player's balance%" named "&a&lBuy&7: &e&l%{_shop.quantity}% &6&l%{_shop.item.name}%" to run [make player execute command "/shop blocks buy"]
+				
+			stop
+		if arg-1 is "blocks":
+			
+			set {_bal} to player's balance
+			
+				
+			# #######################################
+			# ########## Blocks Prices ##############
+			# #######################################
+			set {_arg-2} to arg-2
+			if {_arg-2} is "buy" or "sell":
+				set {_arg-2} to metadata "shop.item.nospacename" of player
+			if {_arg-2} is "stone":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to stone
+				set metadata "shop.item.name" of player to "stone"
+			else if {_arg-2} is "granite":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to granite
+				set metadata "shop.item.name" of player to "Granite"
+			else if {_arg-2} is "polishedgranite":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to polished granite
+				set metadata "shop.item.name" of player to "Polished Granite"
+			else if {_arg-2} is "diorite":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to diorite
+				set metadata "shop.item.name" of player to "Diorite"
+			else if {_arg-2} is "polisheddiorite":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to polished diorite
+				set metadata "shop.item.name" of player to "Polished Diorite"
+			else if {_arg-2} is "andesite":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to andesite
+				set metadata "shop.item.name" of player to "Andesite"
+			else if {_arg-2} is "polishedandesite":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to polished andesite
+				set metadata "shop.item.name" of player to "Polished Andesite"
+			else if {_arg-2} is "grass":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to grass block
+				set metadata "shop.item.name" of player to "Grass"
+			else if {_arg-2} is "dirt":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to dirt
+				set metadata "shop.item.name" of player to "Dirt"
+			else if {_arg-2} is "coarsedirt":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to coarse dirt
+				set metadata "shop.item.name" of player to "Coarse Dirt"
+			else if {_arg-2} is "podzol":
+				set {_price} to 20
+				set {_sellPrice} to 10
+				set metadata "shop.item" of player to podzol
+				set metadata "shop.item.name" of player to "Podzol"
+			else if {_arg-2} is "cobblestone":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to cobblestone
+				set metadata "shop.item.name" of player to "Cobblestone"
+			else if {_arg-2} is "oakwoodplanks":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to oak wood planks
+				set metadata "shop.item.name" of player to "Oak Wood Planks"
+			else if {_arg-2} is "sprucewoodplanks":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to spruce wood planks
+				set metadata "shop.item.name" of player to "Spruce Wood Planks"
+			else if {_arg-2} is "birchwoodplanks":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to birch wood planks
+				set metadata "shop.item.name" of player to "Birch Wood Planks"
+			else if {_arg-2} is "junglewoodplanks":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to jungle wood planks
+				set metadata "shop.item.name" of player to "Jungle Wood Planks"
+			else if {_arg-2} is "acaciawoodplanks":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to acacia wood planks
+				set metadata "shop.item.name" of player to "Acacia Wood Planks"
+			else if {_arg-2} is "darkoakwoodplanks":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to dark oak wood planks
+				set metadata "shop.item.name" of player to "Dark Oak Wood Planks"
+			else if {_arg-2} is "coalblock":
+				set {_price} to 225
+				set {_sellPrice} to 115
+				set metadata "shop.item" of player to coal block
+				set metadata "shop.item.name" of player to "Coal Block"
+			else if {_arg-2} is "sand":
+				set {_price} to 5
+				set {_sellPrice} to 3
+				set metadata "shop.item" of player to sand
+				set metadata "shop.item.name" of player to "Sand"
+			else if {_arg-2} is "redsand":
+				set {_price} to 5
+				set {_sellPrice} to 3
+				set metadata "shop.item" of player to red sand
+				set metadata "shop.item.name" of player to "Red Sand"
+			else if {_arg-2} is "gravel":
+				set {_price} to 5
+				set {_sellPrice} to 3
+				set metadata "shop.item" of player to gravel block
+				set metadata "shop.item.name" of player to "Gravel"
+			else if {_arg-2} is "goldore":
+				set {_price} to 45
+				set {_sellPrice} to 22
+				set metadata "shop.item" of player to gold ore
+				set metadata "shop.item.name" of player to "Gold Ore"
+			else if {_arg-2} is "ironore":
+				set {_price} to 35
+				set {_sellPrice} to 16
+				set metadata "shop.item" of player to iron ore
+				set metadata "shop.item.name" of player to "Iron Ore"
+			else if {_arg-2} is "coalore":
+				set {_price} to 25
+				set {_sellPrice} to 12
+				set metadata "shop.item" of player to coal ore
+				set metadata "shop.item.name" of player to "Coal Ore"
+			else if {_arg-2} is "oakwood":
+				set {_price} to 40
+				set {_sellPrice} to 20
+				set metadata "shop.item" of player to oak wood log
+				set metadata "shop.item.name" of player to "Oak Wood"
+			else if {_arg-2} is "sprucewood":
+				set {_price} to 40
+				set {_sellPrice} to 20
+				set metadata "shop.item" of player to spruce wood log
+				set metadata "shop.item.name" of player to "Spruce Wood"
+			else if {_arg-2} is "birchwood":
+				set {_price} to 40
+				set {_sellPrice} to 20
+				set metadata "shop.item" of player to birch wood log
+				set metadata "shop.item.name" of player to "Birch Wood"
+			else if {_arg-2} is "junglewood":
+				set {_price} to 40
+				set {_sellPrice} to 20
+				set metadata "shop.item" of player to jungle wood log
+				set metadata "shop.item.name" of player to "Jungle Wood"
+			else if {_arg-2} is "sponge":
+				set {_price} to 5
+				set {_sellPrice} to 1
+				set metadata "shop.item" of player to sponge
+				set metadata "shop.item.name" of player to "Sponge"
+			else if {_arg-2} is "wetsponge":
+				set {_price} to 4
+				set {_sellPrice} to 1
+				set metadata "shop.item" of player to wet sponge
+				set metadata "shop.item.name" of player to "Wet Sponge"
+			else if {_arg-2} is "glass":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to glass block
+				set metadata "shop.item.name" of player to "Glass"
+			else if {_arg-2} is "lapislazuliore":
+				set {_price} to 15
+				set {_sellPrice} to 8
+				set metadata "shop.item" of player to lapis lazuli ore
+				set metadata "shop.item.name" of player to "Lapis Lazuli Ore"
+			else if {_arg-2} is "lapislazuliblock":
+				set {_price} to 135
+				set {_sellPrice} to 11 
+				set metadata "shop.item" of player to lapis lazuli block
+				set metadata "shop.item.name" of player to "Lapis Lazuli Block"
+			else if {_arg-2} is "sandstone":
+				set {_price} to 5
+				set {_sellPrice} to 3
+				set metadata "shop.item" of player to sandstone
+				set metadata "shop.item.name" of player to "Sandstone"
+			else if {_arg-2} is "chiseledsandstone":
+				set {_price} to 20
+				set {_sellPrice} to 10
+				set metadata "shop.item" of player to chiseled sandstone
+				set metadata "shop.item.name" of player to "Chiseled Sandstone"
+			else if {_arg-2} is "whitewool":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to white wool block
+				set metadata "shop.item.name" of player to "white wool"
+			else if {_arg-2} is "orangewool":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to orange wool block
+				set metadata "shop.item.name" of player to "Orange Wool"
+			else if {_arg-2} is "magentawool":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to magenta wool block
+				set metadata "shop.item.name" of player to "Magenta Wool"
+			else if {_arg-2} is "lightbluewool":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to light blue wool block
+				set metadata "shop.item.name" of player to "Light Blue Wool"
+			else if {_arg-2} is "yellowwool":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to yellow wool block
+				set metadata "shop.item.name" of player to "Yellow Wool"
+			else if {_arg-2} is "limewool":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to light green wool block
+				set metadata "shop.item.name" of player to "Lime Wool"
+			else if {_arg-2} is "pinkwool":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to pink wool block
+				set metadata "shop.item.name" of player to "Pink Wool"
+			else if {_arg-2} is "graywool":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to gray wool block
+				set metadata "shop.item.name" of player to "Gray Wool"
+				
+				
+			# menu 2	
+			else if {_arg-2} is "lightgraywool":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to light gray wool block
+				set metadata "shop.item.name" of player to "Light Gray Wool"
+			else if {_arg-2} is "cyanwool":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to cyan wool block
+				set metadata "shop.item.name" of player to "Cyan Wool"
+			else if {_arg-2} is "purplewool":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to Purple Wool Block
+				set metadata "shop.item.name" of player to "Purple Wool"
+			else if {_arg-2} is "bluewool":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to Blue Wool Block
+				set metadata "shop.item.name" of player to "Blue Wool"
+			else if {_arg-2} is "brownwool":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to Brown Wool Block
+				set metadata "shop.item.name" of player to "Brown Wool"
+			else if {_arg-2} is "greenwool":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to Green Wool Block
+				set metadata "shop.item.name" of player to "Green Wool"
+			else if {_arg-2} is "redwool":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to Red Wool Block
+				set metadata "shop.item.name" of player to "Red Wool"
+			else if {_arg-2} is "blackwool":
+				set {_price} to 25
+				set {_sellPrice} to 0 
+				set metadata "shop.item" of player to Black Wool Block
+				set metadata "shop.item.name" of player to "Black Wool"
+			else if {_arg-2} is "goldblock":
+				set {_price} to 405
+				set {_sellPrice} to 198
+				set metadata "shop.item" of player to gold block
+				set metadata "shop.item.name" of player to "Gold Block"
+			else if {_arg-2} is "ironblock":
+				set {_price} to 335
+				set {_sellPrice} to 165
+				set metadata "shop.item" of player to iron block
+				set metadata "shop.item.name" of player to "Iron Block"
+			else if {_arg-2} is "stoneslab":
+				set {_price} to 5
+				set {_sellPrice} to 3
+				set metadata "shop.item" of player to bottom stone slab
+				set metadata "shop.item.name" of player to "Stone Slab"
+			else if {_arg-2} is "sandstoneslab":
+				set {_price} to 3
+				set {_sellPrice} to 1
+				set metadata "shop.item" of player to 1 of {item::sandstoneslab}
+				set metadata "shop.item.name" of player to "Sandstone Slab"
+			else if {_arg-2} is "cobblestoneslab":
+				set {_price} to 5
+				set {_sellPrice} to 3
+				set metadata "shop.item" of player to bottom cobblestone slab
+				set metadata "shop.item.name" of player to "Cobblestone Slab"
+			else if {_arg-2} is "brickslab":
+				set {_price} to 12
+				set {_sellPrice} to 6
+				set metadata "shop.item" of player to bottom brick slab
+				set metadata "shop.item.name" of player to "Brick Slab"
+			else if {_arg-2} is "stonebrickslab":
+				set {_price} to 5
+				set {_sellPrice} to 3
+				set metadata "shop.item" of player to bottom stone brick slab
+				set metadata "shop.item.name" of player to "Stone Brick Slab"
+			else if {_arg-2} is "netherbrickslab":
+				set {_price} to 5
+				set {_sellPrice} to 3
+				set metadata "shop.item" of player to bottom nether brick slab
+				set metadata "shop.item.name" of player to "Nether Brick Slab"
+			else if {_arg-2} is "quartzslab":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to bottom nether quartz slab
+				set metadata "shop.item.name" of player to "Quartz Slab"
+			else if {_arg-2} is "brick":
+				set {_price} to 25
+				set {_sellPrice} to 12
+				set metadata "shop.item" of player to brick block
+				set metadata "shop.item.name" of player to "Brick"
+			else if {_arg-2} is "bookshelf":
+				set {_price} to 40
+				set {_sellPrice} to 20
+				set metadata "shop.item" of player to bookshelf
+				set metadata "shop.item.name" of player to "Bookshelf"
+			else if {_arg-2} is "mossstone":
+				set {_price} to 20
+				set {_sellPrice} to 10
+				set metadata "shop.item" of player to mossy cobblestone
+				set metadata "shop.item.name" of player to "Moss Stone"
+			else if {_arg-2} is "obsidian":
+				set {_price} to 20
+				set {_sellPrice} to 10
+				set metadata "shop.item" of player to obsidian
+				set metadata "shop.item.name" of player to "Obsidian"
+			else if {_arg-2} is "oakwoodstairs":
+				set {_price} to 30
+				set {_sellPrice} to 15
+				set metadata "shop.item" of player to oak wood stairs
+				set metadata "shop.item.name" of player to "Oak Wood Stairs"
+			else if {_arg-2} is "diamondore":
+				set {_price} to 50
+				set {_sellPrice} to 25
+				set metadata "shop.item" of player to diamond ore
+				set metadata "shop.item.name" of player to "Diamond Ore"
+			else if {_arg-2} is "diamondblock":
+				set {_price} to 450
+				set {_sellPrice} to 225
+				set metadata "shop.item" of player to Diamond Block
+				set metadata "shop.item.name" of player to "Diamond Block"
+			else if {_arg-2} is "cobblestonestairs":
+				set {_price} to 15
+				set {_sellPrice} to 8
+				set metadata "shop.item" of player to Cobblestone stairs
+				set metadata "shop.item.name" of player to "Cobblestone Stairs"
+			else if {_arg-2} is "redstoneore":
+				set {_price} to 40
+				set {_sellPrice} to 20
+				set metadata "shop.item" of player to redstone ore
+				set metadata "shop.item.name" of player to "Redstone Ore"
+			else if {_arg-2} is "ice":
+				set {_price} to 1000
+				set {_sellPrice} to 500
+				set metadata "shop.item" of player to ice block
+				set metadata "shop.item.name" of player to "Ice"
+			else if {_arg-2} is "snowblock":
+				set {_price} to 5
+				set {_sellPrice} to 1
+				set metadata "shop.item" of player to Snow Block
+				set metadata "shop.item.name" of player to "Snow Block"
+			else if {_arg-2} is "clay":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to clay block
+				set metadata "shop.item.name" of player to "clay"
+			else if {_arg-2} is "pumpkin":
+				set {_price} to 6
+				set {_sellPrice} to 3
+				set metadata "shop.item" of player to pumpkin
+				set metadata "shop.item.name" of player to "Pumpkin"
+			else if {_arg-2} is "netherrack":
+				set {_price} to 5
+				set {_sellPrice} to 2
+				set metadata "shop.item" of player to netherrack
+				set metadata "shop.item.name" of player to "Netherrack"
+			else if {_arg-2} is "soulsand":
+				set {_price} to 5
+				set {_sellPrice} to 2
+				set metadata "shop.item" of player to Soul Sand
+				set metadata "shop.item.name" of player to "Soul Sand"
+			else if {_arg-2} is "glowstone":
+				set {_price} to 40
+				set {_sellPrice} to 20
+				set metadata "shop.item" of player to glowstone
+				set metadata "shop.item.name" of player to "Glowstone"
+			else if {_arg-2} is "jackolantern":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to jack-o-lantern
+				set metadata "shop.item.name" of player to "Jack oLantern"
+			else if {_arg-2} is "whitestainedglass":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to white glass block
+				set metadata "shop.item.name" of player to "white Stained Glass"
+			else if {_arg-2} is "orangestainedglass":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to orange glass block
+				set metadata "shop.item.name" of player to "Orange Stained Glass"
+			else if {_arg-2} is "magentastainedglass":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to magenta glass block
+				set metadata "shop.item.name" of player to "Magenta Stained Glass"
+			else if {_arg-2} is "lightbluestainedglass":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to light blue glass block 
+				set metadata "shop.item.name" of player to "Light Blue Stained Glass"
+			else if {_arg-2} is "yellowstainedglass":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to yellow glass block
+				set metadata "shop.item.name" of player to "Yellow Stained Glass"
+			else if {_arg-2} is "lightgreenstainedglass":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to light green glass block
+				set metadata "shop.item.name" of player to "Light Green Stained Glass"
+			else if {_arg-2} is "yellowstainedglass":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to yellow glass block
+				set metadata "shop.item.name" of player to "Yellow Stained Glass"
+			else if {_arg-2} is "lightgreenstainedglass":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to Light green glass block
+				set metadata "shop.item.name" of player to "Light Green Stained Glass"
+			else if {_arg-2} is "pinkstainedglass":
+				set {_price} to 25
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to pink glass block
+				set metadata "shop.item.name" of player to "Pink Stained Glass"
+			else if {_arg-2} is "graystainedglass":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to gray glass block
+				set metadata "shop.item.name" of player to "Gray Stained Glass"
+			else if {_arg-2} is "lightgraystainedglass":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to light gray glass block
+				set metadata "shop.item.name" of player to "Light Gray Stained Glass"
+			else if {_arg-2} is "cyanstainedglass":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to cyan glass block
+				set metadata "shop.item.name" of player to "Cyan Stained Glass"
+			else if {_arg-2} is "purplestainedglass":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to purple glass block
+				set metadata "shop.item.name" of player to "Purple Stained Glass"
+				
+			# Menu 3	
+			else if {_arg-2} is "bluestainedglass":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to blue glass block
+				set metadata "shop.item.name" of player to "Blue Stained Glass"
+			else if {_arg-2} is "brownstainedglass":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to brown glass block
+				set metadata "shop.item.name" of player to "Brown Stained Glass"
+			else if {_arg-2} is "greenstainedglass":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to green glass block
+				set metadata "shop.item.name" of player to "Green Stained Glass"
+			else if {_arg-2} is "redstainedglass":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to red glass block
+				set metadata "shop.item.name" of player to "Red Stained Glass"
+			else if {_arg-2} is "blackstainedglass":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to black glass block
+				set metadata "shop.item.name" of player to "Black Stained Glass"
+			else if {_arg-2} is "stonebrick":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to stone brick
+				set metadata "shop.item.name" of player to "Stone Brick"
+			else if {_arg-2} is "mossystonebrick":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to mossy stone bricks
+				set metadata "shop.item.name" of player to "Mossy Stone Brick"
+			else if {_arg-2} is "crackedstonebrick":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to cracked stone bricks
+				set metadata "shop.item.name" of player to "Cracked Stone Brick"
+			else if {_arg-2} is "chiseledstonebrick":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to chiseled stone brick
+				set metadata "shop.item.name" of player to "Chiseled Stone Brick"
+			else if {_arg-2} is "mycelium":
+				set {_price} to 20
+				set {_sellPrice} to 10
+				set metadata "shop.item" of player to Mycelium
+				set metadata "shop.item.name" of player to "Mycleium"
+			else if {_arg-2} is "netherbrick":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to nether brick block
+				set metadata "shop.item.name" of player to "Nether Brick"
+			else if {_arg-2} is "brickstairs":
+				set {_price} to 15
+				set {_sellPrice} to 4
+				set metadata "shop.item" of player to brick stairs 
+				set metadata "shop.item.name" of player to "Brick Stairs"
+			else if {_arg-2} is "stonebrickstairs":
+				set {_price} to 15
+				set {_sellPrice} to 8
+				set metadata "shop.item" of player to stone brick stairs 
+				set metadata "shop.item.name" of player to "Stone Brick Stairs"
+			else if {_arg-2} is "netherbrickstairs":
+				set {_price} to 15
+				set {_sellPrice} to 8
+				set metadata "shop.item" of player to nether brick stairs 
+				set metadata "shop.item.name" of player to "Nether Brick Stairs"
+			else if {_arg-2} is "endstone":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to end stone
+				set metadata "shop.item.name" of player to "End Stone"
+			else if {_arg-2} is "oakwoodslab":
+				set {_price} to 5
+				set {_sellPrice} to 2
+				set metadata "shop.item" of player to bottom oak slab
+				set metadata "shop.item.name" of player to "Oak Wood Slab"
+			else if {_arg-2} is "sprucewoodslab":
+				set {_price} to 5
+				set {_sellPrice} to 2
+				set metadata "shop.item" of player to bottom spruce slab
+				set metadata "shop.item.name" of player to "Spruce Wood Slab"
+			else if {_arg-2} is "birchwoodslab":
+				set {_price} to 5
+				set {_sellPrice} to 2
+				set metadata "shop.item" of player to bottom birch slab
+				set metadata "shop.item.name" of player to "Birch Wood Slab"
+			else if {_arg-2} is "junglewoodslab":
+				set {_price} to 5
+				set {_sellPrice} to 2
+				set metadata "shop.item" of player to bottom jungle slab
+				set metadata "shop.item.name" of player to "Jungle Wood Slab"
+			else if {_arg-2} is "acaciawoodslab":
+				set {_price} to 5
+				set {_sellPrice} to 2
+				set metadata "shop.item" of player to bottom acacia slab
+				set metadata "shop.item.name" of player to "Acacia Wood Slab"
+			else if {_arg-2} is "darkoakwoodslab":
+				set {_price} to 5
+				set {_sellPrice} to 2
+				set metadata "shop.item" of player to bottom dark oak slab
+				set metadata "shop.item.name" of player to "Dark Oak Wood Slab"
+			else if {_arg-2} is "sandstonestairs":
+				set {_price} to 20
+				set {_sellPrice} to 10
+				set metadata "shop.item" of player to sandstone stairs
+				set metadata "shop.item.name" of player to "Sandstone Stairs"
+			else if {_arg-2} is "emeraldore":
+				set {_price} to 100
+				set {_sellPrice} to 50
+				set metadata "shop.item" of player to emerald ore
+				set metadata "shop.item.name" of player to "Emerald Ore"
+			else if {_arg-2} is "emeraldblock":
+				set {_price} to 900
+				set {_sellPrice} to 450
+				set metadata "shop.item" of player to emerald block
+				set metadata "shop.item.name" of player to "Emerald Block"
+			else if {_arg-2} is "sprucewoodstairs":
+				set {_price} to 15
+				set {_sellPrice} to 8
+				set metadata "shop.item" of player to spruce stairs
+				set metadata "shop.item.name" of player to "Spruce Wood Stairs"
+			else if {_arg-2} is "birchwoodstairs":
+				set {_price} to 15
+				set {_sellPrice} to 8
+				set metadata "shop.item" of player to birch stairs
+				set metadata "shop.item.name" of player to "Birch Wood Stairs"
+			else if {_arg-2} is "junglewoodstairs":
+				set {_price} to 15
+				set {_sellPrice} to 8
+				set metadata "shop.item" of player to jungle stairs
+				set metadata "shop.item.name" of player to "Jungle Wood Stairs"
+			else if {_arg-2} is "quartzore":
+				set {_price} to 20
+				set {_sellPrice} to 10
+				set metadata "shop.item" of player to nether quartz ore
+				set metadata "shop.item.name" of player to "Quartz Ore"
+			else if {_arg-2} is "quartzblock":
+				set {_price} to 20
+				set {_sellPrice} to 10
+				set metadata "shop.item" of player to quartz block
+				set metadata "shop.item.name" of player to "Quartz Block"
+			else if {_arg-2} is "chiseledquartz":
+				set {_price} to 20
+				set {_sellPrice} to 10
+				set metadata "shop.item" of player to chiseled quartz
+				set metadata "shop.item.name" of player to "Chiseled Quartz"
+			else if {_arg-2} is "quartzpillar":
+				set {_price} to 20
+				set {_sellPrice} to 10
+				set metadata "shop.item" of player to 1 of {item::quartzpillar} 
+				set metadata "shop.item.name" of player to "Quartz Pillar"
+			else if {_arg-2} is "quartzstairs":
+				set {_price} to 30
+				set {_sellPrice} to 15
+				set metadata "shop.item" of player to quartz stairs
+				set metadata "shop.item.name" of player to "Quartz Stairs"
+			else if {_arg-2} is "whiteterracotta":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to white stained clay
+				set metadata "shop.item.name" of player to "White Terracotta"
+			else if {_arg-2} is "orangeterracotta":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to orange stained clay
+				set metadata "shop.item.name" of player to "Orange Terracotta"
+			else if {_arg-2} is "magentaterracotta":
+				set {_price} to 25
+				set {_sellPrice} to 25
+				set metadata "shop.item" of player to magenta terracotta
+				set metadata "shop.item.name" of player to "Magenta Terracotta"
+			else if {_arg-2} is "lightblueterracotta":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to light blue terracotta
+				set metadata "shop.item.name" of player to "Light Blue Terracotta"
+			else if {_arg-2} is "yellowterracotta":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to yellow terracotta
+				set metadata "shop.item.name" of player to "Yellow Terracotta"
+			else if {_arg-2} is "lightgreenterracotta":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to light green terracotta
+				set metadata "shop.item.name" of player to "Green Terracotta"
+			else if {_arg-2} is "pinkterracotta":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to pink stained clay
+				set metadata "shop.item.name" of player to "Pink Terracotta"
+			else if {_arg-2} is "grayterracotta":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to gray stained clay
+				set metadata "shop.item.name" of player to "Gray Terracotta"
+			else if {_arg-2} is "lightgrayterracotta":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to light gray stained clay
+				set metadata "shop.item.name" of player to "Light Gray Terracotta"
+			else if {_arg-2} is "cyanterracotta":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to cyan stained clay
+				set metadata "shop.item.name" of player to "Cyan Terracotta"
+			else if {_arg-2} is "purpleterracotta":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to purple stained clay
+				set metadata "shop.item.name" of player to "Purple Terracotta"
+			else if {_arg-2} is "blueterracotta":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to blue stained clay
+				set metadata "shop.item.name" of player to "Blue Terracotta"
+				
+			# Menu 4
+			else if {_arg-2} is "brownterracotta":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to brown stained clay
+				set metadata "shop.item.name" of player to "Brown Terracotta"
+			else if {_arg-2} is "greenterracotta":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to green stained clay
+				set metadata "shop.item.name" of player to "Green Terracotta"
+			else if {_arg-2} is "redterracotta":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to red stained clay
+				set metadata "shop.item.name" of player to "Red Terracotta"
+			else if {_arg-2} is "blackterracotta":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to black stained clay
+				set metadata "shop.item.name" of player to "Black Terracotta"
+			else if {_arg-2} is "acaciawood":
+				set {_price} to 40
+				set {_sellPrice} to 20
+				set metadata "shop.item" of player to 1 of {item::acaciawood}
+				set metadata "shop.item.name" of player to "Acacia Wood"
+			else if {_arg-2} is "darkoakwood":
+				set {_price} to 40
+				set {_sellPrice} to 20
+				set metadata "shop.item" of player to 1 of {item::darkoakwood}
+				set metadata "shop.item.name" of player to "Dark Oak Wood"
+			else if {_arg-2} is "acaciawoodstairs":
+				set {_price} to 15
+				set {_sellPrice} to 8
+				set metadata "shop.item" of player to acacia stairs
+				set metadata "shop.item.name" of player to "Acacia Stairs"
+			else if {_arg-2} is "darkoakwoodstairs":
+				set {_price} to 15
+				set {_sellPrice} to 8
+				set metadata "shop.item" of player to dark oak stairs
+				set metadata "shop.item.name" of player to "Dark Oak Wood Stairs"
+			else if {_arg-2} is "prismarine":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to prismarine
+				set metadata "shop.item.name" of player to "Prismarine"
+			else if {_arg-2} is "prismarinebblock":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to 1 of {item::prismarinebrick}
+				set metadata "shop.item.name" of player to "Prismarine Brick"
+			else if {_arg-2} is "darkprismarine":
+				set {_price} to 20
+				set {_sellPrice} to 10
+				set metadata "shop.item" of player to Dark Prismarine
+				set metadata "shop.item.name" of player to "Dark Prismarine"
+			else if {_arg-2} is "sealantern":
+				set {_price} to 40
+				set {_sellPrice} to 20
+				set metadata "shop.item" of player to Sea Lantern
+				set metadata "shop.item.name" of player to "Sea Lantern"
+			else if {_arg-2} is "haybale":
+				set {_price} to 50
+				set {_sellPrice} to 25
+				set metadata "shop.item" of player to Hay Block
+				set metadata "shop.item.name" of player to "Hay Bale"
+			else if {_arg-2} is "terracotta":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to hardened clay
+				set metadata "shop.item.name" of player to "Terracotta"
+			else if {_arg-2} is "coalblock":
+				set {_price} to 225
+				set {_sellPrice} to 115
+				set metadata "shop.item" of player to Coal Block
+				set metadata "shop.item.name" of player to "Coal Block"
+			else if {_arg-2} is "packedice":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to packed ice
+				set metadata "shop.item.name" of player to "Packed Ice"
+			else if {_arg-2} is "redsandstone":
+				set {_price} to 5
+				set {_sellPrice} to 2
+				set metadata "shop.item" of player to red sandstone
+				set metadata "shop.item.name" of player to "Red Sandstone"
+			else if {_arg-2} is "chiseledredsandstone":
+				set {_price} to 20
+				set {_sellPrice} to 10
+				set metadata "shop.item" of player to red Chiseled Sandstone
+				set metadata "shop.item.name" of player to "Chiseled Red Sandstone"
+			else if {_arg-2} is "smoothsandstone":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to smooth Sandstone 
+				set metadata "shop.item.name" of player to "Smooth Sandstone"
+			else if {_arg-2} is "redsmoothsandstone":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to smooth red sandstone
+				set metadata "shop.item.name" of player to "Smooth Red Sandstone"
+			else if {_arg-2} is "redsandstonestairs":
+				set {_price} to 8
+				set {_sellPrice} to 4
+				set metadata "shop.item" of player to red sandstone stairs
+				set metadata "shop.item.name" of player to "Red Sandstone Stairs"
+			else if {_arg-2} is "redsandstoneslab":
+				set {_price} to 5
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to 1 of {item::redsandstoneslab}
+				set metadata "shop.item.name" of player to "Red Sandstone Slab"
+			else if {_arg-2} is "purpurblock":
+				set {_price} to 20
+				set {_sellPrice} to 10
+				set metadata "shop.item" of player to purpur block
+				set metadata "shop.item.name" of player to "Purpur Block"
+			else if {_arg-2} is "purpurpillar":
+				set {_price} to 20
+				set {_sellPrice} to 10
+				set metadata "shop.item" of player to purpur pillar
+				set metadata "shop.item.name" of player to "Purpur Pillar"
+			else if {_arg-2} is "purpurstairs":
+				set {_price} to 30
+				set {_sellPrice} to 15
+				set metadata "shop.item" of player to purpur stairs
+				set metadata "shop.item.name" of player to "Purpur Stairs"
+			else if {_arg-2} is "purpurslab":
+				set {_price} to 20
+				set {_sellPrice} to 10
+				set metadata "shop.item" of player to 1 of {item::purpurslab}
+				set metadata "shop.item.name" of player to "Purpur Slab"
+			else if {_arg-2} is "endstonebrick":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to endstone bricks
+				set metadata "shop.item.name" of player to "End Stone Brick"
+			else if {_arg-2} is "magmablock":
+				set {_price} to 40
+				set {_sellPrice} to 20
+				set metadata "shop.item" of player to magma block
+				set metadata "shop.item.name" of player to "Magma Block"
+			else if {_arg-2} is "netherwartblock":
+				set {_price} to 20
+				set {_sellPrice} to 10
+				set metadata "shop.item" of player to 1 of {item::netherwartblock}
+				set metadata "shop.item.name" of player to "Nether Wart Block"
+			else if {_arg-2} is "rednetherbrick":
+				set {_price} to 40
+				set {_sellPrice} to 20
+				set metadata "shop.item" of player to red nether brick
+				set metadata "shop.item.name" of player to "Red Nether Brick"
+			else if {_arg-2} is "boneblock":
+				set {_price} to 90
+				set {_sellPrice} to 45
+				set metadata "shop.item" of player to bone block
+				set metadata "shop.item.name" of player to "Bone Block"
+			else if {_arg-2} is "whiteconcrete":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to white concrete
+				set metadata "shop.item.name" of player to "White Concrete"
+			else if {_arg-2} is "orangeconcrete":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to orange concrete
+				set metadata "shop.item.name" of player to "Orange Concrete"
+			else if {_arg-2} is "magentaconcrete":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to magenta concrete
+				set metadata "shop.item.name" of player to "Magenta Concrete"
+			else if {_arg-2} is "lightblueconcrete":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to light blue concrete
+				set metadata "shop.item.name" of player to "Light Blue Concrete"
+			else if {_arg-2} is "yellowconcrete":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to yellow concrete
+				set metadata "shop.item.name" of player to "Yellow Concrete"
+			else if {_arg-2} is "lightgreenconcrete":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to light green concrete
+				set metadata "shop.item.name" of player to "Light Green Concrete"
+			else if {_arg-2} is "pinkconcrete":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to pink concrete
+				set metadata "shop.item.name" of player to "Pink Concrete"
+			else if {_arg-2} is "grayconcrete":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to Gray Concrete
+				set metadata "shop.item.name" of player to "Gray Concrete"
+			else if {_arg-2} is "lightgrayconcrete":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to light gray concrete
+				set metadata "shop.item.name" of player to "Light Gray Concrete"
+			else if {_arg-2} is "cyanconcrete":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to cyan concrete
+				set metadata "shop.item.name" of player to "Cyan Concrete"
+			else if {_arg-2} is "purpleconcrete":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to purple concrete
+				set metadata "shop.item.name" of player to "Purple Concrete"
+			else if {_arg-2} is "blueconcrete":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to blue concrete
+				set metadata "shop.item.name" of player to "Blue Concrete"
+			else if {_arg-2} is "brownconcrete":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to brown concrete
+				set metadata "shop.item.name" of player to "Brown Concrete"
+			else if {_arg-2} is "greenconcrete":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to green concrete
+				set metadata "shop.item.name" of player to "Green Concrete"
+			else if {_arg-2} is "redconcrete":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to red Concrete
+				set metadata "shop.item.name" of player to "Red Concrete"
+				
+			# Menu 5
+			else if {_arg-2} is "blackconcrete":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to black Concrete
+				set metadata "shop.item.name" of player to "Black Concrete"
+			else if {_arg-2} is "whiteconcretepowder":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to White Concrete Powder
+				set metadata "shop.item.name" of player to "White Concrete Powder"
+			else if {_arg-2} is "orangeconcretepowder":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to orange Concrete Powder
+				set metadata "shop.item.name" of player to "Orange Concrete Powder"
+			else if {_arg-2} is "magentaconcretepowder":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to magenta Concrete Powder
+				set metadata "shop.item.name" of player to "Magenta Concrete Powder"
+			else if {_arg-2} is "lightblueconcretepowder":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to light blue Concrete Powder
+				set metadata "shop.item.name" of player to "Light Blue Concrete Powder"
+			else if {_arg-2} is "yellowconcretepowder":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to yellow Concrete Powder
+				set metadata "shop.item.name" of player to "Yellow Concrete Powder"
+			else if {_arg-2} is "lightgreenconcretepowder":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to light green Concrete Powder
+				set metadata "shop.item.name" of player to "Light Green Concrete Powder"
+			else if {_arg-2} is "pinkconcretepowder":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to pink Concrete Powder
+				set metadata "shop.item.name" of player to "Pink Concrete Powder"
+			else if {_arg-2} is "grayconcretepowder":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to gray Concrete Powder
+				set metadata "shop.item.name" of player to "Gray Concrete Powder"
+			else if {_arg-2} is "lightgrayconcretepowder":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to light gray Concrete Powder
+				set metadata "shop.item.name" of player to "Light Gray Concrete Powder"
+			else if {_arg-2} is "cyanconcretepowder":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to cyan Concrete Powder
+				set metadata "shop.item.name" of player to "Cyan Concrete Powder"
+			else if {_arg-2} is "purpleconcretepowder":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to Purple Concrete Powder
+				set metadata "shop.item.name" of player to "Purple Concrete Powder"
+			else if {_arg-2} is "blueconcretepowder":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to Blue Concrete Powder
+				set metadata "shop.item.name" of player to "Blue Concrete Powder"
+			else if {_arg-2} is "brownconcretepowder":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to Brown Concrete Powder
+				set metadata "shop.item.name" of player to "Brown Concrete Powder"
+			else if {_arg-2} is "greenconcretepowder":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to Green Concrete Powder
+				set metadata "shop.item.name" of player to "Green Concrete Powder"
+			else if {_arg-2} is "redconcretepowder":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to Red Concrete Powder
+				set metadata "shop.item.name" of player to "Red Concrete Powder"
+			else if {_arg-2} is "blackconcretepowder":
+				set {_price} to 25
+				set {_sellPrice} to 0
+				set metadata "shop.item" of player to black Concrete Powder
+				set metadata "shop.item.name" of player to "Black Concrete Powder"
+					
+			if arg-2 is not "buy" or "sell":
+				set metadata "shop.quantity" of player to 0
+				set {_shop.quantity} to metadata "shop.quantity" of player
+				set metadata "shop.price" of player to {_price}
+				set metadata "shop.sellPrice" of player to {_sellPrice}
+				set {_i} to 0
+				loop 45 times:	
+					if name of current inventory of player = "         -=[ &1Cosmic Shop &8]=-" :	
+						
+						format slot {_i} of player with air named "" to close
+						add 1 to {_i}
+				if name of current inventory of player = "         -=[ &1Cosmic Shop &8]=-" :	
+				
+					make player execute command "/shop quantity 0"
+					format slot 10 of player with 16 red stained glass named "&c&lSell 16" to run [make player execute command "/shop quantity -16 "]
+					format slot 20 of player with 1 red stained glass named "&c&lSell 1" to run [make player execute command "/shop quantity -1 "]
+					format slot 28 of player with 64 red stained glass named "&c&lSell 64" to run [make player execute command "/shop quantity -64 "] 
+					format slot 36 of player with red wool block named "&cSell All" to run [make player execute command "/shop sellall 0 "]
+			
+					
+					format slot 16 of player with 16 light green stained glass named "&a&lBuy 16" to run [make player execute command "/shop quantity 16 "]
+					format slot 24 of player with 1 light green stained glass named "&a&lBuy 1" to run [make player execute command "/shop quantity 1 "]
+					format slot 34 of player with 64 light green stained glass named "&a&lBuy 64" to run [make player execute command "/shop quantity 64 "]
+					format slot 44 of player with bucket named "&fReset Amount" to run [make player execute command "/shop resetamount 0 "]
+				
+					
+
+			
+			else:
+			
+				
+				set {_shop.quantity} to metadata "shop.quantity" of player
+				set {_shop.item} to metadata "shop.item" of player
+				if {_shop.quantity} < 0:
+					wait 1 tick
+					set {_currentPrice} to {_shop.quantity} * {_sellPrice} * -1
+					set {_quantity} to {_shop.quantity} * -1
+					
+					if player does not have {_quantity} of {_shop.item}:
+					
+						if ({_shop.quantity} * -1) > (amount of {_shop.item} in player's inventory):
+							
+							set {_shop.quantity} to (amount of {_shop.item} in player's inventory * -1)
+							
+						send player title "&c&lNot Enough                      " for 1 second
+						make player execute command "/shop quantity 0 %{_price}% %{_sellPrice}%"
+						stop
+					remove {_quantity} of {_shop.item} from player's inventory
+					add {_currentPrice} to balance of player
+					if ({_shop.quantity} * -1) > (amount of {_shop.item} in player's inventory):
+						set {_shop.quantity} to (amount of {_shop.item} in player's inventory * -1)
+					send player title "&a&lSold               " for 1 second		
+					make player execute command "/shop quantity 0 %{_price}% %{_sellPrice}%"
+					stop
+						
+					
+					
+				else:
+					if {_price} is not set:
+						message "Error 101"
+						stop
+					if {_shop.quantity} is not set:
+						message "Error 202"
+						stop
+						
+					set {_currentPrice} to {_shop.quantity} * {_price}
+				
+					if player's balance < {_currentPrice}:
+						send player title "&c&lNot Enough                      " for 1 second		
+						stop
+					give player {_shop.quantity} of {_shop.item}
+					remove {_currentPrice} from balance of player
+					send player title "&a&lPurchased                      " for 1 second	
+					make player execute command "/shop quantity 0 %{_price}% %{_sellPrice}%"
+					
+					
+					
+		else if arg-1 is "decoration":
+			
+			set {_bal} to player's balance
+				
+			# #######################################
+			# ####### Decoration Block Prices #######
+			# #######################################
+			
+			if arg-2 is "oaksapling":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to oak sapling
+				set metadata "shop.item.name" of player to "Oak Sapling"
+			else if arg-2 is "sprucesapling":
+				set {_price} to 10
+				set {_sellPrice} to 5
+				set metadata "shop.item" of player to spruce sapling
+				set metadata "shop.item.name" of player to "Spruce Sapling"
+		
+					
+			if arg-3 is not set:
+				set metadata "shop.quantity" of player to 0
+				set metadata "shop.price" of player to {_price}
+				set metadata "shop.sellPrice" of player to {_sellPrice}
+				set {_shop.quantity} to 0
+				set {_i} to 0
+				loop 45 times:	
+					if name of current inventory of player = "         -=[ &1Cosmic Shop &8]=-" :	
+						
+						format slot {_i} of player with air named "" to close
+						add 1 to {_i}
+				if name of current inventory of player = "         -=[ &1Cosmic Shop &8]=-" :	
+					make player execute command "/shop quantity 0 %{_price}% %{_sellPrice}%"
+					format slot 10 of player with 16 red stained glass named "&c&lSell 16" to run [make player execute command "/shop quantity -16 %{_price}% %{_sellPrice}%"]
+					format slot 20 of player with 1 red stained glass named "&c&lSell 1" to run [make player execute command "/shop quantity -1 %{_price}% %{_sellPrice}%"]
+					format slot 28 of player with 64 red stained glass named "&c&lSell 64" to run [make player execute command "/shop quantity -64 %{_price}% %{_sellPrice}%"] 
+					format slot 36 of player with red wool block named "&cSell All" to run [make player execute command "/shop sellall 0 %{_price}% %{_sellPrice}%"]
+			
+					
+					format slot 16 of player with 16 light green stained glass named "&a&lBuy 16" to run [make player execute command "/shop quantity 16 %{_price}% %{_sellPrice}%"]
+					format slot 24 of player with 1 light green stained glass named "&a&lBuy 1" to run [make player execute command "/shop quantity 1 %{_price}% %{_sellPrice}%"]
+					format slot 34 of player with 64 light green stained glass named "&a&lBuy 64" to run [make player execute command "/shop quantity 64 %{_price}% %{_sellPrice}%"]
+					format slot 44 of player with bucket named "&fReset Amount" to run [make player execute command "/shop resetamount 0 %{_price}% %{_sellPrice}%"]
+			
+			else:
+				
+				set {_shop.quantity} to metadata "shop.quantity" of player
+				set {_shop.item} to metadata "shop.item" of player
+				if {_shop.quantity} < 0:
+					wait 1 tick
+					set {_currentPrice} to {_shop.quantity} * {_sellPrice} * -1
+					set {_quantity} to {_shop.quantity} * -1
+					if player does not have {_quantity} of {_shop.item}:
+						if ({_shop.quantity} * -1) > (amount of {_shop.item} in player's inventory):
+							
+							set {_shop.quantity} to (amount of {_shop.item} in player's inventory * -1)
+							
+						send player title "&c&lNot Enough                      " for 1 second
+						make player execute command "/shop quantity 0 %{_price}% %{_sellPrice}%"
+						stop
+					remove {_quantity} of {_shop.item} from player's inventory
+					add {_currentPrice} to balance of player
+					if ({_shop.quantity} * -1) > (amount of {_shop.item} in player's inventory):
+						set {_shop.quantity} to (amount of {_shop.item} in player's inventory * -1)
+					send player title "&a&lSold               " for 1 second		
+					make player execute command "/shop quantity 0 %{_price}% %{_sellPrice}%"
+					stop
+						
+					
+					
+				else:
+					set {_currentPrice} to {_shop.quantity} * {_price}
+					if player's balance < {_currentPrice}:
+						send player title "&c&lNot Enough                      " for 1 second		
+						stop
+					give player {_shop.quantity} of {_shop.item}
+					remove {_currentPrice} from balance of player
+					send "test" to player
+					send player title "&a&lPurchased                      " for 1 second	
+					make player execute command "/shop quantity 0 %{_price}% %{_sellPrice}%"
+					
+			
+		
+					
+				
+				
+# on inventory close:
+#	if name of current inventory of player = "         -=[ &1Cosmic Shop &8]=-":
+#		delete {_shop.item}
+#		delete {_shop.item.nospacename}
+
+
+		
+				
+				
+
+				
+				
+				
+				

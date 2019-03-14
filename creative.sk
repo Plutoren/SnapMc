@@ -1,0 +1,64 @@
+on command:
+	if player is in world "Creative":
+		if player does not have permission "is.Pluto":
+			if command contains "auc" or "echest" or "eechest" or "fish" or "mf" or "eec" or "kit" or "fly" or "ender" or "auction" or "setwarp" or "ah" or "auctionhouse" or "shop" or "pack" or "packs" or "ec" or "enderchest" or "invsee":
+				if command is not "tpahere":
+					cancel event
+					message "&8[&eCreative&8] &7You can't use that command here!"
+				
+
+on right click with book with text:
+	if player is in world "Creative":
+		set player's tool to air
+		message "&8[&eCreative&8] &7Books are not allowed in creative"
+		
+on inventory click:
+	if player is in world "Creative":
+		if clicked item is book with text:
+			set clicked item to air
+			set player's cursor to air
+on right click with any potion:
+	if player is in world "Creative":
+		cancel event
+	
+on consume:
+	if player is in world "Creative":
+		cancel event
+on right click on Ender Chest:
+	if player is in world "Creative" or "Hub" or "Rooms":
+		cancel event
+		
+command /creative:
+	trigger:
+		if {cretive.hasvisited::%uuid of player%} is not set:
+			execute player command "/plot auto"
+			set {cretive.hasvisited::%uuid of player%} to now
+		else:
+			execute player command "/plot home"
+on right click with experience bottle:
+	if player is in world "Creative":
+		cancel event
+on right click with fishing rod:
+	if player is in world "Creative":
+		cancel event
+on place:
+	if player is in world "Creative":
+		if "%event-block%" contains "redstone" or "observer" or "piston" or "comparator" or "tripwire" or "cart" or "wire" or "93" or "active":
+			message "&8[&bSnap&8] &eYou cant place that here"
+			cancel event
+on join:
+	if player is in world "Creative":
+		set player's gamemode to creative
+		wait 1 tick
+		if player is in world "Creative":
+			set player's gamemode to creative
+		wait 1 tick
+		if player is in world "Creative":
+			set player's gamemode to creative
+		wait 1 tick
+		if player is in world "Creative":
+			set player's gamemode to creative
+		wait 1 tick
+		if player is in world "Creative":
+			set player's gamemode to creative
+		

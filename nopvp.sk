@@ -1,0 +1,39 @@
+command /pvpwall [<text>]:
+	permission: is.op
+	trigger:
+		if arg-1 is set:
+			set {pvpwall.blocks::%arg-1%} to location of target block
+		else:
+			loop {pvpwall.blocks::*}:
+				make player see block at loop-value as barrier
+
+on break:
+	if player is in world "spawn":
+		if gamemode of player is not creative:
+			cancel event
+on first join:
+	loop {pvpwall.blocks::*}:
+		make player see block at loop-value as barrier
+		
+on join:
+	if {firstjoin::%player%} was less than 1 hours ago:
+		loop {pvpwall.blocks::*}:
+			make player see block at loop-value as barrier
+	
+on command "/warp":
+	if {firstjoin::%player%} was less than 1 hours ago:
+		loop {pvpwall.blocks::*}:
+			make player see block at loop-value as barrier
+			
+every 6 seconds:
+	loop all players in world "spawn":
+		if "%regions at loop-player%" contains "hub_pvp":
+			if {firstjoin::%loop-player%} was less than 1 hours ago:
+				if {isdueling::%loop-player%} is not set:
+					teleport loop-player to {pos::pvp}
+			chance of 40%:
+				remove invisibility from loop-player
+		if {firstjoin::%loop-player%} was less than 1 hours ago:
+			loop {pvpwall.blocks::*}:
+				make loop-player see block at loop-value-2 as barrier
+		

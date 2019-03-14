@@ -1,0 +1,42 @@
+command /st [<text>]:
+	aliases: all
+	permission: is.staff
+	trigger:
+		if arg-1 is not set:
+			if {staffchat::%player%} is not set:
+				set {staffchat::%player%} to true
+				message "&8[&bSnap&8] &aStaffchat toggled on"
+			else:
+				delete {staffchat::%player%}
+				message "&8[&bSnap&8] &cStaffchat toggled off"
+		else:
+			set {_prefix} to "%prefix of player%"
+			set {_msg} to arg-1
+			replace all "&" with "§" in {_prefix}
+			replace all "&" with "§" in {_msg}
+			loop all players:
+				if loop-player has permission "is.staff":
+					send "" to loop-player
+					send "%{_prefix}% &f%player's display name%&7:&f %{_msg}%" to loop-player
+					send "" to loop-player
+				
+command /staffchatremove [<text>]:
+	permission: is.op
+	trigger:
+		delete {staffchat::%arg-1%}
+		message "Done"
+				
+on chat:
+	if {staffchat::%player%} is set:
+		cancel event
+		set {_prefix} to "%prefix of player%"
+		set {_msg} to "%message%"
+		replace all "&" with "§" in {_prefix}
+		replace all "&" with "§" in {_msg}
+		loop all players:
+			if loop-player has permission "is.staff":
+				send "" to loop-player
+				send "%{_prefix}% &f%player's display name%&7:&f %{_msg}%" to loop-player
+				send "" to loop-player
+		
+				

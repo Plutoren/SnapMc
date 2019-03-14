@@ -1,0 +1,58 @@
+# Symbols: ┃ » ► ▼ ▲ ♥ ■
+
+options:
+	MaxWater: 0
+	ParticleType: material water
+	Perm: gun.
+	ItemType: iron horse armor
+	ItemName: "&bWater Gun"
+	ItemLore: " &7Use this for|| &7Water fights|||| &eRefill by right clicking|| &eon water"
+	
+command /watergun:
+	usage: &9/watergun
+	permission: {@Perm}give
+	trigger:
+		give player 1 {@ItemType} named {@ItemName} with lore {@ItemLore}
+
+on right click with iron horse armor:
+	if name of player's held item is {@ItemName}:
+		if lore of player's held item is {@ItemLore}:
+			cancel event
+			
+			if target block of player is water:
+				if {watergun::%player%} is not set:
+					set {watergun::%player%} to 10
+					send "&910 Water was added to your watergun &b%{watergun::%player%}%&8/&350"
+				else if {watergun::%player%} < 50:
+					add 10 to {watergun::%player%}
+					send "&910 Water was added to your watergun &b%{watergun::%player%}%&8/&350"
+				else:
+					send "&b&lYour water gun is already full! &b50&8/&350"
+				stop
+			if {watergun.justshot::%player%} was less than 5 seconds ago:
+				message "&8[&bSnap&8] &ePlease wait before shooting again"
+				stop
+			set {watergun.justshot::%player%} to now
+			if {watergun::%player%} is not set:
+				send player title "" with subtitle "&cYour water gun is out of water&f!"
+				message "&b&lRefill your watergun at a water source"
+				stop
+			if {watergun::%player%} <= 0:
+				send player title "" with subtitle "&cYour water gun is out of water&f!"
+				message "&b&lRefill your watergun at a water source"
+				stop
+			
+			remove 1 from {watergun::%player%}
+			set {_i} to 0
+			loop blocks in front of player:
+				add 1 to {_i}
+				if {_i} > 2:
+					set {_loc} to location of loop-block
+					add 1 to y coordinate of {_loc}
+					if block at {_loc} is not air:
+						stop
+					if {_i} >= 40:
+						stop
+					wait 1 tick
+					drawDot count 50, particle "blockcrack", {@ParticleType}, center location of block at {_loc} and player's held item, rainbowMode true, visibleRange 32, pulseDelay 0, keepFor 1 ticks
+					

@@ -1,0 +1,15 @@
+command /sign:
+	permission: is.vortex.max
+	trigger:
+		if player's tool is air or an emerald or grass block or clock or monster spawner:
+			message "&cYou can't sign that item."
+			stop
+		else if lore of player's tool contains "signed by":
+			message "&cThat item has already been signed."
+			stop
+		set {_lore::*} to lore of player's tool
+		set {_i} to 0
+		loop {_lore::*}:
+			add 1 to {_i}
+		set line {_i} of lore of player's tool to "&6Signed by &e&n%player%"
+		message "&8[&bSnap&8] &eAdding your signature, this has to update client side so try it again if it does not update"

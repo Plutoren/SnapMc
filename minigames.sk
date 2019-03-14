@@ -1,0 +1,31 @@
+
+command /minigame:
+	aliases: minigames, mg, mini-games, mini-game, game, g
+	trigger:
+		wait 1 tick
+		open chest with 6 row named "         &8-=[ &1Minigames &8]=-" to player
+		wait 1 tick
+		set {_i} to 0
+		loop 10 times:
+			format slot {_i} of player with blue stained glass pane named "&7*" to close
+			add 1 to {_i}
+		format slot 17 of player with blue stained glass pane named "&7*" to close
+		format slot 36 of player with blue stained glass pane named "&7*" to close
+		set {_i} to 44
+		loop 10 times:
+			format slot {_i} of player with blue stained glass pane named "&7*" to close
+			add 1 to {_i}
+			
+			
+			
+		#format slot 10 of player with light blue wool block named "&b&lClassic Inventory Games" with lore "||   &6Play Games Including: ||   &eBattleShip, GemCrush, ||   &eSodoku, Minesweeper, ||   &eCookie Clicker, ||   &eConnectFour, 2048. || " to run [make player execute command "/gb"]
+		format slot 10 of player with light green wool block named "&a&lDeluxe Inventory Games" with lore "||   &6Play Games Including: ||   &eGap Jump, Dino Run, ||   &eDiamond Collector, ||   &e2048, Super 2048 ||   &eWhac a Mole, Apple Catch, ||   &eFlappy Bird, Match It, ||   &eSimon Says, The Quiz, ||   &eCave In, Drop Tower, ||   &eCookie Clicker, Name It, ||   &eFalling Blocks, OverUnder, ||   &eand Basket. || " to run [make player execute command "/pg menu"]
+		format slot 11 of player with 1 of {item::bluebed} named "&c&lBedWars" with lore "||   &6Play Snap's Custom Bedwars ||   &eMade from Scratch by Snap ||   &eCollect Iron, Gold, Emeralds ||   &eand Diamonds and ||   &ePurchase Items at ||   &eThe Shop to help ||   &eyour team protect your ||   &eBed and survive. || " to run [make player execute command "/bw"]
+		format slot 12 of player with grass block named "&c&lBuilding Game" with lore "||   &6Building Game ||   &eChoose a theme. ||   &eThe Best Build Wins. ||  " to run [make player execute command "/build"]
+		
+		format slot 13 of player with hopper minecart named "&6&lMob Arena" with lore "||   &6Death Star ||||   &eSurvive endless waves of ||   &emobs, collect gold to ||   &eupgrade your gear. || " to run [make player execute command "/ma j deathstar"]
+		format slot 14 of player with oak plank named "&6&lMob Arena" with lore "||   &bVillage ||||   &eSurvive endless waves of ||   &emobs, collect gold to ||   &eupgrade your gear. || " to run [make player execute command "/ma j village"]
+		format slot 15 of player with painting named "&6&lMob Arena" with lore "||   &dArt Gallery ||||   &eSurvive endless waves of ||   &emobs, collect gold to ||   &eupgrade your gear. || " to run [make player execute command "/ma j artgallery"]
+		format slot 16 of player with iron bar named "&3&lThe &b&lLab" with lore "||   &ePlay 3 random unique games ||   &ewith up to 12 friends ||   &ecompete to be the best. || " to run [make player execute command "/lab join"]
+		
+		# format slot 14 of player with grass block named "&c&lBuilding Game" with lore "||   &6Building Game ||   &eChoose a theme. ||   &eThe Best Build Wins. ||  " to run [make player execute command "/build"]

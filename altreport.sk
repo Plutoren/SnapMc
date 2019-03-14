@@ -1,0 +1,27 @@
+command /altreport:
+	permission: is.staff
+	trigger:
+		loop all players:
+			add "%loop-player%" to {_players::*}
+		set {_i} to 1
+		message ""
+		message "&6&lCurrent Alt Report&7:&7"
+		loop all players:
+			
+			if {_players::*} contains "%loop-player%":
+				set {_ip} to ip of loop-player
+				remove loop-player from {_players::*}
+				set {_message} to " &f%{_i}%. &a%loop-player%"
+				set {_isalt} to false
+				loop all players:
+					if {_players::*} contains "%loop-player-2%":
+						if ip of loop-player-2 = {_ip}:
+							set {_message} to "%{_message}%&7, &e%loop-player-2%"
+							remove loop-player-2 from {_players::*}
+							set {_isalt} to true
+				if {_isalt} is true:
+					add 1 to {_i}
+					message "%{_message}%"
+		message ""
+					
+			

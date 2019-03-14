@@ -1,0 +1,8 @@
+command /iwantitnow:
+	trigger:
+		if {justran.iwantitnow} was less than 10 seconds ago:
+			message "&8[&bSnap&8] &7Can only be ran every 10 seconds!"
+		else:
+			set {justran.iwantitnow} to now
+			message "&8[&bSnap&8] &7Forcing purchase check!"
+			execute console command "buycraft forcecheck"

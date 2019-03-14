@@ -1,0 +1,10 @@
+command /setgolem <integer>:
+	permission: is.op
+	trigger:
+		set {golem::%arg-1%} to 1 of player's tool
+		
+command /golem:
+	trigger:
+	
+		give player random item out of {golem::*}
+		

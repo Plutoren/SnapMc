@@ -1,0 +1,401 @@
+
+function checkLevel(player: player, skill: text, level: integer) :: boolean:
+	set {_uuid} to {uuid::%{_player}%}
+	if {mcmmo.%{_skill}%.level::%{_uuid}%} is not set:
+		return false
+	else if {mcmmo.%{_skill}%.level::%{_uuid}%} < {_level}:
+		return false
+	else:
+		return true
+
+		
+command /fixitemval:
+	permission: is.op
+	trigger:
+		set {_lore} to name of player's tool
+		message {_lore}
+		replace all "DaddyAndrewww" with "DaddyAndreww" in {_lore}
+
+		set name of player's tool to {_lore}
+		message "set"
+		
+sharpsk on armor equip:
+	if lore of event-item contains "Skills":
+		set {_uuid} to uuid of player
+		
+		add "swords" to {_skills::*}
+		add 10 to {_levels::*}
+		
+		add "slayer" to {_skills::*}
+		add 3 to {_levels::*}
+		
+		add "acrobatics" to {_skills::*}
+		add 15 to {_levels::*}
+		
+		add "unarmed" to {_skills::*}
+		add 5 to {_levels::*}
+		
+		add "swords" to {_skills::*}
+		add 10 to {_levels::*}
+		
+		add "swords" to {_skills::*}
+		add 20 to {_levels::*}
+		
+		add "swords" to {_skills::*}
+		add 30 to {_levels::*}
+		
+		add "slayer" to {_skills::*}
+		add 20 to {_levels::*}
+		
+		add "slayer" to {_skills::*}
+		add 25 to {_levels::*}
+		
+		add "voting" to {_skills::*}
+		add 15 to {_levels::*}
+		
+		loop {_skills::*}:
+			set {_skill} to loop-value
+			set {_level} to {_levels::%loop-index%}
+			if lore of event-item contains "%{_skill}% Level&7: &f%{_level}%":
+				set {_check} to checkLevel(player, "%{_skill}%", {_level})
+				if {_check} is false:
+					message "&8[&6RPG&8] &fYou need a %{_skill}% Level of %{_level}% to wear that!"
+					cancel event
+					stop
+
+		
+		
+		
+on damage of player:
+	if attacker is a player:
+		attacker's tool is not air
+		if lore of attacker's tool contains "Skills":
+			set {_uuid} to uuid of attacker
+			
+			
+			# Archery
+			add "archery" to {_skills::*}
+			add 5 to {_levels::*}
+			
+			add "archery" to {_skills::*}
+			add 10 to {_levels::*}
+			
+			# Excavation
+			add "excavation" to {_skills::*}
+			add 10 to {_levels::*}
+			
+			
+			# Fishing
+			add "fishing" to {_skills::*}
+			add 5 to {_levels::*}
+			
+			add "fishing" to {_skills::*}
+			add 10 to {_levels::*}
+			
+			# Gliding
+			add "gliding" to {_skills::*}
+			add 10 to {_levels::*}
+			
+			add "gliding" to {_skills::*}
+			add 15 to {_levels::*}
+			
+			# Mining
+			add "mining" to {_skills::*}
+			add 10 to {_levels::*}
+			
+			
+			# Slayer
+			add "slayer" to {_skills::*}
+			add 3 to {_levels::*}
+			
+			add "slayer" to {_skills::*}
+			add 5 to {_levels::*}
+			
+			
+			add "slayer" to {_skills::*}
+			add 15 to {_levels::*}
+			
+			
+			# Swords
+			add "swords" to {_skills::*}
+			add 5 to {_levels::*}
+			
+			add "swords" to {_skills::*}
+			add 15 to {_levels::*}
+			
+			
+			# Taming
+			add "taming" to {_skills::*}
+			add 10 to {_levels::*}
+			
+			
+			# Unarmed
+			add "unarmed" to {_skills::*}
+			add 5 to {_levels::*}
+			
+			add "unarmed" to {_skills::*}
+			add 10 to {_levels::*}
+			
+			add "unarmed" to {_skills::*}
+			add 15 to {_levels::*}
+			
+			
+			add "unarmed" to {_skills::*}
+			add 20 to {_levels::*}
+			
+			add "unarmed" to {_skills::*}
+			add 25 to {_levels::*}
+			
+			add "unarmed" to {_skills::*}
+			add 30 to {_levels::*}
+			
+			# Voting
+			add "voting" to {_skills::*}
+			add 5 to {_levels::*}
+			
+			add "voting" to {_skills::*}
+			add 10 to {_levels::*}
+			
+			add "voting" to {_skills::*}
+			add 15 to {_levels::*}
+			
+			
+			add "voting" to {_skills::*}
+			add 25 to {_levels::*}
+			
+			
+			# Woodcutting
+			add "woodcutting" to {_skills::*}
+			add 5 to {_levels::*}
+			
+			
+			add "woodcutting" to {_skills::*}
+			add 10 to {_levels::*}
+			
+			
+			loop {_skills::*}:
+				set {_skill} to loop-value
+				set {_level} to {_levels::%loop-index%}
+				if lore of attacker's tool contains "%{_skill}% Level&7: &f%{_level}%":
+					set {_check} to checkLevel(attacker, "%{_skill}%", {_level})
+					if {_check} is false:
+						send "&8[&6RPG&8] &fYou need a %{_skill}% Level of %{_level}% to use that!" to attacker
+						cancel event
+						stop
+on left click:	
+	player's tool is not air
+	if lore of player's tool contains "Skills":
+		set {_uuid} to uuid of player
+		
+	
+		# Archery
+		add "archery" to {_skills::*}
+		add 5 to {_levels::*}
+		
+		add "archery" to {_skills::*}
+		add 10 to {_levels::*}
+		
+		# Excavation
+		add "excavation" to {_skills::*}
+		add 10 to {_levels::*}
+		
+		
+		
+		# Fishing
+		add "fishing" to {_skills::*}
+		add 5 to {_levels::*}
+		
+		add "fishing" to {_skills::*}
+		add 10 to {_levels::*}
+		
+		# Gliding
+		add "gliding" to {_skills::*}
+		add 15 to {_levels::*}
+		
+		# Mining
+		add "mining" to {_skills::*}
+		add 10 to {_levels::*}
+		
+		
+		# Slayer
+		add "slayer" to {_skills::*}
+		add 3 to {_levels::*}
+		
+		add "slayer" to {_skills::*}
+		add 5 to {_levels::*}
+		
+		
+		add "slayer" to {_skills::*}
+		add 15 to {_levels::*}
+		
+		
+		# Swords
+		add "swords" to {_skills::*}
+		add 5 to {_levels::*}
+		
+		add "swords" to {_skills::*}
+		add 15 to {_levels::*}
+		
+		
+		
+		# Unarmed
+		add "unarmed" to {_skills::*}
+		add 5 to {_levels::*}
+		
+		add "unarmed" to {_skills::*}
+		add 10 to {_levels::*}
+		
+		add "unarmed" to {_skills::*}
+		add 15 to {_levels::*}
+		
+		
+		add "unarmed" to {_skills::*}
+		add 20 to {_levels::*}
+		
+		# Voting
+		add "voting" to {_skills::*}
+		add 5 to {_levels::*}
+		
+		add "voting" to {_skills::*}
+		add 10 to {_levels::*}
+		
+		add "voting" to {_skills::*}
+		add 15 to {_levels::*}
+		
+		
+		add "voting" to {_skills::*}
+		add 25 to {_levels::*}
+		
+		
+		# Woodcutting
+		add "woodcutting" to {_skills::*}
+		add 5 to {_levels::*}
+		
+		
+		add "woodcutting" to {_skills::*}
+		add 10 to {_levels::*}
+		
+			
+		
+		loop {_skills::*}:
+			set {_skill} to loop-value
+			set {_level} to {_levels::%loop-index%}
+			if lore of event-item contains "%{_skill}% Level&7: &f%{_level}%":
+				set {_check} to checkLevel(player, "%{_skill}%", {_level})
+				if {_check} is false:
+					message "&8[&6RPG&8] &fYou need a %{_skill}% Level of %{_level}% to use that!"
+					set {_cps} to metadata "cps" of player
+					if {_cps} is not set:
+						set metadata "cps" of player to 0
+					else:
+						set metadata "cps" of player to {_cps} - 1
+					cancel event
+					stop
+					
+					
+on right click:	
+	player's tool is not air
+	if lore of player's tool contains "Skills":
+		set {_uuid} to uuid of player
+		
+
+		# Archery
+		add "archery" to {_skills::*}
+		add 5 to {_levels::*}
+		
+		add "archery" to {_skills::*}
+		add 10 to {_levels::*}
+		
+		add "archery" to {_skills::*}
+		add 35 to {_levels::*}
+		
+		# Excavation
+		add "excavation" to {_skills::*}
+		add 10 to {_levels::*}
+		
+		
+		
+		# Fishing
+		add "fishing" to {_skills::*}
+		add 5 to {_levels::*}
+		
+		add "fishing" to {_skills::*}
+		add 10 to {_levels::*}
+		
+		
+		add "fishing" to {_skills::*}
+		add 25 to {_levels::*}
+		
+		# Gliding
+		add "gliding" to {_skills::*}
+		add 25 to {_levels::*}
+		
+		
+		# Mining
+		add "mining" to {_skills::*}
+		add 10 to {_levels::*}
+		
+		
+		# Slayer
+		add "slayer" to {_skills::*}
+		add 3 to {_levels::*}
+		
+		add "slayer" to {_skills::*}
+		add 5 to {_levels::*}
+		
+		
+		# Swords
+		add "swords" to {_skills::*}
+		add 5 to {_levels::*}
+		
+		add "swords" to {_skills::*}
+		add 15 to {_levels::*}
+		
+		
+		# Unarmed
+		add "unarmed" to {_skills::*}
+		add 5 to {_levels::*}
+		
+		add "unarmed" to {_skills::*}
+		add 10 to {_levels::*}
+		
+		add "unarmed" to {_skills::*}
+		add 15 to {_levels::*}
+		
+		add "unarmed" to {_skills::*}
+		add 20 to {_levels::*}
+		
+		# Voting
+		add "voting" to {_skills::*}
+		add 5 to {_levels::*}
+		
+		add "voting" to {_skills::*}
+		add 10 to {_levels::*}
+		
+		add "voting" to {_skills::*}
+		add 15 to {_levels::*}
+		
+		
+		# Woodcutting
+		add "woodcutting" to {_skills::*}
+		add 5 to {_levels::*}
+		
+		
+		add "woodcutting" to {_skills::*}
+		add 10 to {_levels::*}
+		
+		
+		loop {_skills::*}:
+			set {_skill} to loop-value
+			set {_level} to {_levels::%loop-index%}
+			if lore of event-item contains "%{_skill}% Level&7: &f%{_level}%":
+				set {_check} to checkLevel(player, "%{_skill}%", {_level})
+				if {_check} is false:
+					message "&8[&6RPG&8] &fYou need a %{_skill}% Level of %{_level}% to use that!"
+					set {_cps} to metadata "cps" of player
+					if {_cps} is not set:
+						set metadata "cps" of player to 0
+					else:
+						set metadata "cps" of player to {_cps} - 1
+					cancel event
+					stop

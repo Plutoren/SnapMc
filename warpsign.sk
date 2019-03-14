@@ -1,0 +1,7 @@
+on right click on sign:
+	if "%first line of clicked block%" contains "warp":
+		execute player command "/warp %second line of clicked block%"
+
+on right click on sign:
+	if "%first line of clicked block%" contains "/":
+		execute player command "%first line of clicked block%"

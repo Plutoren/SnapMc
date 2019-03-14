@@ -1,0 +1,543 @@
+
+import:
+	org.bukkit.Bukkit
+	org.bukkit.Statistic as Statistic
+	
+on script load:
+  set {apis::gp} to {Bukkit}.getPluginManager().getPlugin("GriefPrevention")
+  set {apis::gp::dataStore} to {apis::gp}.dataStore!
+ 
+
+function formatMoney(int: number) :: string:
+	
+	while {_int} >= 1000000000000:
+		add 1 to {_val}
+		subtract 1000000000000 from {_int}
+	if {_val} is set:
+		return "%{_val}%T"
+	while {_int} >= 1000000000:
+		add 1 to {_val}
+		subtract 1000000000 from {_int}
+	if {_val} is set:
+		return "%{_val}%B"
+	while {_int} >= 1000000:
+		add 1 to {_val}
+		subtract 1000000 from {_int}
+	if {_val} is set:
+		return "%{_val}%M"
+	while {_int} >= 1000:
+		add 1 to {_val}
+		subtract 1000 from {_int}
+	if {_val} is set:
+		return "%{_val}%K"
+	if {_int} is not set:
+		return "0"
+	return "%{_int}%"
+	
+		
+		
+function claimAt(location: location) :: object:
+  set {_args::*} to {_location}, true, null
+  return {apis::gp::dataStore}.getClaimAt({_args::*})
+
+on join:
+    setup skoreboard for player
+		
+command /fb [<text>]:
+	aliases: scoreboard
+	trigger:
+		if arg-1 is not set:
+			message "&cUsage &7/fb off &cor &7/fb on"
+		else if arg-1 is not "off" or "on":
+			message "&cUsage &7/fb off &cor &7/fb on"
+			
+		if arg-1 is "off":
+			set {scoreboard.toggle::%uuid of player%} to false
+			message "&8[&bSnap&8] &7Scoreboard toggled off"
+			set title of skoreboard player to ""
+			set slot 1 of skoreboard player to ""
+			set slot 2 of skoreboard player to ""
+			set slot 3 of skoreboard player to ""
+			set slot 4 of skoreboard player to ""
+			set slot 5 of skoreboard player to ""
+			set slot 6 of skoreboard player to ""
+			set slot 7 of skoreboard player to "" 
+			set slot 8 of skoreboard player to "" 
+			set slot 9 of skoreboard player to "" 
+			set slot 10 of skoreboard player to ""
+			set slot 11 of skoreboard player to ""
+			set slot 12 of skoreboard player to "" 
+		else if arg-1 is "on":
+			delete {scoreboard.toggle::%uuid of player%}
+			message "&8[&bSnap&8] &aScoreboard toggled on"
+			
+		
+every 4 seconds:
+	if {scoreboard.state.1} >= 4:
+		set {scoreboard.state.1} to 1
+	else:
+		add 1 to {scoreboard.state.1}
+	loop all players:
+	
+	
+		if loop-player is in world "world" or "world_nether" or "world_the_end" or "Avalon" or "Spawn":
+			if {scoreboard.toggle::%uuid of loop-player%} is not set:
+				set {_group} to group of loop-player
+				set {_balance} to loop-player's balance
+				set {_balance} to formatMoney({_balance})
+				set {_kills} to loop-player.getStatistic(Statistic.PLAYER_KILLS!)
+				set {_deaths} to loop-player.getStatistic(Statistic.DEATHS!)
+				set {_xp} to level of loop-player
+				delete {_claim}
+				delete {_claimOwner}
+				set {_claim} to claimAt(location of loop-player)
+				set {_claimOwner} to {_claim}.getOwnerName()
+				if {_deaths} = 0:
+					set {_KD} to {_kills}
+				else:
+					set {_KD} to {_kills} / {_deaths}
+				set title of skoreboard loop-player to "&4&l❤ &dSnap &eSurvival &4&l❤"
+				reset slots numbers between 1 and 16 of skoreboard loop-player
+				
+				set slot 1 of skoreboard loop-player to "&a&7&m---------------------" 
+				set slot 2 of skoreboard loop-player to " &bRank&7: &f%{_group}%" 
+				if {scoreboard.state.1} = 1:
+					set slot 3 of skoreboard loop-player to " &bBalance: &f%{_balance}%" 
+				else if {scoreboard.state.1} = 2:
+					set slot 3 of skoreboard loop-player to " &bKills: &f%{_kills}%" 
+				else if {scoreboard.state.1} = 3:
+					set slot 3 of skoreboard loop-player to " &bK/D &f%{_KD}%"
+				else if {scoreboard.state.1} = 4:
+					set slot 3 of skoreboard loop-player to " &bXP Level: &f%{_xp}%" 
+				else:
+					set slot 3 of skoreboard loop-player to " &bKills&7: &f%{_kills}%" 
+				set slot 4 of skoreboard loop-player to "&b&7&m---------------------"
+				
+				if {_claimOwner} is set:
+					set slot 5 of skoreboard loop-player to " &eClaim Owner: &f%{_claimOwner}%"
+				else:
+					set slot 5 of skoreboard loop-player to " &eClaim Owner: &fUnclaimed" 
+				set slot 6 of skoreboard loop-player to "&d&7&m---------------------"
+				set slot 7 of skoreboard loop-player to " &aStore: &f/buy" 
+				set slot 8 of skoreboard loop-player to " &aVote: &f/vote" 
+				set slot 9 of skoreboard loop-player to "&e&7&m---------------------" 
+				set slot 10 of skoreboard loop-player to " &eBuy&7: &dstore.snapmc.com"
+				set slot 11 of skoreboard loop-player to " &eForums&7: &fsnapmc.com"
+				set slot 12 of skoreboard loop-player to "&f&7&m---------------------" 
+				set slot 13 of skoreboard loop-player to "" 
+				
+		
+		else if loop-player is in world "Towny":
+			if {scoreboard.toggle::%uuid of loop-player%} is not set:
+				delete {_townAtPlayer}
+				delete {_townRank}
+				delete {_townyName}
+				delete {_chunkX}
+				delete {_chunkZ}
+				delete {_bank}
+				delete {_maxSize}
+				delete {_usedSize}
+				delete {_embassy}
+				delete {_price}
+				delete {_balance}
+				delete {_group}
+				delete {_bankHere}
+				delete {_maxSizeHere}
+				delete {_usedSizeHere}
+				delete {_tax}
+				delete {_bankHere}
+				delete {_owner} 
+				set {_chunkX} to rounded up x coordinate of loop-player / 16
+				set {_chunkZ} to rounded up z coordinate of loop-player / 16
+				if {towny.claims::%{_chunkX}%/%{_chunkZ}%} is set:
+					set {_townAtPlayer} to {towny.claims::%{_chunkX}%/%{_chunkZ}%}
+				else:
+					set {_townAtPlayer} to "&aWilderness"
+				set {_townyName} to {townychat.player.towny::%uuid of loop-player%}
+				if {townychat.settings::%{_townyName}%::bank} is set:
+					set {_bank} to formatMoney({townychat.settings::%{_townyName}%::bank})
+				else:
+					set {_bank} to 0
+				set {_group} to group of loop-player
+				set {_balance} to loop-player's balance
+				set {_balance} to formatMoney({_balance})
+				
+				set {_maxSize} to size of {townychat.settings::%{_townyName}%::ranks::*} * 8 + {townychat.settings::%{_townyName}%::claims.bonus}
+				set {_usedSize} to {_maxSize} - {townychat.settings::%{_townyName}%::claims.count}
+			
+			
+				set {_myBank} to {townychat.settings::%{_townyName}%::bank}
+				if {_myBank} is not set:
+					set {_myBank} to 0
+				else:
+					set {_myBank} to formatMoney({_myBank})
+				set {_bankHere} to {townychat.settings::%{_townAtPlayer}%::bank}
+				if {_bankHere} is not set:
+					set {_bankHere} to 0
+				else:
+					set {_bankHere} to formatMoney({_bankHere})
+				set {_maxSizeHere} to size of {townychat.settings::%{_townAtPlayer}%::ranks::*} * 8 + {townychat.settings::%{_townAtPlayer}%::claims.bonus}
+				set {_usedSizeHere} to {_maxSizeHere} - {townychat.settings::%{_townAtPlayer}%::claims.count}
+				
+				set {_townRank} to  {townychat.settings::%{_townyName}%::ranks::%uuid of loop-player%}
+				
+				
+				if {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::embassy} = true:
+					set {_embassy} to true
+				if {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::price} is set:
+					set {_price} to formatMoney({towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::price})
+					set {_tax} to formatMoney({towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::tax})
+					if {_tax} is not set:
+						set {_tax} to 0
+					
+				
+				set {_owner} to {towny.plot.owner::%{_chunkX}%/%{_chunkZ}%}
+				if {_owner} is set:
+					set {_owner} to {uuidName::%{_owner}%}
+				
+				if {_townRank} is not set:
+					set {_townRank} to ""
+				if {_maxSizeHere} is not set:
+					set {_maxSizeHere} to 0
+				if {_usedSizeHere} is not set:
+					set {_usedSizeHere} to 0
+				if {_townyName} is not set:
+					set {_townyName} to "/town new"
+				if {_maxSize} is not set:
+					set {_maxSize} to 0
+				if {_usedSize} is not set:
+					set {_usedSize} to 0
+					
+					
+				
+				set title of skoreboard loop-player to "&4&l❤ &dSnapMC &eTowny &4&l❤"
+				
+				set slot 1 of skoreboard loop-player to "&a" 
+				set slot 2 of skoreboard loop-player to "&6&lMy Town:" 
+				set slot 3 of skoreboard loop-player to "  &eTown: &f%{_townyName}%"
+				set slot 4 of skoreboard loop-player to "  &eBank: &f$%{_myBank}%" 
+				set slot 5 of skoreboard loop-player to "  &eRank: &f%{_townRank}%"
+				set slot 6 of skoreboard loop-player to "  &eSize: &f%{_usedSize}%&7/&f%{_maxSize}%"
+				
+				set slot 7 of skoreboard loop-player to "&b"
+				set slot 8 of skoreboard loop-player to "&a&lThis Plot"
+				set slot 9 of skoreboard loop-player to "  &d&eTown: &f%{_townAtPlayer}%"
+				if {_price} is set:
+					
+					set slot 10 of skoreboard loop-player to "  &ePrice: &2$&a%{_price}%"
+					set slot 11 of skoreboard loop-player to "  &eTax: &2$&a%{_tax}% &fDaily"
+					
+					if {_townAtPlayer} != {_townyName}:
+						if {_embassy} is set:
+							set slot 12 of skoreboard loop-player to "  &eEmbassy: &aTrue"
+						else:
+							set slot 12 of skoreboard loop-player to "  &eEmbassy: &cFalse"
+					else:
+						set slot 12 of skoreboard loop-player to "&c"
+							
+				else:
+					# set slot 10 of skoreboard loop-player to "  &d&eSize: &f%{_usedSizeHere}%&7/&f%{_maxSizeHere}%"
+					# set slot 11 of skoreboard loop-player to "  &d&eBank: &f$%{_bankHere}%"
+				
+					if {_owner} is set:
+						set slot 10 of skoreboard loop-player to "  &d&eOwner: &f%{_owner}%"
+					else:
+						set slot 10 of skoreboard loop-player to "  &e&c"
+					set slot 11 of skoreboard loop-player to "  &f&c"
+					set slot 12 of skoreboard loop-player to "  &4&c"
+				
+				
+				set slot 13 of skoreboard loop-player to ""
+			
+				
+				
+				
+				
+			
+		else if loop-player is in world "Wilderness":
+			if {scoreboard.toggle::%uuid of loop-player%} is not set:
+				set {_group} to group of loop-player
+				set {_balance} to {wilderness.balance::%uuid of loop-player%}
+				set {_balance} to formatMoney({_balance})
+				set {_kills} to loop-player.getStatistic(Statistic.PLAYER_KILLS!)
+				set {_deaths} to loop-player.getStatistic(Statistic.DEATHS!)
+				set {_xp} to level of loop-player
+				delete {_claim}
+				delete {_claimOwner}
+				set {_claim} to claimAt(location of loop-player)
+				set {_claimOwner} to {_claim}.getOwnerName()
+				if {_deaths} = 0:
+					set {_KD} to {_kills}
+				else:
+					set {_KD} to {_kills} / {_deaths}
+				set title of skoreboard loop-player to "&4&l❤ &dSnap &aWilderness &4&l❤"
+				reset slots numbers between 1 and 16 of skoreboard loop-player
+				
+				set slot 1 of skoreboard loop-player to "&a&7&m---------------------" 
+				set slot 2 of skoreboard loop-player to " &bRank&7: &f%{_group}%" 
+				if {scoreboard.state.1} = 1:
+					set slot 3 of skoreboard loop-player to " &bBalance: &f$%{_balance}%" 
+				else if {scoreboard.state.1} = 2:
+					set slot 3 of skoreboard loop-player to " &bKills: &f%{_kills}%" 
+				else if {scoreboard.state.1} = 3:
+					set slot 3 of skoreboard loop-player to " &bK/D &f%{_KD}%"
+				else if {scoreboard.state.1} = 4:
+					set slot 3 of skoreboard loop-player to " &bXP Level: &f%{_xp}%" 
+				else:
+					set slot 3 of skoreboard loop-player to " &bKills&7: &f%{_kills}%" 
+				set slot 4 of skoreboard loop-player to "&b&7&m---------------------"
+				
+				if {_claimOwner} is set:
+					set slot 5 of skoreboard loop-player to " &eClaim Owner: &f%{_claimOwner}%"
+				else:
+					set slot 5 of skoreboard loop-player to " &eClaim Owner: &fUnclaimed" 
+				set slot 6 of skoreboard loop-player to "&d&7&m---------------------"
+				set slot 7 of skoreboard loop-player to " &aStore: &f/buy" 
+				set slot 8 of skoreboard loop-player to " &aVote: &f/vote" 
+				set slot 9 of skoreboard loop-player to "&e&7&m---------------------" 
+				set slot 10 of skoreboard loop-player to " &eBuy&7: &dstore.snapmc.com"
+				set slot 11 of skoreboard loop-player to " &eForums&7: &fsnapmc.com"
+				set slot 12 of skoreboard loop-player to "&f&7&m---------------------" 
+				set slot 13 of skoreboard loop-player to "" 
+				
+					
+		else if loop-player is in world "BedWars":
+			
+			set {_id} to {bw.players.id::%loop-player%}
+			set {_color} to {bw.players.list::%{_id}%::%loop-player%}
+			
+			set {_redTeamSize} to {bw.teams.size::%{_id}%::red}
+			set {_greenTeamSize} to {bw.teams.size::%{_id}%::green}
+			set {_blueTeamSize} to {bw.teams.size::%{_id}%::blue}
+			set {_yellowTeamSize} to {bw.teams.size::%{_id}%::yellow}
+			if {_color} is "blue":
+				set {_color2} to "light blue"
+				set {_team} to "Blue"
+			else if {_color} is "green":
+				set {_color2} to "light green"
+				set {_team} to "Green"
+			else if {_color} is "yellow":
+				set {_team} to "Yellow"
+				set {_color2} to "yellow"
+			else if {_color} is "red":
+				set {_team} to "Red"
+				set {_color2} to "light red"
+			
+		
+			set title of skoreboard loop-player to "&e&lBedWars"
+
+			
+			if {_color} is set:
+				set slot 1 of skoreboard loop-player to "&7Team: <%{_color2}%>%{_team}%"
+				set slot 2 of skoreboard loop-player to "&e"
+				if {_redTeamSize} is not set:
+					set slot 3 of skoreboard loop-player to "&cR &fRed: &cX"
+				else if {_redTeamSize} is 0:
+					set slot 4 of skoreboard loop-player to "&cR &fRed: &cX"
+				else:
+					if {bw.locations.spawn::%{_id}%::red} is set:
+						set slot 3 of skoreboard loop-player to "&cR &fRed: &a✔ &7(&a%{_redTeamSize}%&7)"
+					else:
+						set slot 3 of skoreboard loop-player to "&cR &fRed: &e%{_redTeamSize}%"
+				if {_greenTeamSize} is not set:
+					set slot 4 of skoreboard loop-player to "&aG &fGreen: &cX"
+				else if {_greenTeamSize} is 0:
+					set slot 4 of skoreboard loop-player to "&aG &fGreen: &cX"
+				else:
+					if {bw.locations.spawn::%{_id}%::green} is set:
+						set slot 4 of skoreboard loop-player to "&aG &fGreen: &a✔ &7(&a%{_greenTeamSize}%&7)" 
+					else:
+						set slot 4 of skoreboard loop-player to "&aG &fGreen: &e%{_greenTeamSize}%"
+				if {_blueTeamSize} is not set:
+					set slot 5 of skoreboard loop-player to "&bB &fBlue: &cX"
+				else if {_blueTeamSize} is 0:
+					set slot 4 of skoreboard loop-player to "&bB &fBlue: &cX"
+				else:
+					if {bw.locations.spawn::%{_id}%::blue} is set:
+						set slot 5 of skoreboard loop-player to "&bB &fBlue: &a✔ &7(&a%{_blueTeamSize}%&7)"
+					else:
+						set slot 5 of skoreboard loop-player to "&bB &fBlue: &e%{_blueTeamSize}%" 
+				if {_yellowTeamSize} is not set:
+					set slot 6 of skoreboard loop-player to "&eY &fYellow: &cX" 
+				else if {_yellowTeamSize} is 0:
+					set slot 4 of skoreboard loop-player to "&eY &fYellow: &cX"
+				else:
+					if {bw.locations.spawn::%{_id}%::yellow} is set:
+						set slot 6 of skoreboard loop-player to "&eY &fYellow: &a✔ &7(&a%{_yellowTeamSize}%&7)" 
+					else:
+						set slot 6 of skoreboard loop-player to "&eY &fYellow: &e%{_yellowTeamSize}%" 
+				set slot 7 of skoreboard loop-player to "&d"
+				set slot 8 of skoreboard loop-player to "&eExit Game &b/quit"
+				set slot 9 of skoreboard loop-player to ""
+				set slot 10 of skoreboard loop-player to ""
+				set slot 11 of skoreboard loop-player to ""
+				set slot 12 of skoreboard loop-player to ""
+				set slot 13 of skoreboard loop-player to ""
+				
+			else:
+					
+				set slot 1 of skoreboard loop-player to "&a" 
+				set slot 2 of skoreboard loop-player to "&fWaiting..." 
+			
+				set slot 3 of skoreboard loop-player to "&d"
+				set slot 4 of skoreboard loop-player to "&eExit Game &b/quit"
+				
+				set slot 5 of skoreboard loop-player to ""
+				set slot 6 of skoreboard loop-player to ""
+				set slot 7 of skoreboard loop-player to ""
+				set slot 8 of skoreboard loop-player to ""
+				set slot 9 of skoreboard loop-player to ""
+				set slot 10 of skoreboard loop-player to ""
+				set slot 11 of skoreboard loop-player to ""
+				set slot 12 of skoreboard loop-player to ""
+				set slot 13 of skoreboard loop-player to ""
+				
+		else if loop-player is in world "Hub":
+			if {scoreboard.toggle::%uuid of loop-player%} is not set:
+				set title of skoreboard loop-player to "&4&l❤ &dSnapMC &eHub &4&l❤"
+
+				set slot 1 of skoreboard loop-player to "&a&7&m-------------------" 
+				set slot 2 of skoreboard loop-player to "&b● Survival &e/survival" 
+				set slot 3 of skoreboard loop-player to "&b● SkyBlock &e/sb"
+				set slot 4 of skoreboard loop-player to "&b● Creative &e/creative"
+				set slot 5 of skoreboard loop-player to "&b● Prison   &e/prison"
+				set slot 6 of skoreboard loop-player to "&b● BedWars &e/bw"
+				set slot 7 of skoreboard loop-player to "&b● Wilderness &e/wilderness"
+				set slot 8 of skoreboard loop-player to "&b● Elytra Fall &e/elytra"
+				set slot 9 of skoreboard loop-player to "&b&7&m-------------------"
+				set slot 10 of skoreboard loop-player to " &eBuy&7: &fstore.snapmc.com"
+				set slot 11 of skoreboard loop-player to " &eForums&7: &fsnapmc.com"
+				set slot 12 of skoreboard loop-player to " &eDiscord&7: &f/discord"
+				set slot 13 of skoreboard loop-player to "&c&7&m-------------------"
+		
+		else if loop-player is in world "Christmas":
+			if {scoreboard.toggle::%uuid of loop-player%} is not set:
+				set title of skoreboard loop-player to "&4&l❤ &dSnapMC &aChristmas &4&l❤"
+
+				set slot 1 of skoreboard loop-player to "&e" 
+				set slot 2 of skoreboard loop-player to "&6&lInfo:" 
+				set slot 3 of skoreboard loop-player to " &eName: &f%loop-player%" 
+				if {christmas.score::%loop-player%} is not set:
+					set {christmas.score::%loop-player%} to 0
+				set slot 4 of skoreboard loop-player to " &eScore: &f%{christmas.score::%loop-player%}%"
+				set slot 5 of skoreboard loop-player to " &eMinutes Left: &f%{christmas.minutes}%"
+				set slot 6 of skoreboard loop-player to " &eQuit: &b/hub"
+				set slot 7 of skoreboard loop-player to "&d"
+				set slot 8 of skoreboard loop-player to "&a&lServer:"
+				set slot 9 of skoreboard loop-player to " &eIP: &fsnapmc.com"
+				set slot 10 of skoreboard loop-player to " &eBuy&7: &fstore.snapmc.com"
+				set slot 11 of skoreboard loop-player to " &eForums&7: &fsnapmc.com"
+				set slot 12 of skoreboard loop-player to " &eDiscord&7: &f/discord"
+				set slot 13 of skoreboard loop-player to ""
+									
+		else if loop-player is in world "Rooms":
+			if {scoreboard.toggle::%uuid of loop-player%} is not set:
+				set title of skoreboard loop-player to "&dSnapMC &eRooms"
+
+				set slot 1 of skoreboard loop-player to "&a&7&m-------------------" 
+				set slot 2 of skoreboard loop-player to " &eIP&7: &fsnapmc.com"
+				set slot 3 of skoreboard loop-player to "&b&7&m-------------------"
+				set slot 4 of skoreboard loop-player to "&b● Survival &e/survival" 
+				set slot 5 of skoreboard loop-player to "&b● SkyBlock &e/sb"
+				set slot 6 of skoreboard loop-player to "&b● Creative &e/creative"
+				set slot 7 of skoreboard loop-player to "&b● Prison   &e/prison"
+				set slot 8 of skoreboard loop-player to "&b● BedWars &e/bw"
+				set slot 9 of skoreboard loop-player to "&b● Wilderness &e/wilderness"
+				set slot 10 of skoreboard loop-player to "&b● Elytra Fall &e/elytra"
+				set slot 11 of skoreboard loop-player to "&c&7&m-------------------"
+				set slot 12 of skoreboard loop-player to ""
+				set slot 13 of skoreboard loop-player to ""
+			
+		else if loop-player is in world "SkyBlock":
+			if {scoreboard.toggle::%uuid of loop-player%} is not set:
+				set title of skoreboard loop-player to "&4&l❤ &dSnapMC &eSkyBlock &4&l❤"
+
+				set slot 1 of skoreboard loop-player to "&a&7&m-------------------" 
+				set slot 2 of skoreboard loop-player to "&b● Survival &e/survival" 
+				set slot 3 of skoreboard loop-player to "&b● SkyBlock &e/sb"
+				set slot 4 of skoreboard loop-player to "&b● Creative &e/creative"
+				set slot 5 of skoreboard loop-player to "&b● Prison   &e/prison"
+				set slot 6 of skoreboard loop-player to "&b● BedWars &e/bw"
+				set slot 7 of skoreboard loop-player to "&b&7&m-------------------"
+				set slot 8 of skoreboard loop-player to " &eBuy&7: &fstore.snapmc.com"
+				set slot 9 of skoreboard loop-player to " &eForums&7: &fsnapmc.com"
+				set slot 10 of skoreboard loop-player to " &eDiscord&7: &f/discord"
+				set slot 11 of skoreboard loop-player to "&c&7&m-------------------"
+				set slot 12 of skoreboard loop-player to ""
+				set slot 13 of skoreboard loop-player to ""
+			
+			
+		else if loop-player is in world "Prison":
+			if {scoreboard.toggle::%uuid of loop-player%} is not set:
+				set {_level} to {prison.level::%uuid of loop-player%}
+				delete {_questCost}
+				if {_level} is not set:
+					set {_rankupCost} to 40	
+				if {_level} = 0:
+					set {_rankupCost} to 40	
+				else if {_level} = 1:
+					set {_rankupCost} to 1000
+				else if {_level} = 2:
+					set {_rankupCost} to 3000
+				else if {_level} = 3:
+					set {_rankupCost} to 15000
+				else if {_level} = 4:
+					set {_rankupCost} to 500000
+					set {_questCost} to 4
+				else if {_level} = 5:
+					set {_rankupCost} to 3000000
+					set {_questCost} to 10
+				else if {_level} = 6:
+					set {_rankupCost} to 7000000
+					set {_questCost} to 12
+				else if {_level} = 7:
+					set {_rankupCost} to 30000000
+					set {_questCost} to 15
+				else if {_level} = 8:
+					set {_rankupCost} to 55000000
+					set {_questCost} to 20
+				else if {_level} = 9:
+					set {_rankupCost} to 80000000
+					set {_questCost} to 25
+				else if {_level} = 10:
+					set {_rankupCost} to 150000000
+					set {_questCost} to 30
+				else if {_level} = 11:
+					set {_rankupCost} to 500000000
+					set {_questCost} to 40
+				else if {_level} = 12:
+					set {_rankupCost} to 1000000000
+					set {_questCost} to 50
+					
+				set {_cost} to {_rankupCost} - {prison.balance::%uuid of loop-player%}
+				if {_cost} < 0:
+					set {_cost} to 0
+				set {_formatRankupCost} to formatMoney({_cost})
+				set {_formatBalance} to formatMoney( {prison.balance::%uuid of loop-player%} )
+				if {prison.quests.player.points::%uuid of loop-player%} is not set:
+					set {prison.quests.player.points::%uuid of loop-player%} to 0
+				if {prison.boost.multiplier::%uuid of loop-player%} is not set:
+					set {prison.boost.multiplier::%uuid of loop-player%} to 100
+				if {prison.level::%uuid of loop-player%} is not set:
+					set {prison.level::%uuid of loop-player%} to 0
+				set title of skoreboard loop-player to "&4&l❤ &dSnapMC &ePrison &4&l❤"
+				
+				set slot 1 of skoreboard loop-player to "&a" 
+				set slot 2 of skoreboard loop-player to "&6&lInfo:" 
+				set slot 3 of skoreboard loop-player to "  &eName: &f%loop-player%" 
+				set slot 4 of skoreboard loop-player to "  &eBalance: &f$%{_formatBalance}%"
+				set slot 5 of skoreboard loop-player to "  &eQuests: &f%{prison.quests.player.points::%uuid of loop-player%}%"
+				set slot 6 of skoreboard loop-player to "  &eRank: &f%{_level}%"
+				set slot 7 of skoreboard loop-player to "  &eMultiplier: &f%{prison.boost.multiplier::%uuid of loop-player%}%%%"
+				
+				set slot 8 of skoreboard loop-player to "&b"
+				set slot 9 of skoreboard loop-player to "&a&lRankup"
+				set slot 10 of skoreboard loop-player to "  &eNext Rank: &f%{prison.level::%uuid of loop-player%} + 1%"
+				set slot 11 of skoreboard loop-player to "  &eRemaining: &f$%{_formatRankupCost}%"
+				if {_questCost} is set:
+					set slot 12 of skoreboard loop-player to "  &eQuests: &c%{prison.quests.player.points::%uuid of loop-player%}%&7/&a%{_questCost}%"
+				else:
+					set slot 12 of skoreboard loop-player to ""
+				
+				set slot 13 of skoreboard loop-player to ""
+				

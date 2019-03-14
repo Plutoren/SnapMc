@@ -1,0 +1,29 @@
+command /seteaster <int>:
+	permission: is.op
+	trigger:
+		if player's target block is not a floor head:
+			message "Not a floor head :("
+			stop
+		set {easter.prizes::%location of target block%} to arg-1
+		message "set egg %arg-1%"
+		
+	
+on right click on floor head:
+	if {easter.prizes::%location of clicked block%} is set:
+		if {easter.found.prizes::%player%::%{easter.prizes::%location of clicked block%}%} is set:
+			message "&c&lEaster &7: &aYou already finished this on &b%{easter.found.prizes::%player%::%{easter.prizes::%location of clicked block%}%}%"
+			stop
+		else if {easter.found.prizes::%ip of player%::%{easter.prizes::%location of clicked block%}%} is set:
+			message "&c&lEaster &7: &aSorry only 1 egg per IP"
+			stop
+		else if {easter.found.prizes::%player%::%{easter.prizes::%location of clicked block%}%} is not set:
+			execute console command "/kp key easter regular %player% 1"
+			set {easter.found.prizes::%player%::%{easter.prizes::%location of clicked block%}%} to now
+			set {easter.found.prizes::%ip of player%::%{easter.prizes::%location of clicked block%}%} to now
+			if {easter.total} is not set:
+				set {easter.total} to 4
+			else:
+				add 1 to {easter.total}
+			message "&c&lEaster &7: &aYou found egg %{easter.prizes::%location of clicked block%}%!"
+			message "&c&lEaster &7: &aThere are 12 total eggs"
+	

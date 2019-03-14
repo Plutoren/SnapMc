@@ -1,0 +1,78 @@
+on right click with nether star:
+	if player is in world "Rooms":
+		if block below player is not an iron block:
+			loop blocks in radius 2 of player:
+				if loop-block is a stained clay:
+					message "&7You can't reverse gravity on terracotta"
+					stop
+		set {_loc} to location of player 
+		set {_y} to y coordinate of {_loc}
+		if {_y} > 128:
+			set {_diff} to {_y} - 130
+			set {_y} to 124 - {_diff}
+			set {_pitch} to pitch of player
+			set the pitch of {_loc} to 0 - {_pitch}
+		else:
+			set {_diff} to 124 - {_y}
+			set {_y} to 130 + {_diff}
+			set {_pitch} to pitch of player
+			set the pitch of {_loc} to 0 - {_pitch}
+		set y coordinate of {_loc} to {_y}
+		teleport player to {_loc}
+
+on region enter:
+	if "%event-region%" contains "rooms2":
+		if "%event-region%" contains "entire":
+			stop
+		if distance between {rooms2.checkpoint::%uuid of player%} and location of player < 5:
+			stop
+		set {rooms2.checkpoint::%uuid of player%} to location of player
+		message "&eCheckpoint"
+		
+	
+on right click on stone button:
+	if player is in world "Rooms":
+		if "%regions at player%" contains "rooms2_entire":
+			if block below player is not a wool:
+				message "&cYou must stand on wool to activate a button!"
+				cancel event
+				stop
+on block place:
+	if player is in world "Rooms":
+		if player has permission "is.Pluto":
+			if {rooms2.build} is set:
+				set {_loc} to location of event-block 
+				set {_y} to y coordinate of {_loc}
+				if {_y} > 128:
+					set {_diff} to {_y} - 130
+					set {_y} to 126 - {_diff}
+				else:
+					set {_diff} to 126 - {_y}
+					set {_y} to 130 + {_diff}
+				set y coordinate of {_loc} to {_y}
+				set block at {_loc} to event-block
+			
+on block break:
+	if player is in world "Rooms":
+		if player has permission "is.Pluto":
+			if {rooms2.build} is set:
+				set {_loc} to location of event-block 
+				set {_y} to y coordinate of {_loc}
+				if {_y} > 128:
+					set {_diff} to {_y} - 130
+					set {_y} to 126 - {_diff}
+				else:
+					set {_diff} to 126 - {_y}
+					set {_y} to 130 + {_diff}
+				set y coordinate of {_loc} to {_y}
+				set block at {_loc} to air
+				
+command /rooms2buildmode:
+	permission: is.Pluto
+	trigger:
+		if {rooms2.build} is set:
+			delete {rooms2.build} 
+			message "Duplicate building off"
+		else:
+			set {rooms2.build} to true
+			message "Duplicate building on"

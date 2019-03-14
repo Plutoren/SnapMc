@@ -1,0 +1,43 @@
+command /nobow:
+	trigger:
+		if {pvp.nobow.lastevent} was less than 100 minutes ago:				
+			set {_startDate} to {lastembassy}
+			set {_duration}  to 100 minutes
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "&8[&6NoBow&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+			stop
+		if {pvp.lastevent} was less than 20 minutes ago:				
+			set {_startDate} to {pvp.lastevent}
+			set {_duration}  to 20 minutes
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "&8[&c&lPvP&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+			stop
+		set {pvp.nobow.lastevent} to now
+		set {pvp.lastevent} to now
+		set {nobow.isrunning} to true
+		broadcast "&8[&6NoBow&8] &eNo Bows has been activated in pvp for 6 minutes"
+		wait 6 minutes
+		delete {nobow.isrunning}
+
+on shoot:
+	if "%regions at shooter%" contains "hub_pvp_keepinv":
+		if {nobow.isrunning} is set:
+			cancel event
+			send "&8[&6NoBow&8] &cBows are disabled during the No - Bow Event." to shooter
+			send "&8[&6NoBow&8] &cThis game is only 6 minutes long." to shooter
+	if "%regions at shooter%" contains "nobow":
+		cancel event
+		send "&8[&6NoBow&8] &cBows are disabled in the center trees." to shooter
+			
+on load:
+	delete {nobow.isrunning}
+command /nobowoff:
+	permission: is.staff
+	trigger:
+		delete {nobow.isrunning}

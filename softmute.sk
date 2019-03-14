@@ -1,0 +1,130 @@
+
+
+on chat:
+	if {punish.mute::%uuid of player%} is not set:
+		if player does not have permission "is.staff":
+			if {familychat.active::%player%} is not set:
+				set {_msg} to "%message%"
+				set {_lastMsg} to metadata "lastMsg" of player
+				if {_lastMsg} is not set:
+					set {_lastMsg} to "%message%"
+					set metadata "lastMsg" of player to "%message%"
+				# if {lastmsg::%player%} is not set:
+				#	set {lastmsg::%player%} to "%message%"
+					
+				else:
+					if length of {_msg} > 14:
+						if "%{_lastMsg}%" = "%message%":
+							loop all players:
+								if loop-player is not player:
+									remove loop-player from chat recipients
+									if loop-player has permission "is.staff":
+										send "&8(&eSpam&7Muted&8) &7%player's name%&f: &7%message%" to loop-player
+							stop
+					set metadata "lastMsg" of player to "%message%"
+				#	set {lastmsg::%player%} to "%message%"
+					
+				set {_soft} to false
+				set {_msg} to "%message%"
+				loop {softmute::*}:
+					if "%{_msg}%" contains "%loop-index%":
+						set {_soft} to true
+						replace all "%loop-index%" with "&c%loop-index%&7" in {_msg}
+				if {_soft} is true:
+					loop {clean::*}:
+						if "%{_msg}%" contains "%loop-index%":
+							stop
+					
+				if {_soft} is true:
+					loop all players:
+						if loop-player is not player:
+							remove loop-player from chat recipients
+							if loop-player has permission "is.staff":
+								send "&8(&cMuted&8) &7%player's name%&f: &7%{_msg}%" to loop-player
+					stop
+									
+command /softlist:
+	permission: is.op
+	trigger:
+		set {_i} to 0
+		message " &6Soft muted phrases:"
+		loop {softmute::*}:
+			add 1 to {_i}
+			message "&c%{_i}%. &7%loop-index%"
+
+command /soft [<text>]:
+	permission: is.op
+	trigger:
+		if arg-1 is not set:
+			message "&8[&bSnap&8] &7Soft mute something &b/soft (phrase)"
+			stop
+		if length of arg-1 < 3:
+			message "&8[&bSnap&8] &7Must be at least 6 characters long!"
+			stop
+		if {softmute::%arg-1%} is set:
+			message "&8[&bSnap&8] &7That phrase is already soft muted"
+			stop
+		set {softmute::%arg-1%} to true
+		message "&8[&bSnap&8] &7Added &a%arg-1% &7to soft mutes"
+			
+								
+command /unsoft [<text>]:
+	permission: is.op
+	trigger:
+		if arg-1 is not set:
+			message "&8[&bSnap&8] &7Soft mute something &b/soft (phrase)"
+			stop
+		if length of arg-1 < 3:
+			message "&8[&bSnap&8] &7Must be at least 6 characters long!"
+			stop
+		if {softmute::%arg-1%} is not set:
+			message "&8[&bSnap&8] &7That phrase is not soft muted"
+			stop
+		delete {softmute::%arg-1%}
+		message "&8[&bSnap&8] &7Removed &c%arg-1% &7from soft mutes"
+	
+command /cleanlist:
+	permission: is.op
+	trigger:
+		set {_i} to 0
+		message " &6clean muted phrases:"
+		loop {clean::*}:
+			add 1 to {_i}
+			message "&c%{_i}%. &7%loop-index%"
+
+command /cleanword [<text>]:
+	permission: is.op
+	trigger:
+		if arg-1 is not set:
+			message "&8[&bSnap&8] &7clean mute something &b/clean (phrase)"
+			stop
+		if length of arg-1 < 3:
+			message "&8[&bSnap&8] &7Must be at least 6 characters long!"
+			stop
+		if {clean::%arg-1%} is set:
+			message "&8[&bSnap&8] &7That phrase is already clean muted"
+			stop
+		set {clean::%arg-1%} to true
+		message "&8[&bSnap&8] &7Added &a%arg-1% &7to clean mutes"
+			
+								
+command /unclean [<text>]:
+	permission: is.op
+	trigger:
+		if arg-1 is not set:
+			message "&8[&bSnap&8] &7clean mute something &b/clean (phrase)"
+			stop
+		if length of arg-1 < 3:
+			message "&8[&bSnap&8] &7Must be at least 6 characters long!"
+			stop
+		if {clean::%arg-1%} is not set:
+			message "&8[&bSnap&8] &7That phrase is not clean muted"
+			stop
+		delete {clean::%arg-1%}
+		message "&8[&bSnap&8] &7Removed &c%arg-1% &7from clean mutes"
+	
+	
+command /rando:
+	permission: is.staff
+	trigger:
+		teleport player to random player of all players

@@ -1,0 +1,45 @@
+command /mamenu:
+	aliases: pve
+	executable by: players
+	trigger:	
+		open chest with 6 rows named "  &1-=[ &b&lMob Arena Menu &1]=-" to player
+		wait 1 ticks
+		set {_i} to 0
+		loop 54 times:
+			format slot {_i} of player with gray stained glass pane named "" to close
+			add 1 to {_i}
+		wait 1 tick
+		format slot 0 of player with diamond sword named "&f[&c&lMob Arena&f]" with lore "&7Click to select a map", "", "   &a/ma j (name)" to close
+		format slot 8 of player with gold ingot item named "&eGold Ingot" with lore "&7Collect &eGold &7in Game", "&7and use it at", "&dSign Shops &7around the map" to close
+		
+	#	format slot 13 of player with beacon named "&c&larea&4&l51" with lore "", "&7Collector and Guns Map", " " to close then run "sudo %player% ma j area51"
+	#	format slot 19 of player with stone named "&8&lDungeon" with lore "", " &7Guns Map", " " to close then run "sudo %player% ma j dungeon"
+	#	format slot 20 of player with sandstone named "&e&lWasteland" with lore "", "&7Guns Map", " " to close then run "sudo %player% ma j wasteland"
+	#	format slot 21 of player with cobblestone wall named "&9&lMaze" with lore "", " &7Guns Map", " " to close then run "sudo %player% ma j maze"
+		
+		format slot 21 of player with painting named "&e&lArt Gallery" with lore "", " &7Mob arena", "", "   &e/ma j artgallery " to close then run "sudo %player% ma j artgallery"
+		format slot 22 of player with anvil named "&6&lDeath Star" with lore "", "&7Mob Arena", "", "   &e/ma j deathstar " to close then run "sudo %player% ma j deathstar"
+		format slot 23 of player with emerald block named "&a&lVillage" with lore "", " &7Mob Arena", "", "   &e/ma j village" to close then run "sudo %player% ma j village"
+
+	#	format slot 25 of player with glass block named "&3&lCity" with lore "", " &7Guns Map", " " to close then run "sudo %player% ma j city"
+		
+	#	format slot 39 of player with painting named "&b&lArtGallery" with lore "", " &7Swords Map", " " to close then run "sudo %player% ma j artgallery"
+	#	format slot 40 of player with iron bars named "&d&lStronghold" with lore "", " &7Swords Map", " " to close then run "sudo %player% ma j stronghold"
+	#	format slot 41 of player with black hardened clay named "&8&lBlack&7&lout" with lore "", " &7Swords Map", " " to close then run "sudo %player% ma j blackout"
+		
+		
+		format slot 40 of player with book named "&cInstructions" with lore "", " &7Stay alive as long as you can....", "", " &7The only escape is death ", "   &7or &a/ma leave", " " to close
+		
+	#	format slot 49 of player with snow block named "&f&lWinter" with lore "", " &7Swords Map", " " to close then run "sudo %player% ma j winter"
+		
+		
+		
+command /chest9:
+	executable by: players
+	trigger:	
+		open chest with 9 rows named "       &4This sucks" to player
+		wait 1 ticks
+		set {_i} to 0
+		loop 81 times:
+			format slot {_i} of player with chest named "This is dumb" to close
+			add 1 to {_i}

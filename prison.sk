@@ -1,0 +1,1002 @@
+on right click with wall sign:
+	if player is in world "Prison":
+		if gamemode of player is not creative:
+			cancel event
+command /rankup:
+	trigger:
+		make player execute command "prison info"
+command /toggleprison:
+	permission: is.op
+	trigger:
+		if {prison.build::%player%} is not set:
+			set {prison.build::%player%} to true
+			message "You can now break normally"
+		else:
+			delete {prison.build::%player%}
+			message "You can now play prison mode"
+
+on right click with ender pearl:
+	if player is in world "Prison":
+		make player execute command "prisonhub mine"
+		remove 1 ender pearl from player
+command /setc <integer> <integer>:
+	permission: is.op
+	trigger:
+		execute player command "cell create %arg-1%-%arg-2%" 
+		execute player command "cell rollback save %arg-1%-%arg-2%" 
+		message "setup cell, now look at a door!"
+		set {_door} to false
+		set {_sign} to false
+		loop 20 times:
+			if player's target block is an iron door:
+				execute player command "cell adddoor %arg-1%-%arg-2%"
+				message "Door Added, now look at a sign"
+				set {_door} to true
+				stop loop
+			if player's target block is a wall sign:
+				execute player command "cell addsign %arg-1%-%arg-2%"
+				wait 1 tick
+				message "Now look at a door"
+				set {_sign} to true
+				stop loop
+			wait 1 second
+		loop 20 times:
+			if {_door} is false:
+				if player's target block is an iron door:
+					execute player command "cell adddoor %arg-1%-%arg-2%"
+					message "Door Added, now look at a sign"
+					set {_door} to true
+			if {_sign} is false:	
+				if player's target block is a wall sign:
+					execute player command "cell addsign %arg-1%-%arg-2%"
+					wait 1 tick
+					message "Now look at a door"
+					set {_sign} to true
+			if {_sign} is true:
+				if {_door} is true:
+					message "Finished"
+					stop
+			wait 1 second
+		
+		execute player command "cell addsign %arg-1%-%arg-2%"
+
+		
+		
+		
+		
+		
+every 5 seconds:
+	loop all players in world "Prison":
+		if gamemode of loop-player is survival:
+			disable fly for loop-player
+		set {_send} to false
+		if "%regions at loop-player%" contains "prison_hub":
+			continue
+		if block below loop-player is water:
+			if y coordinate of loop-player < 63:
+				send loop-player title "&6Hey you, stop!" with subtitle "&7Where are you going!" for 3 seconds with 0 second fade in and 1 second fade out 
+				apply confusion 4 to loop-player for 6 seconds
+				apply slowness 3 to loop-player for 3 seconds
+				wait 2 seconds
+				apply blindness 1 to loop-player for 2 seconds
+				teleport loop-player to {prison.checkpoint::%uuid of loop-player%}
+				send loop-player title  "&6You were caught swimming away" with subtitle "&7Don't do that" for 5 seconds with 1 second fade in and 2 second fade out 
+
+		else if block at loop-player is water:
+			if y coordinate of loop-player < 63:
+				send loop-player title "&6Hey you, stop!" with subtitle "&7Where are you going!" for 3 seconds with 0 second fade in and 1 second fade out 
+				apply confusion 4 to loop-player for 6 seconds
+				wait 2 seconds
+				apply blindness 1 to loop-player for 2 seconds
+				teleport loop-player to {prison.checkpoint::%uuid of loop-player%}
+				send loop-player title  "&6You were caught swimming away" with subtitle "&7Don't do that" for 5 seconds with 1 second fade in and 2 second fade out 
+		set {_level} to {prison.level::%uuid of loop-player%}
+		
+		if gamemode of loop-player is survival:
+			if {_level} = 0:
+			
+				if {prison.checkpoint::%uuid of loop-player%} != {pos::prison_boat1}:
+					if {prison.checkpoint::%uuid of loop-player%} != {pos::prison_boat2}:
+						if y coordinate of loop-player > 41:
+							if z coordinate of loop-player < -90:
+								set {_send} to true
+			else if {_level} = 1:
+				if y coordinate of loop-player > 52:
+					if z coordinate of loop-player < -90:
+						set {_send} to true
+			else if {_level} < 4:
+				if y coordinate of loop-player > 61:
+					if z coordinate of loop-player < -90:
+						set {_send} to true
+			else if {_level} = 4:
+				if y coordinate of loop-player > 74:
+					if z coordinate of loop-player > -260:
+						if z coordinate of loop-player < -90:
+							set {_send} to true
+				if y coordinate of loop-player > 83:
+					if z coordinate of loop-player < -90:
+						set {_send} to true
+				if y coordinate of loop-player < 56:
+					if z coordinate of loop-player > -330:
+						if z coordinate of loop-player < -270:
+							set {_send} to true
+			else if {_level} = 5:
+				if y coordinate of loop-player > 74:
+					if z coordinate of loop-player > -260:
+						if z coordinate of loop-player < -90:
+							set {_send} to true
+				if y coordinate of loop-player > 83:
+					if z coordinate of loop-player < -90:
+						set {_send} to true
+			else if {_level} = 6:
+				if y coordinate of loop-player > 74:
+					if z coordinate of loop-player > -260:
+						if z coordinate of loop-player < -90:
+							set {_send} to true
+			else if {_level} = 7:
+				if y coordinate of loop-player > 84:
+					if z coordinate of loop-player > -260:
+						if z coordinate of loop-player < -90:
+							set {_send} to true
+			else if {_level} = 8:
+				if y coordinate of loop-player > 91:
+					if z coordinate of loop-player > -260:
+						if z coordinate of loop-player < -90:
+							set {_send} to true
+			else if {_level} = 9:
+				if y coordinate of loop-player > 98:
+					if z coordinate of loop-player > -260:
+						if z coordinate of loop-player < -90:
+							set {_send} to true
+			else if {_level} = 10:
+				if y coordinate of loop-player > 106:
+					if z coordinate of loop-player > -260:
+						if z coordinate of loop-player < -90:
+							set {_send} to true
+			else if {_level} = 11:
+				if y coordinate of loop-player > 120:
+					if z coordinate of loop-player > -260:
+						if z coordinate of loop-player < -90:
+							set {_send} to true
+			if {_send} is true:
+				send loop-player title "&6Hey you, stop!" with subtitle "&7Where are you going!" for 3 seconds with 0 second fade in and 1 second fade out 
+				apply confusion 4 to loop-player for 6 seconds
+				apply slowness 3 to loop-player for 3 seconds
+				wait 2 seconds
+				apply blindness 1 to loop-player for 2 seconds
+				teleport loop-player to {prison.checkpoint::%uuid of loop-player%}
+				send loop-player title  "&6You were caught sneaking upstairs" with subtitle "&7You need to rank up to go there" for 5 seconds with 1 second fade in and 2 second fade out 
+		else if "%region at loop-player%" contains "prison_portal_mine":
+			set {_region} to "%region at loop-player%"
+			replace all "prison_portal_mine_" with "" in {_region}
+			replace all "_2 in world Prison" with "" in {_region}
+			replace all " in world Prison" with "" in {_region}
+			teleport loop-player to {pos::prison_mine%{_region}%}
+		else if "%region at loop-player%" contains "prison_portal_wood":
+			set {_region} to "%region at loop-player%"
+			replace all "_2 in world Prison" with "" in {_region}
+			replace all "prison_portal_wood_" with "" in {_region}
+			replace all " in world Prison" with "" in {_region}
+			teleport loop-player to {pos::prison_mine%{_region}%}						
+								
+						
+on pressure plate:
+	if player is in world "Prison":
+		remove speed from player
+		apply speed 4 to player for 4 seconds
+			
+on damage of player:
+	if victim has permission "is.streamer":
+		if victim is in world "Prison":
+			cancel event
+command /setprisonbal <integer>:
+	permission: is.op
+	trigger:
+		set {prison.balance::%uuid of player%} to arg-1
+		message "&8[&ePrison&8] &7Set Prison Bal"
+		stop
+on damage of player:
+	if victim is in world "Prison":
+		if damage cause is suffocation:
+			cancel event
+on command:
+	if player is in world "Prison":
+		if command contains "echest" or "eechest" or "eec" or "sethome" or "randomitem" or "kit" or "fly" or "bw" or "auction" or "setwarp" or "bedwars" or "bedwar" or "ah" or "auctionhouse" or "shop" or "pack" or "packs" or "ec" or "enderchest" :
+			if command does not contain "collect":
+				cancel event
+				message "&8[&ePrison&8] &7You can't use that command here!"
+on load:
+	delete {prison.lastattack::*}
+on damage of player:
+	if victim is in world "Prison":
+		if attacker is a player:
+			set {prison.lastattack::%uuid of victim%} to now
+			
+command /prisonboostmultiplier <player> <int>:
+	permission: is.op
+	trigger:
+		set {prison.boost.multiplier::%uuid of arg-1%} to arg-2
+		set {prison.boost.multiplier.bonus::%uuid of arg-1%} to arg-2
+			
+			
+command /sellall [<text>]:
+	trigger:
+		if player is in world "Prison":
+			execute console command "prison sell %player%"
+			
+			
+command /prison [<text>] [<player>]:
+	trigger:
+		if arg-1 is not set:
+			if {prison.checkpoint::%uuid of player%} is not set:
+				teleport player to {pos::phub2}
+				set {prison.checkpoint::%uuid of player%} to {pos::prison_mine0}
+				execute console command "/kit 0 %player%"
+				send player title "" with subtitle "&bWelcome To &bPrison" for 3 seconds with 1 second fade in and 2 second fade out
+				stop
+			else:
+				teleport player to {pos::phub2}
+		if arg-1 is set:
+			if arg-1 contains "embassy":
+				message "&8[&ePrison&8] &7Teleporting"
+				teleport player to {prison.embassy.%arg-1%}
+				stop
+			if arg-1 is "instantcash":
+				if {prison.boost.instantCash.disable::%uuid of player%} is not set:
+					set {prison.boost.instantCash.disable::%uuid of player%} to true
+					message "&8[&ePrison&8] &cDisabled instant cash"
+					stop
+				else:
+					delete {prison.boost.instantCash.disable::%uuid of player%}
+					message "&8[&ePrison&8] &aEnabled instant cash"
+					stop
+					
+			if arg-1 is "stats" or "info":
+				send "&e@==============================@" to player
+				send "" to player
+				send "              &6&l&nSnapMC Prison" to player
+				send "" to player
+				if {prison.level::%uuid of player%} = 0:
+					set {_rankupCost} to 40	
+				else if {prison.level::%uuid of player%} = 1:
+					set {_rankupCost} to 1000
+				else if {prison.level::%uuid of player%} = 2:
+					set {_rankupCost} to 3000
+				else if {prison.level::%uuid of player%} = 3:
+					set {_rankupCost} to 15000
+				else if {prison.level::%uuid of player%} = 4:
+					set {_rankupCost} to 500000
+					set {_questCost} to 4
+				else if {prison.level::%uuid of player%} = 5:
+					set {_rankupCost} to 3000000
+					set {_questCost} to 10
+				else if {prison.level::%uuid of player%} = 6:
+					set {_rankupCost} to 7000000
+					set {_questCost} to 12
+				else if {prison.level::%uuid of player%} = 7:
+					set {_rankupCost} to 30000000
+					set {_questCost} to 15
+				else if {prison.level::%uuid of player%} = 8:
+					set {_rankupCost} to 55000000
+					set {_questCost} to 20
+				else if {prison.level::%uuid of player%} = 9:
+					set {_rankupCost} to 80000000
+					set {_questCost} to 25
+				else if {prison.level::%uuid of player%} = 10:
+					set {_rankupCost} to 150000000
+					set {_questCost} to 30
+				else if {prison.level::%uuid of player%} = 11:
+					set {_rankupCost} to 500000000
+					set {_questCost} to 40
+				else if {prison.level::%uuid of player%} = 12:
+					set {_rankupCost} to 1000000000
+					set {_questCost} to 50
+
+				if {prison.prestige::%uuid of player%} is set:
+					set {_rankupCost} to {_rankupCost} + {_rankupCost} * ( {prison.prestige::%uuid of player%} / 10 )
+					set {_questCost} to {_questCost} + {prison.prestige::%uuid of player%} * 3
+				if {prison.balance::%uuid of player%} >= {_rankupCost}:
+					if {_questCost} is set:
+						if {prison.quests.player.points::%uuid of player%} >= {_questCost}:
+							
+							set {prison.level::%uuid of player%} to {prison.level::%uuid of player%} + 1
+							set {prison.checkpoint::%uuid of player%} to {pos::prison_mine%{prison.level::%uuid of player%}%}
+							set {prison.balance::%uuid of player%} to {prison.balance::%uuid of player%}  - {_rankupCost}
+							set {prison.quests.player.points::%uuid of player%} to {prison.quests.player.points::%uuid of player%}  - {_questCost}
+							send "    &f&lRank Up!" to player
+							send "    &6&lNew Rank: &a%{prison.level::%uuid of player%}%" to player
+							execute console command "/kit %{prison.level::%uuid of arg-2%}% %player%"
+							apply blindness 1 to player for 2 seconds
+							send player title "&aRankUp" with subtitle "&e%{prison.level::%uuid of player%}%" for 3 seconds with 2 second fade in and 2 second fade out
+							teleport player to {prison.checkpoint::%uuid of player%}
+						
+						else:
+							send "    &eProgress&7: &c%{prison.balance::%uuid of player%}%&8/&a%{_rankupCost}%" to player
+							send "    &eLevel&7: &f%{prison.level::%uuid of player%}%" to player
+							send "    &dMultiplier&7: &f%{prison.boost.multiplier::%uuid of player%}%%%" to player
+							if {_questCost} is set:
+								send "    &6Quests&7: &c%{prison.quests.player.points::%uuid of player%}%&8/&a%{_questCost}%" to player
+					else:
+						
+						set {prison.level::%uuid of player%} to {prison.level::%uuid of player%} + 1
+						set {prison.checkpoint::%uuid of player%} to {pos::prison_mine%{prison.level::%uuid of player%}%}
+						set {prison.balance::%uuid of player%} to {prison.balance::%uuid of player%}  - {_rankupCost}
+						send "    &f&lRank Up!" to player
+						send "    &6&lNew Rank: &a%{prison.level::%uuid of player%}%" to player
+						execute console command "/kp key %{prison.level::%uuid of player%}% ultra %player% 1"
+		
+				else:
+					send "    &eProgress&7: &c%{prison.balance::%uuid of player%}%&8/&a%{_rankupCost}%" to player
+					send "    &eLevel&7: &f%{prison.level::%uuid of player%}%" to player
+					send "    &dMultiplier&7: &f%{prison.boost.multiplier::%uuid of player%}%%%" to player
+					if {_questCost} is set:
+						send "    &6Quests&7: &c%{prison.quests.player.points::%uuid of player%}%&8/&a%{_questCost}%" to player
+				send "" to player
+				send "&e@==============================@" to player
+				
+				
+			if arg-1 is "sell":
+				if arg-2 is set:
+					if "%player%" != "<none>":
+						stop
+					if arg-2 is not in world "Prison":
+						stop
+					else:
+						if {prison.balance::%uuid of arg-2%} is not set:
+							set {prison.balance::%uuid of arg-2%} to 0
+						if {prison.level::%uuid of arg-2%} is not set:
+							set {prison.level::%uuid of arg-2%} to 0
+						if {prison.boost.multiplier::%uuid of arg-2%} is not set:
+							set {prison.boost.multiplier::%uuid of arg-2%} to 100
+						set {_totalItems} to 0
+						# Coal
+						set {_itemAmount} to amount of coal in arg-2's inventory
+						add {_itemAmount} to {_totalItems}
+						set {_value} to {_value} + (2 * {_itemAmount})
+						remove all coal from arg-2's inventory
+						
+						# cobblestone
+						set {_itemAmount} to amount of cobblestone in arg-2's inventory
+						add {_itemAmount} to {_totalItems}
+						set {_value} to {_value} + (1 * {_itemAmount})
+						remove all cobblestone from arg-2's inventory
+						
+						# iron ore
+						set {_itemAmount} to amount of iron ore in arg-2's inventory
+						add {_itemAmount} to {_totalItems}
+						set {_value} to {_value} + (4 * {_itemAmount})
+						remove all iron ore from arg-2's inventory
+						
+						# gold ore
+						set {_itemAmount} to amount of gold ore in arg-2's inventory
+						add {_itemAmount} to {_totalItems}
+						set {_value} to {_value} + (15 * {_itemAmount})
+						remove all gold ore from arg-2's inventory
+
+						# iron ingots
+						set {_itemAmount} to amount of iron ingots in arg-2's inventory
+						add {_itemAmount} to {_totalItems}
+						set {_value} to {_value} + (12 * {_itemAmount})
+						remove all iron ingots from arg-2's inventory
+
+						
+						# gold ingots
+						set {_itemAmount} to amount of gold ingots in arg-2's inventory
+						add {_itemAmount} to {_totalItems}
+						set {_value} to {_value} + (33 * {_itemAmount})
+						remove all gold ingots from arg-2's inventory
+
+						# lapis lazuli
+						set {_itemAmount} to amount of lapis lazuli in arg-2's inventory
+						add {_itemAmount} to {_totalItems}
+						set {_value} to {_value} + (9 * {_itemAmount})
+						remove all lapis lazuli from arg-2's inventory
+						
+						# redstone
+						set {_itemAmount} to amount of redstone in arg-2's inventory
+						add {_itemAmount} to {_totalItems}
+						set {_value} to {_value} + (11 * {_itemAmount})
+						remove all redstone from arg-2's inventory						
+
+						# diamond
+						set {_itemAmount} to amount of diamond in arg-2's inventory
+						add {_itemAmount} to {_totalItems}
+						set {_value} to {_value} + (41 * {_itemAmount})
+						remove all diamond from arg-2's inventory	
+
+						# emerald
+						set {_itemAmount} to amount of emerald in arg-2's inventory
+						add {_itemAmount} to {_totalItems}
+						set {_value} to {_value} + (40 * {_itemAmount})
+						remove all emerald from arg-2's inventory	
+
+						# Wood
+						set {_itemAmount} to amount of oak wood logs in arg-2's inventory
+						add amount of spruce wood logs in arg-2's inventory to {_itemAmount}
+						add amount of birch wood logs in arg-2's inventory to {_itemAmount}
+						add amount of dark oak wood logs in arg-2's inventory to {_itemAmount}
+						add amount of jungle wood logs in arg-2's inventory to {_itemAmount}
+						add {_itemAmount} to {_totalItems}
+						set {_value} to {_value} + (15 * {_itemAmount})
+						remove all oak wood logs from arg-2's inventory	
+						remove all spruce wood logs from arg-2's inventory	
+						remove all dark oak wood logs from arg-2's inventory	
+						remove all birch wood logs from arg-2's inventory	
+						remove all jungle wood logs from arg-2's inventory	
+						if {prison.boost.multiplier::%uuid of arg-2%} is not set:
+							set {prison.boost.multiplier::%uuid of arg-2%} to 100
+						if {prison.quests.player.points::%uuid of arg-2%} is not set:
+							set {prison.quests.player.points::%uuid of arg-2%} to 0
+						if {prison.level::%uuid of arg-2%} = 0:
+							set {_multiplier} to .5
+						else:
+							set {_multiplier} to {prison.level::%uuid of arg-2%} * 3
+						
+						if {_multiplier} > 12:
+							set {_extra} to 12
+						else:
+							set {_extra} to {_multiplier}
+						
+						set {_multiplier} to {_multiplier} * ( {prison.boost.multiplier::%uuid of arg-2%} / 100 ) 
+						
+						set {_value} to {_value} * {_multiplier}
+						add {_value} to {prison.balance::%uuid of arg-2%}
+						if {prison.boost.multiplier::%uuid of arg-2%} > 200:
+							set {_bonus} to 200
+						else:
+							set {_bonus} to {prison.boost.multiplier::%uuid of arg-2%}
+						set {_survivalMoney} to {_totalItems} * (50 + {_extra}) * ( {_bonus} / 100 )
+						add {_survivalMoney} to arg-2's balance
+						
+						send "&e@==============================@" to arg-2
+						send "" to arg-2
+						send "              &6&l&nSnapMC Prison" to arg-2
+						send "" to arg-2
+						if {_value} > 0:
+							send "    &eYou made&7: &a$%{_value}%" to arg-2
+						if {prison.level::%uuid of arg-2%} = 0:
+							set {_rankupCost} to 40	
+						else if {prison.level::%uuid of arg-2%} = 1:
+							set {_rankupCost} to 1000
+						else if {prison.level::%uuid of arg-2%} = 2:
+							set {_rankupCost} to 3000
+						else if {prison.level::%uuid of arg-2%} = 3:
+							set {_rankupCost} to 15000
+						else if {prison.level::%uuid of arg-2%} = 4:
+							set {_rankupCost} to 500000
+							set {_questCost} to 4
+						else if {prison.level::%uuid of arg-2%} = 5:
+							set {_rankupCost} to 3000000
+							set {_questCost} to 10
+						else if {prison.level::%uuid of arg-2%} = 6:
+							set {_rankupCost} to 7000000
+							set {_questCost} to 12
+						else if {prison.level::%uuid of arg-2%} = 7:
+							set {_rankupCost} to 30000000
+							set {_questCost} to 15
+						else if {prison.level::%uuid of arg-2%} = 8:
+							set {_rankupCost} to 55000000
+							set {_questCost} to 20
+						else if {prison.level::%uuid of arg-2%} = 9:
+							set {_rankupCost} to 80000000
+							set {_questCost} to 25
+						else if {prison.level::%uuid of arg-2%} = 10:
+							set {_rankupCost} to 150000000
+							set {_questCost} to 30
+						else if {prison.level::%uuid of arg-2%} = 11:
+							set {_rankupCost} to 500000000
+							set {_questCost} to 40
+						else if {prison.level::%uuid of arg-2%} = 12:
+							set {_rankupCost} to 1000000000
+							set {_questCost} to 50
+						else if {prison.level::%uuid of arg-2%} = 13:
+							add 1 to {prison.prestige::%uuid of arg-2%}
+							set {prison.level::%uuid of arg-2%} to {prison.level::%uuid of arg-2%} + 1
+							set {prison.checkpoint::%uuid of arg-2%} to {pos::prison_mine%{prison.level::%uuid of arg-2%}%}
+							set {prison.balance::%uuid of arg-2%} to {prison.balance::%uuid of arg-2%}  - {_rankupCost}
+							set {prison.quests.player.points::%uuid of arg-2%} to {prison.quests.player.points::%uuid of arg-2%}  - {_questCost}
+							send "    &f&lYou've reached Prestige %{prison.prestige::%uuid of arg-2%}%!" to arg-2
+							send "    &6&lNew Rank: &a%{prison.level::%uuid of arg-2%}%" to arg-2
+							set {prison.quests.player.points::%uuid of arg-2%} to 0
+							execute console command "/kit %{prison.level::%uuid of arg-2%}% %arg-2%"
+							apply blindness 1 to arg-2 for 2 seconds
+							send arg-2 title "&aRankUp" with subtitle "&e%{prison.level::%uuid of arg-2%}%" for 3 seconds with 2 second fade in and 2 second fade out
+							teleport arg-2 to {prison.checkpoint::%uuid of arg-2%}
+								
+						if {prison.prestige::%uuid of arg-2%} is set:
+							set {_rankupCost} to {_rankupCost} + {_rankupCost} * ( {prison.prestige::%uuid of arg-2%} / 10 )
+							set {_questCost} to {_questCost} + {prison.prestige::%uuid of arg-2%} * 3
+						if {prison.balance::%uuid of arg-2%} >= {_rankupCost}:
+							if {_questCost} is set:
+								if {prison.quests.player.points::%uuid of arg-2%} >= {_questCost}:
+									if {prison.level::%uuid of arg-2%} = 12:
+										add 1 to {prison.prestige::%uuid of arg-2%}
+										set {prison.level::%uuid of arg-2%} to {prison.level::%uuid of arg-2%} + 1
+										set {prison.quests.player.points::%uuid of arg-2%} to 0
+									else:
+										set {prison.level::%uuid of arg-2%} to {prison.level::%uuid of arg-2%} + 1
+										set {prison.quests.player.points::%uuid of arg-2%} to {prison.quests.player.points::%uuid of arg-2%}  - {_questCost}
+									
+									set {prison.checkpoint::%uuid of arg-2%} to {pos::prison_mine%{prison.level::%uuid of arg-2%}%}
+									set {prison.balance::%uuid of arg-2%} to {prison.balance::%uuid of arg-2%}  - {_rankupCost}
+									send "    &f&lRank Up!" to arg-2
+									send "    &6&lNew Rank: &a%{prison.level::%uuid of arg-2%}%" to arg-2
+									execute console command "/kit %{prison.level::%uuid of arg-2%}% %arg-2%"
+									apply blindness 1 to arg-2 for 2 seconds
+									send arg-2 title "&aRankUp" with subtitle "&e%{prison.level::%uuid of arg-2%}%" for 3 seconds with 2 second fade in and 2 second fade out
+									teleport arg-2 to {prison.checkpoint::%uuid of arg-2%}
+								
+								else:
+									send "    &eProgress&7: &c%{prison.balance::%uuid of arg-2%}%&8/&a%{_rankupCost}%" to arg-2
+									send "    &eSnapBucks&7: &f%{_survivalMoney}%" to arg-2
+									send "    &eLevel&7: &f%{prison.level::%uuid of arg-2%}%" to arg-2
+									send "    &dMultiplier&7: &f%{prison.boost.multiplier::%uuid of arg-2%}%%%" to arg-2
+									if {_questCost} is set:
+										send "    &6Quests&7: &c%{prison.quests.player.points::%uuid of arg-2%}%&8/&a%{_questCost}%" to arg-2
+							else:
+								
+								set {prison.level::%uuid of arg-2%} to {prison.level::%uuid of arg-2%} + 1
+								set {prison.checkpoint::%uuid of arg-2%} to {pos::prison_mine%{prison.level::%uuid of arg-2%}%}
+								set {prison.balance::%uuid of arg-2%} to {prison.balance::%uuid of arg-2%}  - {_rankupCost}
+								send "    &f&lRank Up!" to arg-2
+								send "    &6&lNew Rank: &a%{prison.level::%uuid of arg-2%}%" to arg-2
+								execute console command "/kit %{prison.level::%uuid of arg-2%}% %arg-2%"
+				
+						else:
+							send "    &eProgress&7: &c%{prison.balance::%uuid of arg-2%}%&8/&a%{_rankupCost}%" to arg-2
+							send "    &eSnapBucks&7: &f%{_survivalMoney}%" to arg-2
+							send "    &eLevel&7: &f%{prison.level::%uuid of arg-2%}%" to arg-2
+							send "    &dMultiplier&7: &f%{prison.boost.multiplier::%uuid of arg-2%}%%%" to arg-2
+							if {_questCost} is set:
+								send "    &6Quests&7: &c%{prison.quests.player.points::%uuid of arg-2%}%&8/&a%{_questCost}%" to arg-2
+						send "" to arg-2
+						send "&e@==============================@" to arg-2
+
+on right click on ender chest:
+	if player is in world "Prison":
+		cancel event
+						
+on death of a player:
+	if player is in world "Prison":
+		if attacker is a player:
+			heal victim
+			heal attacker
+			set hunger of attacker to 20
+			teleport victim to {prison.checkpoint::%uuid of victim%} 
+			if {prison.boost.multiplier::%uuid of attacker%} is not set:
+				set {prison.boost.multiplier::%uuid of attacker%} to 100
+			if {prison.boost.multiplier::%uuid of victim%} is not set:
+				set {prison.boost.multiplier::%uuid of victim%} to 100
+				
+			send "&8[&ePrison&8] &fYou were beat up by &e%attacker%" to victim
+			send "&8[&ePrison&8] &fYou beat up &e%victim%" to attacker
+			set {_reduce} to random integer from 1 to 10
+			set {_attackerLevel} to {prison.level::%uuid of attacker%}
+			set {_victimLevel} to {prison.level::%uuid of victim%}
+			if {_attackerLevel} > {_victimLevel}:
+				set {_reduce} to random integer from 1 to 3
+			if ip of attacker = ip of victim:
+				set {_reduce} to 0
+			set {prison.boost.multiplier::%uuid of victim%} to {prison.boost.multiplier::%uuid of victim%} - {_reduce}
+			set {prison.boost.multiplier::%uuid of attacker%} to {prison.boost.multiplier::%uuid of attacker%} + ( {_reduce} * 2 )
+			if {prison.boost.multiplier::%uuid of victim%} < 50:
+				set {prison.boost.multiplier::%uuid of victim%} to 50
+				send "&8[&ePrison&8] &fYour Multiplier is already at the lowest 50%% Kill some people to increase it" to victim
+			else:
+				send "&8[&ePrison&8] &fYour multiplier was reduced by &e%{_reduce}%%%" to victim
+				send "&8[&ePrison&8] &fNew Multiplier&7: &a%{prison.boost.multiplier::%uuid of victim%}%" to victim
+			if {prison.boost.multiplier::%uuid of attacker%} > 175:
+				if {prison.boost.multiplier.bonus::%uuid of attacker%} is set:
+					if {prison.boost.multiplier::%uuid of attacker%} > {prison.boost.multiplier.bonus::%uuid of attacker%}:
+						send "%{prison.boost.multiplier::%uuid of attacker%}% > %{prison.boost.multiplier.bonus::%uuid of attacker%}%" to attacker
+						set {prison.boost.multiplier::%uuid of attacker%} to {prison.boost.multiplier.bonus::%uuid of attacker%}
+						send "&8[&ePrison&8] &fYour Multiplier is already at the Highest %{prison.boost.multiplier.bonus::%uuid of attacker%}%%%" to attacker
+				else:
+					set {prison.boost.multiplier::%uuid of attacker%} to 175
+					send "&8[&ePrison&8] &fYour Multiplier is already at the Highest 175%%" to attacker
+			else:
+				send "&8[&ePrison&8] &fYour multiplier was increased by &e%{_reduce} * 2%%%" to attacker
+				send "&8[&ePrison&8] &fNew Multiplier&7: &a%{prison.boost.multiplier::%uuid of attacker%}%%%" to attacker
+			apply blindness to player for 13 seconds
+			apply slowness 8 to victim for 14 seconds
+			wait 2 seconds
+			send victim title "&6Can you hear me?" for 1 seconds with 0 second fade in and 1 second fade out
+			wait 2 seconds
+			send victim title "&eWha.. what?" for 1 seconds with 1 second fade in and 1 second fade out
+			wait 2 second
+			send victim title "&6You passed out" for 2 seconds with 2 second fade in and 1 second fade out
+			wait 4 seconds
+			send victim title "&eOh?" for 1 seconds with 1 second fade in and 1 second fade out
+			wait 2 seconds
+			send victim title "&6You look fine now" for 2 seconds with 2 second fade in and 1 second fade out
+			wait 2 seconds
+			send victim title "&6Get back to work" for 2 seconds with 2 second fade in and 1 second fade out
+		else:
+			heal victim
+			apply blindness to player for 13 seconds
+			teleport victim to {prison.checkpoint::%uuid of victim%} 
+			apply slowness 8 to victim for 14 seconds
+			wait 2 seconds
+			send victim title "&6Can you hear me?" for 1 seconds with 0 second fade in and 1 second fade out
+			wait 2 seconds
+			send victim title "&eWha.. what?" for 1 seconds with 1 second fade in and 1 second fade out
+			wait 2 second
+			send victim title "&6You passed out" for 2 seconds with 2 second fade in and 1 second fade out
+			wait 4 seconds
+			send victim title "&eOh?" for 1 seconds with 1 second fade in and 1 second fade out
+			wait 2 seconds
+			send victim title "&6You look fine now" for 2 seconds with 2 second fade in and 1 second fade out
+			wait 2 seconds
+			send victim title "&6Get back to work" for 2 seconds with 2 second fade in and 1 second fade out
+command /checkstats <player>:
+	trigger:
+		message "%{prison.boost.multiplier::%uuid of arg-1%}% + %{prison.boost.multiplier.bonus::%uuid of arg-1%}%" 
+		
+on right click with item frame:
+	if player is in world "Prison":
+		if gamemode of player is not creative:
+			cancel event
+on right click with armor stand:
+	if player is in world "Prison":
+		if gamemode of player is not creative:
+			cancel event
+			
+on craft:
+	if player is in world "Prison":
+		if {prison.level::%uuid of player%} < 2:
+			if "%event-item%" is "wood_sword":
+				set {_craft2} to false
+			else if "%event-item%" is "stone_pickaxe":
+				set {_craft2} to false
+			if {_craft2} is false:	
+				cancel event
+				message "&8[&ePrison&8] &7You can't craft that until level 2"
+		if {prison.level::%uuid of player%} < 3:
+			if "%event-item%" is "stone_sword":
+				set {_craft3} to false
+			else if "%event-item%" is "iron_pickaxe":
+				set {_craft3} to false
+			else if "%event-item%" is "stone_axe":
+				set {_craft3} to false
+			if {_craft3} is false:	
+				cancel event
+				message "&8[&ePrison&8] &7You can't craft that until level 3"
+		if {prison.level::%uuid of player%} < 4:
+			if "%event-item%" is "stone_sword":
+				set {_craft4} to false
+			if {_craft4} is false:	
+				cancel event
+				message "&8[&ePrison&8] &7You can't craft that until level 4"
+		if {prison.level::%uuid of player%} < 5:
+			if "%event-item%" is "iron_boots":
+				set {_craft5} to false
+			else if "%event-item%" is "iron_axe":
+				set {_craft5} to false
+			if {_craft5} is false:	
+				cancel event
+				message "&8[&ePrison&8] &7You can't craft that until level 5"
+		if {prison.level::%uuid of player%} < 6:
+			if "%event-item%" is "iron_helmet":
+				set {_craft6} to false
+			else if "%event-item%" is "bow":
+				set {_craft6} to false
+			if {_craft6} is false:	
+				cancel event
+				message "&8[&ePrison&8] &7You can't craft that until level 6"
+		if {prison.level::%uuid of player%} < 7:
+			if "%event-item%" is "iron_leggings":
+				set {_craft7} to false
+			if {_craft7} is false:	
+				cancel event
+				message "&8[&ePrison&8] &7You can't craft that until level 7"
+		if {prison.level::%uuid of player%} < 8:
+			if "%event-item%" is "iron_chestplate":
+				set {_craft8} to false
+			if {_craft8} is false:	
+				cancel event
+				message "&8[&ePrison&8] &7You can't craft that until level 8"
+		if {prison.level::%uuid of player%} < 9:
+			if "%event-item%" is "diamond_boots":
+				set {_craft9} to false
+			if {_craft9} is false:	
+				cancel event
+				message "&8[&ePrison&8] &7You can't craft that until level 9"
+		if {prison.level::%uuid of player%} < 10:
+			if "%event-item%" is "diamond_helmet":
+				set {_craft10} to false
+			if {_craft10} is false:	
+				cancel event
+				message "&8[&ePrison&8] &7You can't craft that until level 10"
+		if {prison.level::%uuid of player%} < 11:
+			if "%event-item%" is "diamond_helmet":
+				set {_craft11} to false
+			if {_craft11} is false:	
+				cancel event
+				message "&8[&ePrison&8] &7You can't craft that until level 11"
+		if {prison.level::%uuid of player%} < 12:
+			if "%event-item%" is "diamond_chestplate":
+				set {_craft12} to false
+			if {_craft12} is false:	
+				cancel event
+				message "&8[&ePrison&8] &7You can't craft that until level 12"
+		
+on prepare enchant: 
+	if event-player is in world "Prison":
+	#	send "&bBlock: %event-block%" to event-player
+	#	message "&6Player: %event-player%"
+	#	message "&aNumber: %event-number%"
+	#	message "&eItem: %event-item%"
+		loop all enchant offers:
+			add 1 to {_offer}
+	#		message "&6&lOffer %{_offer}%:"
+	#		message "    &aCost: %cost of offer loop-value%"
+	#		message "    &aLevel: %the level of offer loop-value%"
+	#		message "    &aEnchant: %enchantment of offer loop-value%"
+			set level of offer loop-value to 1
+			set cost of offer loop-value to 5
+			if "%enchantment of offer loop-value%" is "sharpness":
+				set enchantment of offer loop-value to smite #Trolled
+			
+every 10 minutes:
+	set {_players} to 0
+	loop all players in world "Prison":
+		add 1 to {_players}
+		set {_i} to 12
+		loop 13 times:
+			if "%regions at loop-player%" contains "prison_mine_%{_i}%":
+				teleport loop-player to {pos::prison_mine%{_i}%}
+				send "&8[&6Prison&8] &eMines resetting" to loop-player
+				set {_i} to 500
+			subtract 1 from {_i}
+	if {_players} = 0:
+		stop
+	wait 1 second
+	set {_i} to 0
+	loop 13 times:
+		paste schematic "/home/snap/plugins/WorldEdit/schematics/prison_mine_%{_i}%.schematic" at {pos::prison_mine_%{_i}%_paste}	
+		add 1 to {_i}
+	wait 1 second
+	loop all players in world "Prison":
+		add 1 to {_players}
+		set {_i} to 12
+		loop 13 times:
+			if "%regions at loop-player%" contains "prison_mine_%{_i}%":
+				teleport loop-player to {pos::prison_mine%{_i}%}
+				set {_i} to 500
+			subtract 1 from {_i}
+		
+		
+		
+		
+		
+on break:
+	if player is not in world "Prison":
+		stop
+	if {prison.build::%player%} is set:
+		stop
+	if "%regions at event-block%" does not contain "prison_mine" or "prison_wood":
+		stop
+	set {_region} to "%region at event-block%"
+	set {_mine} to "%{_region}%"
+	replace all "prison_mine_" with "" in {_mine}
+	replace all "prison_wood_" with "" in {_mine}
+	replace all " in world Prison" with "" in {_mine}
+	if {prison.level::%uuid of player%} is not set:
+		set {prison.level::%uuid of player%} to 0
+	
+	set {_mine} to {_mine} parsed as integer
+	if {_mine} is not 0 or 1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9 or 10 or 11 or 12:
+		stop
+	if {_mine} > {prison.level::%uuid of player%}:
+		cancel event
+		message ""
+		message " &8[&ePrison&8] &cYou need to be rank&7: &f##%{_mine}%"
+		message ""
+		stop
+	cashout(player)
+	event.setDropItems(false)
+	event.setExpToDrop(0)
+	if event-block is stone:
+		set {_level} to {prison.level::%uuid of player%}
+		set {_level} to {_level} / 100
+		set {_chance} to .02
+		chance of 40%:
+			chance of {_chance}%:
+				give player 1 of {item::collectable_red}
+			chance of {_chance}%:
+				give player 1 of {item::collectable_blue}
+			chance of {_chance}%:
+				give player 1 of {item::collectable_yellow}
+			chance of {_chance}%:
+				give player 1 of {item::collectable_green}
+			chance of {_chance}%:
+				give player 1 of {item::collectable_orange}
+		if player's inventory can't hold 1 cobblestone:
+			set {_loc} to location of event-block
+			add .5 to y coordinate of {_loc}
+			display hologram "&cYour Inventory Is Full;&e/sell" at {_loc} to player for 3 seconds
+			stop
+		give player 2 cobblestone
+	else if event-block is cobblestone:
+		give player 2 cobblestone
+	else if event-block is coal ore:
+		give player 3 coal
+	else if event-block is iron ore:
+		give player 3 iron ore
+	else if event-block is gold ore:
+		give player 3 gold ore
+	else if event-block is oak wood log:
+		set event-block to obsidian
+		give player 3 oak wood log
+		wait 50 seconds
+		set event-block to oak wood log
+	else if event-block is spruce wood log:
+		set event-block to obsidian
+		give player 3 spruce wood log
+		wait 50 seconds
+		set event-block to spruce wood log
+	else if event-block is dark oak wood log:
+		set event-block to obsidian
+		give player 3 of {item::prison.darkoakwood}
+		wait 50 seconds
+		set event-block to dark oak wood log
+	else if event-block is birch wood log:
+		set event-block to obsidian
+		give player 3 birch wood log
+		wait 50 seconds
+		set event-block to birch wood log
+	else if event-block is jungle wood log:
+		set event-block to obsidian
+		give player 3 jungle wood log
+		wait 50 seconds
+		set event-block to jungle wood log
+	else if event-block is diamond ore:
+		give player 3 diamond
+	else if event-block is emerald ore:
+		give player 3 emerald
+	else if event-block is redstone block:
+		give player 4 redstone
+	else if event-block is gold block:
+		give player 5 gold ingots
+	else if event-block is iron block:
+		give player 5 iron ingots
+	else if event-block is diamond block:
+		if player's inventory can't hold 1 diamond:
+			message "&8[&ePrison&8] &cYour Inventory is full!"
+			stop
+		give player 5 diamonds
+	else if event-block is emerald block:
+		if player's inventory can't hold 1 emerald:
+			message "&8[&ePrison&8] &cYour Inventory is full!"
+			stop
+		give player 5 emeralds
+	else if event-block is lapis ore:
+		give player 3 lapis
+	else if event-block is lapis block:
+		give player 4 lapis 
+	else if event-block is coal block:
+		give player 6 coal
+	else if "%event-block%" is "GLOWING_REDSTONE_ORE":
+		give player 3 redstone
+
+		
+on right click with cookie:
+	if player is in world "Prison":
+		if name of player's tool contains "instant cash":
+			set {_lore} to "%lore of player's tool%"
+			if {_lore} does not contain "0" or "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9" or "0":
+				stop
+			replace all "&e" with "" in {_lore}
+			replace all "§e" with "" in {_lore}
+			replace all "&f" with "" in {_lore}
+			replace all "§f" with "" in {_lore}
+			set {_lore} to {_lore} parsed as integer
+			if {prison.boost.instantCash::%uuid of player%} is not set:
+				set {prison.boost.instantCash::%uuid of player%} to {_lore}
+			else:
+				set {prison.boost.instantCash::%uuid of player%} to {prison.boost.instantCash::%uuid of player%} + {_lore}
+			remove 1 of player's tool from player's inventory
+			message "&8[&ePrison&8] &7You will now get instant cash for the next %{prison.boost.instantCash::%uuid of player%}% Blocks"
+
+	
+function cashout(p: player):
+	wait 1 tick
+	if {prison.boost.instantCash::%{uuid::%{_p}%}%} is set:
+		if {prison.boost.instantCash::%{uuid::%{_p}%}%} > 0:
+			if {prison.boost.instantCash.disable::%{uuid::%{_p}%}%} is set:
+				stop
+					
+			set {_value} to 0
+			# Coal
+			set {_itemAmount} to amount of coal in {_p}'s inventory
+			set {_value} to {_value} + (2 * {_itemAmount})
+			remove all coal from {_p}'s inventory
+			
+			# cobblestone
+			set {_itemAmount} to amount of cobblestone in {_p}'s inventory
+			set {_value} to {_value} + (1 * {_itemAmount})
+			remove all cobblestone from {_p}'s inventory
+			
+			# iron ore
+			set {_itemAmount} to amount of iron ore in {_p}'s inventory
+			set {_value} to {_value} + (4 * {_itemAmount})
+			remove all iron ore from {_p}'s inventory
+			
+			# gold ore
+			set {_itemAmount} to amount of gold ore in {_p}'s inventory
+			set {_value} to {_value} + (15 * {_itemAmount})
+			remove all gold ore from {_p}'s inventory
+
+			# iron ingots
+			set {_itemAmount} to amount of iron ingots in {_p}'s inventory
+			set {_value} to {_value} + (12 * {_itemAmount})
+			remove all iron ingots from {_p}'s inventory
+
+			
+			# gold ingots
+			set {_itemAmount} to amount of gold ingots in {_p}'s inventory
+			set {_value} to {_value} + (33 * {_itemAmount})
+			remove all gold ingots from {_p}'s inventory
+
+			# lapis lazuli
+			set {_itemAmount} to amount of lapis lazuli in {_p}'s inventory
+			set {_value} to {_value} + (9 * {_itemAmount})
+			remove all lapis lazuli from {_p}'s inventory
+			
+			# redstone
+			set {_itemAmount} to amount of redstone in {_p}'s inventory
+			set {_value} to {_value} + (11 * {_itemAmount})
+			remove all redstone from {_p}'s inventory						
+
+			# diamond
+			set {_itemAmount} to amount of diamond in {_p}'s inventory
+			set {_value} to {_value} + (41 * {_itemAmount})
+			remove all diamond from {_p}'s inventory	
+
+			# emerald
+			set {_itemAmount} to amount of emerald in {_p}'s inventory
+			set {_value} to {_value} + (40 * {_itemAmount})
+			remove all emerald from {_p}'s inventory	
+
+			# Wood
+			set {_itemAmount} to amount of oak wood logs in {_p}'s inventory
+			add amount of oak wood logs in {_p}'s inventory to {_itemAmount}
+			add amount of spruce wood logs in {_p}'s inventory to {_itemAmount}
+			add amount of dark oak wood logs in {_p}'s inventory to {_itemAmount}
+			add amount of birch wood logs in {_p}'s inventory to {_itemAmount}
+			set {_value} to {_value} + (15 * {_itemAmount})
+			remove all oak wood logs from {_p}'s inventory	
+			remove all spruce wood logs from {_p}'s inventory	
+			remove all dark oak wood logs from {_p}'s inventory	
+			remove all birch wood logs from {_p}'s inventory	
+			remove all jungle wood logs from {_p}'s inventory	
+			if {prison.boost.multiplier::%{uuid::%{_p}%}%} is not set:
+				set {prison.boost.multiplier::%{uuid::%{_p}%}%} to 100
+				
+			set {_value} to {_value} * {prison.boost.multiplier::%{uuid::%{_p}%}%}
+			
+			if {prison.level::%{uuid::%{_p}%}%} = 0:
+				set {_multiplier} to .5
+			else:
+				set {_multiplier} to {prison.level::%{uuid::%{_p}%}%} * 2
+				
+			set {_value} to {_value} * {_multiplier}
+			add {_value} to {prison.balance::%{uuid::%{_p}%}%}
+			set {prison.boost.instantCash::%{uuid::%{_p}%}%} to {prison.boost.instantCash::%{uuid::%{_p}%}%} - 1
+			send action bar from "&aYou got &2$&a%{_value}% &7| &d%{prison.boost.instantCash::%{uuid::%{_p}%}%}% &eInstant Cash Left" to {_p}
+			
+		else:
+			delete {prison.boost.instantCash::%{uuid::%{_p}%}%}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

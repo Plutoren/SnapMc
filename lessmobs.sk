@@ -1,0 +1,38 @@
+on spawn of elder guardian:
+	wait 7 seconds
+	kill event-entity
+	
+	
+on spawn of guardian:
+	wait 8 seconds
+	kill event-entity
+	
+command /checkall:
+	permission: is.op
+	trigger:
+		set {_unnamedAnimals} to 0
+		set {_namedAnimals} to 0
+		loop all entities:
+			if loop-entity is a animal:
+				set {_chunkX} to rounded up x coordinate of loop-entity / 16
+				set {_chunkZ} to rounded up z coordinate of loop-entity / 16
+				if {_animals.chunk.count::%{_chunkX}% %{_chunkZ}%} is not set:
+					set {_animals.chunk.count::%{_chunkX}% %{_chunkZ}%} to 1
+				else:
+					add 1 to {_animals.chunk.count::%{_chunkX}% %{_chunkZ}%}
+				if "%custom name of loop-entity%" is "":
+					add 1 to {_unnamedAnimals}
+				else:
+					add 1 to {_namedAnimals}
+		loop {_animals.chunk.count::*}:
+			if loop-value > 10:
+				message "There are %loop-value% mobs at chunk %loop-index%"
+		message "&eTotal UnNamed Animals&7: &f%{_unnamedAnimals}%"
+		message "&eTotal Named Animals&7: &f%{_namedAnimals}%"
+		
+command /killnear <integer>:
+	permission: is.op
+	trigger:
+		loop entities in radius arg-1 of player:
+			if loop-entity is not a player:
+				kill loop-entity

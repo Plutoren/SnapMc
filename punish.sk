@@ -1,0 +1,1095 @@
+
+
+
+
+		
+
+command /hist <text>:
+	permission: is.staff
+	trigger:
+		if {uuid::%arg-1%} is not set:
+			message "&8[&bSnap&8] &cThat player has never joined the server"
+			stop
+		set {_uuid} to {uuid::%arg-1%}
+		message "&c&lPunishment List for %arg-1%"
+		
+		
+		# Kicks
+		set {_i} to 0
+		loop {punish.kick.reason::%{_uuid}%::*}:
+			add 1 to {_i} 
+			
+			set {_staff} to {punish.kick.staff::%{_uuid}%::%{_i}%}
+			
+			
+			message "&eKick %{_i}%&8. &7%{punish.kick.reason::%{_uuid}%::%{_i}%}%"
+			
+			if {_staff} is not set:
+				message " &7- &3Staff&8: &7Not Recorded"
+			else:
+				message " &7- &3Staff: &b%{_staff}%"
+				
+			
+		# Mutes
+		set {_i} to 0
+		loop {punish.mute.reason::%{_uuid}%::*}:
+			add 1 to {_i} 
+			set {_startDate} to {punish.mute.start::%{_uuid}%::%{_i}%}
+			set {_duration}  to {punish.mute.duration::%{_uuid}%::%{_i}%}
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			set {_staff} to {punish.mute.staff::%{_uuid}%::%{_i}%}
+			if {_timeUntilExpiration} is not set:
+				
+				message "&dMute %{_i}%. &7%{punish.mute.reason::%{_uuid}%::%{_i}%}%"
+				message " &7- &8Time not recorded"
+			
+			else:
+				if {_startDate} was less than {_duration} ago:
+					message "&d&lMute %{_i}%&8. &7%{punish.mute.reason::%{_uuid}%::%{_i}%}%"
+					message " &7- &eTime Left: &b &e%{_timeUntilExpiration}%"
+				else:
+					message "&dMute %{_i}%&8. &7%{punish.mute.reason::%{_uuid}%::%{_i}%}%"
+					message " &7- &aExpired on: &b%{_endDate}% &6Duration: &7%{_duration}%"
+			if {_staff} is not set:
+				message " &7- &3Staff&8: &7Not Recorded"
+			else:
+				message " &7- &3Staff: &b%{_staff}%"
+				
+		# Bans
+		delete {_staff}
+		delete {_now}
+		delete {_timeUntilExpiration}
+		delete {_duration}
+		delete {_endDate}
+		delete {_startDate}
+		set {_i} to 0
+		delete {_staff}
+		loop {punish.ban.reason::%{_uuid}%::*}:
+			add 1 to {_i} 
+			set {_startDate} to {punish.ban.start::%{_uuid}%::%{_i}%}
+			set {_duration}  to {punish.ban.duration::%{_uuid}%::%{_i}%}
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			set {_staff} to {punish.ban.staff::%{_uuid}%::%{_i}%}
+			if {_timeUntilExpiration} is not set:
+				message "&cBan %{_i}%. &7%{punish.ban.reason::%{_uuid}%::%{_i}%}%"
+				message " &7- &8Time not recorded"
+			else:
+				if {_startDate} was less than {_duration} ago:
+					message "&c&lBan %{_i}%&8. &7%{punish.ban.reason::%{_uuid}%::%{_i}%}%"
+					message " &7- &eTime Left: &b &e%{_timeUntilExpiration}%"
+				else:
+					message "&cBan %{_i}%&8. &7%{punish.ban.reason::%{_uuid}%::%{_i}%}%"
+					message " &7- &aExpired on: &b%{_endDate}% &6Duration: &7%{_duration}%"
+			
+			if {_staff} is not set:
+				message " &7- &3Staff&8: &7Not Recorded"
+			else:
+				message " &7- &3Staff&8: &b%{_staff}%"
+					
+					
+		message ""
+		if {punish.mute::%{_uuid}%} is set:
+			message "&c&lCurrently Muted"
+		if {punish.ban::%{_uuid}%} is set:
+			message "&c&lCurrently Banned"
+			
+command /history [<text>]:
+	permission: is.staff
+	trigger:
+		if arg-1 is not set:
+			message "&c&lUsage /history (name)"
+			stop
+		
+		wait 1 tick
+		open chest with 6 row named "           &8-=[ &1History &8]=-" to player
+		wait 1 ticks									#
+		set {_i} to 0									#
+		loop 54 times:									#
+			format slot {_i} of player with gray stained glass pane named "&7" to close
+			add 1 to {_i}	 							#							
+		
+		
+		set {_slot} to -1
+		if {uuid::%arg-1%} is not set:
+			message "&8[&bSnap&8] &cThat player has never joined the server"
+			stop
+		set {_uuid} to {uuid::%arg-1%}
+		
+		
+		# Kicks
+		set {_i} to 0
+		loop {punish.kick.reason::%{_uuid}%::*}:
+			add 1 to {_i} 
+			add 1 to {_slot}
+			if {_slot} >= 54:
+				message "&c&lPunish &7- &cMore than 54 punishments, use /hist (name)"
+				stop
+			set {_staff} to {punish.kick.staff::%{_uuid}%::%{_i}%}
+			
+			
+			set {_timeOfKick} to {punish.kick.time::%{_uuid}%::%{_i}%} 
+			if {_timeOfKick} is not set:
+				if {_staff} is not set:
+					format slot {_slot} of player with yellow wool block named "&6&lPlayer: &f%arg-1%" with lore " &e&lKick &e##%{_i}%.", "", " &dReason&8: &7%{punish.kick.reason::%{_uuid}%::%{_i}%}% ", " &3&lStaff&8: &3Not Recorded  ", " &eKick date&8: &8Not Recorded  ", " " to close
+		
+				else:
+					format slot {_slot} of player with yellow wool block named "&6&lPlayer: &f%arg-1%" with lore " &e&lKick &e##%{_i}%.", "", " &dReason&8: &7%{punish.kick.reason::%{_uuid}%::%{_i}%}% ", " &3&lStaff: &3%{_staff}%  ", " &eKick date&8: &8Not Recorded  ", " " to close
+			else:
+				if {_staff} is not set:
+					format slot {_slot} of player with yellow wool block named "&6&lPlayer: &f%arg-1%" with lore " &e&lKick &e##%{_i}%.", "", " &dReason&8: &7%{punish.kick.reason::%{_uuid}%::%{_i}%}% ", " &3&lStaff&8: &3Not Recorded  ", " &eKick date on&8: &b%{_timeOfKick}%  ", " " to close
+		
+				else:
+					format slot {_slot} of player with yellow wool block named "&6&lPlayer: &f%arg-1%" with lore " &e&lKick &e##%{_i}%.", "", " &dReason&8: &7%{punish.kick.reason::%{_uuid}%::%{_i}%}% ", " &3&lStaff: &3%{_staff}%  ", " &eKick date on&8: &b%{_timeOfKick}%  ", " " to close
+			
+
+				
+			
+		# Mutes
+		set {_i} to 0
+		loop {punish.mute.reason::%{_uuid}%::*}:
+			add 1 to {_i} 
+			add 1 to {_slot}
+			if {_slot} >= 54:
+				message "&c&lPunish &7- &cMore than 54 punishments, use /hist (name)"
+				stop
+				
+			set {_startDate} to {punish.mute.start::%{_uuid}%::%{_i}%}
+			set {_duration}  to {punish.mute.duration::%{_uuid}%::%{_i}%}
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			set {_staff} to {punish.mute.staff::%{_uuid}%::%{_i}%}
+			set {_reason} to {punish.mute.reason::%{_uuid}%::%{_i}%}
+			set {_reasonSplit::*} to {_reason} split at " "
+			if {_reasonSplit::6} is set:
+				set {_reason} to ""
+				set {_index} to 0
+				loop {_reasonSplit::*}:
+					add 1 to {_index}
+					if {_index} = 1:
+						set {_reason} to "%{_reasonSplit::%{_index}%}%"
+					else if {_index} = 6 or 12 or 18 or 24 or 30 or 36 or 42:
+						set {_reason} to "%{_reason}%     ", "&7            %{_reasonSplit::%{_index}%}%"
+							
+					else:
+						set {_reason} to "%{_reason}% %{_reasonSplit::%{_index}%}%"
+					
+			if {_timeUntilExpiration} is not set:
+				if {_staff} is not set:
+					format slot {_slot} of player with magenta wool block named "&6&lPlayer: &f%arg-1%" with lore " &9&lMute &9##%{_i}%.", "", " &dReason&8: &7%{_reason}% ", " &3&lStaff: &3Not Recorded  ", " &eTime&8: &8Not Recorded ", " " to close
+			
+				else:
+					format slot {_slot} of player with magenta wool block named "&6&lPlayer: &f%arg-1%" with lore " &9&lMute &9##%{_i}%.", "", " &dReason&8: &7%{_reason}% ", " &3&lStaff: &3%{_staff}%  ", " &eTime&8: &8Not Recorded ", " " to close
+			
+				
+			else:
+				if {_staff} is not set:
+					if {_startDate} was less than {_duration} ago:
+					
+						format slot {_slot} of player with glowing magenta wool block named "&6&lPlayer: &f%arg-1%" with lore " &9&lMute &9##%{_i}%.", "", " &dReason&8: &7%{_reason}% ", " &3&lStaff: &3Not Recorded  ", " &eTime Left&8: &b%{_timeUntilExpiration}% ", " &aStart Date&8: &7%{_startDate}% ", " &2End Date&8: &7%{_endDate}% ", " " to close
+						
+					else:
+						format slot {_slot} of player with magenta wool block named "&6&lPlayer: &f%arg-1%" with lore " &9&lMute &9##%{_i}%.", "", " &dReason&8: &7%{_reason}% ", " &3&lStaff: &3Not Recorded  ", " &eTime Left&8: &bExpired ", " &aStart Date&8: &7%{_startDate}% ", " &2End Date&8: &7%{_endDate}% ", " " to close
+				else:
+					if {_startDate} was less than {_duration} ago:
+					
+						format slot {_slot} of player with glowing magenta wool block named "&6&lPlayer: &f%arg-1%" with lore " &9&lMute &9##%{_i}%.", "", " &dReason&8: &7%{_reason}% ", " &3&lStaff: &3%{_staff}% ", " &eTime Left&8: &b%{_timeUntilExpiration}% ", " &aStart Date&8: &7%{_startDate}% ", " &2End Date&8: &7%{_endDate}% ", " " to close
+						
+					else:
+						format slot {_slot} of player with magenta wool block named "&6&lPlayer: &f%arg-1%" with lore " &9&lMute &9##%{_i}%.", "", " &dReason&8: &7%{_reason}% ", " &3&lStaff: &3%{_staff}%  ", " &eTime Left&8: &bExpired ", " &aStart Date&8: &7%{_startDate}% ", " &2End Date&8: &7%{_endDate}% ", " " to close
+				
+					
+		
+		# Bans
+		set {_i} to 0
+		delete {_staff}
+		delete {_now}
+		delete {_timeUntilExpiration}
+		delete {_duration}
+		delete {_endDate}
+		delete {_startDate}
+		loop {punish.ban.reason::%{_uuid}%::*}:
+			add 1 to {_i} 
+			add 1 to {_slot}
+			if {_slot} >= 54:
+				message "&c&lPunish &7- &cMore than 54 punishments, use /hist (name)"
+				stop
+			set {_startDate} to {punish.ban.start::%{_uuid}%::%{_i}%}
+			set {_duration}  to {punish.ban.duration::%{_uuid}%::%{_i}%}
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			set {_staff} to {punish.ban.staff::%{_uuid}%::%{_i}%}
+			set {_reason} to {punish.ban.reason::%{_uuid}%::%{_i}%}
+			set {_reasonSplit::*} to {_reason} split at " "
+			if {_reasonSplit::6} is set:
+				set {_reason} to ""
+				set {_index} to 0
+				loop {_reasonSplit::*}:
+					add 1 to {_index}
+					if {_index} = 1:
+						set {_reason} to "%{_reasonSplit::%{_index}%}%"
+					else if {_index} = 6 or 12 or 18 or 24 or 30 or 36 or 42:
+						set {_reason} to "%{_reason}%     ", "&7            %{_reasonSplit::%{_index}%}%"
+							
+					else:
+						set {_reason} to "%{_reason}% %{_reasonSplit::%{_index}%}%"
+					
+			if {_timeUntilExpiration} is not set:
+				if {_staff} is not set:
+					format slot {_slot} of player with red wool block named "&6&lPlayer: &f%arg-1%" with lore " &4&lBan &c##%{_i}%.", "", " &dReason&8: &7%{_reason}% ", " &3&lStaff: &3Not Recorded  ", " &eTime&8: &8Not Recorded ", " " to close
+			
+				else:
+					format slot {_slot} of player with red wool block named "&6&lPlayer: &f%arg-1%" with lore " &4&lBan &c##%{_i}%.", "", " &dReason&8: &7%{_reason}% ", " &3&lStaff: &3%{_staff}%  ", " &eTime&8: &8Not Recorded ", " " to close
+			
+				
+			else:
+				if {_staff} is not set:
+					if {_startDate} was less than {_duration} ago:
+					
+						format slot {_slot} of player with glowing red wool block named "&6&lPlayer: &f%arg-1%" with lore " &4&lBan &c##%{_i}%.", "", " &dReason&8: &7%{_reason}% ", " &3&lStaff: &3Not Recorded  ", " &eTime Left&8: &b%{_timeUntilExpiration}% ", " &aStart Date&8: &7%{_startDate}% ", " &2End Date&8: &7%{_endDate}% ", " " to close
+						
+					else:
+						format slot {_slot} of player with red wool block named "&6&lPlayer: &f%arg-1%" with lore " &4&lBan &c##%{_i}%.", "", " &dReason&8: &7%{_reason}% ", " &3&lStaff: &3Not Recorded  ", " &eTime Left&8: &bExpired ", " &aStart Date&8: &7%{_startDate}% ", " &2End Date&8: &7%{_endDate}% ", " " to close
+				else:
+					if {_startDate} was less than {_duration} ago:
+					
+						format slot {_slot} of player with glowing red wool block named "&6&lPlayer: &f%arg-1%" with lore " &4&lBan &c##%{_i}%.", "", " &dReason&8: &7%{_reason}% ", " &3&lStaff: &3%{_staff}% ", " &eTime Left&8: &b%{_timeUntilExpiration}% ", " &aStart Date&8: &7%{_startDate}% ", " &2End Date&8: &7%{_endDate}% ", " " to close
+						
+					else:
+						format slot {_slot} of player with red wool block named "&6&lPlayer: &f%arg-1%" with lore " &4&lBan &c##%{_i}%.", "", " &dReason&8: &7%{_reason}% ", " &3&lStaff: &3%{_staff}%  ", " &eTime Left&8: &bExpired ", " &aStart Date&8: &7%{_startDate}% ", " &2End Date&8: &7%{_endDate}% ", " " to close
+				
+					
+					
+		
+		# if {punish.mute::%{_uuid}%} is set:
+		#	message "&c&lCurrently Muted"
+		# if {punish.ban::%{_uuid}%} is set:
+		#	message "&c&lCurrently Banned"
+			
+		
+		
+		
+
+
+on join:
+	set {uuid::%player%} to "%uuid of player%"
+	if {alts::%ip of player%::%player%} is not set:
+		set {alts::%ip of player%::%player's name%} to true
+	set {ip::%player%} to "%ip of player%"
+	
+	
+command /alts <text>:
+	permission: is.staff
+	trigger:
+		message "&6Alt Accounts of &e%arg-1%"
+		set {_i} to 0
+		loop {alts::%{ip::%arg-1%}%::*}:
+			add 1 to {_i}
+			message "&3Alt %{_i}%: &a%loop-index%"
+			
+command /kick [<player>] [<text>]:
+	trigger:
+		if "%player%" != "<none>":
+			if player does not have permission "is.staff":
+				message "&8[&bSnap&8] &cNope"
+				stop
+		if arg-2 is not set:
+			message "&8[&bSnap&8] &7Example: &b/kick Plutoren Noob -s"
+			stop
+		set {_player} to arg-1
+		set {_uuid} to {uuid::%{_player}%}
+		set {_reason} to arg-2
+		set {_silent} to false
+		if {_reason} contains "-s":
+			replace all "-s" with "" in {_reason}
+			set {_silent} to true
+		set {_staff} to "%player's name%"
+		if {_staff} = "<none>":
+			set {_staff} to "Console"
+		if {punish.kick.reason::%{_uuid}%::1} is not set:
+			set {punish.kick.reason::%{_uuid}%::1} to {_reason}
+			set {punish.kick.staff::%{_uuid}%::1} to "%{_staff}%"
+			set {punish.kick.time::%{_uuid}%::1} to now
+		else:
+			set {_i} to 1
+			loop {punish.kick.reason::%{_uuid}%::*}:
+				add 1 to {_i}
+			set {punish.kick.reason::%{_uuid}%::%{_i}%} to {_reason}
+			set {punish.kick.staff::%{_uuid}%::%{_i}%} to "%{_staff}%"
+			set {punish.kick.time::%{_uuid}%::%{_i}%} to now
+		
+		if {_silent} is false:
+			broadcast "&cPunish &7- &cKicked&7: &f%{_player}%"
+			broadcast "&cPunish &7- &cReason&7: &f%{_reason}%"
+			broadcast "&cPunish &7- &cStaff&7: &f%{_staff}%"
+		else:
+			loop all players:
+				if loop-player has permission "is.staff":
+					send "&dSilent&cPunish &7- &cKicked&7: &f%{_player}%" to loop-player
+					send "&dSilent&cPunish &7- &cReason&7: &f%{_reason}%" to loop-player
+					send "&dSilent&cPunish &7- &cStaff&7: &f%{_staff}%" to loop-player
+		kick {_player} due to "Kicked for: &6%{_reason}% &fby &3%{_staff}%"
+command /ipof <offlineplayer>:
+	permission: is.op
+	trigger:
+		set {_player} to arg-1
+		set {_uuid} to {uuid::%{_player}%}
+		set {_ip} to {ip::%{_player}%}
+		message "Recorded IP: %{_ip}%"
+		message "Actual IP: %ip of arg-1%"
+command /iplookup <text>:
+	permission: is.op
+	trigger:
+		loop {ip::*}:
+			if "%loop-value%" = "%arg-1%":
+				message "&e%loop-index%"
+		message "Done"
+		
+command /ipban [<text>] [<text>] [<text>] [<text>]:
+	trigger:
+		if player does not have permission "is.staff":
+			message "&8[&bSnap&8] &cNope"
+			stop
+		if arg-1 is not set:
+			message "&8[&bSnap&8] &7Example: &b/ipban Plutoren 3 days Hacking and aboose -s"
+			stop
+		set {_player} to arg-1
+		set {_uuid} to {uuid::%{_player}%}
+		set {_ip} to {ip::%{_player}%}
+		if arg-2 is set:
+			set {_arg2} to "%arg-2%"
+			if {_arg2} does not contain "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9":
+				set {_duration} to "420 days"
+				if arg-4 is set:
+					set {_reason} to "%arg-2% %arg-3% %arg-4%"
+				else if arg-3 is set:
+					set {_reason} to "%arg-2% %arg-3%"
+				else if arg-2 is set:
+					set {_reason} to "%arg-2%"
+				else:
+					set {_reason} to "No Reason"
+			else if {_arg2} contains "s" or "m" or "h" or "d" or "w" or "mo" or "y":
+				if {_arg2} contains "-s":
+					if arg-4 is set:
+						set {_reason} to "%arg-3% %arg-4%"
+					else if arg-3 is set:
+						set {_reason} to "%arg-3%"
+					else:
+						set {_reason} to "No Reason"
+					set {_silent} to true
+					
+				else:
+					if {_arg2} contains "s":
+						set {_dur::*} to {_arg2} split at "s"
+						set {_duration} to "%{_dur::1}% seconds"
+					else if {_arg2} contains "m":
+						set {_dur::*} to {_arg2} split at "m"
+						set {_duration} to "%{_dur::1}% minutes"
+					else if {_arg2} contains "h":
+						set {_dur::*} to {_arg2} split at "h"
+						set {_duration} to "%{_dur::1}% hours"
+					else if {_arg2} contains "d":
+						set {_dur::*} to {_arg2} split at "d"
+						set {_duration} to "%{_dur::1}% days"
+					else if {_arg2} contains "w":
+						set {_dur::*} to {_arg2} split at "w"
+						set {_duration} to "%{_dur::1}% weeks"
+					else if {_arg2} contains "mo":
+						set {_dur::*} to {_arg2} split at "mo"
+						set {_duration} to "%{_dur::1}% months"
+					else if {_arg2} contains "y":
+						set {_dur::*} to {_arg2} split at "y" 
+						set {_duration} to "%{_dur::1}% years"
+					if arg-4 is set:
+						set {_reason} to "%arg-2% %arg-3% %arg-4%"
+					else if arg-3 is set:
+						set {_reason} to "%arg-2% %arg-3%"
+					else if arg-2 is set:
+						set {_reason} to "%arg-2%"
+					else:
+						set {_reason} to "No Reason"
+			else:
+				if arg-1 is not set:
+					message "&8[&bSnap&8] &7Example: &b/ipban Plutoren 2 seconds Spam and being a noob -s"
+					stop
+				set {_duration} to "%arg-2% %arg-3%"
+				set {_reason} to arg-4
+		else:
+			set {_duration} to "420 days"
+		set {_duration} to {_duration} parsed as timespan
+		set {_silent} to false
+		if {_reason} contains "-s":
+			replace all "-s" with "" in {_reason}
+			set {_silent} to true
+		set {punish.ban::%{_uuid}%} to now
+		set {punish.ban.ip::%{_ip}%} to "%{_player}%"
+		set {punish.ban.duration::%{_uuid}%} to {_duration}
+		set {punish.ban.staff::%{_uuid}%} to "%player's name%"
+		if {punish.ban.reason::%{_uuid}%::1} is not set:
+			set {punish.ban.reason::%{_uuid}%::1} to "-IpBan- %{_reason}%"
+			set {punish.ban.start::%{_uuid}%::1} to now
+			set {punish.ban.duration::%{_uuid}%::1} to {_duration}
+			set {punish.ban.staff::%{_uuid}%::1} to "%player's name%"
+		else:
+			set {_i} to 1
+			loop {punish.ban.reason::%{_uuid}%::*}:
+				add 1 to {_i}
+			set {punish.ban.reason::%{_uuid}%::%{_i}%} to {_reason}
+			set {punish.ban.start::%{_uuid}%::%{_i}%} to now
+			set {punish.ban.duration::%{_uuid}%::%{_i}%} to {_duration}
+			set {punish.ban.staff::%{_uuid}%::%{_i}%} to "%player's name%"
+		
+		if {_silent} is false:
+			broadcast "&cPunish &7- &cIP Banned&7: &f%{_player}%'s name%"
+			broadcast "&cPunish &7- &cReason&7: &f%{_reason}%"
+			broadcast "&cPunish &7- &cDuration&7: &f%{_duration}%"
+			broadcast "&cPunish &7- &cStaff&7: &f%player's name%"
+		else:
+			loop all players:
+				if loop-player has permission "is.staff":
+					send "&dSilent&cPunish &7- &cIP Banned&7: &f%{_player}%" to loop-player
+					send "&dSilent&cPunish &7- &cReason&7: &f%{_reason}%" to loop-player
+					send "&dSilent&cPunish &7- &cDuration&7: &f%{_duration}%" to loop-player
+					send "&dSilent&cPunish &7- &cStaff&7: &f%player's name%" to loop-player
+		loop all players:
+			if "%ip of loop-player%" = "%{_ip}%":
+				kick loop-player due to "IP Banned for: &c%{_reason}% &ffor &6%{_duration}% &fby &3%player's name%"
+		
+				
+		
+		
+command /ban [<text>] [<text>] [<text>] [<text>]:
+	trigger:
+		if player does not have permission "is.staff":
+			if "%player%" != "<none>":
+				message "&8[&bSnap&8] &cNot supported"
+				stop
+		if arg-4 is not set:
+			message "&8[&bSnap&8] &7Example: &b/ban Plutoren 3 days Hacking and aboose -s"
+			stop
+		set {_player} to arg-1
+		set {_uuid} to {uuid::%{_player}%}
+		if arg-2 is set:
+			set {_arg2} to "%arg-2%"
+			if {_arg2} does not contain "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9":
+				set {_duration} to "120 days"
+				if arg-4 is set:
+					set {_reason} to "%arg-2% %arg-3% %arg-4%"
+				else if arg-3 is set:
+					set {_reason} to "%arg-2% %arg-3%"
+				else if arg-2 is set:
+					set {_reason} to "%arg-2%"
+				else:
+					set {_reason} to "No Reason"
+			else if {_arg2} contains "s" or "m" or "h" or "d" or "w" or "mo" or "y":
+				if {_arg2} contains "s":
+					set {_dur::*} to {_arg2} split at "s"
+					set {_duration} to "%{_dur::1}% seconds"
+				else if {_arg2} contains "m":
+					set {_dur::*} to {_arg2} split at "m"
+					set {_duration} to "%{_dur::1}% minutes"
+				else if {_arg2} contains "h":
+					set {_dur::*} to {_arg2} split at "h"
+					set {_duration} to "%{_dur::1}% hours"
+				else if {_arg2} contains "d":
+					set {_dur::*} to {_arg2} split at "d"
+					set {_duration} to "%{_dur::1}% days"
+				else if {_arg2} contains "w":
+					set {_dur::*} to {_arg2} split at "w"
+					set {_duration} to "%{_dur::1}% weeks"
+				else if {_arg2} contains "mo":
+					set {_dur::*} to {_arg2} split at "mo"
+					set {_duration} to "%{_dur::1}% months"
+				else if {_arg2} contains "y":
+					set {_dur::*} to {_arg2} split at "y" 
+					set {_duration} to "%{_dur::1}% years"
+				set {_reason} to "%arg-3% %arg-4%"
+			else:
+				if arg-3 is not set:
+					message "&8[&bSnap&8] &7Example: &b/mute Plutoren 2 seconds Spam and being a noob -s"
+					stop
+				set {_duration} to "%arg-2% %arg-3%"
+				set {_reason} to arg-4
+		else:
+			set {_duration} to "120 days"
+		set {_duration} to {_duration} parsed as timespan
+		set {_silent} to false
+		if {_reason} contains "-s":
+			replace all "-s" with "" in {_reason}
+			set {_silent} to true
+		set {_playersname} to "%player's name%"
+		if {_playersname} = "<none>":
+			set {_playersname} to "Console"
+		set {punish.ban::%{_uuid}%} to now
+		set {punish.ban.duration::%{_uuid}%} to {_duration}
+		set {punish.ban.staff::%{_uuid}%} to "%player's name%"
+		if {punish.ban.reason::%{_uuid}%::1} is not set:
+			set {punish.ban.reason::%{_uuid}%::1} to {_reason}
+			set {punish.ban.start::%{_uuid}%::1} to now
+			set {punish.ban.duration::%{_uuid}%::1} to {_duration}
+			set {punish.ban.staff::%{_uuid}%::1} to "%{_playersname}%"
+		else:
+			set {_i} to 1
+			loop {punish.ban.reason::%{_uuid}%::*}:
+				add 1 to {_i}
+			set {punish.ban.reason::%{_uuid}%::%{_i}%} to {_reason}
+			set {punish.ban.start::%{_uuid}%::%{_i}%} to now
+			set {punish.ban.duration::%{_uuid}%::%{_i}%} to {_duration}
+			set {punish.ban.staff::%{_uuid}%::%{_i}%} to "%{_playersname}%"
+		if {_silent} is false:
+			broadcast "&cPunish &7- &cBanned&7: &f%{_player}%"
+			broadcast "&cPunish &7- &cReason&7: &f%{_reason}%"
+			broadcast "&cPunish &7- &cDuration&7: &f%{_duration}%"
+			broadcast "&cPunish &7- &cStaff&7: &f%{_playersname}%"
+		else:
+			loop all players:
+				if loop-player has permission "is.staff":
+					send "&dSilent&cPunish &7- &cBanned&7: &f%{_player}%" to loop-player
+					send "&dSilent&cPunish &7- &cReason&7: &f%{_reason}%" to loop-player
+					send "&dSilent&cPunish &7- &cDuration&7: &f%{_duration}%" to loop-player
+					send "&dSilent&cPunish &7- &cStaff&7: &f%{_playersname}%" to loop-player
+		loop all players:
+			if "%loop-player%" = "%{_player}%":
+				kick loop-player due to "Banned for: &c%{_reason}% &ffor &6%{_duration}% &fby &3%{_playersname}%"
+		
+command /unban [<text>] [<text>]:
+	trigger:
+		if player does not have permission "is.staff":
+			if "%player%" != "<none>":
+				message "&8[&bSnap&8] &cNot supported"
+				stop
+		if arg-1 is not set:
+			message "&8[&bSnap&8] &7Example: &b/unban Plutoren -s"
+			stop
+		
+		set {_ip} to {ip::%{_player}%}
+		set {_player} to arg-1
+		set {_uuid} to {uuid::%{_player}%}
+		if {_uuid} is not set:
+			message "&cPunish &7- No uuid recorded for &e%{_player}%"
+			stop
+		if {punish.ban::%{_uuid}%} is set:
+			if "%arg-2%" is "-s":
+				loop all players:
+					if loop-player has permission "is.staff":
+						send "&dSilent&cPunish &7- &cUnbanmed&7: &f%{_player}%" to loop-player
+						send "&dSilent&cPunish &7- &cStaff&7: &f%player's name%" to loop-player
+			else:
+				broadcast "&cPunish &7- &cUnbanned&7: &f%{_player}%"
+				broadcast "&cPunish &7- &cStaff&7: &f%player's name%"
+			delete {punish.ban::%{_uuid}%} 
+			delete {punish.ban.ip::%{_ip}%}
+		else:
+			if {punish.ban.ip::%{_ip}%} is set:
+				if "%arg-2%" is "-s":
+					loop all players:
+						if loop-player has permission "is.staff":
+							send "&dSilent&cPunish &7- &cUnIPbaned&7: &f%{_player}%" to loop-player
+							send "&dSilent&cPunish &7- &cStaff&7: &f%player's name%" to loop-player
+				else:
+					broadcast "&cPunish &7- &cUnbanned&7: &f%{_player}%"
+					broadcast "&cPunish &7- &cStaff&7: &f%player's name%"
+				
+				delete {punish.ban::%{_uuid}%} 
+				delete {punish.ban.ip::%{_ip}%}
+				
+			else:	
+				message "&cPunish &7- &e%arg-1% &cis not banned"
+		delete {punish.ban::%{_uuid}%} 
+		delete {punish.ban.ip::%{_ip}%} 
+		
+		
+command /unmute [<text>] [<text>]:
+	trigger:
+		if player does not have permission "is.staff":
+			if "%player%" != "<none>":
+				message "&8[&bSnap&8] &cNot supported"
+				stop
+		if arg-1 is not set:
+			message "&8[&bSnap&8] &7Example: &b/unmute Plutoren -s"
+			stop
+		
+		set {_playersname} to "%player's name%"
+		if {_playersname} = "<none>":
+			set {_playersname} to "Console"
+		set {_player} to arg-1
+		set {_uuid} to {uuid::%{_player}%}
+		set {_ip} to {ip::%{_player}%}
+		if {punish.mute::%{_uuid}%} is set:
+			if "%arg-2%" is "-s":
+				loop all players:
+					if loop-player has permission "is.staff":
+						send "&dSilent&cPunish &7- &cUnmuted&7: &f%{_player}%" to loop-player
+						send "&dSilent&cPunish &7- &cStaff&7: &f%{_playersname}%" to loop-player
+			else:
+				broadcast "&cPunish &7- &cUnmuted&7: &f%{_player}%"
+				broadcast "&cPunish &7- &cStaff&7: &f%{_playersname}%"
+			delete {punish.mute::%{_uuid}%} 
+			delete {punish.mute.ip::%{_ip}%}
+		else if {punish.mute.ip::%{_ip}%} is set:
+			if "%arg-2%" is "-s":
+				loop all players:
+					if loop-player has permission "is.staff":
+						send "&dSilent&cPunish &7- &cUnmuted&7: &f%{_player}%" to loop-player
+						send "&dSilent&cPunish &7- &cStaff&7: &f%{_playersname}%" to loop-player
+			else:
+				broadcast "&cPunish &7- &cUnmuted&7: &f%{_player}%"
+				broadcast "&cPunish &7- &cStaff&7: &f%{_playersname}%"
+			delete {punish.mute::%{_uuid}%} 
+			delete {punish.mute.ip::%{_ip}%}
+		else:
+			message "&cPunish &7- &e%arg-1% &cis not muted"
+			
+command /autojoin <text>:
+	permission: is.op
+	trigger:
+		set {punish.autojoin.blacklist%{uuid::%arg-1%}%} to 20
+		message "&cPunish &7- &7Added %arg-1% to not broadcast joins"
+		
+
+on join:
+	if {punish.ban::%uuid of player%} is set:
+		if {punish.ban.duration::%uuid of player%} is set:
+			set {_time} to {punish.ban.duration::%uuid of player%} parsed as timespan 
+			if {punish.ban::%uuid of player%} was less than {punish.ban.duration::%uuid of player%} ago:
+				wait 2 tick
+				
+				set {_uuid} to uuid of player
+				
+				
+				
+				
+				
+				
+				
+				
+				set {_i} to 0
+				delete {_staff}
+				delete {_now}
+				delete {_timeUntilExpiration}
+				delete {_duration}
+				delete {_endDate}
+				delete {_startDate}
+				set {_i} to size of {punish.ban.reason::%{_uuid}%::*}
+				set {_startDate} to {punish.ban.start::%{_uuid}%::%{_i}%}
+				set {_duration}  to {punish.ban.duration::%{_uuid}%::%{_i}%}
+				set {_now} to now
+				set {_endDate} to {_startDate}
+				add {_duration} to {_endDate}
+				set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+				set {_staff} to {punish.ban.staff::%{_uuid}%::%{_i}%}
+				set {_reason} to {punish.ban.reason::%{_uuid}%::%{_i}%}
+				set {_reasonSplit::*} to {_reason} split at " "
+				if {_reasonSplit::6} is set:
+					set {_reason} to ""
+					set {_index} to 0
+					loop {_reasonSplit::*}:
+						add 1 to {_index}
+						if {_index} = 1:
+							set {_reason} to "%{_reasonSplit::%{_index}%}%"
+						else if {_index} = 6 or 12 or 18 or 24 or 30 or 36 or 42:
+							set {_reason} to "&7%{_reason}%%nl%&7%{_reasonSplit::%{_index}%}%"
+								
+						else:
+							set {_reason} to "%{_reason}% %{_reasonSplit::%{_index}%}%"
+						
+			
+				if {_staff} is not set:
+					set {_staff} to "Console"
+				if {_staff} is "<none>":
+					set {_staff} to "Console"
+				
+				
+				
+				kick player due to "&cYou are banned%nl%&7%{_reason}%%nl%&3&lStaff: &3%{_staff}%%nl%&eTime Left&8: &b%{_timeUntilExpiration}%%nl%&aStart Date&8: &7%{_startDate}%%nl%&2End Date&8: &7%{_endDate}%"
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				if {punish.autojoin.blacklist%uuid of player%} is not set:
+					set {punish.autojoin.blacklist%uuid of player%} to 1
+				else:
+					add 1 to {punish.autojoin.blacklist%uuid of player%}
+				if {punish.autojoin.blacklist%uuid of player%} < 20:
+					loop all players:
+						if loop-player has permission "is.staff":
+							send "&cPunish &7- &c%player's name% tried to join but is banned" to loop-player
+			else:
+				set {_i} to 0
+				loop {punish.ban.reason::%uuid of player%::*}:
+					add 1 to {_i}
+				if {punish.ban.reason::%uuid of player%::%{_i}%} is set:
+					loop all players:
+						if loop-player has permission "is.staff":
+							send "&cPunish &7- &c%player's name% is joining for the first time after being banned" to loop-player
+				delete {punish.ban::%uuid of player%}
+				delete {punish.ban.duration::%uuid of player%}
+				delete {punish.ban.ip::%ip of player%}
+	else if {punish.ban.ip::%ip of player%} is set:
+		wait 1 tick
+		kick player due to "&c%{punish.ban.ip::%ip of player%}% has been ip banned, once they log in this IP will be unbanned"
+		loop all players:
+			if loop-player has permission "is.staff":
+				send "&cPunish &7- &c%player's name% tried to join but is an alt of %{punish.ban.ip::%ip of player%}%" to loop-player
+
+command /unbanip <text>:
+	permission: is.op
+	trigger:
+		message "&cPunish &7- Done"
+		delete {punish.ban.ip::%arg-1%}
+		
+	
+command /mute [<text>] [<text>] [<text>] [<text>]:
+	trigger:
+		if player does not have permission "is.staff":
+			message "&8[&bSnap&8] &cNope"
+			stop
+		if arg-4 is not set:
+			message "&8[&bSnap&8] &7Example: &b/mute Plutoren 2 seconds Spam and being a noob -s"
+			stop
+		set {_player} to arg-1
+		set {_uuid} to {uuid::%{_player}%}
+		if arg-2 is set:
+			set {_arg2} to "%arg-2%"
+			if {_arg2} does not contain "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9":
+				set {_duration} to "120 days"
+				if arg-4 is set:
+					set {_reason} to "%arg-2% %arg-3% %arg-4%"
+				else if arg-3 is set:
+					set {_reason} to "%arg-2% %arg-3%"
+				else if arg-2 is set:
+					set {_reason} to "%arg-2%"
+				else:
+					set {_reason} to "No Reason"
+			else if {_arg2} contains "s" or "m" or "h" or "d" or "w" or "mo" or "y":
+				if {_arg2} contains "s":
+					set {_dur::*} to {_arg2} split at "s"
+					set {_duration} to "%{_dur::1}% seconds"
+				else if {_arg2} contains "m":
+					set {_dur::*} to {_arg2} split at "m"
+					set {_duration} to "%{_dur::1}% minutes"
+				else if {_arg2} contains "h":
+					set {_dur::*} to {_arg2} split at "h"
+					set {_duration} to "%{_dur::1}% hours"
+				else if {_arg2} contains "d":
+					set {_dur::*} to {_arg2} split at "d"
+					set {_duration} to "%{_dur::1}% days"
+				else if {_arg2} contains "w":
+					set {_dur::*} to {_arg2} split at "w"
+					set {_duration} to "%{_dur::1}% weeks"
+				else if {_arg2} contains "mo":
+					set {_dur::*} to {_arg2} split at "mo"
+					set {_duration} to "%{_dur::1}% months"
+				else if {_arg2} contains "y":
+					set {_dur::*} to {_arg2} split at "y" 
+					set {_duration} to "%{_dur::1}% years"
+				set {_reason} to "%arg-3% %arg-4%"
+			else:
+				if arg-3 is not set:
+					message "&8[&bSnap&8] &7Example: &b/mute Plutoren 2 seconds Spam and being a noob -s"
+					stop
+				set {_duration} to "%arg-2% %arg-3%"
+				set {_reason} to arg-4
+		else:
+			set {_duration} to "120 days"
+		set {_duration} to {_duration} parsed as timespan
+		set {_silent} to false
+		if {_reason} contains "-s":
+			replace all "-s" with "" in {_reason}
+			set {_silent} to true
+		set {punish.mute::%{_uuid}%} to now
+		set {punish.mute.duration::%{_uuid}%} to "%{_duration}%"
+		set {punish.mute.staff::%{_uuid}%} to "%player's name%"
+		if {punish.mute.reason::%{_uuid}%::1} is not set:
+			set {punish.mute.reason::%{_uuid}%::1} to {_reason}
+			set {punish.mute.start::%{_uuid}%::1} to now
+			set {punish.mute.duration::%{_uuid}%::1} to {_duration}
+			set {punish.mute.staff::%{_uuid}%::1} to "%player's name%"
+		else:
+			set {_i} to 1
+			loop {punish.mute.reason::%{_uuid}%::*}:
+				add 1 to {_i}
+			set {punish.mute.reason::%{_uuid}%::%{_i}%} to {_reason}
+			set {punish.mute.start::%{_uuid}%::%{_i}%} to now
+			set {punish.mute.duration::%{_uuid}%::%{_i}%} to {_duration}
+			set {punish.mute.staff::%{_uuid}%::%{_i}%} to "%player's name%"
+		
+		if {_silent} is false:
+			loop all players:
+				if "%loop-player%" is not "%{_player}%":
+					send "&cPunish &7- &cMuted&7: &f%{_player}%" to loop-player
+					send "&cPunish &7- &cReason&7: &f%{_reason}%" to loop-player
+					send "&cPunish &7- &cDuration&7: &f%{_duration}%" to loop-player
+					send "&cPunish &7- &cStaff&7: &f%player's name%" to loop-player
+		else:
+			loop all players:
+				if loop-player has permission "is.staff":
+					send "&dSilent&cPunish &7- &cMuted&7: &f%{_player}%" to loop-player
+					send "&dSilent&cPunish &7- &cReason&7: &f%{_reason}%" to loop-player
+					send "&dSilent&cPunish &7- &cDuration&7: &f%{_duration}%" to loop-player
+					send "&dSilent&cPunish &7- &cStaff&7: &f%player's name%" to loop-player
+
+
+					
+	
+command /ipmute [<text>] [<text>] [<text>] [<text>]:
+	trigger:
+		if player does not have permission "is.staff":
+			message "&8[&bSnap&8] &cNope"
+			stop
+		if arg-1 is not set:
+			message "&8[&bSnap&8] &7Example: &b/mute Plutoren 2 seconds Spam and being a noob -s"
+			stop
+		set {_player} to arg-1
+		set {_ip} to {ip::%{_player}%}
+		set {_uuid} to {uuid::%{_player}%}
+		if arg-2 is set:
+			set {_arg2} to "%arg-2%"
+			if {_arg2} does not contain "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9":
+				set {_duration} to "120 days"
+				if arg-4 is set:
+					set {_reason} to "%arg-2% %arg-3% %arg-4%"
+				else if arg-3 is set:
+					set {_reason} to "%arg-2% %arg-3%"
+				else if arg-2 is set:
+					set {_reason} to "%arg-2%"
+				else:
+					set {_reason} to "No Reason"
+			else if {_arg2} contains "s" or "m" or "h" or "d" or "w" or "mo" or "y":
+				if {_arg2} contains "s":
+					set {_dur::*} to {_arg2} split at "s"
+					set {_duration} to "%{_dur::1}% seconds"
+				else if {_arg2} contains "m":
+					set {_dur::*} to {_arg2} split at "m"
+					set {_duration} to "%{_dur::1}% minutes"
+				else if {_arg2} contains "h":
+					set {_dur::*} to {_arg2} split at "h"
+					set {_duration} to "%{_dur::1}% hours"
+				else if {_arg2} contains "d":
+					set {_dur::*} to {_arg2} split at "d"
+					set {_duration} to "%{_dur::1}% days"
+				else if {_arg2} contains "w":
+					set {_dur::*} to {_arg2} split at "w"
+					set {_duration} to "%{_dur::1}% weeks"
+				else if {_arg2} contains "mo":
+					set {_dur::*} to {_arg2} split at "mo"
+					set {_duration} to "%{_dur::1}% months"
+				else if {_arg2} contains "y":
+					set {_dur::*} to {_arg2} split at "y" 
+					set {_duration} to "%{_dur::1}% years"
+				set {_reason} to "%arg-3% %arg-4%"
+			else:
+				if arg-3 is not set:
+					message "&8[&bSnap&8] &7Example: &b/mute Plutoren 2 seconds Spam and being a noob -s"
+					stop
+				set {_duration} to "%arg-2% %arg-3%"
+				set {_reason} to arg-4
+		else:
+			set {_duration} to "120 days"
+		set {_duration} to {_duration} parsed as timespan
+		set {_silent} to false
+		if {_reason} contains "-s":
+			replace all "-s" with "" in {_reason}
+			set {_silent} to true
+		set {punish.mute::%{_uuid}%} to now
+		set {punish.mute.ip::%{_ip}%} to "{_player}"
+		set {punish.mute.duration::%{_uuid}%} to "%{_duration}%"
+		set {punish.mute.staff::%{_uuid}%} to "%player's name%"
+		if {punish.mute.reason::%{_uuid}%::1} is not set:
+			set {punish.mute.reason::%{_uuid}%::1} to {_reason}
+			set {punish.mute.start::%{_uuid}%::1} to now
+			set {punish.mute.duration::%{_uuid}%::1} to {_duration}
+			set {punish.mute.staff::%{_uuid}%::1} to "%player's name%"
+		else:
+			set {_i} to 1
+			loop {punish.mute.reason::%{_uuid}%::*}:
+				add 1 to {_i}
+			set {punish.mute.reason::%{_uuid}%::%{_i}%} to {_reason}
+			set {punish.mute.start::%{_uuid}%::%{_i}%} to now
+			set {punish.mute.duration::%{_uuid}%::%{_i}%} to {_duration}
+			set {punish.mute.staff::%{_uuid}%::%{_i}%} to "%player's name%"
+		
+		
+		if {_silent} is false:
+			loop all players:
+				if "%loop-player%" is not "%{_player}%":
+					if "%ip of loop-player%" != "%{_ip}%":
+						send "&cPunish &7- &cMuted&7: &f%{_player}'s name%" to loop-player
+						send "&cPunish &7- &cReason&7: &f%{_reason}%" to loop-player
+						send "&cPunish &7- &cDuration&7: &f%{_duration}%" to loop-player
+						send "&cPunish &7- &cStaff&7: &f%player's name%" to loop-player
+		else:
+			loop all players:
+				if loop-player has permission "is.staff":
+					send "&dSilent&cPunish &7- &cMuted&7: &f%{_player}'s name%" to loop-player
+					send "&dSilent&cPunish &7- &cReason&7: &f%{_reason}%" to loop-player
+					send "&dSilent&cPunish &7- &cDuration&7: &f%{_duration}%" to loop-player
+					send "&dSilent&cPunish &7- &cStaff&7: &f%player's name%" to loop-player
+					
+on command:
+	if "%command%" = "tell" or "msg" or "message" or "t" or "m":
+		set {_arg} to "%arguments%"
+		set {_args::*} to {_arg} split at " "
+		set {msg.reply::%player%} to "%{_args::1}%"
+		set {msg.reply::%{_args::1}%} to "%player%"
+
+
+on command:
+	if {punish.mute::%uuid of player%} is set:
+		if {punish.mute.duration::%uuid of player%} is set:
+			if "%command%" = "tell" or "msg" or "m" or "message" or "t" or "r" or "reply":
+				set {_time} to {punish.mute.duration::%uuid of player%} parsed as timespan
+				if {punish.mute::%uuid of player%} was less than {_time} ago:
+					cancel event
+					set {_arg} to "%arguments%"
+					set {_args::*} to {_arg} split at " "
+					set {_message} to ""
+					set {_i} to 0
+					loop {_args::*}:
+						add 1 to {_i}
+						if {_i} is not 1:
+							set {_message} to "%{_message}% %{_args::%loop-index%}%" 	
+					if command is "r" or "reply":
+						message "&8[&bme &7-> &b%{msg.reply::%player%}%&8]&f%{_message}%"
+						loop all players:
+							if loop-player has permission "is.staff":
+								send "&8(&dMsg&7Muted&8) &7%player%&7->&7%{msg.reply::%player%}%&7%{_message}%" to loop-player
+						stop
+					if {_args::2} is not set:
+						message "&cIncorrect usage! &7/msg <player> <message>"
+						stop
+					message "&8[&bme &7-> &b%{_args::1}%&8]&f%{_message}%"
+					loop all players:
+						if loop-player has permission "is.staff":
+							send "&8(&dMsg&7Muted&8) &9%player%&7->&9%{_args::1}%&7%{_message}%" to loop-player
+					stop
+					
+				else:
+					set {_i} to 0
+					loop {punish.mute.reason::%uuid of player%::*}:
+						add 1 to {_i}
+					if {punish.mute.reason::%uuid of player%::%{_i}%} is set:
+						loop all players:
+							if loop-player has permission "is.staff":
+								send "&cPunish &7- &c%player's name% is MSGing for the first time since being muted" to loop-player
+					delete {punish.mute::%uuid of player%}
+					delete {punish.mute.duration::%uuid of player%}
+					delete {punish.mute.ip::%ip of player%}
+	
+	else if {punish.mute.ip::%ip of player%} is set:
+		if "%command%" = "tell" or "msg" or "m" or "message" or "t" or "r" or "reply":
+			set {_time} to {punish.mute.duration::%uuid of player%} parsed as timespan
+			cancel event
+			set {_arg} to "%arguments%"
+			set {_args::*} to {_arg} split at " "
+			if {_args::2} is not set:
+				message "&cIncorrect usage! &7/msg <player> <message>"
+				stop
+			set {_message} to ""
+			set {_i} to 0
+			loop {_args::*}:
+				add 1 to {_i}
+				if {_i} is not 1:
+					set {_message} to "%{_message}% %{_args::%loop-index%}%" 	
+			if command is "r" or "reply":
+				message "&8[&bme &7-> &b%{msg.reply::%player%}%&8]&f%{_message}%"
+				loop all players:
+					if loop-player has permission "is.staff":
+						send "&8(&cAlt&dMsg&7Muted&8) &9%player%&7->&9%{msg.reply::%player%}%&f%{_message}%" to loop-player
+				stop
+			message "&8[&bme &7-> &b%{_args::1}%&8]&f%{_message}%"					
+			loop all players:
+				if loop-player has permission "is.staff":
+					send "&8(&cAlt&dMsg&7Muted&8) &9%player%&7->&9%{_args::1}%&f%{_message}%" to loop-player
+		stop
+	if player does not have permission "is.staff":
+		set {_msg} to "%arguments%"
+		set {_soft} to false
+		set {_msgs::*} to {_msg} split at " "
+		set {_i} to 0
+		set {_message} to ""
+		loop {_msgs::*}:
+			add 1 to {_i}
+			if "%command%" = "tell" or "msg" or "m" or "message" or "t":
+				if {_i} is not 1:
+					set {_message} to "%{_message}% %{_msgs::%loop-index%}%" 
+			else:
+				set {_message} to "%{_message}% %{_msgs::%loop-index%}%" 
+		set {_staffMessage} to "%{_message}%"
+		loop {softmute::*}:
+			if {_staffMessage} contains "%loop-index%":
+				set {_soft} to true
+				replace all "%loop-index%" with "&c%loop-index%&7" in {_staffMessage}
+		if {_soft} is true:
+			if command is "r" or "reply":
+				cancel event
+				message "&8[&bme &7-> &b%{msg.reply::%player%}%&8]&f%{_message}%"
+				loop all players:
+					if loop-player has permission "is.staff":
+						send "&8(&cMsg&7Muted&8) &7%player%&8->&7%{msg.reply::%player%}%&f:&7%{_staffMessage}%" to loop-player
+				stop
+			if {_args::2} is not set:
+				stop
+			cancel event
+			message "&8[&bme &7-> &b%{_args::1}%&8]&f%{_message}%"
+			loop all players:
+				if loop-player has permission "is.staff":
+					send "&8(&cMsg&7Muted&8) &7%player%&8->&7%{_msgs::1}%&f:&7%{_staffMessage}%" to loop-player
+
+on right click with wall sign:
+	if {punish.mute::%uuid of player%} is set:
+		cancel event
+		
+on chat:
+	if {punish.mute::%uuid of player%} is set:
+		if {punish.mute.duration::%uuid of player%} is set:
+			set {_time} to {punish.mute.duration::%uuid of player%} parsed as timespan
+			if {punish.mute::%uuid of player%} was less than {_time} ago:
+				loop all players:
+					if loop-player has permission "is.staff":
+						send "&8(&7Muted&8) &9%player's name%&f: &7%message%" to loop-player
+						remove loop-player from chat recipients
+					else:
+						if loop-player is not player:
+							remove loop-player from chat recipients
+			else:
+				set {_i} to 0
+				loop {punish.mute.reason::%uuid of player%::*}:
+					add 1 to {_i}
+				if {punish.mute.reason::%uuid of player%::%{_i}%} is set:
+					loop all players:
+						if loop-player has permission "is.staff":
+							send "&cPunish &7- &c%player's name% is speaking for the first time since a mute" to loop-player
+				delete {punish.mute::%uuid of player%}
+				delete {punish.mute.duration::%uuid of player%}
+				delete {punish.mute.ip::%ip of player%}
+	else if {punish.mute.ip::%ip of player%} is set:
+		loop all players:
+			if loop-player has permission "is.staff":
+				send "&8(&cAlt&7Muted&8) &9%player's name%&f: &7%message%" to loop-player
+				remove loop-player from chat recipients
+			else:
+				if loop-player is not player:
+					remove loop-player from chat recipients
+			
+		

@@ -1,0 +1,117 @@
+
+command /setitemid <text> [<item>]:
+	permission: is.staff
+	trigger:
+		if arg-2 is not set:
+			set {_item} to player's tool
+			if {_item} is not set:
+				message "failed"
+				stop
+			set {itemid::%arg-1%} to {_item}
+			message "&bShop &8- &FSet &dID&7: %arg-1% &Fto &e%{_item}%"
+			stop
+			
+		set {itemid::%arg-1%} to arg-2
+		message "&bShop &8- &FSet &dID&7: %arg-1% &Fto &e%arg-2%"
+
+on right click on wall sign:
+	if player is in world "SkyBlock":
+		if "%regions at player%" contains "sb_spawn":
+			if "%first line of clicked block%" contains "[Buy]" or "[SkyBlock Shop]" or "[SkyBlock Buy]":
+			
+				set line 1 to "<blue>[SkyBlock Buy]"
+				set {_quantity} to second line of clicked block parsed as integer
+				if {_quantity} is not set:
+					message "Quantity Error!"
+					stop
+				set {_item} to {itemid::%third line of clicked block%}
+				if {_item} is not set:
+					set {_item} to third line of clicked block parsed as item
+				
+					if {_item} is not set:
+						message "Item Error!"
+						stop
+				
+				set {_cost} to fourth line of clicked block
+				replace all "$" with "" in {_cost}
+				set {_cost} to {_cost} parsed as integer
+				
+				if {_cost} is not set:
+					message "Cost Error!"
+					stop
+					
+					
+				if {bw.balance::%uuid of player%} >= {_cost}:
+					subtract {_cost} from {bw.balance::%uuid of player%}
+					give player {_quantity} of {_item}
+					message "&8[&6SB&8] &aPurchased &e%{_quantity}% %{_item}% &afor &2$%{_cost}%"
+					stop
+				else:
+					message "&8[&6SB&8] &cYou only have &2$%{bw.balance::%uuid of player%}%"
+					stop
+					
+				
+				
+			else if "%first line of clicked block%" contains "[Sell]" or "[SkyBlock Sell]":
+			
+				set line 1 to "<blue>[SkyBlock Sell]"
+				set {_quantity} to second line of clicked block parsed as integer
+				if {_quantity} is not set:
+					message "Quantity Error!"
+					stop
+				
+				set {_item} to {itemid::%third line of clicked block%}
+				if {_item} is not set:
+					set {_item} to third line of clicked block parsed as item
+					if {_item} is not set:
+						message "Item Error!"
+						stop
+				
+				set {_cost} to fourth line of clicked block
+				replace all "$" with "" in {_cost}
+				set {_cost} to {_cost} parsed as integer
+				
+				if {_cost} is not set:
+					message "Cost Error!"
+					stop
+				set {_held} to amount of {_item} in player's inventory
+				if {_held} < {_quantity}:
+					message "&8[&6SB&8] &cYou don't have %{_quantity}%  %{_item}%"
+					stop
+				else:
+					remove {_quantity} of {_item} from player's inventory
+					add {_cost} to  {bw.balance::%uuid of player%}
+					message "&8[&6SB&8] &aSold %{_quantity}%  %{_item}% for &2$%{_cost}%"
+command /sbset <int>:
+	permission: is.Pluto
+	trigger:
+		set {sb.shop.price.set} to arg-1
+		message "Set Price to %arg-1%"
+		
+on right click on wall sign:
+	if player is in world "SkyBlock":
+		if "%regions at player%" contains "sb_spawn":
+			if {sb.shop.price.set} is set:
+				set line 4 to "$%{sb.shop.price.set}%"
+				message "Updated Price to $%{sb.shop.price.set}%"
+				delete {sb.shop.price.set}
+		
+		
+command /sbitems [<int>]:	
+	permission: is.op
+	trigger:
+		if arg-1 is set:
+			
+			open chest with 6 row named "         -=[ &1Shop &8]=-" to player
+			wait 1 tick
+			if "%name of current inventory of player%" != "         -=[ &1Shop &8]=-":
+				close inventory of player
+				stop				
+		
+			format slot 4 of player with {skyblock.shop.items::%arg-1%} named "hi" to close
+		else:	
+			loop {skyblock.shop.items::*}:
+				message "%loop-index%. %loop-value% - $%{skyblock.shop.id::%loop-index%}%"
+		
+		
+				

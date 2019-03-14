@@ -1,0 +1,570 @@
+on right click with firework_rocket:
+	if player is in world "Elytra Fall":
+		cancel event
+on right click with ender pearl:
+	if player is not in the world "BedWars":
+		cancel event
+command /resetallelytrastats:
+	permission: is.op
+	trigger:
+		loop {elytra.stats.best.time::*}:
+			set {elytra.stats.best.time::%loop-index%} to 5 minutes
+			set {elytra.stats.best.name::%loop-index%} to "Unclaimed"
+			delete {elytra.stats.time::%loop-index%::*}
+		delete {elytra.timer.start::*}
+		
+		
+function earnXp(player: player, skill: text):
+	if {mcmmo.doublexp} is set:
+		add 2 to {mcmmo.%{_skill}%.xp::%{uuid::%{_player}%}%}
+	else:
+		add 1 to {mcmmo.%{_skill}%.xp::%{uuid::%{_player}%}%}
+	set {_xp} to {mcmmo.%{_skill}%.xp::%{uuid::%{_player}%}%}
+	
+	if {mcmmo.%{_skill}%.level::%{uuid::%{_player}%}%} is not set:
+		set {_level} to 0
+	else:
+		set {_level} to {mcmmo.%{_skill}%.level::%{uuid::%{_player}%}%}
+	if {mcmmo.neededxp::%{_level}%} is not set:
+		stop
+	if {_xp} >= {mcmmo.neededxp::%{_level}%}:
+		levelUp({_player}, {_skill})
+		
+function levelUp(player: player, skill: text):
+	add 1 to {mcmmo.%{_skill}%.level::%{uuid::%{_player}%}%}
+	set {_level} to {mcmmo.%{_skill}%.level::%{uuid::%{_player}%}%}
+	send "&8[&6RPG&8] &aYou just leveled up your &f%{_skill}% &askill." to {_player}
+	send "&8[&6RPG&8] &aNew Level&7: &f%{_level}%" to {_player}
+	send "&8[&6RPG&8] &aType &b/%{_skill}% &ato learn more about this skill." to {_player}
+	
+		
+on any move:
+	if player is in world "Elytra Fall":
+		if {elytra.lastTp} is not set:
+			set {elytra.lastTp} to now	
+		else if {elytra.lastTp} was less than 1 second ago:
+			stop
+		if player does not have permission "is.op":
+			disable fly for player
+		if y-coordinate of player's location < 80:
+			set {_v} to vector between event.getFrom() and event.getTo()
+			set {_y} to y coordinate of player
+			add 140 to {_y}
+			
+			set {_loc} to location of player
+			set y coordinate of {_loc} to {_y}
+		
+			if distance between player and {pos::elytra_center_bottom} > 40:
+				earnXp(player, "gliding")
+				earnXp(player, "gliding")
+			
+			teleport player to {_loc}
+			set {elytra.lastTp} to now
+			set {_velocity} to player.getVelocity()
+			{_velocity}.setX({_v}.getX())
+			{_velocity}.setY({_v}.getY())
+			{_velocity}.setZ({_v}.getZ())
+			
+			player.setVelocity({_velocity})
+command /clearelytracolor <text>:
+	permission: is.Pluto
+	trigger:
+	
+		set {elytra.stats.best.time::%arg-1%} to 20 minutes
+		set {elytra.stats.best.name::%arg-1%} to "Unclaimed"
+command /clearelytraplayer <text> <text>:
+	permission: is.Pluto
+	trigger:
+		delete {elytra.stats.time::%arg-1%::%{uuid::%arg-2%}%} 
+command /elytra:
+	aliases: parkour, elytrafall
+	trigger:
+		teleport player to {pos::elytra_start}
+		
+on command:
+	if player is in world "Elytra Fall" :
+		if command contains "setwarp" or "sethome" or "fly" or "tp":
+			cancel event
+			message "&8[&6Elytra&8] &7You can't use that command here!"
+on region enter:
+	if player is not in world "Elytra Fall":
+		stop
+	if "%event-region%" contains "elytra_cancel":
+		delete {elytra.timer.start::%player%}
+	else if "%event-region%" contains "elytra_white_entrance":
+		send player title "&fWhite" with subtitle "&eDifficulty &f- &bPeaceful" for 2 seconds with 1 second fade in and 10 tick fade out
+		set {elytra.timer.start::%player%} to now
+	else if "%event-region%" contains "elytra_orange_entrance":
+		send player title "&6Orange" with subtitle "&eDifficulty &f- &bPeaceful" for 2 seconds with 1 second fade in and 10 tick fade out
+		set {elytra.timer.start::%player%} to now
+	else if "%event-region%" contains "elytra_magenta_entrance":
+		send player title "&dMagenta" with subtitle "&eDifficulty &f- &bPeaceful" for 2 seconds with 1 second fade in and 10 tick fade out
+		set {elytra.timer.start::%player%} to now
+	else if "%event-region%" contains "elytra_light_blue_entrance":
+		send player title "&bLight Blue" with subtitle "&eDifficulty &f- &bPeaceful" for 2 seconds with 1 second fade in and 10 tick fade out
+		set {elytra.timer.start::%player%} to now
+		
+	else if "%event-region%" contains "elytra_yellow_entrance":
+		send player title "&eYellow" with subtitle "&eDifficulty &f- &aEasy" for 2 seconds with 1 second fade in and 10 tick fade out
+		set {elytra.timer.start::%player%} to now
+	else if "%event-region%" contains "elytra_lime_entrance":
+		send player title "&aLime" with subtitle "&eDifficulty &f- &aEasy" for 2 seconds with 1 second fade in and 10 tick fade out
+		set {elytra.timer.start::%player%} to now
+	else if "%event-region%" contains "elytra_pink_entrance":
+		send player title "&dPink" with subtitle "&eDifficulty &f- &aEasy" for 2 seconds with 1 second fade in and 10 tick fade out
+		set {elytra.timer.start::%player%} to now
+	else if "%event-region%" contains "elytra_gray_entrance":
+		send player title "&8Gray" with subtitle "&eDifficulty &f- &aEasy" for 2 seconds with 1 second fade in and 10 tick fade out
+		set {elytra.timer.start::%player%} to now
+		
+		
+	else if "%event-region%" contains "elytra_light_gray_entrance":
+		send player title "&7Light Gray" with subtitle "&eDifficulty &f- &6Normal" for 2 seconds with 1 second fade in and 10 tick fade out
+		set {elytra.timer.start::%player%} to now
+	else if "%event-region%" contains "elytra_cyan_entrance":
+		send player title "&3Cyan" with subtitle "&eDifficulty &f- &6Normal" for 2 seconds with 1 second fade in and 10 tick fade out
+		set {elytra.timer.start::%player%} to now
+	else if "%event-region%" contains "elytra_purple_entrance":
+		send player title "&5Purple" with subtitle "&eDifficulty &f- &6Normal" for 2 seconds with 1 second fade in and 10 tick fade out
+		set {elytra.timer.start::%player%} to now
+	else if "%event-region%" contains "elytra_blue_entrance":
+		send player title "&1Blue" with subtitle "&eDifficulty &f- &6Normal" for 2 seconds with 1 second fade in and 10 tick fade out
+		set {elytra.timer.start::%player%} to now
+		
+	else if "%event-region%" contains "elytra_brown_entrance":
+		send player title "&6Brown" with subtitle "&eDifficulty &f- &4Hard" for 2 seconds with 1 second fade in and 10 tick fade out
+		set {elytra.timer.start::%player%} to now
+	else if "%event-region%" contains "elytra_green_entrance":
+		send player title "&2Green" with subtitle "&eDifficulty &f- &4Hard" for 2 seconds with 1 second fade in and 10 tick fade out
+		set {elytra.timer.start::%player%} to now
+	else if "%event-region%" contains "elytra_red_entrance":
+		send player title "&4Red" with subtitle "&eDifficulty &f- &4Hard" for 2 seconds with 1 second fade in and 10 tick fade out
+		set {elytra.timer.start::%player%} to now
+	else if "%event-region%" contains "elytra_black_entrance":
+		send player title "&0Black" with subtitle "&eDifficulty &f- &4Hard" for 2 seconds with 1 second fade in and 10 tick fade out
+		set {elytra.timer.start::%player%} to now
+		
+		
+	else if "%event-region%" contains "elytra_white_end":
+		if {elytra.timer.start::%player%} is not set:
+			stop
+		set {_startDate} to {elytra.timer.start::%player%}
+		set {_timeTaken} to difference between {_startDate} and now
+		send player title "&fwhite" with subtitle "&eTime &f- &6%{_timeTaken}%" for 1 second with 1 second fade in and 10 tick fade out
+		if {elytra.stats.time::white::%uuid of player%} is not set:
+			set {elytra.stats.time::white::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou completed the track in &6%{_timeTaken}%"
+		else if {elytra.stats.time::white::%uuid of player%} > {_timeTaken}:
+			set {elytra.stats.time::white::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou set a new personal record of &6%{_timeTaken}%"
+		execute console command "kp key Legendary regular %player% 1"
+		if {elytra.stats.time::white::%uuid of player%} < {elytra.stats.best.time::white}:
+			set {elytra.stats.best.time::white} to {elytra.stats.time::white::%uuid of player%}
+			set {elytra.stats.best.name::white} to "%player%"
+			
+		delete {elytra.timer.start::%player%}
+		
+	else if "%event-region%" contains "elytra_orange_end":
+		if {elytra.timer.start::%player%} is not set:
+			stop
+		set {_startDate} to {elytra.timer.start::%player%}
+		set {_timeTaken} to difference between {_startDate} and now
+		send player title "&6Orange" with subtitle "&eTime &f- &6%{_timeTaken}%" for 1 second with 1 second fade in and 10 tick fade out
+		if {elytra.stats.time::orange::%uuid of player%} is not set:
+			set {elytra.stats.time::orange::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou completed the track in &6%{_timeTaken}%"
+			execute console command "kp key Legendary regular %player% 1"
+		else if {elytra.stats.time::orange::%uuid of player%} > {_timeTaken}:
+			set {elytra.stats.time::orange::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou set a new personal record of &6%{_timeTaken}%"
+		if {elytra.stats.time::orange::%uuid of player%} < {elytra.stats.best.time::orange}:
+			set {elytra.stats.best.time::orange} to {elytra.stats.time::orange::%uuid of player%}
+			set {elytra.stats.best.name::orange} to "%player%"
+			
+		delete {elytra.timer.start::%player%}
+		
+	else if "%event-region%" contains "elytra_magenta_end":
+		if {elytra.timer.start::%player%} is not set:
+			stop
+		set {_startDate} to {elytra.timer.start::%player%}
+		set {_timeTaken} to difference between {_startDate} and now
+		send player title "&dMagenta" with subtitle "&eTime &f- &6%{_timeTaken}%" for 1 second with 1 second fade in and 10 tick fade out
+		if {elytra.stats.time::magenta::%uuid of player%} is not set:
+			set {elytra.stats.time::magenta::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou completed the track in &6%{_timeTaken}%"
+		else if {elytra.stats.time::magenta::%uuid of player%} > {_timeTaken}:
+			set {elytra.stats.time::magenta::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou set a new personal record of &6%{_timeTaken}%"
+		execute console command "kp key Legendary regular %player% 1"
+		if {elytra.stats.time::magenta::%uuid of player%} < {elytra.stats.best.time::magenta}:
+			set {elytra.stats.best.time::magenta} to {elytra.stats.time::magenta::%uuid of player%}
+			set {elytra.stats.best.name::magenta} to "%player%"
+			
+		delete {elytra.timer.start::%player%}
+		
+		
+		
+	else if "%event-region%" contains "elytra_light_blue_end":
+		if {elytra.timer.start::%player%} is not set:
+			stop
+		set {_startDate} to {elytra.timer.start::%player%}
+		set {_timeTaken} to difference between {_startDate} and now
+		send player title "&bLight Blue" with subtitle "&eTime &f- &6%{_timeTaken}%" for 1 second with 1 second fade in and 10 tick fade out
+		if {elytra.stats.time::light_blue::%uuid of player%} is not set:
+			set {elytra.stats.time::light_blue::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou completed the track in &6%{_timeTaken}%"
+		else if {elytra.stats.time::light_blue::%uuid of player%} > {_timeTaken}:
+			set {elytra.stats.time::light_blue::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou set a new personal record of &6%{_timeTaken}%"
+		execute console command "kp key Legendary regular %player% 1"
+		if {elytra.stats.time::light_blue::%uuid of player%} < {elytra.stats.best.time::light_blue}:
+			set {elytra.stats.best.time::light_blue} to {elytra.stats.time::light_blue::%uuid of player%}
+			set {elytra.stats.best.name::light_blue} to "%player%"
+			
+		delete {elytra.timer.start::%player%}
+		
+	else if "%event-region%" contains "elytra_yellow_end":
+		if {elytra.timer.start::%player%} is not set:
+			stop
+		set {_startDate} to {elytra.timer.start::%player%}
+		set {_timeTaken} to difference between {_startDate} and now
+		send player title "&eYellow" with subtitle "&eTime &f- &6%{_timeTaken}%" for 1 second with 1 second fade in and 10 tick fade out
+		if {elytra.stats.time::yellow::%uuid of player%} is not set:
+			set {elytra.stats.time::yellow::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou completed the track in &6%{_timeTaken}%"
+		else if {elytra.stats.time::yellow::%uuid of player%} > {_timeTaken}:
+			set {elytra.stats.time::yellow::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou set a new personal record of &6%{_timeTaken}%"
+		execute console command "kp key Legendary regular %player% 1"
+		if {elytra.stats.time::yellow::%uuid of player%} < {elytra.stats.best.time::yellow}:
+			set {elytra.stats.best.time::yellow} to {elytra.stats.time::yellow::%uuid of player%}
+			set {elytra.stats.best.name::yellow} to "%player%"
+			
+		delete {elytra.timer.start::%player%}
+
+	else if "%event-region%" contains "elytra_pink_end":
+		if {elytra.timer.start::%player%} is not set:
+			stop
+		set {_startDate} to {elytra.timer.start::%player%}
+		set {_timeTaken} to difference between {_startDate} and now
+		send player title "&dPink" with subtitle "&eTime &f- &6%{_timeTaken}%" for 1 second with 1 second fade in and 10 tick fade out
+		if {elytra.stats.time::pink::%uuid of player%} is not set:
+			set {elytra.stats.time::pink::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou completed the track in &6%{_timeTaken}%"
+		else if {elytra.stats.time::pink::%uuid of player%} > {_timeTaken}:
+			set {elytra.stats.time::pink::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou set a new personal record of &6%{_timeTaken}%"
+		execute console command "kp key Legendary regular %player% 1"
+		if {elytra.stats.time::pink::%uuid of player%} < {elytra.stats.best.time::pink}:
+			set {elytra.stats.best.time::pink} to {elytra.stats.time::pink::%uuid of player%}
+			set {elytra.stats.best.name::pink} to "%player%"
+			
+		delete {elytra.timer.start::%player%}
+		
+	else if "%event-region%" contains "elytra_lime_end":
+		if {elytra.timer.start::%player%} is not set:
+			stop
+		set {_startDate} to {elytra.timer.start::%player%}
+		set {_timeTaken} to difference between {_startDate} and now
+		send player title "&aLime" with subtitle "&eTime &f- &6%{_timeTaken}%" for 1 second with 1 second fade in and 10 tick fade out
+		if {elytra.stats.time::lime::%uuid of player%} is not set:
+			set {elytra.stats.time::lime::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou completed the track in &6%{_timeTaken}%"
+		else if {elytra.stats.time::lime::%uuid of player%} > {_timeTaken}:
+			set {elytra.stats.time::lime::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou set a new personal record of &6%{_timeTaken}%"
+		execute console command "kp key Legendary regular %player% 1"
+		if {elytra.stats.time::lime::%uuid of player%} < {elytra.stats.best.time::lime}:
+			set {elytra.stats.best.time::lime} to {elytra.stats.time::lime::%uuid of player%}
+			set {elytra.stats.best.name::lime} to "%player%"
+			
+		delete {elytra.timer.start::%player%}
+		
+	else if "%event-region%" contains "elytra_gray_end":
+		if {elytra.timer.start::%player%} is not set:
+			stop
+		set {_startDate} to {elytra.timer.start::%player%}
+		set {_timeTaken} to difference between {_startDate} and now
+		send player title "&8Gray" with subtitle "&eTime &f- &6%{_timeTaken}%" for 1 second with 1 second fade in and 10 tick fade out
+		if {elytra.stats.time::gray::%uuid of player%} is not set:
+			set {elytra.stats.time::gray::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou completed the track in &6%{_timeTaken}%"
+		else if {elytra.stats.time::gray::%uuid of player%} > {_timeTaken}:
+			set {elytra.stats.time::gray::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou set a new personal record of &6%{_timeTaken}%"
+		execute console command "kp key Legendary regular %player% 1"
+		if {elytra.stats.time::gray::%uuid of player%} < {elytra.stats.best.time::gray}:
+			set {elytra.stats.best.time::gray} to {elytra.stats.time::gray::%uuid of player%}
+			set {elytra.stats.best.name::gray} to "%player%"
+		delete {elytra.timer.start::%player%}
+		
+	else if "%event-region%" contains "elytra_light_gray_end":
+		if {elytra.timer.start::%player%} is not set:
+			stop
+		set {_startDate} to {elytra.timer.start::%player%}
+		set {_timeTaken} to difference between {_startDate} and now
+		send player title "&7Light Gray" with subtitle "&eTime &f- &6%{_timeTaken}%" for 1 second with 1 second fade in and 10 tick fade out
+		if {elytra.stats.time::light_gray::%uuid of player%} is not set:
+			set {elytra.stats.time::light_gray::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou completed the track in &6%{_timeTaken}%"
+		else if {elytra.stats.time::light_gray::%uuid of player%} > {_timeTaken}:
+			set {elytra.stats.time::light_gray::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou set a new personal record of &6%{_timeTaken}%"
+		execute console command "kp key Legendary regular %player% 1"
+		if {elytra.stats.time::light_gray::%uuid of player%} < {elytra.stats.best.time::light_gray}:
+			set {elytra.stats.best.time::light_gray} to {elytra.stats.time::light_gray::%uuid of player%}
+			set {elytra.stats.best.name::light_gray} to "%player%"
+			
+		delete {elytra.timer.start::%player%}
+		
+	else if "%event-region%" contains "elytra_cyan_end":
+		if {elytra.timer.start::%player%} is not set:
+			stop
+		set {_startDate} to {elytra.timer.start::%player%}
+		set {_timeTaken} to difference between {_startDate} and now
+		send player title "&3Cyan" with subtitle "&eTime &f- &6%{_timeTaken}%" for 1 second with 1 second fade in and 10 tick fade out
+		if {elytra.stats.time::cyan::%uuid of player%} is not set:
+			set {elytra.stats.time::cyan::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou completed the track in &6%{_timeTaken}%"
+		else if {elytra.stats.time::cyan::%uuid of player%} > {_timeTaken}:
+			set {elytra.stats.time::cyan::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou set a new personal record of &6%{_timeTaken}%"
+		execute console command "kp key Legendary regular %player% 1"
+		if {elytra.stats.time::cyan::%uuid of player%} < {elytra.stats.best.time::cyan}:
+			set {elytra.stats.best.time::cyan} to {elytra.stats.time::cyan::%uuid of player%}
+			set {elytra.stats.best.name::cyan} to "%player%"
+			
+		delete {elytra.timer.start::%player%}
+		
+	else if "%event-region%" contains "elytra_purple_end":
+		if {elytra.timer.start::%player%} is not set:
+			stop
+		set {_startDate} to {elytra.timer.start::%player%}
+		set {_timeTaken} to difference between {_startDate} and now
+		send player title "&5Purple" with subtitle "&eTime &f- &6%{_timeTaken}%" for 1 second with 1 second fade in and 10 tick fade out
+		if {elytra.stats.time::purple::%uuid of player%} is not set:
+			set {elytra.stats.time::purple::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou completed the track in &6%{_timeTaken}%"
+		else if {elytra.stats.time::purple::%uuid of player%} > {_timeTaken}:
+			set {elytra.stats.time::purple::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou set a new personal record of &6%{_timeTaken}%"
+		execute console command "kp key Legendary regular %player% 1"
+		if {elytra.stats.time::purple::%uuid of player%} < {elytra.stats.best.time::purple}:
+			set {elytra.stats.best.time::purple} to {elytra.stats.time::purple::%uuid of player%}
+			set {elytra.stats.best.name::purple} to "%player%"
+			
+		delete {elytra.timer.start::%player%}
+		
+	else if "%event-region%" contains "elytra_blue_end":
+		if {elytra.timer.start::%player%} is not set:
+			stop
+		set {_startDate} to {elytra.timer.start::%player%}
+		set {_timeTaken} to difference between {_startDate} and now
+		send player title "&1Blue" with subtitle "&eTime &f- &6%{_timeTaken}%" for 1 second with 1 second fade in and 10 tick fade out
+		if {elytra.stats.time::blue::%uuid of player%} is not set:
+			set {elytra.stats.time::blue::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou completed the track in &6%{_timeTaken}%"
+		else if {elytra.stats.time::blue::%uuid of player%} > {_timeTaken}:
+			set {elytra.stats.time::blue::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou set a new personal record of &6%{_timeTaken}%"
+		execute console command "kp key Legendary regular %player% 1"
+		if {elytra.stats.time::blue::%uuid of player%} < {elytra.stats.best.time::blue}:
+			set {elytra.stats.best.time::blue} to {elytra.stats.time::blue::%uuid of player%}
+			set {elytra.stats.best.name::blue} to "%player%"
+			
+		delete {elytra.timer.start::%player%}
+		
+	else if "%event-region%" contains "elytra_brown_end":
+		if {elytra.timer.start::%player%} is not set:
+			stop
+		set {_startDate} to {elytra.timer.start::%player%}
+		set {_timeTaken} to difference between {_startDate} and now
+		send player title "&6Brown" with subtitle "&eTime &f- &6%{_timeTaken}%" for 1 second with 1 second fade in and 10 tick fade out
+		if {elytra.stats.time::brown::%uuid of player%} is not set:
+			set {elytra.stats.time::brown::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou completed the track in &6%{_timeTaken}%"
+		else if {elytra.stats.time::brown::%uuid of player%} > {_timeTaken}:
+			set {elytra.stats.time::brown::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou set a new personal record of &6%{_timeTaken}%"
+		execute console command "kp key Legendary regular %player% 1"
+		if {elytra.stats.time::brown::%uuid of player%} < {elytra.stats.best.time::brown}:
+			set {elytra.stats.best.time::brown} to {elytra.stats.time::brown::%uuid of player%}
+			set {elytra.stats.best.name::brown} to "%player%"
+			
+		delete {elytra.timer.start::%player%}
+		
+	else if "%event-region%" contains "elytra_green_end":
+		if {elytra.timer.start::%player%} is not set:
+			stop
+		set {_startDate} to {elytra.timer.start::%player%}
+		set {_timeTaken} to difference between {_startDate} and now
+		send player title "&2Green" with subtitle "&eTime &f- &6%{_timeTaken}%" for 1 second with 1 second fade in and 10 tick fade out
+		if {elytra.stats.time::green::%uuid of player%} is not set:
+			set {elytra.stats.time::green::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou completed the track in &6%{_timeTaken}%"
+		else if {elytra.stats.time::green::%uuid of player%} > {_timeTaken}:
+			set {elytra.stats.time::green::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou set a new personal record of &6%{_timeTaken}%"
+		execute console command "kp key Legendary regular %player% 1"
+		if {elytra.stats.time::green::%uuid of player%} < {elytra.stats.best.time::green}:
+			set {elytra.stats.best.time::green} to {elytra.stats.time::green::%uuid of player%}
+			set {elytra.stats.best.name::green} to "%player%"	
+		delete {elytra.timer.start::%player%}
+		
+	else if "%event-region%" contains "elytra_black_end":
+		if {elytra.timer.start::%player%} is not set:
+			stop
+		set {_startDate} to {elytra.timer.start::%player%}
+		set {_timeTaken} to difference between {_startDate} and now
+		send player title "&0Black" with subtitle "&eTime &f- &6%{_timeTaken}%" for 1 second with 1 second fade in and 10 tick fade out
+		if {elytra.stats.time::black::%uuid of player%} is not set:
+			set {elytra.stats.time::black::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou completed the track in &6%{_timeTaken}%"
+		else if {elytra.stats.time::black::%uuid of player%} > {_timeTaken}:
+			set {elytra.stats.time::black::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou set a new personal record of &6%{_timeTaken}%"
+		execute console command "kp key Legendary regular %player% 1"
+		if {elytra.stats.time::black::%uuid of player%} < {elytra.stats.best.time::black}:
+			set {elytra.stats.best.time::black} to {elytra.stats.time::black::%uuid of player%}
+			set {elytra.stats.best.name::black} to "%player%"
+			
+		delete {elytra.timer.start::%player%}		
+		
+	else if "%event-region%" contains "elytra_red_end":
+		if {elytra.timer.start::%player%} is not set:
+			stop
+		set {_startDate} to {elytra.timer.start::%player%}
+		set {_timeTaken} to difference between {_startDate} and now
+		send player title "&4Red" with subtitle "&eTime &f- &6%{_timeTaken}%" for 1 second with 1 second fade in and 10 tick fade out
+		if {elytra.stats.time::red::%uuid of player%} is not set:
+			set {elytra.stats.time::red::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou completed the track in &6%{_timeTaken}%"
+		else if {elytra.stats.time::red::%uuid of player%} > {_timeTaken}:
+			set {elytra.stats.time::red::%uuid of player%} to {_timeTaken}
+			message "&8[&6Elytra&8] &fYou set a new personal record of &6%{_timeTaken}%"
+		execute console command "kp key Legendary regular %player% 1"
+		if {elytra.stats.time::red::%uuid of player%} < {elytra.stats.best.time::red}:
+			set {elytra.stats.best.time::red} to {elytra.stats.time::red::%uuid of player%}
+			set {elytra.stats.best.name::red} to "%player%"
+			
+		delete {elytra.timer.start::%player%}
+	
+every 4 seconds:	
+
+	loop all players in world "Elytra Fall":
+		if "%regions at loop-player%" contains "stats":
+	#		set {_elytra.top.spot} to metadata "elytra.top.spot" of loop-player
+	#		if {_elytra.top.spot} is not set:
+	#			set metadata "elytra.top.spot" of loop-player to 1
+	#			set {_elytra.top.spot} to 1
+	#		else if {_elytra.top.spot} is 1:
+	#			set metadata "elytra.top.spot" of loop-player to 2
+	#			set {_elytra.top.spot} to 2
+	#		else if {_elytra.top.spot} is 2:
+	#			set metadata "elytra.top.spot" of loop-player to 3
+	#			set {_elytra.top.spot} to 3
+	#		else if {_elytra.top.spot} is 3:
+	#			set metadata "elytra.top.spot" of loop-player to 4
+	#			set {_elytra.top.spot} to 4
+	#		else if {_elytra.top.spot} is 4:
+	#			set metadata "elytra.top.spot" of loop-player to 1
+	#			set {_elytra.top.spot} to 1
+	#		if {_elytra.top.spot} is 1:
+	#			display hologram "&bTop Peaceful Times;;&25$ Store Credit;;&fWhite &7- &e%{elytra.stats.best.name::white}%;&f%{elytra.stats.best.time::white}%;;&6Orange &7- &e%{elytra.stats.best.name::orange}%;&f%{elytra.stats.best.time::orange}%;;&dMagenta &7- &e%{elytra.stats.best.name::magenta}%;&f%{elytra.stats.best.time::magenta}%;;&bLight Blue &7- &e%{elytra.stats.best.name::light_blue}%;&f%{elytra.stats.best.time::light_blue}%;;&eStats reset each Month" at {pos::elytra_top} to loop-player for 4 seconds
+	#		else if {_elytra.top.spot} is 2:
+	#			display hologram "&aTop Easy Times;;&26$ Store Credit;;&eYellow &7- &e%{elytra.stats.best.name::yellow}%;&f%{elytra.stats.best.time::yellow}%;;&aLime &7- &e%{elytra.stats.best.name::lime}%;&f%{elytra.stats.best.time::lime}%;;&dPink &7- &e%{elytra.stats.best.name::pink}%;&f%{elytra.stats.best.time::pink}%;;&8Gray &7- &e%{elytra.stats.best.name::gray}%;&f%{elytra.stats.best.time::gray}%;;&eStats reset each Month" at {pos::elytra_top} to loop-player for 4 seconds
+	#		else if {_elytra.top.spot} is 3:
+	#			display hologram "&6Top Normal Times;;&27$ Store Credit;;&7Light Gray &7- &e%{elytra.stats.best.name::light_gray}%;&f%{elytra.stats.best.time::light_gray}%;;&3Cyan &7- &e%{elytra.stats.best.name::cyan}%;&f%{elytra.stats.best.time::cyan}%;;&5Purple &7- &e%{elytra.stats.best.name::purple}%;&f%{elytra.stats.best.time::purple}%;;&9Blue &7- &e%{elytra.stats.best.name::blue}%;&f%{elytra.stats.best.time::blue}%;;&eStats reset each Month" at {pos::elytra_top} to loop-player for 4 seconds
+	#		else if {_elytra.top.spot} is 4:
+	#			display hologram "&4Top Hard Times;;&28$ Store Credit Each;;&6Brown &7- &e%{elytra.stats.best.name::brown}%;&f%{elytra.stats.best.time::brown}%;;&2Green &7- &e%{elytra.stats.best.name::green}%;&f%{elytra.stats.best.time::green}%;;&4Red &7- &e%{elytra.stats.best.name::red}%;&f%{elytra.stats.best.time::red}%;;&8Black &7- &e%{elytra.stats.best.name::black}%;&f%{elytra.stats.best.time::black}%;;&eStats reset each Month" at {pos::elytra_top} to loop-player for 4 seconds
+				
+			if {elytra.stats.time::purple::%uuid of loop-player%} is set:
+				display hologram "&5Purple;&f%{elytra.stats.time::purple::%uuid of loop-player%}%" at {pos::elytra_purple} to loop-player for 4 seconds
+			else:
+				display hologram "&5Purple;&fNot Completed Yet" at {pos::elytra_purple} to loop-player for 4 seconds
+				
+			if {elytra.stats.time::cyan::%uuid of loop-player%} is set:
+				display hologram "&3Cyan;&f%{elytra.stats.time::cyan::%uuid of loop-player%}%" at {pos::elytra_cyan} to loop-player for 4 seconds
+			else:
+				display hologram "&3Cyan;&fNot Completed Yet" at {pos::elytra_cyan} to loop-player for 4 seconds
+				
+			if {elytra.stats.time::light_gray::%uuid of loop-player%} is set:
+				display hologram "&7Light Gray;&f%{elytra.stats.time::light_gray::%uuid of loop-player%}%" at {pos::elytra_light_gray} to loop-player for 4 seconds
+			else:
+				display hologram "&7Light Gray;&fNot Completed Yet" at {pos::elytra_light_gray} to loop-player for 4 seconds
+		
+			if {elytra.stats.time::gray::%uuid of loop-player%} is set:
+				display hologram "&8Gray;&f%{elytra.stats.time::gray::%uuid of loop-player%}%" at {pos::elytra_gray} to loop-player for 4 seconds
+			else:
+				display hologram "&8Gray;&fNot Completed Yet" at {pos::elytra_gray} to loop-player for 4 seconds		
+				
+			if {elytra.stats.time::pink::%uuid of loop-player%} is set:
+				display hologram "&dPink;&f%{elytra.stats.time::pink::%uuid of loop-player%}%" at {pos::elytra_pink} to loop-player for 4 seconds
+			else:
+				display hologram "&dPink;&fNot Completed Yet" at {pos::elytra_pink} to loop-player for 4 seconds
+				
+			if {elytra.stats.time::lime::%uuid of loop-player%} is set:
+				display hologram "&aLime;&f%{elytra.stats.time::lime::%uuid of loop-player%}%" at {pos::elytra_lime} to loop-player for 4 seconds
+			else:
+				display hologram "&aLime;&fNot Completed Yet" at {pos::elytra_lime} to loop-player for 4 seconds
+				
+			if {elytra.stats.time::yellow::%uuid of loop-player%} is set:
+				display hologram "&eYellow;&f%{elytra.stats.time::yellow::%uuid of loop-player%}%" at {pos::elytra_yellow} to loop-player for 4 seconds
+			else:
+				display hologram "&eYellow;&fNot Completed Yet" at {pos::elytra_yellow} to loop-player for 4 seconds	
+
+			if {elytra.stats.time::light_blue::%uuid of loop-player%} is set:
+				display hologram "&bLight Blue;&f%{elytra.stats.time::light_blue::%uuid of loop-player%}%" at {pos::elytra_light_blue} to loop-player for 4 seconds
+			else:
+				display hologram "&bLight Blue;&fNot Completed Yet" at {pos::elytra_light_blue} to loop-player for 4 seconds
+				
+			if {elytra.stats.time::magenta::%uuid of loop-player%} is set:
+				display hologram "&dMagenta;&f%{elytra.stats.time::magenta::%uuid of loop-player%}%" at {pos::elytra_magenta} to loop-player for 4 seconds
+			else:
+				display hologram "&dMagenta;&fNot Completed Yet" at {pos::elytra_magenta} to loop-player for 4 seconds	
+		
+			if {elytra.stats.time::orange::%uuid of loop-player%} is set:
+				display hologram "&6Orange;&f%{elytra.stats.time::orange::%uuid of loop-player%}%" at {pos::elytra_orange} to loop-player for 4 seconds
+			else:
+				display hologram "&6Orange;&fNot Completed Yet" at {pos::elytra_orange} to loop-player for 4 seconds
+			
+			if {elytra.stats.time::white::%uuid of loop-player%} is set:
+				display hologram "&fWhite;&f%{elytra.stats.time::white::%uuid of loop-player%}%" at {pos::elytra_white} to loop-player for 4 seconds
+			else:
+				display hologram "&fWhite;&fNot Completed Yet" at {pos::elytra_white} to loop-player for 4 seconds
+				
+			if {elytra.stats.time::black::%uuid of loop-player%} is set:
+				display hologram "&0Black;&f%{elytra.stats.time::black::%uuid of loop-player%}%" at {pos::elytra_black} to loop-player for 4 seconds
+			else:
+				display hologram "&0Black;&fNot Completed Yet" at {pos::elytra_black} to loop-player for 4 seconds		
+			
+			if {elytra.stats.time::red::%uuid of loop-player%} is set:
+				display hologram "&4Red;&f%{elytra.stats.time::red::%uuid of loop-player%}%" at {pos::elytra_red} to loop-player for 4 seconds
+			else:
+				display hologram "&4Red;&fNot Completed Yet" at {pos::elytra_red} to loop-player for 4 seconds
+			
+			if {elytra.stats.time::green::%uuid of loop-player%} is set:
+				display hologram "&2Green;&f%{elytra.stats.time::green::%uuid of loop-player%}%" at {pos::elytra_green} to loop-player for 4 seconds
+			else:
+				display hologram "&2Green;&fNot Completed Yet" at {pos::elytra_green} to loop-player for 4 seconds		
+				
+			if {elytra.stats.time::brown::%uuid of loop-player%} is set:
+				display hologram "&6Brown;&f%{elytra.stats.time::brown::%uuid of loop-player%}%" at {pos::elytra_brown} to loop-player for 4 seconds
+			else:
+				display hologram "&6Brown;&fNot Completed Yet" at {pos::elytra_brown} to loop-player for 4 seconds
+				
+		
+
+			if {elytra.stats.time::blue::%uuid of loop-player%} is set:
+				display hologram "&1Blue;&f%{elytra.stats.time::blue::%uuid of loop-player%}%" at {pos::elytra_blue} to loop-player for 4 seconds
+			else:
+				display hologram "&1Blue;&fNot Completed Yet" at {pos::elytra_blue} to loop-player for 4 seconds
+				
+				
+				
+				
+				
+				
+				
+			
+			

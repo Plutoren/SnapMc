@@ -1,0 +1,98 @@
+on load:
+	set {_i} to 0
+	loop 3 times:
+		add 1 to {_i}
+		loop entities in radius 1 of {pos::pvp_spectate_%{_i}%}:
+			if loop-entity is a parrot or an enderman or a creeper or a cave spider:
+				apply invisibility to loop-entity for 9999999 seconds
+	loop entities in radius 1 of {pos::pvp_spectate_enderman}:
+		if loop-entity is an enderman:
+			apply invisibility to loop-entity for 9999999 seconds
+	loop entities in radius 1 of {pos::pvp_spectate_creeper}:
+		if loop-entity is a creeper:
+			apply invisibility to loop-entity for 9999999 seconds
+	loop entities in radius 1 of {pos::pvp_spectate_cavespider}:
+		if loop-entity is a cave spider:
+			apply invisibility to loop-entity for 9999999 seconds
+on join:
+	if gamemode of player is spectator:
+		if player is in world "spawn":
+			if player does not have permission "is.staff":
+				set gamemode of player to survival
+				
+on player teleporting:
+	if "%teleport cause%" is "spectate":
+		cancel event
+	else:
+		if event-player has permission "is.op":
+			send "%teleport cause%" to event-player
+command /spectate [<text>]:
+	aliases: camera, spect, cam
+	trigger:
+		if arg-1 is not "1" or "2" or "3" or "pvp" or "enderman" or "creeper" or "cavespider":
+			set {_player} to arg-1 parsed as player
+			if {_player} is not set:
+				message "&cUsage /spectate 1/2/3/(player)"
+				stop
+			set {_target} to {_player}
+			if "%regions at {_player}%" does not contain "hub_pvp":
+				message "&cYou can only spectate players in pvp!"
+				stop
+			if "%regions at {_player}%" contains "koth_area1":
+				if {koth.last} was less than 20 minutes ago:
+					message "&cDenied due to recent koth!"
+					stop
+			if "%regions at {_player}%" contains "koth_area2":
+				if {koth2.last} was less than 20 minutes ago:
+					message "&cDenied due to recent koth!"
+					stop
+			set {_specPlayer} to true
+		else:
+			loop entities in radius 1 of {pos::pvp_spectate_%arg-1%}:
+				if loop-entity is a parrot or an enderman or a creeper or a cave spider:
+					set {_target} to loop-entity
+					apply invisibility to loop-entity for 9999999 seconds
+		set {_left} to location of player
+		message "&8[&eSpectate&8] &dPress Sneak to exit"
+		set player's gamemode to spectator
+		wait 1 tick
+		set player's spectate target to {_target}
+		set {_i} to 0
+		loop 70 times:
+			if {_specPlayer} is true:
+				
+				if "%regions at {_target}%" does not contain "hub_pvp":
+					message "&cYou can only spectate players in pvp!"
+					set player's gamemode to survival
+					teleport player to {_left}
+					message "&8[&eSpectate&8] &dExited"
+					stop
+				if "%regions at {_target}%" contains "koth_area1":
+					if {koth.last} was less than 20 minutes ago:
+						message "&cRemoved due to recent koth!"
+						set player's gamemode to survival
+						teleport player to {_left}
+						message "&8[&eSpectate&8] &dExited"
+						stop
+				if "%regions at {_target}%" contains "koth_area2":
+					if {koth2.last} was less than 20 minutes ago:
+						message "&cRemoved due to recent koth!"
+						set player's gamemode to survival
+						teleport player to {_left}
+						message "&8[&eSpectate&8] &dExited"
+						stop
+						
+			if player's spectate target is not {_target}:
+				set player's gamemode to survival
+				teleport player to {_left}
+				message "&8[&eSpectate&8] &dExited"
+				stop
+			add 1 to {_i}
+			if {_i} > 60:
+				set player's gamemode to survival
+				teleport player to {_left}
+				message "&8[&eSpectate&8] &dTime ran out"
+				stop
+			wait 1 second
+			
+		

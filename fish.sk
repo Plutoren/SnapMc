@@ -1,0 +1,52 @@
+# Fish Contest Skript
+
+
+
+
+command /fishnext:
+	trigger:
+		message "&8[&bFish&8] &eNext competition in: &d%{fishwait}% &eminutes."
+		
+command /fishleft:
+	trigger:
+		message "&8[&bFish&8]  &eCompetition ends in: &d%{fishcontest.timer}% &eminutes."
+command /fishingInfo:
+	trigger:
+		message ""
+		message "&bSnap &7has hundreds of custom fish for you to find"
+		message "&7Just fish anywhere to catch them"
+		message "&7Catch the biggest fish in a competition to win keys"
+		message "&7Next competition &b/fishnext"
+		message "&7Time until competition ends &b/fishleft"
+		message "&7Fish shop &b/fish shop"
+		message ""
+
+every 3 minutes:
+	set {fishwait} to {fishwait} - 3
+	set {fishcontest.timer} to {fishcontest.timer} - 3
+	if {fishcontest.timer} = 0:
+		execute console command "/fish stop"
+	if {fishcontest.timer} = -1:
+		execute console command "/fish stop"
+	if {fishcontest.timer} = -2:
+		execute console command "/fish stop"
+	if {fishcontest.timer} < 0:
+		set {fishcontest.timer} to -3
+
+	if {fishwait} < 0:
+		set {fishwait} to 120
+		wait 1 tick
+		if {fishcontest.timer} > 0:
+			broadcast "&8[&bSnap&8] &cFishing contest in progress &7-- &cCanceled attempt"
+			stop
+		set {_duration} to random integer from 2 to 9
+		set {_duration} to {_duration} * 5
+		set {fishcontest.timer} to {_duration} 
+		broadcast "&f&lFishing: &eStarting &d%{_duration}% &eminute match!"
+		execute console command "/fish start"
+	
+	
+
+
+	
+

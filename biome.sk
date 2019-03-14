@@ -1,0 +1,250 @@
+command /mybiome:
+	trigger:
+		message "%biome at location of player%"
+command /nether:
+	trigger:
+		if {lastwarpwild} was less than 1 seconds ago:
+			message "&8[&bSnap&8&8] &7Someone just used that, please wait"
+			stop
+		set {lastwarpwild} to now
+		set {_x} to random integer from -20000 to 20000
+		set {_z} to random integer from -20000 to 20000
+		set {_y} to 60
+		
+		set {_loc} to location({_x}, {_y}, {_z}, world "world_nether")
+		
+		add .5 to x coordinate of {_loc}
+		add .5 to z coordinate of {_loc}
+		if block at {_loc} = air:
+			if block above {_loc} = air:
+				teleport player to {_loc}
+			else:
+				add 1 to {_y}
+				set {_loc} to location({_x}, {_y}, {_z}, world "world_nether")
+		while block at {_loc} != air:
+			add 1 to {_y}
+			if {_y} > 200:		
+				set {_i} to random integer from 1 to 2
+				if {_i} = 1:
+					set {_x} to random integer from -3000 to -20000
+				if {_i} = 2:
+					set {_x} to random integer from 3000 to 20000
+				set {_i} to random integer from 1 to 2
+				if {_i} = 1:
+					set {_z} to random integer from -20000 to -3000
+				if {_i} = 2:
+					set {_z} to random integer from 3000 to 20000
+				set {_y} to 60
+				set {_loc} to location({_x}, {_y}, {_z}, world "world_nether")
+				add .5 to x coordinate of {_loc}
+				add .5 to z coordinate of {_loc}
+				if block at {_loc} = air:
+					if block above {_loc} = air:
+						teleport player to {_loc}
+					else:
+						add 1 to {_y}
+						set {_loc} to location({_x}, {_y}, {_z}, world "world_nether")		
+			set {_loc} to location({_x}, {_y}, {_z}, world "world_nether")
+			if block above block at {_loc} = air:
+				teleport player to {_loc}
+		message "&8[&bSnap&8] &7Teleported to a random location in the Nether"
+		wait 1 seconds
+		message "&8[&bSnap&8] &7Use &b/menu &7to learn about claiming land"
+		
+command /wilderness:
+	trigger:
+		if player is not in world "Wilderness":
+			message "&8[&bSnap&8] &7Welcome to the wilderness spawn"
+			teleport player to {pos::wilderness_spawn}
+			stop
+		if {lastwarpwild} was less than 1 seconds ago:
+			message "&8[&bSnap&8&8] &7Someone just used that, please wait"
+			stop
+		set {lastwarpwild} to now
+		set {_x} to random integer from -5000 to 5000
+		set {_z} to random integer from -5000 to 5000
+		set {_y} to 60
+		
+		set {_loc} to location({_x}, {_y}, {_z}, world "Wilderness")
+		
+		add .5 to x coordinate of {_loc}
+		add .5 to z coordinate of {_loc}
+		if block at {_loc} = air:
+			if block above {_loc} = air:
+				teleport player to {_loc}
+			else:
+				add 1 to {_y}
+				set {_loc} to location({_x}, {_y}, {_z}, world "Wilderness")
+		while block at {_loc} != air:
+			add 1 to {_y}
+			if {_y} > 200:		
+				set {_x} to random integer from -5000 to 5000
+				set {_z} to random integer from -5000 to 5000
+				set {_y} to 60
+				set {_loc} to location({_x}, {_y}, {_z}, world "Wilderness")
+				add .5 to x coordinate of {_loc}
+				add .5 to z coordinate of {_loc}
+				if block at {_loc} = air:
+					if block above {_loc} = air:
+						teleport player to {_loc}
+					else:
+						add 1 to {_y}
+						set {_loc} to location({_x}, {_y}, {_z}, world "Wilderness")		
+			set {_loc} to location({_x}, {_y}, {_z}, world "Wilderness")
+			if block above block at {_loc} = air:
+				teleport player to {_loc}
+		message "&8[&bSnap&8] &7Teleported to a random location in &dWilderness"
+		wait 1 seconds
+		message "&8[&bSnap&8] &7Use &b/menu &7to learn about claiming land"
+					
+command /avalon:
+	trigger:
+		if player does not have permission "is.vortex":
+			message "&8[&bSnap&8] &7Purchase Vortex to unlock &eAvalon"
+			stop
+		if {lastwarpwild} was less than 1 seconds ago:
+			message "&8[&bSnap&8&8] &7Someone just used that, please wait"
+			stop
+		set {lastwarpwild} to now
+		set {_x} to random integer from -5000 to 5000
+		set {_z} to random integer from -5000 to 5000
+		set {_y} to 60
+		
+		set {_loc} to location({_x}, {_y}, {_z}, world "Avalon")
+		
+		add .5 to x coordinate of {_loc}
+		add .5 to z coordinate of {_loc}
+		if block at {_loc} = air:
+			if block above {_loc} = air:
+				teleport player to {_loc}
+			else:
+				add 1 to {_y}
+				set {_loc} to location({_x}, {_y}, {_z}, world "Avalon")
+		while block at {_loc} != air:
+			add 1 to {_y}
+			if {_y} > 200:		
+				set {_x} to random integer from -5000 to 5000
+				set {_z} to random integer from -5000 to 5000
+				set {_y} to 60
+				set {_loc} to location({_x}, {_y}, {_z}, world "Avalon")
+				add .5 to x coordinate of {_loc}
+				add .5 to z coordinate of {_loc}
+				if block at {_loc} = air:
+					if block above {_loc} = air:
+						teleport player to {_loc}
+					else:
+						add 1 to {_y}
+						set {_loc} to location({_x}, {_y}, {_z}, world "Avalon")		
+			set {_loc} to location({_x}, {_y}, {_z}, world "Avalon")
+			if block above block at {_loc} = air:
+				teleport player to {_loc}
+		message "&8[&bSnap&8] &7Teleported to a random location in &dAvalon"
+		wait 1 seconds
+		message "&8[&bSnap&8] &7Use &b/menu &7to learn about claiming land"
+			
+		
+command /end:
+	trigger:
+		if {lastwarpwild} was less than 1 seconds ago:
+			message "&8[&bSnap&8&8] &7Someone just used that, please wait"
+			stop
+		set {lastwarpwild} to now
+		set {_x} to random integer from -3000 to 3000
+		set {_z} to random integer from -3000 to 3000
+		set {_y} to 60
+		set {_loc} to location({_x}, {_y}, {_z}, world "world_the_end")
+		add .5 to x coordinate of {_loc}
+		add .5 to z coordinate of {_loc}
+		while block at {_loc} = air:
+			set {_x} to random integer from -3000 to 3000
+			set {_z} to random integer from -3000 to 3000
+			set {_y} to 40
+			set {_loc} to location({_x}, {_y}, {_z}, world "world_the_end")
+			add .5 to x coordinate of {_loc}
+			add .5 to z coordinate of {_loc}
+		while block at {_loc} != air:
+			add 1 to {_y}
+			if {_y} > 200:		
+				set {_x} to random integer from -3000 to 3000
+				set {_z} to random integer from -3000 to 3000
+				set {_y} to 60
+				set {_loc} to location({_x}, {_y}, {_z}, world "world_the_end")
+				add .5 to x coordinate of {_loc}
+				add .5 to z coordinate of {_loc}
+				if block at {_loc} = air:
+					if block above {_loc} = air:
+						teleport player to {_loc}
+					else:
+						add 1 to {_y}
+						set {_loc} to location({_x}, {_y}, {_z}, world "world_the_end")
+			set {_loc} to location({_x}, {_y}, {_z}, world "world_the_end")
+			if block above block at {_loc} = air:
+				teleport player to {_loc}
+		message "&8[&bSnap&8] &7Teleported to a random location in The End"
+		wait 1 seconds
+		message "&8[&bSnap&8] &7Use &b/menu &7to learn about claiming land"		
+		
+		
+command /biome [<text>]:
+	aliases: rp, randomport, wild, rtp, randomteleport
+	trigger:
+		if arg-1 is not set:
+			wait 1 tick
+			open chest with 6 rows named "      &8-=[ &1Choose Biome &8]=-" to player
+			wait 1 ticks									
+			set {_i} to 0									
+			loop 54 times:									
+				format slot {_i} of player with gray stained glass pane named "&7" to close
+				add 1 to {_i}								
+			wait 1 tick																	
+			format slot 10 of player with oak wood log named "&6Forest" with lore "", "   &eClick to teleport  ", "  " to close then run "sudo %player% biome forest"
+			format slot 12 of player with spruce wood log named "&6Spruce" with lore "", "   &eClick to teleport  ", "  " to close then run "sudo %player% biome taiga"
+			format slot 14 of player with birch wood log named "&6Birch" with lore "", "   &eClick to teleport  ", "  " to close then run "sudo %player% biome birch"
+			format slot 16 of player with jungle wood log named "&6Jungle" with lore "", "   &eClick to teleport  ", "  " to close then run "sudo %player% biome jungle"
+			format slot 20 of player with acacia wood log named "&6Savanna" with lore "", "   &eClick to teleport  ", "  " to close then run "sudo %player% biome savanna"
+			format slot 22 of player with dark oak plank named "&6Dark Oak" with lore "", "   &eClick to teleport  ", "  " to close then run "sudo %player% biome roofed"
+			format slot 24 of player with grass block named "&6Plains" with lore "", "   &eClick to teleport  ", "  " to close then run "sudo %player% biome plain"
+			format slot 29 of player with red stained clay named "&6Mesa" with lore "", "   &eClick to teleport  ", "  " to close then run "sudo %player% biome mesa"
+			format slot 31 of player with lapis block named "&6Ocean" with lore "", "   &eClick to teleport  ", "  " to close then run "sudo %player% biome ocean"
+			format slot 33 of player with ice block named "&6Ice" with lore "", "   &eClick to teleport  ", "  " to close then run "sudo %player% biome ice"
+			format slot 37 of player with green stained clay named "&6Swamp" with lore "", "   &eClick to teleport  ", "  " to close then run "sudo %player% biome swamp"
+			format slot 39 of player with emerald block named "&6Mountain" with lore "", "   &eClick to teleport  ", "  " to close then run "sudo %player% biome mountain"
+			format slot 41 of player with sand block named "&6Desert" with lore "", "   &eClick to teleport  ", "  " to close then run "sudo %player% biome desert"
+			format slot 43 of player with mycelium block named "&6Mushroom" with lore "", "   &eClick to teleport  ", "  " to close then run "sudo %player% biome island"
+			
+			stop
+		if {lastwarpwild} was less than 1 seconds ago:
+			message "&8[&bSnap&8&8] &7Someone just used that, please wait"
+			stop
+		set {lastwarpwild} to now
+	
+		set {_x} to random integer from -20000 to 20000
+		set {_z} to random integer from -20000 to 20000
+		set {_y} to 60
+		set {_loc} to the location at {_x}, {_y}, {_z} of the world "world"
+		set {_i} to 0
+		while "%biome at {_loc}%" does not contain "%arg-1%":
+			add 1 to {_i}
+			if {_i} > 5000:
+				message "&8[&bSnap&8] &7Unable to find a &e%arg-1% &7biome after 5000 tries!"
+				stop
+			set {_x} to random integer from -20000 to 20000
+			set {_z} to random integer from -20000 to 20000
+			set {_y} to 60
+			set {_loc} to the location at {_x}, {_y}, {_z} of the world "world"
+		add .5 to x coordinate of {_loc}
+		add .5 to z coordinate of {_loc}
+		if block at {_loc} = air:
+			if block above {_loc} = air:
+				teleport player to {_loc}
+			else:
+				add 1 to {_y}
+				set {_loc} to the location at {_x}, {_y}, {_z} of the world "world"
+		while block at {_loc} != air:
+			add 1 to {_y}
+			set {_loc} to the location at {_x}, {_y}, {_z} of the world "world"
+			if block above block at {_loc} = air:
+				teleport player to {_loc}
+		message "&8[&bSnap&8] &7Teleported to a random location in a &e%arg-1% &7biome"
+		wait 1 second
+		message "&8[&bSnap&8] &7Use &b/menu &7to learn about claiming land"

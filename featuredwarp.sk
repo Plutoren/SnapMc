@@ -1,0 +1,14 @@
+command /setfeaturedwarp <text>:
+	permission: is.op
+	trigger:
+		set {featuredwarp} to arg-1
+		message "&8[&bSnap&8] &aSet a new featured warp %arg-1%"
+		execute console command "/hd setline spawn_featured_warp 3 &dWarp&7: &u%arg-1%"
+		execute console command "/hd setline h_featured_warp 3 &dWarp&7: &u%arg-1%"
+		
+command /featuredwarp:
+	trigger:
+		if "%{featuredwarp}%" = "none":
+			message "&8[&bSnap&8] &7No featured warp currently. &d/buy"
+			stop
+		execute player command "/warp %{featuredwarp}%"

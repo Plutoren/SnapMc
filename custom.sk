@@ -1,0 +1,93 @@
+command /setrank <text>:
+	permission: is.vortex
+	trigger:
+		if length of arg-1 > 40:
+			message "&8[&bSnap&8] &aMaximum of 40 characters"
+			stop
+		set {_rank} to arg-1
+		if {_rank} contains "Owner":
+			message "&8[&bSnap&8] You cannot have the term Owner in your rank!"
+			stop
+		else if {_rank} contains "Admin":
+			message "&8[&bSnap&8] You cannot have the term Admin in your rank!"
+			stop
+		else if {_rank} contains "Manager":
+			message "&8[&bSnap&8] You cannot have the term Manager in your rank!"
+			stop
+		else if {_rank} contains "Mod":
+			message "&8[&bSnap&8] You cannot have the term Mod in your rank!"
+			stop
+		else if {_rank} contains "Helper":
+			message "&8[&bSnap&8] You cannot have the term Helper in your rank!"
+			stop
+		else if {_rank} contains "Staff":
+			message "&8[&bSnap&8] You cannot have the term Staff in your rank!"
+			stop
+		message "&8[&bSnap&8] &7Set your rank to &f%arg-1%"
+		message "&8[&bSnap&8] &eHover over your name in chat to see it."
+		message "&8[&bSnap&8] &6Remember staff impersonation is not allowed!"
+		set {rankname::%uuid of player%} to arg-1
+		
+command /forcerank <text> <text>:
+	permission: is.op
+	trigger:
+		set {_uuid} to {uuid::%arg-1%}
+		if {_uuid} is not set:
+			message "&cThey have never joined the server"
+			stop
+		set {rankname::%{_uuid}%} to arg-2
+		
+		
+command /giftpro [<player>]:
+	trigger:
+		if player does not have permission "is.vortex":
+			message "&cYou need the &dVortex &crank to use that! &7(&b/buy&7)"
+			stop
+		if arg-1 is not set:
+			message "&8&bSnap&8] &7Usage &b/giftpro (player)"
+			stop
+		if arg-1 has permission "is.donator":
+			message "&cThat player already has a rank!"
+			stop
+		if arg-1 has permission "is.staff":
+			message "&cYou need to talk to Plutoren to gift Pro to a staff!"
+			stop
+		if player has permission "is.vortex.max":
+			
+			if {vortex.usedProGift::%uuid of player%} > 0:
+				message "&8[&bSnap&8] &7You must wait &e%{vortex.usedProGift::%uuid of player%}% hours &7to use this again"
+				stop
+		else:
+			if {vortex.usedProGift::%uuid of player%} is set:
+				message "&8[&bSnap&8] &7You already used your pro gift redeemer, buy Vortex Max to gift Pro every month"
+				stop
+			
+		broadcast "&8[&bSnap&8] &e%player% &7just gifted the &2Pro &7rank to &e%arg-1% &7using the &dVortex Rank &7perk. &7(&b/buy&7)"
+		execute console command "/pex user %arg-1% group add pro"
+		execute console command "/pex user %arg-1% prefix """""
+		if player has permission "is.vortex.max":
+			set {vortex.usedProGift::%uuid of player%} to 733
+		else:
+			set {vortex.usedProGift::%uuid of player%} to true
+		
+		
+every hour:
+	loop {vortex.usedProGift::*}:
+		subtract 1 from {vortex.usedProGift::%loop-index%}
+		if {vortex.usedProGift::%loop-index%} < 0:
+			set {vortex.usedProGift::%loop-index%} to 0
+			
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+			

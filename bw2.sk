@@ -1,0 +1,120 @@
+on pick up:
+	if player is in world "BedWars":
+		if "%event-entity.getItemStack()%" contains "bed":
+			cancel event
+			delete event-entity
+
+	
+			
+			
+on drop:
+	if player is in world "BedWars":
+		if "%dropped item.getItemStack()%" contains "leggings" or "helmet" or "boots" or "chestplate" or "tunic" or "cap" or "pants" or "sword" or "pick" or "axe":
+			cancel event
+command /countbw:
+	permission: is.op
+	trigger:
+		set {_i} to 0
+		loop all players in world "BedWars":
+			add 1 to {_i}
+		message "&6Count: &e%{_i}%"
+on inventory click:
+	if player is in world "BedWars":
+		if "%clicked item%" contains "leggings" or "helmet" or "boots" or "chestplate" or "tunic" or "cap" or "pants":
+			if clicked slot is 39 or 38 or 37 or 36:
+				cancel event
+				close inventory of player
+		if {bw_inChest::%player%} is set:
+			if "%clicked item%" does not contain "golden_ingot" or "iron_ingot" or "diamond" or "emerald" or "":
+				cancel event
+				close inventory of player
+				
+on projectile hit:
+	if event-location's world is "BedWars":
+		if projectile is an snowball:
+			wait 2 ticks
+			set {_distance} to 4
+			set {_closest} to block 4 above event-location
+			loop blocks in radius 1 of projectile:
+				if loop-block is not air:
+					set {_tempDistance} to distance between projectile and loop-block
+					if {_tempDistance} < {_distance}:
+						set {_distance} to {_tempDistance}
+						set {_closest} to location of loop-block
+			spawn a silverfish at location of block above {_closest}
+			set name of last spawned entity to "&cBoo"
+			spawn a silverfish at location of block above {_closest}
+			set name of last spawned entity to "&eSurprise"
+			spawn a silverfish at location of block above {_closest}
+			set name of last spawned entity to "&dHey There"
+			spawn a silverfish at location of block above {_closest}
+			set name of last spawned entity to "&7Hehe"
+on right click with fire charge:
+	if player is in world "BedWars":
+		shoot a fireball from the player at speed 0.3
+		remove 1 fire charge from player
+				
+on load:
+	delete {bw_inChest::*}
+	
+on close inventory:
+	if player is in world "BedWars":
+		delete {bw_inChest::%player%}
+		
+		
+on right click on chest:
+	if player is in world "BedWars":
+		set {bw_inChest::%player%} to true
+		
+every 22 seconds:
+	
+	loop all players in world "BedWars":
+	
+		
+		set {_id} to {bw.players.id::%loop-player%}
+		if {_id} is set:
+			set {_loc} to random element of {bw.locations.diamondGenerator::%{_id}%::*}
+			drop diamond at location of block above {_loc}
+
+			if {_used::%{_id}%} is not set:
+				set {_loc} to random element of {bw.locations.emeraldGenerator::%{_id}%::*}
+				drop emerald at location of block above {_loc}
+						
+				set {_used::%{_id}%} to true
+				
+every 10 minutes in world "BedWars":
+	set time to 11:00
+
+on build:
+	if player is in world "BedWars":
+		set {_id} to {bw.players.id::%player%}
+		if {bw.nobuild::%{_id}%::%location of event-block%} is set:
+			cancel event
+			message "&8[&bSnap&8] &7You can't build that close to a spawn point"
+	
+On explode:
+	cancel event
+	set {_loc} to event-location
+	set {_i} to 1
+	loop blocks in radius 3 of event-location:
+		if {_i} = 1:
+			set {_loc} to location of loop-block
+			if {_loc} is not in world "BedWars":
+				stop
+		add 1 to {_i}
+		set {_blow} to true
+		loop blocks between loop-block and block at event-location:
+			if loop-block-2 is yellow glass block or red glass block or light green glass block or blue glass block :
+				set {_blow} to false
+				stop loop
+		if {_blow} is true:
+			if loop-block is red wool block or yellow wool block or blue wool block or light green wool block:
+				if block above loop-block is not bed block:
+					set loop-block to air
+					
+					
+
+					
+		
+			
+	 

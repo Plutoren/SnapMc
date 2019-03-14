@@ -1,0 +1,146 @@
+on death of player:
+	if victim is in world "OITC":
+	
+		if victim != attacker:
+			if attacker's inventory does not contain 1 arrow:
+				give attacker 1 arrow
+			add 1 to {oitc::%uuid of attacker%}
+		else:
+			set player's health to 2
+			cancel event
+			stop
+		heal victim
+		clear drops
+		
+		set metadata "oitc.killstreak" of victim to 0
+		set {_oitc.killstreak} to metadata "oitc.killstreak" of attacker
+		if {_oitc.killstreak} is not set:
+			set metadata "oitc.killstreak" of attacker to 1
+		else:
+			set metadata "oitc.killstreak" of attacker to {_oitc.killstreak} + 1
+		set {_oitc.killstreak} to metadata "oitc.killstreak" of attacker
+		if attacker is set:	
+			if attacker's tool is a bow:
+				set {_distance} to distance between attacker and victim
+				
+				send "&8[&dOITC&8] &aYou killed &f&l%victim% &awith a bow &7(&e%{_oitc.killstreak}%&7) &5%{_distance}%m" to attacker
+				send "&8[&6OITC&8] &cYou were killed by &e&l%attacker% &cwith a bow &7(&e%{_oitc.killstreak}%&7) &5%{_distance}%m" to victim
+				loop all players in world "OITC":
+					if loop-player != victim or attacker:
+						send "&8[&dOITC&8] &6&l%attacker% &bkilled &e%victim% &bwith a bow &7(&e%{_oitc.killstreak}%&7) &5%{_distance}%m" to loop-player
+				
+			else if attacker's tool is a sword:
+				send "&8[&dOITC&8] &aYou killed &f&l%victim% &awith a sword &7(&e%{_oitc.killstreak}%&7)" to attacker
+				send "&8[&6OITC&8] &cYou were killed by &e&l%attacker% &cwith a sword &7(&e%{_oitc.killstreak}%&7)" to victim
+				loop all players in world "OITC":
+					if loop-player != victim or attacker:
+						send "&8[&dOITC&8] &6&l%attacker% &bkilled &e%victim% &bwith a sword &7(&e%{_oitc.killstreak}%&7)" to loop-player
+			else:
+				send "&8[&dOITC&8] &aYou killed &f&l%victim% &7(&e%{_oitc.killstreak}%&7)" to attacker
+				send "&8[&6OITC&8] &cYou were killed by &e&l%attacker% &7(&e%{_oitc.killstreak}%&7)" to victim
+				loop all players in world "OITC":
+					if loop-player != victim or attacker:
+						send "&8[&dOITC&8] &6&l%attacker% &bkilled &e%victim% &7(&e%{_oitc.killstreak}%&7)" to loop-player
+			play "ENTITY_EXPERIENCE_ORB_PICKUP"  to attacker 
+
+			
+		set {_i} to random integer from 1 to 20
+		teleport victim to {pos::oitc_forest_%{_i}%}
+		clear victim's inventory
+		wait 1 tick
+		set victim's helmet to air
+		set victim's chestplate to air
+		set victim's leggings to air
+		set victim's boots to leather boots
+		set victim's offhand to air
+		set victim's gamemode to survival
+		set victim's fly state to false
+		set victim's gravity to true
+		set victim's health to 3
+		give victim 1 wooden sword
+		give victim 1 bow of power 20
+		give victim 1 arrow
+		
+		
+		set attacker's health to 3
+		
+		
+		
+on drop:
+	if player is in world "OITC":
+		cancel event
+on pick up:
+	if player is in world "OITC":
+		cancel event
+command /oitc [<text>]:
+	
+	trigger:
+		if arg-1 is not set:
+			if player is in world "OITC":
+				message "&cYou can't use that here. Use /hub"
+				stop
+			set {_i} to random integer from 1 to 20
+			teleport player to {pos::oitc_forest_%{_i}%}
+		else if arg-1 is "top":
+			
+			loop {oitc::*}:
+				add 1 to {_size}
+				if {_low.to.high.list::%loop-value%} is not set:
+					set {_low.to.high.list::%loop-value%} to loop-index
+				else:
+					set {_n} to 0
+					loop {_size} times:
+						set {_n} to {_n}+1
+						{_low.to.high.list::%loop-value-1%.%{_n}%} is not set
+						set {_low.to.high.list::%loop-value-1%.%{_n}%} to loop-index
+						
+						stop loop
+			wait 1 tick
+			set {_n} to size of {_low.to.high.list::*}
+			loop {_low.to.high.list::*}:
+				set {_high.to.low.list::%{_n}%} to loop-value
+				set {_n} to {_n}-1
+			
+			open chest with 6 row named "-=[ &1SkyBlock Top Islands &8]=-" to player
+			wait 1 tick
+			if "%name of current inventory of player%" != "-=[ &1SkyBlock Top Islands &8]=-":
+				close inventory of player
+				stop
+				
+			set {_i} to 0
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/oitc top"]
+				add 1 to {_i}				
+			format slot 17 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/oitc top"]
+			format slot 36 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/oitc top"]
+			set {_i} to 44
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/oitc top"]
+				add 1 to {_i}
+		
+			set {_slot} to 19
+			set {_i} to 0
+			loop {_high.to.low.list::*}:
+				
+				add 1 to {_slot}
+				add 1 to {_i}
+				format slot {_slot} of player with {item::head_number%{_i}%} named "&eOITC &6&n%{uuidName::%loop-value%}%&r &7(##%{_i}%)" with lore "|| &6* &e&lKills &7%{oitc::%loop-value%}% |||| &6* &e&lPlace &7##%{_i}%||" to run "nothing"
+		
+				
+				if {_slot} is 24:
+					set {_slot} to 28 
+				if {_slot} is 33:
+					stop
+command /testoitc:
+	permission: is.Pluto
+	trigger:
+		set {_i} to random integer from 1 to 10
+		teleport player to {pos::oitc_forest_%{_i}%}
+	
+	
+on command:
+	if player is in world "OITC":
+		if player does not have permission "is.Pluto":
+			if command contains "auc" or "echest" or "eechest" or "fish" or "mf" or "eec" or "kit" or "fly" or "ender" or "auction" or "setwarp" or "ah" or "auctionhouse" or "shop" or "pack" or "packs" or "ec" or "enderchest" or "heal" or "feed" or "tp" or "setwarp" or "sethome":
+				cancel event
+				message "&8[&fOITC&8] &7You can't use that command here!"

@@ -1,0 +1,30 @@
+import:
+	org.bukkit.Bukkit
+	java.util.UUID
+	
+on script load:
+  set {apis::gp} to Bukkit.getPluginManager().getPlugin("GriefPrevention")
+  set {apis::gp::dataStore} to {apis::gp}.dataStore!
+    
+command /getclaims:
+	trigger:
+		set {_uuid} to uuid of player
+		message "%{apis::gp::dataStore}.getPlayerClaims({_uuid})%"
+		
+		
+		
+		
+
+function claimsList(uuid: text) :: object:
+	send "%{_uuid}%" to "Plutoren" parsed as player
+	send "%{apis::gp::dataStore}.getPlayerClaims({_uuid})%" to "Plutoren" parsed as player
+	return {apis::gp::dataStore}.getPlayerClaims({_uuid})
+  
+		
+	#	set {_uuid} to {uuid::%arg-1%}
+	#	message "&e%{_uuid}%"
+	#	message "&d%{_uuid}%"
+	#	set {_uuid2} to UUID.fromString({_uuid})
+	#	message "&a%{_uuid2}%"
+	#	message "%{apis::gp::dataStore}.getPlayerClaims(UUID.fromString({_uuid}))%"
+  

@@ -1,0 +1,84 @@
+command /bannew:
+	permission: is.staff
+	trigger:
+		loop all players:
+			if {firstjoin::%loop-player%} was less than 10 minutes ago:
+				execute console command "ban %loop-player% 300 days Banned for spam -s"
+
+
+command /checkonlineip <text>:
+	permission: is.op
+	trigger:
+	
+		loop all players:
+			if "%ip of loop-player%" contains "%arg-1%":
+				message "%loop-player%"
+				
+command /banonlineip <text>:
+	permission: is.op
+	trigger:
+	
+		loop all players:
+			if "%ip of loop-player%" contains "%arg-1%":
+				execute console command "ban %loop-player% lol -s"
+			
+			
+		
+command /checkspam:
+	permission: is.pluto
+	trigger:
+		message "%{panic.spam.count}%"
+		message "%{panic.last.message}%"
+on chat:
+	if "%message%" = "%{panic.last.message}%":
+		if {panic.bots::%player%} is not set:
+			set {panic.bots::%player%} to true
+			add 1 to {panic.spam.count}
+			if {panic.spam.count} > 25:
+				execute console command "bannew"
+	else:
+		set {panic.last.message} to "%message%"
+		delete {panic.spam.count}
+		delete {panic.bots::*}
+		
+		
+on break:
+	set {_cps} to metadata "cps" of player
+	if {_cps} is set:
+		set metadata "cps" of player to {_cps} - 1
+
+on join:
+	set metadata "cps" of player to 0
+on click:
+	player's tool is not a pickaxe or a shovel
+	set {_cps} to metadata "cps" of player
+	if {_cps} is not set:
+		set metadata "cps" of player to 1
+	else:
+		if {_cps} > 8:
+			cancel event
+		if {_cps} = 1000:
+			execute console command "kick %player% You sent 1000 clicks in under 1 second -s"
+		set metadata "cps" of player to {_cps} + 1
+	
+	
+every second:
+	loop all players:
+		set {_cps} to metadata "cps" of loop-player
+		if {_cps} > 80:
+			loop all players:
+				if loop-player-2 has permission "is.staff":
+					send "&8[&cCPS&8] &e%loop-player-1% &7has a rather high cps of &d%{_cps}% &7please ban if it continues." to loop-player-2
+			# execute console command "ban %loop-player% 3 days High CPS: %{_cps}% Automatic Ban"
+		else if {_cps} > 21:
+			loop all players:
+				if loop-player-2 has permission "is.staff":
+					send "&8[&cCPS&8] &e%loop-player-1% &7has a rather high cps of &d%{_cps}%&7, and is surely hacking if it continues." to loop-player-2
+		else if {_cps} > 15:
+			loop all players:
+				if loop-player-2 has permission "is.staff":
+					send "&8[&cCPS&8] &e%loop-player-1% &7has a rather high cps of &d%{_cps}%&7, keep an eye on them." to loop-player-2
+		set metadata "cps" of loop-player to 0
+	
+				
+	

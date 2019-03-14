@@ -1,0 +1,5 @@
+command /plugdj:
+	trigger:
+		message ""
+		message " &b&lSnapMc PlugDJ&7:&a  plug.dj/bdd704db  "
+		message ""

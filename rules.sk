@@ -1,0 +1,5 @@
+on command "/rules":
+	cancel event
+	message ""
+	message "&8[&bSnap&8] &7&lRules:&b snapmc.com/threads/rules-and-guidelines.83/"
+	message ""

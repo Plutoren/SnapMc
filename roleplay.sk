@@ -1,0 +1,20 @@
+
+												
+command /roleplay:												
+	executable by: players								
+	aliases: /claimhelp									
+	trigger:											
+		wait 2 ticks
+		open chest with 5 row named "         &8-=[ &1Roleplays &8]=-" to player
+		wait 1 ticks									
+		set {_i} to 0									
+		loop 45 times:									
+			format slot {_i} of player with light blue stained glass pane named "&7&l*" to close then run "sudo %player% roleplay"
+			add 1 to {_i}	 														
+		format slot 11 of player with enchanted book named "&6&lHogwarts" with lore "||  &eClick to play  ||  &fRated: &a10&7/&a10  ||  &fSize: &aMedium Large || " to close then run "sendplayerto %player% hogwarts"
+		format slot 13 of player with quartz block named "&d&lVancouver" with lore  "||  &eClick to play  ||  &fRated: &a10&7/&a10  ||  &fSize: &aMassive || " to close then run "sendplayerto %player% Vancouver"
+		format slot 15 of player with water bucket named "&b&lAtlantis" with lore   "||  &eClick to play  ||  &fRated: &a10&7/&a10  ||  &fSize: &aMedium || " to close then run "sendplayerto %player% Atlantis"
+		format slot 29 of player with stone named "&b&lNavy Fleet" with lore   "||  &eClick to play  ||  &fRated: &a9&7/&a10  ||  &fSize: &aMedium, Spread Out || " to close then run "sendplayerto %player% Navy"
+		format slot 31 of player with cyan wool block named "&3&lHalcyon" with lore   "||  &eClick to play  ||  &fRated: &a10&7/&a10  ||  &fSize: &aLarge || " to close then run "sendplayerto %player% Halcyon"
+ 
+

@@ -1,0 +1,21 @@
+command /sd:
+	permission: is.Pluto
+	trigger:
+		set {supplydrop.ready} to false
+		set {_session} to new edit session in world "spawn" with limit -1 
+		set {_above} to 45
+		loop 46 times:
+			paste schematic "plugins/WorldEdit/schematics/blue_balloon" at block west of block {_above} above block at {pos::supplydrop_1} using editsession {_session}
+			wait 1 second
+			subtract 1 from {_above}
+		set {supplydrop.ready} to true
+		wait 100 seconds
+		paste schematic "plugins/WorldEdit/schematics/balloon_1_removed" at {pos::supplydrop_1} using editsession {_session}
+			
+on right click on chest:
+	if "%regions at player%" contains "hub_pvp_keepinv":
+		if {supplydrop.ready} is not true:
+			cancel event
+			message "&cPlease wait for the supply drop to land"
+			
+		

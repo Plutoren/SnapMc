@@ -1,0 +1,68 @@
+on load:
+	set {juststarted} to now		
+
+on quit:
+	set {ipDisplayName::%ip of player%} to "%player's display name%"
+	set {ipUUID::%ip of player%} to uuid of player
+	set {lastLeave::%uuid of player%} to now
+on server list ping:
+	if {ipDisplayName::%ip%} is set:
+		set {_name} to {ipDisplayName::%ip%}
+		set {_uuid} to {ipUUID::%ip%}
+		set {_lastLeave} to {lastLeave::%{_uuid}%} 
+	#if {_name} is set:
+	#	set {_line1} to "&b&lSnapMc &8- &eUse Code &d&lHytale &efor &6&l10%% off&r &b/hytale   "
+	#	set {_line2} to "&e&lHello &4%{_name}%&e. &eLast visit&7: &d&n%{_lastLeave}%&r"
+	#	set motd to "%{_line1}% %{_line2}%"                               
+	#else:
+	
+	set motd to "   &f✦  &d&lWelcome to &b&lSnapMc  &f✦  &esnapmc.com  &f✦                &2☘   &e&l&nSend an actual Snap!&r &b&n/snapchat&r   &2☘ "                               
+	
+	set max number of players to 2000
+	set {_i} to 0
+	loop all players:
+		add 1 to {_i}
+	if {_name} is set:
+		set online player count to rounded up {_i} + 5
+	else:
+		if {_i} < 10:
+			set {_i} to 10
+			chance of 20%:
+				add 1 to {_i}
+			chance of 20%:
+				add 2 to {_i}
+			chance of 30%:
+				add 5 to {_i}
+			chance of 20%:
+				add -1 to {_i}
+			chance of 20%:
+				add -1 to {_i}
+			chance of 20%:
+				add -1 to {_i}
+			chance of 20%:
+				add -3 to {_i}
+		set online player count to (rounded up {_i} * 2.1)
+
+# on packet event status_server_server_info:
+#	put json "serverping" pjson 0 of event-packet in listvar {_l::*}
+#	set {serverping} to "%{_l::*}%"
+#	set {_i} to 0
+#	loop all players:
+#		add 1 to {_i}
+#		
+#	if {_i} < 8:
+#		set {_i} to 8
+#		if {juststarted} was less than 2 minutes ago:
+#			set {_i} to 4
+#	set {_l::players::online} to (rounded up {_i} * 3.1) 
+#	chance of 30%:
+#		add 1 to {_l::players::online}
+#	chance of 30%:
+#		subtract 1 from {_l::players::online}
+#	chance of 30%:
+#		add 1 to {_l::players::online}
+#	chance of 30%:
+#		subtract 1 from {_l::players::online}
+#	set "serverping" pjson 0 of event-packet to json of listvar {_l::*}
+
+	

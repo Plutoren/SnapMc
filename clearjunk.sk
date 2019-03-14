@@ -1,0 +1,434 @@
+command /clearjunk:
+	permission: is.op
+	trigger:
+		delete {lastdamge::*}
+		delete {lastused.randomitem::*}
+		delete {list::*}
+		loop {ip::*}:
+			if size of {alts::%loop-value%::*} = 1:
+				delete {alts::%loop-value%::*}
+			if {punish.ban.ip::%loop-value%} is not set:
+				if {punish.mute.ip::%loop-value%} is not set:
+					delete {ip::%loop-index%}
+		loop all players:
+			set {ip::%loop-player%} to "%ip of player%"
+		loop {uuidName::*}:
+			delete {epicenchant.a.ability.allowswitch.%loop-value%}
+			delete {epicenchant.a.ability.activation.status.%loop-value%}
+		wait 1 second
+		delete {fortnite.used::*}
+		delete {kit.redeemer.cash::*}
+		delete {afkstaff::*}
+		delete {halloween.slender.count::*}
+		delete {creative.xp.level::*}
+		delete {bw.players.items::*}
+		delete {christmas.game18::*}
+		delete {christmas.game8.blue::*}
+		delete {christmas.justwarped::*}
+		delete {christmas.score::*}
+		delete {code::*}
+		delete {dungeon.spawner.count::*}
+		delete {easter.prizes::*}
+		delete {elytra.timer.start::*}
+		delete {creative.xp.level.progress::*}
+		delete {hub.xp.level::*}
+		delete {hub.xp.level.progress::*}
+		delete {pvp.lastattacker::*}
+		delete {duelkits.custom::*}
+		delete {hub.inventory.save::*}
+		delete {unexempt::*}
+		delete {bot.messages::*}
+		loop {packmax::*}:
+			if loop-value = 0:
+				delete {packmax::%loop-index%}
+		loop {prison.quests.player.points::*}:
+			if loop-value = 0:
+				delete {prison.quests.player.points::%loop-index%}
+		loop {prison.level::*}:
+			if loop-value = 0:
+				delete {prison.level::%loop-index%}
+		delete {bot.perPlayer::*}
+		delete {alreadyfake::*}
+		delete {botarena.playerhealth::*}
+		delete {botarena.lasthit::*}
+		delete {botarena.ingame::*}
+		delete {botarena.botdamage::*}
+		delete {bot.message::*}
+		delete {args::*}
+		delete {bw.inventory.save::*}
+		delete {safespawners.locations::*}
+		delete {safespawners.playername::*}
+		delete {allowlife.locations::*}
+		delete {bw.locations.emeraldgenerator::*}
+		delete {bw.teams.size::*}
+		delete {bw.players.list::*}
+		delete {bw.numberofteamsalive::*}
+		delete {bw.nobuild::*}
+		delete {bw.locations.spawn::*}
+		delete {bw.locations.spawnwait::*}
+		delete {christmas.found.prizes::*}
+		delete {christmas.game14.timer::*}
+		delete {christmas.game13::*}
+		delete {christmas.game8.justchecked::*}
+		delete {christmas.game8.orange::*}
+		delete {christmas.game8.yellow::*}
+		delete {christmas.game8.red::*}
+		delete {christmas.prizes::*}
+		delete {creative.inventory.save::*}
+		delete {duelkit::*}
+		delete {duelsent::*}
+		delete {easter.found.prizes::*}
+		delete {exempt::*}
+		delete {glow.ischanged::*}
+		delete {godmode::*}
+		delete {halloween.finished::*}
+		delete {halloween.foundeggs::*}
+		delete {hour.player::*}
+		delete {hub.inventory.save::*}
+		delete {justblewakiss::*}
+		delete {justchat::*}
+		delete {justusedemote::*}
+		delete {lastattacker::*}
+		delete {lastchat::*}
+		delete {lastcommand::*}
+		delete {lastdamage::*}
+		delete {lastmsg::*}
+		delete {lastused.randomitem::*}
+		delete {magic.particle::*}
+		delete {marry.wish::*}
+		delete {minute.player::*}
+		delete {movement::*}
+		delete {afk::*}
+		wait 1 second
+		delete {movement.strike::*}
+		delete {msg.reply::*}
+		delete {nv::*}
+		delete {msgignore::*}
+		delete {nocommands::*}
+		delete {pickup.multiplier.start::*}
+		delete {pickup.multiplier.time::*}
+		delete {pickup.multiplier.value::*}
+		delete {prison.lastattack::*}
+		delete {pvp.lastattacker::*}
+		delete {pvp.wall.lever::*}
+		delete {pvp.wall.lever.time::*}
+		delete {replier::*}
+		delete {roll::*}
+		delete {thanksgiving.button::*}
+		loop {world.xp.level::*}:
+			if loop-value = 0:
+				delete {world.xp.level::%loop-index%}
+		loop {prison.xp.level::*}:
+			if loop-value = 0:
+				delete {prison.xp.level::%loop-index%}
+		loop {prison.xp.level.progress::*}:
+			if loop-value = 0:
+				delete {prison.xp.level.progress::%loop-index%}
+		loop {prison.balance::*}:
+			if loop-value = 0:
+				delete {prison.balance::%loop-index%}
+		loop {prison.boost.multiplier::*}:
+			if loop-value = 100:
+				delete {prison.boost.multiplier::%loop-index%}
+		wait 1 second
+		loop {skyblock.xp.level::*}:
+			if loop-value = 0:
+				delete {skyblock.xp.level::%loop-index%}
+		loop {skyblock.xp.level.progress::*}:
+			if loop-value = 0:
+				delete {skyblock.xp.level.progress::%loop-index%}
+		loop {wilderness.xp.level::*}:
+			if loop-value = 0:
+				delete {wilderness.xp.level::%loop-index%}
+		loop {wilderness.xp.level.progress::*}:
+			if loop-value = 0:
+				delete {wilderness.xp.level.progress::%loop-index%}
+		wait 1 second
+		loop {world.xp.level::*}:
+			if loop-value = 0:
+				delete {world.xp.level::%loop-index%}
+		loop {world.xp.level.progress::*}:
+			if loop-value = 0:
+				delete {world.xp.level.progress::%loop-index%}
+		delete {slender.event-player.perip::*}
+		delete {rooms.xp.level::*}
+		delete {rooms.xp.level.progress::*}
+		delete {hub.xp.level::*}
+		delete {thanksgiving.player.total::*}
+		delete {tod.from::*}
+		delete {tutorial.start.location::*}
+		delete {unexempt::*}
+		delete {verified.accounts::*}
+		wait 1 second
+		delete {votewarp.players::*}
+		delete {wallrun.checkpoint.pitch::*}
+		delete {wallrun.checkpoint.yaw::*}
+		delete {warpdisplayitem::*}
+		delete {warpvisits::*}
+		delete {waterfun.justshot::*}
+		delete {issprinting::*}
+		delete {shop.item.name::*}
+		delete {shop.quantity::*}
+		delete {tod.time::*}
+		delete {watergun.justshot}
+		message "done"
+
+		
+# on leave:
+#	set {lastleft::%uuid of player%}
+		
+command /lastleave <text> <timespan>:
+	permission: is.op
+	trigger:
+		message "&e%{lastLeave::%{uuid::%arg-1%}%}%"
+		if {lastLeave::%{uuid::%arg-1%}%} was more than arg-2 ago:
+			message "&aTrue"
+		else:
+			message "&cFalse"
+			
+			
+command /clearold:
+	permission: is.op
+	trigger:
+	
+		set {_time} to 30 days
+		# firstjoin - name
+		add size of {firstjoin::*} to {_total}
+		loop {firstjoin::*}:
+			if {lastLeave::%{uuid::%loop-index%}%} was more than {_time} ago:
+				add 1 to {_old}
+				
+		# prefix - name
+		add size of {prefix::*} to {_total}
+		loop {prefix::*}:
+			if {lastLeave::%{uuid::%loop-index%}%} was more than {_time} ago:
+				add 1 to {_old}
+				
+		# suffix - name
+		add size of {suffix::*} to {_total}
+		loop {suffix::*}:
+			if {lastLeave::%{uuid::%loop-index%}%} was more than {_time} ago:
+				add 1 to {_old}
+		
+		# takedamage - name
+		# deleted
+		add size of {takedamage::*} to {_total}
+		loop {takedamage::*}:
+			if {lastLeave::%{uuid::%loop-index%}%} was more than {_time} ago:
+				add 1 to {_old}
+				delete {takedamage::%loop-index%}
+				add 1 to {vars.deleted}
+				add 1 to {_deleted}
+				
+				
+		# prison.balance - uuid	
+		add size of {prison.balance::*} to {_total}
+		loop {prison.balance::*}:
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add 1 to {_old}	
+				
+				
+		# prison.checkpoint - uuid	- 6k
+		# deleted
+		add size of {prison.checkpoint::*} to {_total}
+		loop {prison.checkpoint::*}:
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add 1 to {_old}	
+				delete {prison.checkpoint::%loop-index%}
+				add 1 to {vars.deleted}
+				add 1 to {_deleted}
+				
+		# prison.inventory.save::* - uuid (list)
+		loop {uuidName::*}:
+			add size of {prison.inventory.save::%loop-index%::*} to {_total}
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add size of {prison.inventory.save::%loop-index%::*} to {_old}	
+				
+		wait 2 seconds
+		# skyblock.inventory.save
+		loop {uuidName::*}:
+			add size of {skyblock.inventory.save::%loop-index%::*} to {_total}
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add size of {skyblock.inventory.save::%loop-index%::*} to {_old}	
+				
+		wait 1 second
+		
+		# wilderness.inventory.save
+		# deleted
+		loop {uuidName::*}:
+			add size of {wilderness.inventory.save::%loop-index%::*} to {_total}
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add size of {wilderness.inventory.save::%loop-index%::*} to {_old}	
+				add size of {wilderness.inventory.save::%loop-index%::*} to {vars.deleted}
+				add size of {wilderness.inventory.save::%loop-index%::*} to {_deleted}
+				delete {wilderness.inventory.save::%loop-index%::*}
+				
+		wait 1 second
+		# world.inventory.save - 39k
+		loop {uuidName::*}:
+			add size of {world.inventory.save::%loop-index%::*} to {_total}
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add size of {world.inventory.save::%loop-index%::*} to {_old}	
+		
+		# redeem.crate - name
+		add size of {redeem.crate::*} to {_total}
+		loop {redeem.crate::*}:
+			if {lastLeave::%{uuid::%loop-index%}%} was more than {_time} ago:
+				add 1 to {_old}
+				
+		wait 1 second	
+			
+		# rewards.day - name
+		add size of {rewards.day::*} to {_total}
+		loop {rewards.day::*}:
+			if {lastLeave::%{uuid::%loop-index%}%} was more than {_time} ago:
+				add 1 to {_old}
+
+		# rooms.checkpoint - uuid
+		add size of {rooms.checkpoint::*} to {_total}
+		loop {rooms.checkpoint::*}:
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add 1 to {_old}	
+				
+		wait 1 second
+		# bw.balance
+		add size of {bw.balance::*} to {_total}
+		loop {bw.balance::*}:
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add 1 to {_old}	
+				
+		
+		# streak.count - uuid
+		# deleted
+		add size of {streak.count::*} to {_total}
+		loop {streak.count::*}:
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add 1 to {_old}	
+				delete {streak.count::%loop-index%}
+				add 1 to {vars.deleted}
+				add 1 to {_deleted}
+				
+		# streak.limit - uuid
+		# deleted
+		add size of {streak.limit::*} to {_total}
+		loop {streak.limit::*}:
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add 1 to {_old}	
+				delete {streak.limit::%loop-index%}
+				add 1 to {vars.deleted}
+				add 1 to {_deleted}
+				
+				
+		# votecount.player - uuid 
+		add size of {votecount.player::*} to {_total}
+		loop {votecount.player::*}:
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add 1 to {_old}	
+				
+		# wilderness.balance - uuid
+		add size of {wilderness.balance::*} to {_total}
+		loop {wilderness.balance::*}:
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add 1 to {_old}	
+				
+		# wilderness.hasvisited - uuid
+		add size of {wilderness.hasvisited::*} to {_total}
+		loop {wilderness.hasvisited::*}:
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add 1 to {_old}	
+				
+		# world.xp.level - uuid 
+		# deleted
+		add size of {world.xp.level::*} to {_total}
+		loop {world.xp.level::*}:
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add 1 to {_old}	
+				delete {world.xp.level::%loop-index%}
+				add 1 to {vars.deleted}
+				add 1 to {_deleted}
+		wait 1 second
+			
+		# world.xp.level.progress - uuid
+		# deleted
+		add size of {world.xp.level.progress::*} to {_total}
+		loop {world.xp.level.progress::*}:
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add 1 to {_old}	
+				delete {world.xp.level.progress::%loop-index%}
+				add 1 to {vars.deleted}
+				add 1 to {_deleted}
+		wait 1 second
+				
+		# skyblock.xp.level - uuid 
+		# deleted
+		add size of {skyblock.xp.level::*} to {_total}
+		loop {skyblock.xp.level::*}:
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add 1 to {_old}	
+				delete {skyblock.xp.level::%loop-index%}
+				add 1 to {vars.deleted}
+				add 1 to {_deleted}
+		wait 1 second
+			
+		# skyblock.xp.level.progress - uuid 
+		# deleted
+		add size of {skyblock.xp.level.progress::*} to {_total}
+		loop {skyblock.xp.level.progress::*}:
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add 1 to {_old}	
+				delete {skyblock.xp.level.progress::%loop-index%}
+				add 1 to {vars.deleted}
+				add 1 to {_deleted}
+		wait 1 second
+				
+		# wilderness.xp.level - uuid 
+		# deleted
+		add size of {wilderness.xp.level::*} to {_total}
+		loop {wilderness.xp.level::*}:
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add 1 to {_old}	
+				delete {wilderness.xp.level::%loop-index%}
+				add 1 to {vars.deleted}
+				add 1 to {_deleted}
+		wait 1 second
+			
+		# wilderness.xp.level.progress - uuid 
+		# deleted
+		add size of {wilderness.xp.level.progress::*} to {_total}
+		loop {wilderness.xp.level.progress::*}:
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add 1 to {_old}	
+				delete {wilderness.xp.level.progress::%loop-index%}
+				add 1 to {vars.deleted}
+				add 1 to {_deleted}
+		wait 1 second
+				
+		# prison.xp.level - uuid
+		# deleted
+		add size of {prison.xp.level::*} to {_total}
+		loop {prison.xp.level::*}:
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add 1 to {_old}	
+				delete {prison.xp.level::%loop-index%}
+				add 1 to {vars.deleted}
+				add 1 to {_deleted}
+		wait 1 second
+		# prison.xp.level.progress - uuid 
+		# deleted
+		add size of {prison.xp.level.progress::*} to {_total}
+		loop {prison.xp.level.progress::*}:
+			if {lastLeave::%loop-index%} was more than {_time} ago:
+				add 1 to {_old}	
+				delete {prison.xp.level.progress::%loop-index%}
+				add 1 to {vars.deleted}
+				add 1 to {_deleted}
+		
+				
+		message "&aTotal&7: &e%{_total}%"
+		message "&cOld&7: &6%{_old}%"
+		message "&4Deleted now&7: &e%{_deleted}%"
+		message "&4Total Deleted&7: &6%{vars.deleted}%"
+		
+		
+		
+		

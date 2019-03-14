@@ -1,0 +1,7 @@
+command /firstjoin <text>:
+	trigger:
+		message "&8[&bSnap&8] &7Player data for the username: &b%arg-1%"
+		message "&8[&bSnap&8] &7They first joined the server on: &b%{firstjoin::%arg-1%}%"
+		message "&8[&bSnap&8] &7It is currently: &b%now%"
+
+	

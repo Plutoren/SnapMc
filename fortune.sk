@@ -1,0 +1,189 @@
+command /fortune [<text>]:
+	aliases: loot, lootcrate
+	trigger:
+		if {fortune.last.executed.quick::%uuid of player%} is not set:
+			set {fortune.last.executed.quick::%uuid of player%} to now
+		else if {fortune.last.executed.quick::%uuid of player%} was less than 16 seconds ago:
+			message "&8[&6Fortune&8] &7Please wait a few seconds"
+			stop
+		set {fortune.last.executed.quick::%uuid of player%} to now
+		if player is not in world "spawn" or "world" or "world_nether" or "world_the_end" or "resource" or "Elytra Fall" or "Avalon":
+			message "&8[&6Fortune&8] &eYou can only use this in survival"
+			stop
+		if {fortune.loot.keys::%uuid of player%} > 0:
+			if arg-1 is not "test":
+				message "&8[&6Fortune&8] &eUsing 1 Loot Key. &7You now have &a%{fortune.loot.keys::%uuid of player%} - 1% &7left."
+		else if player has permission "is.vortex":
+			
+			if arg-1 is not "test":
+				if {fortune.last.executed::%uuid of player%} is not set:
+					set {fortune.last.executed::%uuid of player%} to now
+				else if {fortune.last.executed::%uuid of player%} was less than 46 hours ago:
+					
+					set {_startDate} to {fortune.last.executed::%uuid of player%}
+					set {_duration}  to 46 hours
+					set {_now} to now
+					set {_endDate} to {_startDate}
+					add {_duration} to {_endDate}
+					set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+					message "&8[&6Fortune&8] &cNext fortune in&7: &e%{_timeUntilExpiration}%"
+					stop
+		else:
+			if arg-1 is not "test":
+				message "&8- &ePurchase Loot Keys at &bstore.snapmc.com &eor &b/buy"
+				stop
+		set {_i} to 1
+		loop 100 times:
+			set {_item::%{_i}%} to random element of {fortune.items::*}
+			add 1 to {_i}
+		wait 1 tick
+		open chest with 5 row named "        -=[ &1Loot Crate &8]=-" to player
+		wait 1 tick
+		if name of current inventory of player != "        -=[ &1Loot Crate &8]=-":
+			close inventory of player
+			stop
+			
+		set {_i} to 0
+		loop 10 times:
+			format slot {_i} of player with blue stained glass pane named "&b&l*" to be unstealable
+			add 1 to {_i}				
+	
+		format slot 10 of player with red stained glass pane named "&c&l*" to be unstealable
+		format slot 16 of player with red stained glass pane named "&c&l*" to be unstealable
+		
+		
+		format slot 17 of player with blue stained glass pane named "&b&l*" to be unstealable
+	
+		format slot 27 of player with blue stained glass pane named "&b&l*" to be unstealable
+		
+			
+		format slot 28 of player with red stained glass pane named "&c&l*" to be unstealable
+		format slot 34 of player with red stained glass pane named "&c&l*" to be unstealable
+		
+		set {_i} to 35
+		loop 10 times:
+			format slot {_i} of player with blue stained glass pane named "&b&l*" to be unstealable
+			add 1 to {_i}
+			
+		set {_i} to 1
+		loop 26 times:
+			set {_slot} to 18
+			set {_j} to {_i}
+			loop 9 times:
+				if name of current inventory of player != "        -=[ &1Loot Crate &8]=-":
+					close inventory of player
+					stop
+				format slot {_slot} of player with 1 of {_item::%{_j}%} to be unstealable
+				add 1 to {_j}
+				add 1 to {_slot}
+			add 1 to {_i}
+			wait 3 ticks
+		
+		format slot 11 of player with orange stained glass pane named "&6&l*" to be unstealable
+		format slot 15 of player with orange stained glass pane named "&6&l*" to be unstealable
+			
+		format slot 29 of player with orange stained glass pane named "&6&l*" to be unstealable
+		format slot 33 of player with orange stained glass pane named "&6&l*" to be unstealable
+		
+		loop 10 times:
+			set {_slot} to 18
+			set {_j} to {_i}
+			loop 9 times:
+				if name of current inventory of player != "        -=[ &1Loot Crate &8]=-":
+					close inventory of player
+					stop
+				format slot {_slot} of player with 1 of {_item::%{_j}%} to be unstealable
+				add 1 to {_j}
+				add 1 to {_slot}
+			add 1 to {_i}
+			wait 7 ticks
+			
+		if name of current inventory of player != "        -=[ &1Loot Crate &8]=-":
+			close inventory of player
+			stop
+		format slot 12 of player with yellow stained glass pane named "&e&l*" to be unstealable
+		format slot 14 of player with yellow stained glass pane named "&e&l*" to be unstealable
+		format slot 30 of player with yellow stained glass pane named "&e&l*" to be unstealable
+		format slot 32 of player with yellow stained glass pane named "&e&l*" to be unstealable
+		
+			
+		loop 5 times:
+			set {_slot} to 18
+			set {_j} to {_i}
+			loop 9 times:
+				if name of current inventory of player = "        -=[ &1Loot Crate &8]=-":
+					
+					format slot {_slot} of player with 1 of {_item::%{_j}%} to be unstealable
+				add 1 to {_j}
+				add 1 to {_slot}
+			add 1 to {_i}
+			wait 15 ticks
+		
+		if name of current inventory of player = "        -=[ &1Loot Crate &8]=-":
+			format slot 31 of player with light green stained glass pane named "&a&lYour Prize Above" to be unstealable
+			format slot 13 of player with light green stained glass pane named "&a&lYour Prize Below" to be unstealable
+		
+		wait 1 second
+		if name of current inventory of player = "        -=[ &1Loot Crate &8]=-":
+			format slot 18 of player with air named "" to be unstealable
+			format slot 19 of player with air named "" to be unstealable
+			format slot 20 of player with air named "" to be unstealable
+			format slot 21 of player with air named "" to be unstealable
+			
+			format slot 23 of player with air named "" to be unstealable
+			format slot 24 of player with air named "" to be unstealable
+			format slot 25 of player with air named "" to be unstealable
+			format slot 26 of player with air named "" to be unstealable
+		
+		wait 2 seconds
+		
+		if arg-1 is not "test":
+			if {fortune.loot.keys::%uuid of player%} > 0:
+				subtract 1 from {fortune.loot.keys::%uuid of player%}
+			else:
+				set {fortune.last.executed::%uuid of player%} to now
+			subtract 5 from {_j}
+		
+			broadcast "&8[&6Fortune&8] &a%player% opened a loot crate!"
+			broadcast "&8- &eThey received a &f%{_item::%{_j}%}%"
+			broadcast "&8- &ePurchase Loot Keys at &bstore.snapmc.com &eor &b/buy"
+		
+			give player 1 of {_item::%{_j}%}
+		
+			launch burst firework colored red at block above player timed 1	
+		if name of current inventory of player != "        -=[ &1Loot Crate &8]=-":
+			stop	
+		if player has permission "is.vortex":
+			
+			if {fortune.last.executed::%uuid of player%} was more than 46 hours ago:
+				if {fortune.loot.keys::%uuid of player%} > 0:
+					format slot 22 of player with chest named "&a&lRoll again" with lore "|| &eRemaining Rolls&7: &f%{fortune.loot.keys::%uuid of player%} + 1%" to run [make player execute command "/fortune"]
+				else:
+					format slot 22 of player with chest named "&a&lRoll again" with lore "|| &eRemaining Rolls&7: &f1" to run [make player execute command "/fortune"]
+				stop
+		
+		if {fortune.loot.keys::%uuid of player%} > 0:
+			format slot 22 of player with chest named "&a&lRoll again" with lore "|| &eRemaining Rolls&7: &f%{fortune.loot.keys::%uuid of player%}%" to run [make player execute command "/fortune"]
+			stop
+		format slot 22 of player with chest named "&eBuy More Loot Crates" with lore "|| &bstore.snapmc.com || &eor &b/buy" to run [make player execute command "/buy"]
+	
+	
+			
+command /fortunegive <text> <int>:
+	permission: is.op
+	trigger:
+		set {_uuid} to {uuid::%arg-1%}
+		if {_uuid} is not set:
+			message "Player never joined the server!"
+			stop
+		add arg-2 to {fortune.loot.keys::%{_uuid}%}
+		message "&6New loot key count: &a%{fortune.loot.keys::%{_uuid}%}%"
+command /fortuneset <int>:
+	permission: is.op
+	trigger:
+		set {fortune.items::%arg-1%} to 1 of player's tool
+		message "set"
+command /fortunelist:
+	trigger:
+		loop {fortune.items::*}:
+			message "%loop-index%. &6%name of loop-value%"

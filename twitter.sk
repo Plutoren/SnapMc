@@ -1,0 +1,5 @@
+command /twitter:
+	trigger:
+		message ""
+		message "  &8[&bSnap&8] &7&lTwitter:&b twitter.com/snapmcsocial"
+		message ""

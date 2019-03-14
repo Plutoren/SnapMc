@@ -1,0 +1,129 @@
+command /suffix [<text>]:
+	trigger:		
+		if arg-1 is set:
+			if arg-1 is "reset":
+				execute console command "setsuffix %player% """""
+				stop
+				
+			if player has permission "suffix.legend":
+				if player has permission "is.cosmic":
+					set {_arg1} to colored arg-1
+				else:
+					set {_arg1} to arg-1
+				replace all " -s" with "" in {_arg1}
+				replace all "&a" with "" in {_arg1}
+				replace all "&b" with "" in {_arg1}
+				replace all "&c" with "" in {_arg1}
+				replace all "&d" with "" in {_arg1}
+				replace all "&e" with "" in {_arg1}
+				replace all "&f" with "" in {_arg1}
+				replace all "&0" with "" in {_arg1}
+				replace all "&1" with "" in {_arg1}
+				replace all "&2" with "" in {_arg1}
+				replace all "&3" with "" in {_arg1}
+				replace all "&4" with "" in {_arg1}
+				replace all "&5" with "" in {_arg1}
+				replace all "&6" with "" in {_arg1}
+				replace all "&7" with "" in {_arg1}
+				replace all "&8" with "" in {_arg1}
+				replace all "&9" with "" in {_arg1}
+				replace all "&k" with "" in {_arg1}
+				replace all "&i" with "" in {_arg1}
+				replace all "&m" with "" in {_arg1}
+				replace all "&n" with "" in {_arg1}
+				replace all "&o" with "" in {_arg1}
+				replace all "&l" with "" in {_arg1}
+				set {_length} to length of {_arg1}
+				if player has permission "is.cosmic":
+					if {_length} > 12:
+						message "&8[&bSnap&8] &7That suffix is too long!"
+						stop
+				else:
+					if {_length} > 20:
+						message "&8[&bSnap&8] &7That suffix is too long!"
+						stop
+		if arg-1 contains "-s":
+			set {_arg1} to colored arg-1
+			replace all " -s" with "" in {_arg1}
+			execute console command "setsuffix %player% &f[%{_arg1}%&f]"
+			stop
+			
+		wait 2 ticks
+		open chest with 6 row named "       &8-=[ &1Suffix Menu &8]=-" to player
+		wait 1 ticks		
+		set {_i} to 0		
+		loop 54 times:		
+			format slot {_i} of player with gray stained glass pane named "&7" to close then run "sudo %player% suffix"
+			add 1 to {_i}
+		if arg-1 is not set:
+			if player has permission "suffix.legend":
+				message "&8[&bSnap&8] &7You can type &b/suffix (text) &7with your rank"
+		
+		if arg-1 is set:
+			if player has permission "suffix.legend":
+				format slot 21 of player with red wool named "&cCancel Suffix Change" with lore " ", " " to close
+				set {_suffix} to arg-1
+				replace all "&" with "" in {_suffix}
+				format slot 23 of player with green wool named "&aSet Suffix to:  " with lore "", "  &f%player's display name% &f[%{_suffix}%&f] ", " " to close then run "setsuffix %player% &f[%arg-1%&f]"
+				stop
+			
+		if player does not have permission "suffix.pro":
+			format slot 22 of player with gold block named "&ePurchase a rank" with lore "", " &6Unlock dozens of suffixes!" to close then run "sudo %player% buy2"
+			stop
+		if player has permission "suffix.pro":
+			format slot 1 of player with crafting table named "&fReset your suffix" to close then run "setsuffix %player% """""
+			format slot 2 of player with green wool block named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&2Rich&f] ", " " to close then run "setsuffix %player% &f[&2Rich&f]"
+			format slot 3 of player with gray wool block named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&8twenty&7one&fpilots&f] ", " " to close then run "setsuffix %player% &f[&8twenty&7one&fpilots&f]"
+			format slot 4 of player with red wool block named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&4&lS&6&ln&e&la&e&lp&f] ", " " to close then run "setsuffix %player% &f[&4&lS&6&ln&e&la&e&lp&f]"
+			format slot 5 of player with emerald block named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&2&lSingle&f] ", " " to close then run "setsuffix %player% &f[&2&lSingle&f]"
+			format slot 6 of player with redstone block named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&c&lHated&f] ", " " to close then run "setsuffix %player% &f[&c&lHated&f]"
+			format slot 7 of player with sponge named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&eNerd&f] ", " " to close then run "setsuffix %player% &f[&eNerd&f]"
+			
+			format slot 10 of player with diamond block named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&3&lFFS&f] ", " " to close then run "setsuffix %player% &f[&3&lFFS&f]"
+			format slot 11 of player with pink wool block named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&4&lLiar&f] ", " " to close then run "setsuffix %player% &f[&4&lLiar&f]"
+			format slot 12 of player with brick block named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&cRude&f] ", " " to close then run "setsuffix %player% &f[&cRude&f]"
+			format slot 13 of player with emerald ore named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&aCute&f] ", " " to close then run "setsuffix %player% &f[&aCute&f]"
+			format slot 14 of player with coal block named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&8&lHurt&f] ", " " to close then run "setsuffix %player% &f[&8&lHurt&f]"
+			format slot 15 of player with end stone block named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&eDaddy&f] ", " " to close then run "setsuffix %player% &f[&eDaddy&f]"
+			format slot 16 of player with stone brick named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&4&lB&7.&4&lS&7.&f] ", " " to close then run "setsuffix %player% &f[&4&lB&7.&4&lS&7.&f]"
+
+			format slot 19 of player with oak wood log named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&c&l<3&4&lHot&c&l<3&f] ", " " to close then run "setsuffix %player% &f[&c&l<3&4&lHot&c&l<3&f]"
+			format slot 20 of player with lava bucket named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&6Savage&f] ", " " to close then run "setsuffix %player% &f[&6Savage&f]"
+			format slot 21 of player with redstone named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&4IDFK&f] ", " " to close then run "setsuffix %player% &f[&4IDFK&f]"
+			format slot 22 of player with torch named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&d420&f] ", " " to close then run "setsuffix %player% &f[&d420&f]"
+			format slot 23 of player with quartz block named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&eSnap&f] ", " " to close then run "setsuffix %player% &f[&eSnap&f]"
+			format slot 24 of player with prismarine block named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&c<3&bHer&c<3&f] ", " " to close then run "setsuffix %player% &f[&c<3&bHer&c<3&f]"
+			format slot 25 of player with grass named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&2Earthling&f] ", " " to close then run "setsuffix %player% &f[&2Earthling&f]"
+		
+			format slot 28 of player with red sandstone named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&c&lDont&e&lCare&f] ", " " to close then run "setsuffix %player% &f[&c&lDont&e&lCare&f]"
+			format slot 29 of player with purpur block named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&dPhantom&f] ", " " to close then run "setsuffix %player% &f[&dPhantom&f]"
+			format slot 30 of player with magma block named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&5Menace&f] ", " " to close then run "setsuffix %player% &f[&5Menace&f]"
+			format slot 31 of player with bone block named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&3Noob&f] ", " " to close then run "setsuffix %player% &f[&3Noob&f]"
+			format slot 32 of player with nether brick block named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&6&lPizza&f] ", " " to close then run "setsuffix %player% &f[&6&lPizza&f]"
+			format slot 33 of player with glowstone named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&b-&7Trash&b-&f] ", " " to close then run "setsuffix %player% &f[&b-&7Trash&b-&f]"
+			format slot 34 of player with clay block named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&cY&fTube&f] ", " " to close then run "setsuffix %player% &f[&cY&fTube&f]"
+			
+		if player has permission "suffix.hero":
+			format slot 37 of player with snow block named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&b&lBuddy&f] ", " " to close then run "setsuffix %player% &f[&b&lBuddy&f]"
+			format slot 38 of player with pumpkin named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&6Loser&f] ", " " to close then run "setsuffix %player% &f[&6Loser&f]"
+			format slot 39 of player with mycelium named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&b&lno&4&laboose&f] ", " " to close then run "setsuffix %player% &f[&b&lno&4&laboose&f]"
+			format slot 40 of player with melon named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&6Blame&cPluto&f] ", " " to close then run "setsuffix %player% &f[&6Blame&cPluto&f]"
+			format slot 41 of player with soul sand named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&2&m-<&4@&f] ", " " to close then run "setsuffix %player% &f[&2&m-<&4@&f]"
+			format slot 42 of player with brown mushroom named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&9Salty&f] ", " " to close then run "setsuffix %player% &f[&9Salty&f]"
+			format slot 43 of player with red mushroom named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&bJuicy&f] ", " " to close then run "setsuffix %player% &f[&2Rich&f]"
+			
+			format slot 46 of player with redstone repeater item named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&b&lElec&d&ltric&f] ", " " to close then run "setsuffix %player% &f[&b&lElec&d&ltric&f]"
+			format slot 47 of player with chest named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&4&lRIP&f] ", " " to close then run "setsuffix %player% &f[&4&lRIP&f]"
+			format slot 48 of player with emerald named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&bOnline&f] ", " " to close then run "setsuffix %player% &f[&bOnline&f]"
+			format slot 49 of player with peony named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&dBasic&f] ", " " to close then run "setsuffix %player% &f[&dBasic&f]"
+			format slot 50 of player with wheat item named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&2Turtle&f] ", " " to close then run "setsuffix %player% &f[&2Turtle&f]"
+			format slot 51 of player with iron ingot named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&bCyan&3ide&f] ", " " to close then run "setsuffix %player% &f[&bCyan&3ide&f]"
+			format slot 52 of player with diamond named "&eSet Suffix to:  " with lore "", "  &f%player's display name% &f[&a&l._.&f] ", " " to close then run "setsuffix %player% &f[&a&l._.&f]"
+			
+command /setsuffix <player> <text>:
+	permission: is.op
+	trigger:
+		set {_player} to arg-1
+		execute console command "/pex user %{_player}% suffix %arg-2%"
+		send {_player} title "&6&lSuffix Set" with subtitle "%arg-2%" for 2 seconds with 10 tick fade in and 1 second fade out
+		set {suffix::%{_player}%} to "%arg-2%"

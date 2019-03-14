@@ -1,0 +1,8 @@
+command /hytale:
+	trigger:
+		message ""
+		message " &eJoin our upcoming Hytale Server's Discord"
+		message " &eClick here&7:&b discord.gg/dB8GX3A"
+		message " &eGet store credit with &d##invite-rewards"
+		message ""
+		

@@ -1,0 +1,93 @@
+on shoot:
+	if "%regions at shooter%" contains "hub_pvp_keepinv":
+		if projectile is an arrow:
+			loop 20 times:
+				if projectile exists:
+					wait 2 ticks
+					play witch spell at location of projectile
+			
+on projectile hit:
+	if "%regions at shooter%" contains "hub_pvp_keepinv":
+		if "%regions at projectile%" contains "pvp_balloons":
+			if projectile is an arrow:
+				wait 2 ticks
+				set {_distance} to 4
+				set {_closest} to block 4 above event-location
+				loop blocks in radius 1 of projectile:
+					if loop-block is not air:
+						set {_tempDistance} to distance between projectile and loop-block
+						if {_tempDistance} < {_distance}:
+							set {_distance} to {_tempDistance}
+							set {_closest} to location of loop-block
+				if block at {_closest} is gold ore:
+					set block at {_closest} to air
+					delete projectile
+					set {_income} to random integer between 1000 and 3000
+					send "&8[&6Balloons&8] &eYou Hit a Gold Ore Block and got &2$&a%{_income}%" to shooter
+					add {_income} to shooter's balance
+				else if block at {_closest} is gold block:
+					set block at {_closest} to air
+					delete projectile
+					set {_income} to random integer between 3000 and 6000
+					send "&8[&6Balloons&8] &eYou Hit a Gold Block and got &2$&a%{_income}%" to shooter
+					add {_income} to shooter's balance
+				else if block at {_closest} is a diamond block:
+					set block at {_closest} to air
+					delete projectile
+					set {_income} to random integer between 3000 and 6000
+					send "&8[&6Balloons&8] &eYou Hit a Gold Block and got &2$&a%{_income}%" to shooter
+					add {_income} to shooter's balance
+				else if block at {_closest} is a redstone ore:
+					set block at {_closest} to air
+					delete projectile
+					apply blindness 1 to shooter for 3 seconds
+					send "&8[&6Balloons&8] &cYou Hit Redstone Ore and got Blindness!" to shooter
+				else if block at {_closest} is a tnt:
+					set block at {_closest} to air
+					delete projectile
+					loop 3 times:
+						wait 1 tick
+						push shooter from {pos::koth}
+						play large explosion at location of shooter
+						play large explosion at location of shooter
+					send "&8[&6Balloons&8] &cYou Hit TnT and got pushed backwards!" to shooter
+
+command /balloons:
+	trigger:
+		if {pvp.balloons.lastevent} was less than 110 minutes ago:				
+			set {_startDate} to {pvp.balloons.lastevent}
+			set {_duration}  to 110 minutes
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "&8[&d&lBalloons&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+			stop
+		if {pvp.lastevent} was less than 20 minutes ago:				
+			set {_startDate} to {pvp.lastevent}
+			set {_duration}  to 20 minutes
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "&8[&c&lPvP&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+			stop
+		set {pvp.balloons.lastevent} to now
+		set {pvp.lastevent} to now
+		broadcast "&8[&d&lBalloons&8] &fBalloons rush has been activated in PvP!"
+		loop blocks in radius 22 of {pos::pvp_balloons_center}:
+			chance of .5%:
+				set loop-block to gold ore
+			chance of .07%:
+				set loop-block to diamond block
+			chance of .09%:
+				set loop-block to gold block
+			chance of .6%:
+				set loop-block to redstone ore
+			chance of .3%:
+				set loop-block to tnt
+		wait 90 seconds
+		loop blocks in radius 22 of {pos::pvp_balloons_center}:
+			set loop-block to air
+
+	

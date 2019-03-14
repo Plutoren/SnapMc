@@ -1,0 +1,40 @@
+command /dungeon [<text>]:
+	permission: is.op
+	trigger:
+		
+
+
+
+
+
+
+
+
+
+
+command /ds <int>:
+	permission: is.op
+	trigger:
+		if arg-1 is 1:
+			spawn zombie at location of player
+			set helmet of last spawned entity to diamond helmet
+			set chestplate of last spawned entity to diamond chestplate
+			set leggings of last spawned entity to diamond leggings
+			set boots of last spawned entity to diamond boots
+		if arg-1 is 2:
+			spawn zombie at location of player
+			set helmet of last spawned entity to diamond helmet
+			set boots of last spawned entity to diamond boots
+		apply slowness to last spawned entity for 999 days
+		
+command /dsunfreeze:
+	permission: is.op
+	trigger:
+		loop all entities in radius 500 of player:
+			remove slowness from loop-entity
+			
+command /dsfreeze:
+	permission: is.op
+	trigger:
+		loop all entities in radius 500 of player:
+			apply slowness to loop-entity for 999 days

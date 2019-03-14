@@ -1,0 +1,6 @@
+command /autotree <text> <int>:
+	permission: is.op
+	trigger:
+		loop arg-2 times:
+			wait 10 ticks
+			execute player command "/bigtree %arg-1%"

@@ -1,0 +1,10 @@
+
+
+		
+command /kys:
+	trigger:
+		message "&8[&bSnap&8] &ewhy would you want to do that! OMG!"
+		
+command /69:
+	trigger:
+		message "&8[&bSnap&8] &ehahahahahahaahahahahahaahahaha"

@@ -1,0 +1,14 @@
+on world change:
+	if "%regions at player%" contains "hub_jan_no_fly" or "hub_mar_pvp_no_fly" or "hub_apr_no_fly" or "hub_may_no_fly":
+		if gamemode of player is survival:
+			disable fly for player
+			
+every 1 seconds:
+	loop all players in world "Spawn":
+		if "%regions at loop-player%" contains "hub_jan_no_fly" or "hub_mar_pvp_no_fly" or "hub_apr_no_fly" or "hub_may_no_fly":
+			if gamemode of loop-player is survival:
+				disable fly for loop-player
+	loop all players in world "resource":
+		if gamemode of loop-player is survival:
+			disable fly for loop-player 
+	

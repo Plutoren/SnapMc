@@ -1,0 +1,19 @@
+
+		
+on place:
+	if player has permission "is.cosmic":
+		if gamemode of player is survival:
+		
+			if player is not in world "world" or "world_nether" or "world_the_end" or "Avalon" or "Towny":
+				stop
+			set {_item} to player's tool
+			set {_amount} to size of item player's tool
+			wait 1 tick
+			if event-block is air:
+				stop
+			if "%player's tool%" contains "sand" or "grass" or "dirt" or "stone" or "cobble" or "nether quartz" or "concrete" or "powder" or "wool" or "wood" or "plank" or "log" or "brick":
+				if "%player's tool%" does not contain "stair" or "ore" or "slab" or "monster" or "end"  or "wall" or "moss_stone" or "glow" or "gun":
+					if {_amount} is not 0:
+						if 1 of {_item} = 1 of player's tool:
+							set player's tool to {_amount} of {_item}
+					

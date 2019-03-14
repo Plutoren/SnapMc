@@ -1,0 +1,102 @@
+command /bounty [<text>] [<int>]:
+	trigger:
+		if arg-1 is not set:
+			message "         &6&lSnap Bounties"
+			message ""
+			message "   &6Add bounty&7: &b/bounty (name) (amount)"
+			message "   &6Check Bounties&7: &b/bounty list"
+			message "   &6Sort Bounties&7: &b/bounty list (minimum)"
+			message "   &6Check player bounty&7: &b/bounty (name)"
+			stop
+		
+		if arg-1 is "list":
+			if arg-2 is set:
+				message "&8[&6Bounty&8] &7Current Bounties over &a$%arg-2%"
+				set {_i} to 0
+				loop {bounty::*}:
+					if loop-value > arg-2:
+						set {_uuid} to loop-index
+						add 1 to {_i}
+						
+						message "&f%{_i}%. &e%{uuidname::%{_uuid}%}% &7has a bounty of &a$%loop-value%"
+				message "&8[&6Bounty&8] &7Total Bounties Found&8: &e%{_i}%"
+				stop
+			else:
+				message "&8[&6Bounty&8] &7Current Bounties"
+				set {_i} to 0
+				loop {bounty::*}:
+					set {_uuid} to loop-index
+					add 1 to {_i}
+					message "&f%{_i}%. &e%{uuidname::%{_uuid}%}% &7has a bounty of &a$%loop-value%"
+				message "&8[&6Bounty&8] &7Total Bounties&8: &e%{_i}%"
+				stop
+	
+		set {_uuid} to {uuid::%arg-1%}
+		if {_uuid} is not set:
+			message "&8[&6Bounty&8] &eThat player has never joined the server."
+			stop
+			
+		if arg-2 is not set:
+			
+			
+			if {bounty::%{_uuid}%} is not set:
+				message "&8[&6Bounty&8] &e%arg-1% &7has no bounty."
+				stop
+			message "&8[&6Bounty&8] &e%{uuidname::%{_uuid}%}% &7has a bounty of &a$%{bounty::%{_uuid}%}%"
+			stop
+		
+		if {_uuid} = uuid of player:
+			message "&8[&6Bounty&8] &7You can't put a bounty on yourself!"
+			stop
+		set {_amount} to arg-2
+		if {_amount} > player's balance:
+			message "&8[&6Bounty&8] &7You only have &a$%player's balance%"
+			stop
+			
+		if {_amount} > 10000000:
+			message "&8[&6Bounty&8] &7The Maximum bounty is 10m"
+			stop
+		if {_amount} < 5000:
+			message "&8[&6Bounty&8] &7The Minimum bounty is 5k"
+			stop
+		if {bounty::%{_uuid}%} + {_amount} > 10000000:
+			message "&8[&6Bounty&8] &7That player alread has a &a$%{bounty::%{_uuid}%}% &7bounty and the most a bounty can be is 10m, The most you can add to that bounty is &a%10000000 - {bounty::%{_uuid}%}%"
+			stop
+		
+		if {bounty.just.set} was less than 10 seconds ago:
+			message "&8[&6Bounty&8] &eSomeone just set a bounty please wait a bit."
+			stop
+		remove {_amount} from player's balance
+		set {bounty.just.set} to now
+		if {bounty::%{_uuid}%} is not set:
+			set {bounty::%{_uuid}%} to {_amount}
+			broadcast "&8[&6Bounty&8] &e%player% &7set a bounty of &a$%{_amount}%&7 on &6%{uuidname::%{_uuid}%}%"
+		else:
+			add {_amount} to {bounty::%{_uuid}%}
+			broadcast "&8[&6Bounty&8] &e%player% &7added &a$%{_amount}% &7to the bounty of &6%{uuidname::%{_uuid}%}%"
+			broadcast "&8[&6Bounty&8] &7New bounty of &6%{uuidname::%{_uuid}%}% is &a$%{bounty::%{_uuid}%}%"
+	
+	
+		
+		
+on death of player:
+	if attacker is a player:
+		if "%regions at victim%" contains "hub_pvp_keepinv":
+			set {_uuid} to uuid of victim
+			set {_uuidAttacker} to uuid of attacker
+			if {_uuid} = {_uuidAttacker}:
+				stop
+			if {_uuid} is not set:
+				stop
+			if {bounty::%{_uuid}%} is set:
+				set {_amount} to {bounty::%{_uuid}%}
+				set {_amount} to {_amount} * 0.9
+				add {_amount} to attacker's balance
+				delete {bounty::%{_uuid}%}
+				broadcast "&8[&6Bounty&8] &a%attacker% &7collected a &a$%{_amount}% &7bounty on &e%victim%."
+			
+		
+		
+		
+			
+		

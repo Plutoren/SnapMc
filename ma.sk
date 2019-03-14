@@ -1,0 +1,43 @@
+on death of a zombie:
+	if victim is in world "MobArena":
+		drop 1 gold ingot at location of victim
+on death of a skeleton:
+	if victim is in world "MobArena":
+		drop 1 gold ingot at location of victim
+on craft:
+	if player is in world "MobArena":
+		if player does not have permission "is.op":
+			cancel event
+on place:
+	if player is in world "MobArena":
+		if player does not have permission "is.op":
+			if player's tool is not tnt:
+				cancel event			
+			
+			
+on spawn of zombie:
+	if event-entity is in world "MobArena":
+		if "%regions at event-entity%" contains "deathstar":
+			set {_i} to random integer from 1 to 8
+			set helmet of event-entity to {item::trooper%{_i}%}
+		chance of 10%:
+			apply speed 2 to event-entity
+		chance of 9%:
+			set tool of event-entity to iron sword
+		chance of 12%:
+			set tool of event-entity to gold sword
+		chance of 4%:
+			set tool of event-entity to diamond sword
+		chance of 8%:
+			set tool of event-entity to wood sword	
+on spawn of skeleton:
+	if event-entity is in world "MobArena":
+		if "%regions at event-entity%" contains "deathstar":
+			set {_i} to random integer from 1 to 8
+			set helmet of event-entity to {item::trooper%{_i}%}
+			set chestplate of event-entity to leather chestplate
+			dye chestplate of event-entity white
+			set leggings of event-entity to leather leggings
+			dye leggings of event-entity white
+			set boots of event-entity to leather boots
+			dye boots of event-entity white

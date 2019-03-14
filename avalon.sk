@@ -1,0 +1,11 @@
+on build:
+	if player is in world "Avalon":
+		if player does not have permission "is.vortex":
+			cancel event
+			message "&8[&bSnap&8] &7You need &dVortex Rank &7to build here! &7(&b/buy&7)"
+			
+on break:
+	if player is in world "Avalon":
+		if player does not have permission "is.vortex":
+			cancel event
+			message "&8[&bSnap&8] &7You need &dVortex Rank &7to build here! &7(&b/buy&7)"

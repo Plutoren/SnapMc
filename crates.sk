@@ -1,0 +1,64 @@
+command /keys:
+	trigger:
+		set {_key::Radioactive} to number of {item::key_radioactive} in player's inventory
+		set {_key::Valentines} to number of {item::key_valentines} in player's inventory
+		set {_key::Shamrock} to number of {item::key_shamrock} in player's inventory
+		set {_key::Easter} to number of {item::key_easter} in player's inventory
+		set {_key::Spicy} to number of {item::key_spicy} in player's inventory
+		set {_key::Summer} to number of {item::key_summer} in player's inventory
+		set {_key::Explosive} to number of {item::key_explosive} in player's inventory
+		set {_key::Galactic} to number of {item::key_galactic} in player's inventory
+		set {_key::Birthday} to number of {item::key_birthday} in player's inventory
+		set {_key::Halloween} to number of {item::key_halloween} in player's inventory
+		set {_key::Thanksgiving} to number of {item::key_thanksgiving} in player's inventory
+		set {_key::Christmas} to number of {item::key_christmas} in player's inventory
+		set {_key::Deluxe} to number of {item::key_deluxe} in player's inventory
+		set {_key::Legendary} to number of {item::key_legendary} in player's inventory
+		set {_key::Mystery} to number of {item::key_mystery} in player's inventory
+		set {_key::Party} to number of {item::key_party} in player's inventory
+		set {_key::Voting} to number of {item::key_voting} in player's inventory
+		set {_key::Starter} to number of {item::key_starter} in player's inventory
+		set {_key::Semi-pro} to number of {item::key_semi-pro} in player's inventory
+		set {_key::Pro} to number of {item::key_pro} in player's inventory
+		set {_key::Hero} to number of {item::key_hero} in player's inventory
+		set {_key::Legend} to number of {item::key_legend} in player's inventory
+		set {_key::Ultimate} to number of {item::key_ultimate} in player's inventory
+		set {_key::Cosmic} to number of {item::key_cosmic} in player's inventory
+		set {_key::Vortex} to number of {item::key_vortex} in player's inventory
+		set {_key::Vortexmax} to number of {item::key_vortexmax} in player's inventory
+		set {_key::Vortexonce} to number of {item::key_vortexonce} in player's inventory
+		
+		open chest with 6 row named "            -=[ &1Crates &8]=-" to player
+		wait 1 tick
+		if name of current inventory of player != "            -=[ &1Crates &8]=-":
+			close inventory of player
+			stop
+			
+		set {_i} to 0
+		loop 10 times:
+			format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/keys"]
+			add 1 to {_i}				
+		format slot 17 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/keys"]
+		format slot 36 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/keys"]
+		set {_i} to 44
+		loop 10 times:
+			format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/keys"]
+			add 1 to {_i}
+		set {_differentKeys} to 0
+		set {_slot} to 10
+		loop {_key::*}:
+			add loop-value to {_differentKeys}
+			format slot {_slot} of player with loop-value of {item::key_item_%loop-index%} named "&eKey Type &6%loop-index%" with lore "", " &6* &e&lAmount &7%loop-value% ", "", " &fLeft-Click &7to teleport to this crate" to run "sudo %player% warp %loop-index%_crate"
+			add 1 to {_slot}
+			if {_slot} = 17:
+				set {_slot} to 19
+			else if {_slot} = 26:
+				set {_slot} to 28
+			else if {_slot} = 35:
+				set {_slot} to 37
+		if {_differentKeys} is 0:
+			format slot 22 of player with grass block named "&6&lSnap Crates" with lore "", " &6Obtain crate keys from various activities", " &6Around Snap.", "", " &6To name a few&7:", "  &7King of the Hill &b/pvp", "  &7One in the Chamber &b/oitc", "  &7Fishing Competitions &b/fishing", "  &7Trading &b/ah", "  &7Oddball &b/pvp", "  &7Voting &b/vote", "  &7Party Events &b/party", "  &7Donate &b/buy", "  &7Like us on NameMc &b/namemc"  to close
+		
+		
+		
+		

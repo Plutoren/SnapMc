@@ -1,0 +1,17 @@
+command /testtps:
+	permission: is.op
+	trigger:
+		message "%tps%"
+		
+		
+command /teststuff:
+	permission: is.op
+	trigger:
+		message "<run command:/itembomblol>&fClick me to afk"
+		
+command /itembomblol:
+	permission: is.op
+	trigger:
+		if player is in world "spawn" or "world" or "world_the_end" or "world_nether" or "Avalon" or "resource" or "Elytra Fall":
+			message "Sup"
+		

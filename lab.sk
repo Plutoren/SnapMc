@@ -1,0 +1,34 @@
+command /delaykey <text> <text>:
+	permission: is.op
+	trigger:
+		wait 18 seconds
+		execute console command "/kp key %arg-1% regular %arg-2% 1"
+on command "/tl":
+	if "%arguments%" does not contain "leave":
+		cancel event
+		execute player command "/warp lab"
+command /lab [<text>]:
+	trigger:
+		if arg-1 is not set:
+			execute player command "/warp lab"
+		if arg-1 is "join":
+			execute player command "/warp lab"
+		if arg-1 is "leave" or "quit" or "exit" or "l":
+			execute player command "/tl leave"
+command /broad <text>:
+	permission: is.op
+	trigger:
+		
+		broadcast "%colored arg-1%"
+	
+on spawn:
+	if event-entity is in world "Lab" or "spawn":
+		if event.getSpawnReason().toString() is not "CUSTOM":
+			cancel the event	
+			
+on break:
+	if player is in world "Lab":
+		if event-block is not an ore or end stone or sandstone or snow layer or pumpkin:
+			if "%regions at player%" does not contain "lab_buildinggame":
+				cancel event
+			

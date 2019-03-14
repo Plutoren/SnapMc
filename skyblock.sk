@@ -1,0 +1,1206 @@
+
+command /csb:
+	permission: is.op
+	trigger:
+		message "%{bw.takenSpots.x}% = &a%{bw.takenSpots.x} * 300%"
+
+
+command /skyblock [<text>] [<text>] [<integer>]:
+	aliases: sb, is
+	trigger:
+		if arg-1 is not set:
+			# if {bw.island.home::%uuid of player%} is not set:
+			# 	execute player command "/sb new"
+			# 	stop
+			# set gamemode of player to survival
+			# if {sb.player.home::%uuid of player%::home} is set:
+			# 	teleport player to {sb.player.home::%uuid of player%::home}
+			# else if {sb.island.spawnpoint::%uuid of player%} is set:
+			# 	teleport player to {sb.island.spawnpoint::%uuid of player%}
+			# else:
+			# 	teleport player to {bw.island.home::%uuid of player%}
+			# stop
+			
+			teleport player to {pos::sb_spawn}
+			set gamemode of player to survival
+			set player's gamemode to survival
+			message "&8[&bSB&8] &7Welcome to the skyblock spawn."
+			message "      &7Type &b/sb new &7to create a new island."
+			message "      &7Type &b/sb is &7to visit your current island."
+			message "      &7Type &b/sb help &7for more commands."
+			stop
+		else if arg-1 is "help" or "h" or "?":
+			if arg-2 is not set:
+				set {_page} to 1
+			else:
+				set {_page} to arg-2
+			if "%{_page}%" != "1" or "2" or "3" or "4" or "5":
+				set {_page} to 1
+			message ""
+			message "       &9&lSnap &b&l&nSky&a&l&nBlock&r Page &e%{_page}%&7/&65"
+			message ""
+			if "%{_page}%" = "1":
+				message " &b/skyblock &7or &b/sb &7Teleport to your island or main home"
+				message " &b/sb new &7Makes a new island, deleting your current island"
+				message " &b/sb spawn &7Teleport to the skyblock spawn"
+				message " &b/sb quests [level] &7Open the quest menu"
+				message " &b/sb shop &7Open the skyblock daily shop"
+				message " &b/sb points [player] &7Check total points"
+			
+			else if "%{_page}%" = "2":
+				message " &b/sb sethome [text] &7Set a home"
+				message " &b/sb home [text] &7Teleport to a home"
+				message " &b/sb delhome (text) &7Delete a home"
+				message " &b/sb homes &7List home names"
+				message " &b/sb island &7Teleport to your island"
+				message " &b/sb visit (player) &7Teleport to another player's island"
+			
+			else if "%{_page}%" = "3":
+				message " &b/sb trust (player) &7Trust a player to your island"
+				message " &b/sb untrust (player) &7Un-Trust a player to your island"
+				message " &b/sb trustlist &7List your island members"
+				message " &b/sb top &7View the top islands by level"
+				message " &b/sb lock &7Prevent players from visiting, unless trusted"
+				message " &b/sb pay (name) (amount) &7Transfer points to someone"
+			else if  "%{_page}%" = "4":
+				message " &b/sb daily &7Get SnapBucks based on your island level"
+				message " &fRight click Obsidian to make it Lava again"
+				message " &fMine cobblestone to get random items and points"
+				message " &fCheck the shop every day for different items"
+				message " &fSet a home named 'home' to change your spawn point"
+				message " &fYou can't take damage right next to your spawn point(s)"
+			else if  "%{_page}%" = "5":
+				message " &fComplete quests to get lots of points"
+				message " &fLevel up your island to get more quests and homes"
+				message " &fUnlock more island members and work together"
+				message " &fYou can set your home on any island you are a member of"
+				message " &fYou can visit anyone's island but cant interact unless trusted"
+			else if  "%{_page}%" = "6":
+				message ""
+				message ""
+				message ""
+				message ""
+				message ""
+
+			
+			message " &e/sb help [page]"
+			message ""
+		
+		else if arg-1 is "daily":
+			
+			if {bw.island.home::%uuid of player%} is not set:
+				execute player command "/sb new"
+				stop
+			if {sb.daily::%uuid of player%} is not set:
+				set {sb.daily::%uuid of player%} to now
+			else if {sb.daily::%uuid of player%} was less than 22 hours ago:
+				set {_startDate} to {sb.daily::%uuid of player%}
+				set {_duration} to 22 hours
+				set {_now} to now
+				set {_endDate} to {_startDate}
+				add {_duration} to {_endDate}
+				set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+				message "&8[&bSB&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+				stop
+			
+			set {_payout} to {sb.player.level::%uuid of player%} * 20000
+			if {_payout} > 500000:
+				set {_payout} to 500000
+			add {_payout} to player's balance
+			message "&8[&bSB&8] &fYou got &a$%{_payout}% &fSnapBucks. Come back tomorrow for more."
+			set {sb.daily::%uuid of player%} to now
+			
+				
+		else if arg-1 is "ban":
+			if arg-2 is not set:
+				message "&8[&bSB&8] &eUsage &b/sb ban (name)"
+				stop
+			if {uuid::%arg-2%} is not set:
+				message "&8[&bSB&8] &eThat player has never joined the server"
+				stop
+			if "%arg-2%" = "%player%":
+				message "&8[&bSB&8] &eYou can't ban yourself lol"
+				stop
+			if {sb.player.notWelcomeList::%uuid of player%::%{uuid::%arg-2%}%} is set:
+				message "&8[&bSB&8] &eThat player is already banned &b/sb unban (name)"
+				stop
+			set {sb.player.notWelcomeList::%uuid of player%::%{uuid::%arg-2%}%} to true
+			set {sb.player.notAllowedList::%{uuid::%arg-2%}%::%uuid of player%} to true
+			message "&8[&bSB&8] &c%arg-2% &ecan no longer visit your island."
+		else if arg-1 is "unban":
+			if arg-2 is not set:
+				message "&8[&bSB&8] &eUsage &b/sb unban (name)"
+				stop
+			if {uuid::%arg-2%} is not set:
+				message "&8[&bSB&8] &eThat player has never joined the server"
+				stop
+			if {sb.player.notWelcomeList::%uuid of player%::%{uuid::%arg-2%}%} is not set:
+				message "&8[&bSB&8] &eThat player was not banned"
+				stop
+			delete {sb.player.notWelcomeList::%uuid of player%::%{uuid::%arg-2%}%}
+			delete {sb.player.notAllowedList::%{uuid::%arg-2%}%::%uuid of player%}
+			message "&8[&bSB&8] &a%arg-2% &ecan now visit your island."
+			
+		else if arg-1 is "points" or "bal" or "balance" or "point" or "p":
+			if arg-2 is not set:
+				message "&8[&bSB&8] &7You have %{bw.balance::%uuid of player%}% points"
+			else:
+				message "&8[&bSB&8] &b%arg-2% &ehas &a%{bw.balance::%{uuid::%arg-2%}%}% points"
+		else if arg-1 is "island" or "is":
+			if {bw.island.home::%uuid of player%} is not set:
+				execute player command "/sb new"
+				stop
+			teleport player to {bw.island.home::%uuid of player%}
+			stop
+			
+		else if arg-1 is "quests" or "quest" or "q":
+			if player is not in world "SkyBlock":
+				stop
+			if "%name of current inventory of player%" != "     -=[ &1SkyBlock Quests &8]=-":
+				open chest with 6 row named "     -=[ &1SkyBlock Quests &8]=-" to player
+				wait 1 tick
+				if "%name of current inventory of player%" != "     -=[ &1SkyBlock Quests &8]=-":
+					close inventory of player
+					stop
+				
+			set {_i} to 0
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skyblock quest"]
+				add 1 to {_i}				
+			format slot 17 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skyblock quest"]
+			format slot 36 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skyblock quest"]
+			set {_i} to 44
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skyblock quest"]
+				add 1 to {_i}
+			set {_level} to arg-2
+			if {_level} is not set:
+				set {_level} to 1
+			if {_level} = 1:
+				set {_levelUp} to 2
+				set {_levelDown} to 0
+			else:
+				set {_levelUp} to {_level} parsed as integer + 1
+				set {_levelDown} to {_level} parsed as integer - 1
+		
+			set {_i} to 1
+			loop {sb.quest.item::*}:
+				if "%{sb.quest.level::%loop-index%}%" = "%{_level}%":
+					if {sb.quest.player.stats::%uuid of player%::%loop-index%} is set:
+						set {_itemsNeeded} to {sb.quest.itemsNeeded::%loop-index%} * {sb.quest.player.stats::%uuid of player%::%loop-index%}
+					else:
+						set {_itemsNeeded} to {sb.quest.itemsNeeded::%loop-index%}
+					set {_prize} to {sb.quest.prizePoints::%loop-index%} 
+					if {sb.quest.player.stats::%uuid of player%::%loop-index%} is not set:
+						set {_timesCompleted} to 0
+					else:
+						set {_timesCompleted} to {sb.quest.player.stats::%uuid of player%::%loop-index%}
+						set {_prize} to {_prize} * {sb.quest.player.stats::%uuid of player%::%loop-index%}
+						subtract 1 from {_timesCompleted}
+					set {_maximumItems} to {sb.quest.maximum::%loop-index%}
+					
+					set {_maximumTimes} to rounded down ({_maximumItems} / {sb.quest.itemsNeeded::%loop-index%})
+					
+					if {sb.quest.keepItem::%loop-index%} is set:
+						set {_keep} to "&aYes"
+					else:
+						set {_keep} to "&cNo"
+					if amount of {sb.quest.item::%loop-index%} in player's inventory < {_itemsNeeded}:
+						if amount of {sb.quest.item::%loop-index%} in player's inventory = 0:
+							format slot {sb.quest.menu.order::%{_i}%} of player with 1 of {sb.quest.item::%loop-index%} named "" with lore "", " &e&lQuest&7: ", "", "   &7Items Needed&f: &6%{_itemsNeeded}%", "   &7Prize&f: &6%{_prize}% points ", "   &7Times Completed&f: &6%{_timesCompleted}%&8/&6%{_maximumTimes}% ", "   &7Keep Items After&f: %{_keep}%", " &e" to run "sbquest %player% %{sb.quest.level::%loop-index%}% %loop-index% %{sb.quest.itemsNeeded::%loop-index%}% %{sb.quest.prizePoints::%loop-index%}% %{sb.quest.maximum::%loop-index%}%"
+						else:
+							format slot {sb.quest.menu.order::%{_i}%} of player with 1 of {sb.quest.item::%loop-index%} named "" with lore "", " &e&lQuest&7: ", "", "   &7Items Needed&f: &e%amount of {sb.quest.item::%loop-index%} in player's inventory%&8/&6%{_itemsNeeded}%", "   &7Prize&f: &6%{_prize}% points ", "   &7Times Completed&f: &6%{_timesCompleted}%&8/&6%{_maximumTimes}% ", "   &7Keep Items After&f: %{_keep}%", " &e" to run "sbquest %player% %{sb.quest.level::%loop-index%}% %loop-index% %{sb.quest.itemsNeeded::%loop-index%}% %{sb.quest.prizePoints::%loop-index%}% %{sb.quest.maximum::%loop-index%}%"
+					
+					else:
+						format slot {sb.quest.menu.order::%{_i}%} of player with 1 of {sb.quest.item::%loop-index%} named "" with lore "", " &e&lQuest&7: ", "", "   &7Items Needed&f: &a%amount of {sb.quest.item::%loop-index%} in player's inventory%&8/&6%{_itemsNeeded}%", "   &7Prize&f: &6%{_prize}% points ", "   &7Times Completed&f: &6%{_timesCompleted}%&8/&6%{_maximumTimes}% ", "   &7Keep Items After&f: %{_keep}%", " &e" to run "sbquest %player% %{sb.quest.level::%loop-index%}% %loop-index% %{sb.quest.itemsNeeded::%loop-index%}% %{sb.quest.prizePoints::%loop-index%}% %{sb.quest.maximum::%loop-index%}%"
+					
+					add 1 to {_i}
+			loop (28 - {_i}) times:
+				format slot {sb.quest.menu.order::%{_i}%} of player with air named "" to close
+				add 1 to {_i}
+			format slot 18 of player with 1 of {item::head_up_arrow} named "&b&lLevel &e%{_levelUp}% Quests" with lore "", " &7Increase your island level with points on &b/sb shop" to run "sudo %player% sb quest %{_levelUp}%"
+			format slot 26 of player with 1 of {item::head_up_arrow} named "&b&lLevel &e%{_levelUp}% Quests" with lore "", " &7Increase your island level with points on &b/sb shop" to run "sudo %player% sb quest %{_levelUp}%"
+			
+			if {_levelDown} > 0:
+				format slot 27 of player with 1 of {item::head_down_arrow} named "&d&lLevel &e%{_levelDown}% Quests" with lore "", " &7Increase your island level with points on &b/sb shop" to run "sudo %player% sb quest %{_levelDown}%"
+				format slot 35 of player with 1 of {item::head_down_arrow} named "&d&lLevel &e%{_levelDown}% Quests" with lore "", " &7Increase your island level with points on &b/sb shop" to run "sudo %player% sb quest %{_levelDown}%"
+			else:
+				format slot 27 of player with air named "" to close
+				format slot 35 of player with air named "" to close
+		else if arg-1 is "home":
+			if player is in world "SkyBlock":
+				if arg-2 is not set:
+					set {_homeName} to "home"
+				else:
+					set {_homeName} to arg-2
+				if {sb.player.home::%uuid of player%::%{_homeName}%} is not set:
+					message "&8[&bSB&8] &7You have not set a home named &e%{_homeName}%"
+					stop
+				set gamemode of player to survival
+				teleport player to {sb.player.home::%uuid of player%::%{_homeName}%}
+		else if arg-1 is "homes":
+			message "&8[&bSB&8] &7Listing your homes:"
+			set {_i} to 1
+			loop {sb.player.home::%uuid of player%::*}:
+				message "      &f%{_i}%. &6%loop-index%"
+				add 1 to {_i}
+			message "      &7Access homes with &b/sb home (name)"
+		else if arg-1 is "spawn" or "s":
+			teleport player to {pos::sb_spawn}
+			set gamemode of player to survival
+			set player's gamemode to survival
+			message "&8[&bSB&8] &7Welcome to the skyblock spawn."
+			message "&8[&bSB&8] &7Jump in the portal to visit your island."
+			
+		else if arg-1 is "visit" or "v":
+			if arg-2 is not set:
+				message "&8[&bSB&8] &eUsage &b/sb visit (name)"
+			if {bw.island.home::%{uuid::%arg-2%}%} is not set:
+				message "&8[&bSB&8] &7That player does not have a skyblock"
+				stop
+			if {sb.player.visitlock::%{uuid::%arg-2%}%} is set:
+				if {bw.island.members.trusted::%{uuid::%arg-2%}%::%uuid of player%} is not set:
+					message "&8[&bSB&8] &7That island is locked from visiting"
+					stop
+			if {sb.player.notWelcomeList::%{uuid::%arg-2%}%::%uuid of player%}:
+				message "&8[&bSB&8] &cYou are currently &c&lbanned &cfrom that island"
+				stop
+				
+			if {sb.island.spawnpoint::%{uuid::%arg-2%}%} is set:
+				teleport player to {sb.island.spawnpoint::%{uuid::%arg-2%}%}
+			else:
+				teleport player to {bw.island.home::%{uuid::%arg-2%}%}
+			set gamemode of player to survival
+			message "&8[&bSB&8] &7Welcome to %arg-2%'s island"
+			stop
+		else if arg-1 is "add" or "trust" or "allow":
+			if {uuid::%arg-2%} is not set:
+				message "&8[&bSB&8] &cThat player has never joined the server."
+				stop
+			if "%arg-1%" = "%player%":
+				message "&8[&bSB&8] &cYou cant trust yourself..."
+				stop
+			if {bw.island.members.trusted::%uuid of player%::%{uuid::%arg-2%}%} is set:
+				message "&8[&bSB&8] &cThat player is already trusted&7. &e/sb untrust %arg-2%."
+				stop
+			if {bw.player.team.size::%uuid of player%} is set:
+				set {_currentlyAllowed} to {bw.player.team.size::%uuid of player%}
+			else:
+				set {_currentlyAllowed} to 2
+			if {_currentlyAllowed} > size of {bw.island.members.trusted::%uuid of player%::*}:
+				
+				set {bw.island.hasPermissionTo::%{uuid::%arg-2%}%::%uuid of player%} to "%player%"
+				set {bw.island.members.trusted::%uuid of player%::%{uuid::%arg-2%}%} to "%arg-2%"
+				message "&8[&bSB&8] &e%arg-2% &7is &anow trusted &7to your island"
+				stop
+		
+			message "&8[&bSB&8] &7Your maximum team size is %{_currentlyAllowed}%"
+			message "     &7Buy a larger team in /sb shop"
+			stop
+		else if arg-1 is "untrust" or "kick" or "remove" or "unallow":
+			if {bw.island.members.trusted::%uuid of player%::%{uuid::%arg-2%}%} is set:
+				delete {bw.island.members.trusted::%uuid of player%::%{uuid::%arg-2%}%}
+				delete {bw.island.hasPermissionTo::%{uuid::%arg-2%}%::%uuid of player%}
+				message "&8[&bSB&8] &eUntrusted %arg-2%."
+				stop
+			message "&8[&bSB&8] &c%arg-2% was never trusted to your island. &e/sb trustlist"
+			
+		else if arg-1 is "trustlist" or "members" or "list" or "listmembers" or "team" or "teamlist":
+			message "&8[&bSB&8] &7Your island members:"
+			set {_i} to 1
+			loop {bw.island.members.trusted::%uuid of player%::*}:
+				
+				message "&f%{_i}%. &a%loop-value%"
+				add 1 to {_i}
+			message ""
+		else if arg-1 is "buymember":
+			if {bw.player.team.size::%uuid of player%} is set:
+				set {_currentlyAllowed} to {bw.player.team.size::%uuid of player%}
+			else:
+				set {_currentlyAllowed} to 2
+			set {_cost} to {_currentlyAllowed} * 1000
+			if {bw.balance::%uuid of player%} < {_cost}:
+				message "&8[&bSB&8] &7You need &e%{_cost}% points &7for that. You only have &a%{bw.balance::%uuid of player%}% points" 
+				stop
+			if {bw.player.team.size::%uuid of player%} is not set:
+				set {bw.player.team.size::%uuid of player%} to 2
+			add 1 to {bw.player.team.size::%uuid of player%}
+			remove {_cost} from {bw.balance::%uuid of player%}
+			execute player command "/sb shop"
+		
+		
+		
+		else if arg-1 is "buygeneratorupgrade":
+			if {sb.player.generator.level::%uuid of player%} is set:
+				set {_currentLevel} to {sb.player.generator.level::%uuid of player%}
+			else:
+				set {_currentLevel} to 1
+			set {_cost} to {_currentLevel} * 500
+			if {bw.balance::%uuid of player%} < {_cost}:
+				message "&8[&bSB&8] &7You need &e%{_cost}% points &7for that. You only have &a%{bw.balance::%uuid of player%}% points" 
+				stop
+			if {sb.player.generator.level::%uuid of player%} is not set:
+				set {sb.player.generator.level::%uuid of player%} to 1
+			add 1 to {sb.player.generator.level::%uuid of player%}
+			remove {_cost} from {bw.balance::%uuid of player%}
+			execute player command "/sb shop"
+			
+		else if arg-1 is "buylevelupgrade":
+			if {sb.player.level::%uuid of player%} is set:
+				set {_currentLevel} to {sb.player.level::%uuid of player%}
+			else:
+				set {_currentLevel} to 1
+			set {_cost} to {_currentLevel} * 500
+			if {bw.balance::%uuid of player%} < {_cost}:
+				message "&8[&bSB&8] &7You need &e%{_cost}% points &7for that. You only have &a%{bw.balance::%uuid of player%}% points" 
+				stop
+			if {sb.player.level::%uuid of player%} is not set:
+				set {sb.player.level::%uuid of player%} to 1
+			add 1 to {sb.player.level::%uuid of player%}
+			remove {_cost} from {bw.balance::%uuid of player%}
+			execute player command "/sb shop"
+			execute console command "/kp key Rainbow regular %player% 1"
+			execute console command "/eco give %player% 3000000"
+			
+		else if arg-1 is "new":
+			if arg-2 is not set:
+				set gamemode of player to spectator
+				teleport player to {pos::bw_maps}
+				wait 1 tick 
+				set gamemode of player to spectator
+				teleport player to {pos::bw_maps}
+				wait 1 tick 
+				set gamemode of player to spectator
+				teleport player to {pos::bw_maps}
+				wait 1 tick 
+				set gamemode of player to spectator
+				teleport player to {pos::bw_maps}
+				wait 1 tick 
+				set gamemode of player to spectator
+				teleport player to {pos::bw_maps}
+
+				wait 1 tick 
+				set gamemode of player to spectator
+				teleport player to {pos::bw_maps}
+
+				wait 1 tick 
+				set gamemode of player to spectator
+				teleport player to {pos::bw_maps}
+
+
+				loop 5 times:
+					message ""
+					message "&8[&bSB&8] &fSelect a map"
+					message "      &fThen enter the command listed on the island"
+					message ""
+					wait 2 seconds
+				stop
+			else:
+				if arg-2 is "mushroom1" or "mushroom2" or "mushroom3" or "mushroom4" or "flower1" or "flower2" or "flower3" or "desert1" or "desert2" or "desert3" or "desert4" or "desert5" or "end1" or "end2" or "mesa1" or "mesa2" or "mesa3" or "mesa4" or "mesa5" or "mesa6" or "mesa7" or "nether1" or "nether2" or "nether3" or "ice1" or "ice2" or "ice2" or "ice3" or "ice4" or "ice5" or "ice6" or "ice7" or "grass1" or "grass2" or "grass3" or "grass4" or "grass5" or "grass6" or "grass7":
+					if {bw.island.home::%uuid of player%} is set:
+						if {bw.island.reset.time::%uuid of player%} is not set:
+							message "&8[&bSB&8] &cYOUR CURRENT ISLAND WILL BE LOST"
+							message "&8[&bSB&8] &cEnter command again to confirm"
+							set {bw.island.reset.time::%uuid of player%} to now
+							stop
+						else if {bw.island.reset.time::%uuid of player%} was more than 20 seconds ago:
+							message "&8[&bSB&8] &cYOUR CURRENT ISLAND WILL BE LOST"
+							message "&8[&bSB&8] &cEnter command again to confirm"
+							set {bw.island.reset.time::%uuid of player%} to now
+							stop
+						else:
+							delete {bw.island.reset.time::%uuid of player%}
+					if {bw.takenSpots.x} is not set:
+						set {bw.takenSpots.x} to 4
+					set {_x} to {bw.takenSpots.x} * 300
+					set {_y} to 70
+					set {_z} to 0
+					add 1 to {bw.takenSpots.x}
+					set {_loc} to location({_x}, {_y}, {_z}, world "SkyBlock")
+					set {bw.center::%uuid of player%} to {_loc}
+					teleport player to {_loc}
+					set gamemode of player to spectator
+					wait 1 tick
+					teleport player to {_loc}
+					run player command "//schem load sb_%arg-2%" as op
+					wait 1 tick
+					teleport player to {_loc}
+					run player command "//paste -a" as op
+					wait 1 tick
+					teleport player to {_loc}
+					wait 1 tick
+					teleport player to {_loc}
+					wait 1 tick
+					teleport player to {_loc}
+					wait 1 tick
+					teleport player to {_loc}
+					message "&8[&bSB&8] &7Welcome to your island"
+					set {bw.island.home::%uuid of player%} to {_loc}
+					set gamemode of player to survival
+					clear player's inventory
+					set helmet of player to air
+					set chestplate of player to air
+					set leggings of player to air
+					set boots of player to air
+					stop
+				else:
+					message "&8[&bSB&8] &7Unknown island name."
+					stop
+		# else if arg-1 is "setbiome":
+			# set {_loc} to {bw.island.home::%uuid of player%}
+			# loop blocks in radius 50 of block at {bw.island.home::%uuid of player%}:
+			#	if y coord of loop-block = y coord of block at {_loc}:
+			#		loop-block.setBiome(Biome.FOREST!);
+				
+			# (target block).setBiome(Biome.FOREST)
+			# message "&8[&bSB&8] Biome changed"
+		else if arg-1 is "givepoints":
+			if player does not have permission "is.op":
+				execute player command "/sb help"
+				stop
+			
+			if {bw.balance::%{uuid::%arg-2%}%} is not set:
+				set {bw.balance::%{uuid::%arg-2%}%} to arg-3
+			else:
+				add arg-3 to {bw.balance::%{uuid::%arg-2%}%}
+			send "&8[&bSB&8] &eYou were given &a%arg-3% points &eby the server" to arg-2 parsed as player
+		else if arg-1 is "pay":
+			if {bw.balance::%uuid of player%} is not set:
+				message "&8[&bSB&8] &eYou have no money"
+				stop
+			if arg-3 <= 0:
+				message "&8[&bSB&8] &eAmount must be positive"
+				stop
+			if {bw.balance::%uuid of player%} < arg-3:
+				message "&8[&bSB&8] &eYou don't have enough money!"
+				stop
+			if {uuid::%arg-2%} is not set:
+				message "&8[&bSB&8] &eThat player has never joined the server!"
+				stop
+			if {sb.payment.confirm::%uuid of player%} is not set:
+				set {sb.payment.confirm::%uuid of player%} to now
+				message "&8[&bSB&8] &eRepeat command if you want to send &a%arg-3% points &eto &b%arg-2%."
+				stop
+			
+			
+			if {sb.payment.confirm::%uuid of player%} was less than 15 seconds ago:
+				subtract arg-3 from {bw.balance::%uuid of player%}
+				if {bw.balance::%{uuid::%arg-2%}%} is not set:
+					set {bw.balance::%{uuid::%arg-2%}%} to arg-3
+				else:
+					add arg-3 to {bw.balance::%{uuid::%arg-2%}%}
+				message "&8[&bSB&8] &eYou sent &a%arg-3% points &eto &b%arg-2%."
+				send "&8[&bSB&8] &eYou got &a%arg-3% points &efrom &b%player%." to arg-2 parsed as player
+				delete {sb.payment.confirm::%uuid of player%}
+			else:
+				set {sb.payment.confirm::%uuid of player%} to now
+				message "&8[&bSB&8] &eRepeat command if you want to send &a%arg-3% points &eto &b%arg-2%."
+				stop
+			
+		else if arg-1 is "evict" or "kick":
+			if arg-2 is not set:
+				message "&8[&bSB&8] &eUsage &b/sb evict (name)"
+				stop
+			if arg-2 parsed as player is not online:
+				message "&8[&bSB&8] &eThat player isn't online"
+				stop
+			set {_player} to arg-2 parsed as player
+			if {_player} = player:
+				message "&8[&bSB&8] &eYou can't evict yourself lol"
+				stop
+			if {bw.island.home::%uuid of player%} is not set:
+				message "&8[&bSB&8] &eYou don't even have an island lol"
+				stop
+				 
+			set {_distance} to distance between {_player} and block at {bw.island.home::%uuid of player%}
+			loop {bw.island.hasPermissionTo::%uuid of player%::*}:
+				set {_distanceTemp} to distance between {_player} and block at {bw.island.home::%loop-index%}
+				if {_distanceTemp} < {_distance}:
+					set {_distance} to {_distanceTemp}
+			if {_distance} <= 145:
+				if {bw.island.home::%{uuid::%arg-2%}%} is not set:
+					set {_distance} to 999
+				else:
+					set {_distance} to distance between {_player} and block at {bw.island.home::%{uuid::%arg-2%}%}
+				loop {bw.island.hasPermissionTo::%{uuid::%arg-2%}%::*}:
+					set {_distanceTemp} to distance between {_player} and block at {bw.island.home::%loop-index%}
+					if {_distanceTemp} < {_distance}:
+						set {_distance} to {_distanceTemp}
+				if {_distance} > 145:
+					teleport {_player} to {pos::sb_spawn}
+					message "&8[&bSB&8] &eYou evicted &c%{_player}%."
+					send "&8[&bSB&8] &eYou were evicted by &f%player%" to {_player}
+					
+				else:
+					message "&8[&bSB&8] &eThat player is trusted where they are."
+					
+			else:
+				message "&8[&bSB&8] &eThat player was not on an island you are trusted to"
+			
+			
+				 
+			
+		else if arg-1 is "givemember":
+			if player does not have permission "is.op":
+				execute player command "/sb help"
+				stop
+			
+			if {bw.player.team.size::%{uuid::%arg-2%}%} is not set:
+				set {bw.player.team.size::%{uuid::%arg-2%}%} to arg-3
+			else:
+				add arg-3 to {bw.player.team.size::%{uuid::%arg-2%}%}
+		
+		else if arg-1 is "givegenerator":
+			if player does not have permission "is.op":
+				execute player command "/sb help"
+				stop
+			
+			if {sb.player.generator.level::%{uuid::%arg-2%}%} is not set:
+				set {sb.player.generator.level::%{uuid::%arg-2%}%} to arg-3
+			else:
+				add arg-3 to {sb.player.generator.level::%{uuid::%arg-2%}%}
+				
+		else if arg-1 is "delhome":
+			if {sb.player.home::%uuid of player%::%arg-2%} is not set:
+				message "&8[&bSB&8] &7You dont have a home with that name. &b/sb homes"
+				stop
+			delete {sb.player.home::%uuid of player%::%arg-2%}
+			message "&8[&bSB&8] &7Home deleted."
+			
+		else if arg-1 is "sethome":
+		
+			if player is in world "SkyBlock":
+				set {_distance} to distance between player and block at {bw.island.home::%uuid of player%}
+				loop {bw.island.hasPermissionTo::%uuid of player%::*}:
+					set {_distanceTemp} to distance between player and block at {bw.island.home::%loop-index%}
+					if {_distanceTemp} < {_distance}:
+						set {_distance} to {_distanceTemp}
+				if {_distance} > 145:
+					message "&8[&bSB&8] &eYou must be trusted to this island to sethome"
+					stop
+				if arg-2 is not set:
+					set {_homeName} to "home"
+				else:
+					set {_homeName} to arg-2
+				if {sb.player.level::%uuid of player%} is not set:
+					set {_level} to 1
+				else:
+					set {_level} to {sb.player.level::%uuid of player%}
+				if size of {sb.player.home::%uuid of player%::*} >= {_level}:
+					if {sb.player.home::%uuid of player%::%{_homeName}%} is not set:
+						message "&8[&bSB&8] &eYou need a higher island level to set more homes"
+						stop
+				set {sb.player.home::%uuid of player%::%{_homeName}%} to location of player
+				message "&8[&bSB&8] &7Set home. Use &b/sb home %{_homeName}% to access it."
+				message "&8[&bSB&8] &7Keep track of your homes with &b/sb homes"
+		else if arg-1 is "setspawn" or "setspawnpoint":
+			if player is in world "SkyBlock":
+				
+				set {_distance} to distance between player and block at {bw.island.home::%uuid of player%}
+				if {_distance} > 145:
+					message "&8[&bSB&8] &eYou must be on your island to setspawn"
+					stop
+				set {sb.island.spawnpoint::%uuid of player%} to location of player
+				message "&8[&bSB&8] &eUpdated your island spawnpoint"
+				message "     &eThis will update your /sb spawn point and any player"
+				message "     &ewho uses /sb visit %player%"
+				message "     &eUse /sb island to get back to the original center"
+					
+			
+			
+		else if arg-1 is "lock":
+			if {sb.player.visitlock::%uuid of player%} is set:
+				message "&8[&bSB&8] &7Your island is already locked &b/sb unlock"
+				stop
+			set {sb.player.visitlock::%uuid of player%} to true
+			message "&8[&bSB&8] &7Your island is now locked from visitors that are not trusted."
+		
+		else if arg-1 is "unlock":
+			if {sb.player.visitlock::%uuid of player%} is set:
+				delete {sb.player.visitlock::%uuid of player%}
+				message "&8[&bSB&8] &7Your island is no longer locked from visitors"
+				stop
+			message "&8[&bSB&8] &7Your island is already unlocked."
+			
+		else if arg-1 is "top":
+			loop {sb.player.level::*}:
+				add 1 to {_size}
+				if {_low.to.high.list::%loop-value%} is not set:
+					set {_low.to.high.list::%loop-value%} to loop-index
+				else:
+					set {_n} to 0
+					loop {_size} times:
+						set {_n} to {_n}+1
+						{_low.to.high.list::%loop-value-1%.%{_n}%} is not set
+						set {_low.to.high.list::%loop-value-1%.%{_n}%} to loop-index
+						
+						stop loop
+			wait 1 tick
+			set {_n} to size of {_low.to.high.list::*}
+			loop {_low.to.high.list::*}:
+				set {_high.to.low.list::%{_n}%} to loop-value
+				set {_n} to {_n}-1
+			
+			open chest with 6 row named "-=[ &1SkyBlock Top Islands &8]=-" to player
+			wait 1 tick
+			if "%name of current inventory of player%" != "-=[ &1SkyBlock Top Islands &8]=-":
+				close inventory of player
+				stop
+				
+			set {_i} to 0
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skyblock top"]
+				add 1 to {_i}				
+			format slot 17 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skyblock top"]
+			format slot 36 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skyblock top"]
+			set {_i} to 44
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skyblock top"]
+				add 1 to {_i}
+		
+			set {_slot} to 19
+			set {_i} to 0
+			loop {_high.to.low.list::*}:
+				
+				add 1 to {_slot}
+				add 1 to {_i}
+				set {_members} to "", "   &8- &7%{uuidName::%loop-value%}%"
+				set {_memberCount} to 1
+				add size of {bw.island.members.trusted::%loop-value%::*} to {_memberCount}
+				set {_totalWorth} to {bw.balance::%loop-value%}
+				loop {bw.island.members.trusted::%loop-value%::*}:
+					set {_members} to "%{_members}%", "   &8- &7%loop-value-2%"
+					add {bw.balance::%loop-index-2%} to {_totalWorth}
+				format slot {_slot} of player with {item::head_number%{_i}%} named "&eIsland of &6&n%{uuidName::%loop-value%}%&r &7(##%{_i}%)" with lore "", " &6* &e&lIsland Level &7%{sb.player.level::%loop-value%}% ", "", " &6* &e&lPlace &7##%{_i}%", " &6* &e&lWorth &7%{_totalWorth}% points", "", " &6* &e&lMembers &7(&e%{_memberCount}%&7)%{_members}%", "", " &fLeft-Click &7to teleport to their island" to run "sudo %player% skyblock visit %{uuidName::%loop-value%}%"
+		
+				
+				if {_slot} is 24:
+					set {_slot} to 28 
+				if {_slot} is 33:
+					stop
+		else if arg-1 is "shop":
+			if player is not in world "SkyBlock":
+				stop
+			teleport player to {pos::skyblock_shop}
+			if arg-2 is not set:
+				open chest with 6 row named "       -=[ &1SkyBlock Shop &8]=-" to player
+				wait 1 tick
+				if "%name of current inventory of player%" != "       -=[ &1SkyBlock Shop &8]=-":
+					close inventory of player
+					stop
+					
+				set {_i} to 0
+				loop 10 times:
+					format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skyblock shop"]
+					add 1 to {_i}				
+				format slot 17 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skyblock shop"]
+				format slot 36 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skyblock shop"]
+				set {_i} to 44
+				loop 10 times:
+					format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/skyblock shop"]
+					add 1 to {_i}
+				format slot 4 of player with {sb.clock.hour} of grass block named "&b&lWelcome to the Skyblock Shop" with lore "", " &7These items change every day", " &7Check back in &e%{sb.clock.hour}% hours &7for new items", "", " &eYou have&7: &a%{bw.balance::%uuid of player%}% points ", "", " &eGet more points by&f:   ", " &7- &6Mining Cobblestone ", " &7- &6750 per vote &b/vote ", " &7- &6From Quests &b/sb quests", " &7- &6From &b/buy ", " &e" to run [make player execute command "/skyblock shop"]
+				
+				
+				if {bw.player.team.size::%uuid of player%} is set:
+					set {_currentlyAllowed} to {bw.player.team.size::%uuid of player%}
+				else:
+					set {_currentlyAllowed} to 2
+				set {_cost} to {_currentlyAllowed} * 1000
+				
+				
+				if {bw.balance::%uuid of player%} >= {_cost}:
+					format slot 37 of player with skull of player named "&b&lTeam Size Upgrade" with lore "", " &7Add another player slot to your island. ", " &7Allowing you to &e/sb trust (name) &7anyone else.", "", " &aCurrent maximum members&f: &e%{_currentlyAllowed}% ", "", " &eClick to buy another member slot for &a%{_cost}% points", " &e" to run [make player execute command "/skyblock buymember"]
+				else:
+					format slot 37 of player with {_currentlyAllowed} of skull of player named "&b&lTeam Size Upgrade" with lore "", " &7Add another player slot to your island. ", " &7Allowing you to &e/sb trust (name) &7anyone else.", "", " &aCurrent maximum members&f: &e%{_currentlyAllowed}% ", "", " &eClick to buy another member slot for &c%{_cost}% points", " &e" to run [make player execute command "/skyblock buymember"]
+				
+				if {sb.player.level::%uuid of player%} is set:
+					set {_currentLevel} to {sb.player.level::%uuid of player%}
+				else:
+					set {_currentLevel} to 1
+				set {_cost} to {_currentLevel} * 500
+				if {bw.balance::%uuid of player%} >= {_cost}:
+					format slot 40 of player with {_currentLevel} of nether star named "&b&lIsland Level Upgrade" with lore "", " &7Increases your island level. ", " &7Set more homes. ", " &7Unlocks more quests.", " &7Access with &b/sb quests (level)", "", " &aCurrent Island Level&f: &e%{_currentLevel}% ", "", " &eClick to buy level &f%{_currentLevel} + 1% &efor &a%{_cost}% points", " &e" to run [make player execute command "/skyblock buylevelupgrade"]
+				else:
+
+					format slot 40 of player with {_currentLevel} of nether star named "&b&lIsland Level Upgrade" with lore "", " &7Increases your island level. ", " &7Set more homes. ", " &7Unlocks more quests.", " &7Access with &b/sb quests (level)", "", " &aCurrent Island Level&f: &e%{_currentLevel}% ", "", " &eClick to buy level &f%{_currentLevel} + 1% &efor &c%{_cost}% points", " &e" to run [make player execute command "/skyblock buylevelupgrade"]					
+
+				
+				if {sb.player.generator.level::%uuid of player%} is set:
+					set {_currentLevel} to {sb.player.generator.level::%uuid of player%}
+				else:
+					set {_currentLevel} to 1
+				set {_cost} to {_currentLevel} * 500
+				if {bw.balance::%uuid of player%} >= {_cost}:
+					format slot 43 of player with {_currentLevel} of beacon named "&b&lGenerator Upgrade" with lore "", " &7Increases your generator level. ", " &7Gives you more items", " &7when you mine cobblestone.", "", " &aCurrent generator level&f: &e%{_currentLevel}% ", "", " &eClick to buy level &f%{_currentLevel} + 1% &efor &a%{_cost}% points", " &e" to run [make player execute command "/skyblock buygeneratorupgrade"]
+				else:
+					format slot 43 of player with {_currentLevel} of beacon named "&b&lGenerator Upgrade" with lore "", " &7Increases your generator level. ", " &7Gives you more items", " &7when you mine cobblestone.", "", " &aCurrent generator level&f: &e%{_currentLevel}% ", "", " &eClick to buy level &f%{_currentLevel} + 1% &efor &c%{_cost}% points", " &e" to run [make player execute command "/skyblock buygeneratorupgrade"]
+					
+				if {sb.clock.hour} is not set:
+					set {sb.clock.hour} to 24
+					set {sb.clock.day} to 0
+				set {_day} to {sb.clock.day} 
+				set {_rangeStart} to {_day} * 10
+				while {_rangeStart} >= 100:
+					subtract 100 from {_rangeStart}
+				
+				set {_i} to {_rangeStart}
+				set {_slot} to 20
+				wait 1 tick
+				loop 5 times:
+					if {bw.balance::%uuid of player%} >= {skyblock.shop.id::%{_i}%}:
+						
+						format slot {_slot} of player with {skyblock.shop.items::%{_i}%} named "&b&lDaily Item &f&l%{_slot} - 19%&b&l." with lore "", " &aCosts: &a%{skyblock.shop.id::%{_i}%}% points ", "", " &eClick To Purchase ", "", " &7Check Back Tomorrow for New Items ", " &e" to run "sudo %player% skyblock shop %{_i}%"
+					else:
+						format slot {_slot} of player with {skyblock.shop.items::%{_i}%} named "&c&lDaily Item &f&l%{_slot} - 19%&b&l." with lore "", " &cCosts: &e%{skyblock.shop.id::%{_i}%}% points ", "", " &7Check Back Tomorrow for New Items ", " &e" to run "sudo %player% skyblock shop %{_i}%"
+					
+					add 1 to {_slot}
+				
+					add 1 to {_i}
+				set {_slot} to 29
+				loop 5 times:
+					if {bw.balance::%uuid of player%} >= {skyblock.shop.id::%{_i}%}:
+						
+						format slot {_slot} of player with {skyblock.shop.items::%{_i}%} named "&b&lDaily Item &f&l%{_slot} - 23%&b&l." with lore "", " &aCosts: &a%{skyblock.shop.id::%{_i}%}% points ", "", " &eClick To Purchase ", "", " &7Check Back Tomorrow for New Items ", " &e" to run "sudo %player% skyblock shop %{_i}%"
+					else:
+						format slot {_slot} of player with {skyblock.shop.items::%{_i}%} named "&c&lDaily Item &f&l%{_slot} - 23%&b&l." with lore "", " &cCosts: &e%{skyblock.shop.id::%{_i}%}% points ", "", " &7Check Back Tomorrow for New Items ", " &e" to run "sudo %player% skyblock shop %{_i}%"
+					add 1 to {_slot}
+					add 1 to {_i}
+			else:
+				if {sb.clock.hour} is not set:
+					set {sb.clock.hour} to 24
+					set {sb.clock.day} to 0
+				set {_day} to {sb.clock.day}
+				set {_rangeStart} to {_day} * 10
+				while {_rangeStart} >= 100:
+					subtract 100 from {_rangeStart}
+				set {_i} to {_rangeStart}
+				set {_valid} to false
+				loop 10 times:
+					if "%arg-2%" = "%{_i}%":
+						set {_valid} to true
+					add 1 to {_i}
+				if {_valid} is false:
+					message "item %arg-2% not valid"
+					stop
+				if {skyblock.shop.items::%arg-2%} is not set:
+					message "item %arg-2% not set"
+					stop
+				if {skyblock.shop.id::%arg-2%} is not set:
+					message "id %arg-2% not set"
+					stop
+					
+				if {bw.balance::%uuid of player%} < {skyblock.shop.id::%arg-2%}:
+				
+					message "&8[&bSB&8] &7That item costs&8: &c%{skyblock.shop.id::%arg-2%}% points&7. You only have &a%{bw.balance::%uuid of player%}% points&7."
+					stop
+					
+				give player {skyblock.shop.items::%arg-2%}
+				subtract {skyblock.shop.id::%arg-2%} from {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7Item Purchased for %{skyblock.shop.id::%arg-2%}%. You now have &a%{bw.balance::%uuid of player%}% points&7."
+		else:
+			execute player command "/sb help"
+on join:
+	if "%regions at player%" contains "sb_maps":
+		set gamemode of player to spectator
+		wait 1 tick
+		set gamemode of player to spectator
+		wait 1 tick
+		set gamemode of player to spectator
+		wait 1 tick
+		set gamemode of player to spectator
+		wait 1 tick
+		set gamemode of player to spectator
+		wait 1 tick
+		set gamemode of player to spectator
+every hour:
+	if {sb.clock.hour} is not set:
+		set {sb.clock.hour} to 24
+		set {sb.clock.day} to 0
+	subtract 1 from {sb.clock.hour}
+	if {sb.clock.hour} <= 0:
+		set {sb.clock.hour} to 24
+		add 1 to {sb.clock.day}
+command /setsvlevel <text> <int>:
+	permission: is.op
+	trigger:
+		set {sb.player.level::%{uuid::%arg-1%}%} to arg-2
+command /setsbpoints <text> <int>:
+	permission: is.op
+	trigger:
+		set {bw.balance::%{uuid::%arg-1%}%} to arg-2
+on join:
+	set {uuidName::%uuid of player%} to "%player%"
+	
+command /uuidof <player>:
+	permission: is.op
+	trigger:
+		message "  %{uuid::%arg-1%}%"
+		message "  %uuid of arg-1%"
+command /setsbshop <int> <int>:
+	permission: is.op
+	trigger:
+		set {skyblock.shop.items::%arg-1%} to player's tool
+		set {skyblock.shop.id::%arg-1%} to arg-2
+	
+
+on break of cobblestone:
+	if player is in world "SkyBlock":
+		if {bw.island.home::%uuid of player%} is not set:
+			stop
+		set {_distance} to distance between event-block and block at {bw.island.home::%uuid of player%}
+		loop {bw.island.hasPermissionTo::%uuid of player%::*}:
+			set {_distanceTemp} to distance between event-block and block at {bw.island.home::%loop-index%}
+			if {_distanceTemp} < {_distance}:
+				set {_distance} to {_distanceTemp}
+		if {_distance} > 145:
+			stop
+		if {bw.balance::%uuid of player%} is not set:
+			set {bw.balance::%uuid of player%} to 0
+		
+		if player can hold 1 of {item::whitebed}:
+			
+		
+			if {sb.player.generator.level::%uuid of player%} is set:
+				set {_currentLevel} to {sb.player.generator.level::%uuid of player%}
+			else:
+				set {_currentLevel} to 1
+				
+			if player has permission "is.vortex":
+				set {_multiplier} to 2
+			else:
+				set {_multiplier} to 1
+				
+			chance of (5 + {_currentLevel}/10)%:
+				give player 1 sand 
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Sand &7and got &d%1 * {_multiplier}% point &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (10 + {_currentLevel}/10)%:
+				give player 1 dirt
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Dirt &7and got &d%1 * {_multiplier}% point &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (2 + {_currentLevel}/10)%:
+				give player 1 grass
+				add 2 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Grass &7and got &d%2 * {_multiplier}% points &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (.4 + {_currentLevel}/30)%:
+				give player 1 lava bucket 
+				add 2 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Lava Bucket &7and got &d%2 * {_multiplier}% points &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (1 + {_currentLevel}/10)%:
+				give player 1 iron ore
+				add 5 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Iron Ore &7and got &d%5 * {_multiplier}% points &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (2 + {_currentLevel}/8)%:
+				give player 1 coal 
+				add 3 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Coal &7and got &d%3 * {_multiplier}% points &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (.4 + {_currentLevel}/10)%:
+				give player 1 clay 
+				add 2 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Clay &7and got &d%2 * {_multiplier}% points &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (.5 + {_currentLevel}/9)%:
+				give player 1 diamond
+				add 30 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Diamond &7and got &d%30 * {_multiplier}% points &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (.5 + {_currentLevel}/10)%:
+				give player 1 emerald
+				add 40 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Emerald &7and got &d%40 * {_multiplier}% points &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (5 + {_currentLevel}/10)%:
+				give player 1 redstone
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Redstone Dust &7and got &d%1 * {_multiplier}% point &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (2 + {_currentLevel}/20)%:
+				give player 1 lapis
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Lapis &7and got &d%1 * {_multiplier}% point &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (1 + {_currentLevel}/10)%:
+				give player 1 glowstone dust
+				add 2 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Glowstone Dust &7and got &d%2 * {_multiplier}% points &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (1 + {_currentLevel}/20)%:
+				give player 1 snow
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Snow &7and got &d%1 * {_multiplier}% point &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (1 + {_currentLevel}/20)%:
+				give player 1 terracotta
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Terracotta &7and got &d%1 * {_multiplier}% point &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (.1 + {_currentLevel}/20)%:
+				give player 1 red dye
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Red Dye &7and got &d%1 * {_multiplier}% point &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (.1 + {_currentLevel}/20)%:
+				give player 1 red dye
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Red Dye &7and got &d%1 * {_multiplier}% point &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (.1 + {_currentLevel}/20)%:
+				give player 1 blue dye
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Blue Dye &7and got &d%1 * {_multiplier}% point &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (.1 + {_currentLevel}/20)%:
+				give player 1 pink dye
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Pink Dye &7and got &d%1 * {_multiplier}% point &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (.1 + {_currentLevel}/20)%:
+				give player 1 yellow dye
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Yellow Dye &7and got &d%1 * {_multiplier}% point &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (.1 + {_currentLevel}/20)%:
+				give player 1 green dye
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Green Dye &7and got &d%1 * {_multiplier}% point &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (.1 + {_currentLevel}/20)%:
+				give player 1 purple dye
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Purple Dye &7and got &d%1 * {_multiplier}% point &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (.1 + {_currentLevel}/20)%:
+				give player 1 orange dye
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Orange Dye &7and got &d%1 * {_multiplier}% point &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (.1 + {_currentLevel}/20)%:
+				give player 1 gray dye
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 gray Dye &7and got &d%1 * {_multiplier}% point &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (1 + {_currentLevel}/20)%:
+				give player 1 oak sapling
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Oak Sapling &7and got &d%1 * {_multiplier}% point &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (.7 + {_currentLevel}/20)%:
+				give player 1 blaze rod
+				add 3 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Blaze Rod &7and got &d%3 * {_multiplier}% points &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (1 + {_currentLevel}/20)%:
+				give player 1 gravel
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 Gravel &7and got &d%1 * {_multiplier}% points &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (.5 + {_currentLevel}/20)%:
+				give player 1 string
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 string &7and got &d%1 * {_multiplier}% points &7- &a%{bw.balance::%uuid of player%}%"
+			chance of (.1 + {_currentLevel}/20)%:
+				give player 1 mycelium
+				add 1 * {_multiplier} to {bw.balance::%uuid of player%}
+				message "&8[&bSB&8] &7You found &e1 mycelium &7and got &d%1 * {_multiplier}% points &7- &a%{bw.balance::%uuid of player%}%"
+			
+			
+		else:
+			message "&8[&bSB&8] &cYou can't get points when your inventory has no open slots."
+
+
+
+
+	
+on pressure plate:
+	if player is in world "SkyBlock":
+		if player does not have permission "is.op":
+			if {bw.island.home::%uuid of player%} is not set:
+				cancel event
+			set {_distance} to distance between player and block at {bw.island.home::%uuid of player%}
+			loop {bw.island.hasPermissionTo::%uuid of player%::*}:
+				set {_distanceTemp} to distance between player and block at {bw.island.home::%loop-index%}
+				if {_distanceTemp} < {_distance}:
+					set {_distance} to {_distanceTemp}
+			if {_distance} > 145:
+				cancel event
+					
+on command:
+	if player is in world "SkyBlock":
+		if "%command%" contains "fly":
+			if player does not have permission "is.vortex":
+				cancel event
+				message "&8[&bSB&8] &7You need the &dVortex Rank &7to use that here."	
+			
+		if "%command%" contains "echest" or "eechest" or "eec" or "kit" or "ender" or "auction" or "setwarp" or "ah" or "shop" or "pack" or "packs" or "ec" or "enderchest" or "ender" or "echest" or "eechest" or "eec" or "kit" or "buyegg" or "sethome" or "auction" or "setwarp" or "ah" or "auctionhouse" or "shop" or "pack" or "packs" or "ec" or "enderchest" or "randomitem" or "fish":
+			if "%command%" is not "tpahere":
+				cancel event
+				message "&8[&bSB&8] &7You can't use that command here!"
+			
+on right click on Ender Chest:
+	if player is in world "SkyBlock":
+		cancel event
+
+on right click on obsidian:
+	if player is in world "SkyBlock":
+		if player is not sneaking:
+			if player's tool is air or bucket:
+				if {bw.island.home::%uuid of player%} is not set:
+					stop
+				set {_distance} to distance between event-block and block at {bw.island.home::%uuid of player%}
+				loop {bw.island.hasPermissionTo::%uuid of player%::*}:
+					set {_distanceTemp} to distance between event-block and block at {bw.island.home::%loop-index%}
+					if {_distanceTemp} < {_distance}:
+						set {_distance} to {_distanceTemp}
+				if {_distance} > 145:
+					message "&8[&bSB&8] &eYou can't do anything this far from your island."	
+					stop
+				set clicked block to lava
+
+on target:
+	if entity's target is a player:
+		if entity's target is in world "SkyBlock":
+			if {bw.island.home::%uuid of entity's target%} is not set:
+				cancel event
+			set {_distance} to distance between entity's target and block at {bw.island.home::%uuid of entity's target%}
+			loop {bw.island.hasPermissionTo::%uuid of entity's target%::*}:
+				set {_distanceTemp} to distance between entity's target and block at {bw.island.home::%loop-index%}
+				if {_distanceTemp} < {_distance}:
+					set {_distance} to {_distanceTemp}
+			if {_distance} > 145:
+				cancel event
+				
+on crop trample:
+	if player is in world "SkyBlock":
+		if player does not have permission "is.op":
+			if {bw.island.home::%uuid of player%} is not set:
+				cancel event
+			set {_distance} to distance between player and block at {bw.island.home::%uuid of player%}
+			loop {bw.island.hasPermissionTo::%uuid of player%::*}:
+				set {_distanceTemp} to distance between player and block at {bw.island.home::%loop-index%}
+				if {_distanceTemp} < {_distance}:
+					set {_distance} to {_distanceTemp}
+			if {_distance} > 145:
+				cancel event
+			
+on pick up:
+	if player is in world "SkyBlock":
+		if player does not have permission "is.op":
+			if {bw.island.home::%uuid of player%} is not set:
+				cancel event
+			set {_distance} to distance between player and block at {bw.island.home::%uuid of player%}
+			loop {bw.island.hasPermissionTo::%uuid of player%::*}:
+				set {_distanceTemp} to distance between player and block at {bw.island.home::%loop-index%}
+				if {_distanceTemp} < {_distance}:
+					set {_distance} to {_distanceTemp}
+			set {_distanceTemp} to distance between player and block at {pos::skyblockspawn}
+			if {_distanceTemp} < {_distance}:
+				set {_distance} to {_distanceTemp}
+			if {_distance} > 145:
+				cancel event
+on build:
+	if player is in world "SkyBlock":
+		if player does not have permission "is.op":
+			if {bw.island.home::%uuid of player%} is not set:
+				cancel event
+			set {_distance} to distance between event-block and block at {bw.island.home::%uuid of player%}
+			loop {bw.island.hasPermissionTo::%uuid of player%::*}:
+				set {_distanceTemp} to distance between event-block and block at {bw.island.home::%loop-index%}
+				if {_distanceTemp} < {_distance}:
+					set {_distance} to {_distanceTemp}
+			if {_distance} > 145:
+				cancel event
+				message "&8[&bSB&8] &eYou can't build this far from your island."
+on break:
+	if player is in world "SkyBlock":
+		if player does not have permission "is.op":
+			if {bw.island.home::%uuid of player%} is not set:
+				cancel event
+			set {_distance} to distance between event-block and block at {bw.island.home::%uuid of player%}
+			loop {bw.island.hasPermissionTo::%uuid of player%::*}:
+				set {_distanceTemp} to distance between event-block and block at {bw.island.home::%loop-index%}
+				if {_distanceTemp} < {_distance}:
+					set {_distance} to {_distanceTemp}
+			if {_distance} > 145:
+				cancel event
+				message "&8[&bSB&8] &eYou can't build this far from your island."	
+on damage of player:
+	if victim is in world "SkyBlock":
+		if distance between victim and block at {bw.island.home::%uuid of victim%} < 3:
+			cancel event
+			stop
+		if {sb.player.home::%uuid of victim%::home} is set:
+			if distance between victim and block at {sb.player.home::%uuid of victim%::home} < 3:
+				cancel event
+				stop
+		if {bw.island.home::%uuid of victim%} is not set:
+			cancel event
+			stop
+		set {_distance} to distance between victim and block at {bw.island.home::%uuid of victim%}
+		loop {bw.island.hasPermissionTo::%uuid of victim%::*}:
+			set {_distanceTemp} to distance between victim and block at {bw.island.home::%loop-index%}
+			if {_distanceTemp} < {_distance}:
+				set {_distance} to {_distanceTemp}
+		if {_distance} > 145:
+			if y coordinate of victim > 0:
+				cancel event
+				
+on damage:
+	if attacker is a player:
+		if victim is not a player:
+			if victim is in world "SkyBlock":
+				if {bw.island.home::%uuid of attacker%} is not set:
+					cancel event
+					stop
+				set {_distance} to distance between victim and block at {bw.island.home::%uuid of attacker%}
+				loop {bw.island.hasPermissionTo::%uuid of attacker%::*}:
+					set {_distanceTemp} to distance between victim and block at {bw.island.home::%loop-index%}
+					if {_distanceTemp} < {_distance}:
+						set {_distance} to {_distanceTemp}
+				if {_distance} > 145:
+					if y coordinate of victim > 0:
+						cancel event
+on click:
+	if player is in world "SkyBlock":
+		if player does not have permission "is.op":
+			if "%regions at player%" does not contain "sb_spawn":
+				if {bw.island.home::%uuid of player%} is not set:
+					cancel event
+				set {_distance} to distance between event-block and block at {bw.island.home::%uuid of player%}
+				loop {bw.island.hasPermissionTo::%uuid of player%::*}:
+					set {_distanceTemp} to distance between event-block and block at {bw.island.home::%loop-index%}
+					if {_distanceTemp} < {_distance}:
+						set {_distance} to {_distanceTemp}
+				if {_distance} > 145:
+					cancel event
+					message "&8[&bSB&8] &eYou can't do anything this far from your island."	
+				
+on drop:
+	if player is in world "SkyBlock":
+		if player does not have permission "is.op":
+			if {bw.island.home::%uuid of player%} is not set:
+				cancel event
+			set {_distance} to distance between player and block at {bw.island.home::%uuid of player%}
+			loop {bw.island.hasPermissionTo::%uuid of player%::*}:
+				set {_distanceTemp} to distance between player and block at {bw.island.home::%loop-index%}
+				if {_distanceTemp} < {_distance}:
+					set {_distance} to {_distanceTemp}
+			set {_distanceTemp} to distance between player and block at {pos::skyblockspawn}
+			if {_distanceTemp} < {_distance}:
+				set {_distance} to {_distanceTemp}
+			if {_distance} > 145:
+				cancel event
+				message "&8[&bSB&8] &eYou can't do anything this far from your island."	
+ 	
+on death of a player:
+	if victim is in world "SkyBlock":
+		heal victim
+		clear drops
+		execute player command "/sb"
+		if {bw.balance::%uuid of player%} is not set:
+			set {bw.balance::%uuid of player%} to 0
+		subtract 10 from {bw.balance::%uuid of victim%}
+		send "&8[&bSB] &eYou lost 10 points for dying&7: &a%{bw.balance::%uuid of player%}%" to victim
+		
+		
+function blocks_in_circle(center: Location, radius: Number) :: Locations:
+    set {_x} to x-coordinate of {_center} - {_radius}
+    set {_y} to y-coordinate of {_center}
+    set {_z} to z-coordinate of {_center} - {_radius}
+    set {_world} to world of {_center}
+    set {_dx} to 0 - {_radius}
+    set {_dz} to 0 - {_radius}
+    set {_radius_squared} to {_radius} * {_radius}
+    loop ({_radius} * 2) + 1 times:
+        loop ({_radius} * 2) + 1 times:
+            if ({_dx} * {_dx}) + ({_dz} * {_dz}) <= {_radius_squared}:
+                add location({_x}, {_y}, {_z}, {_world}) to {_locs::*}
+            add 1 to {_dx}
+            add 1 to {_x}
+        add 1 to {_dz}
+        add 1 to {_z}
+        set {_dx} to 0 - {_radius}
+        set {_x} to x-coordinate of {_center} - {_radius}
+
+    return {_locs::*}
+		

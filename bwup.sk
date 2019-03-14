@@ -1,0 +1,1251 @@
+
+#Wool - 4 iron 16 blocks  
+#Clay - 16 iron for 16 blocks 
+#Wood - 4 gold for 16 blocks 
+#Endstone - 24 iron 16 blocks 
+#Obsidian - 4 emeralds 8 blocks
+
+#Start with leather armour
+#Armour upgrades: 
+#chain - 40 iron 
+#Iron - 16 gold 
+#Diamond - 6 emeralds 
+
+#Weapons: start with wooden sword only 
+#Shears - 20 iron 
+#Wooden pick axe - 10 iron 
+#Pickaxe stone - 20 gold 
+#Axe stone - 20 gold 
+#Stone sword - 20 iron 
+#Iron sword - 8 gold 
+#Diamond sword - 4 emeralds 
+#Bow - 16 gold 
+#Power 1 - 26 gold 
+#Punch 1 power 1 - 6 emeralds 
+#Arrows - 4 gold 16 arrows 
+
+#Upgrades: gold / iron forge (teams of 2) 2,6,10 diamonds ( iron forge, gold forge, emerald forge) 
+#Sharpened swords - 4 diamonds 
+#Armour - 6, 12,20 diamonds (prot 1, 2,3)
+#Heal pool - 2 diamonds 
+#It’s a trap! - 1 diamond 
+
+#Golden apples - 8 gold 
+#Iron golems - 120 iron 
+#Silver fish - 50 iron 
+#TNT - 12 gold 
+#Potions - 1 emerald 
+#Enderpearl - 2 emeralds 
+#Eggs - 16 gold for 16 eggs
+
+
+
+
+
+
+command /removenearents:
+	permission: is.op
+	trigger:
+		loop entities in radius 10 of player:
+			if loop-entity is not a player:
+				delete loop-entity
+
+on right click on villager:
+	if player is in world "BedWars":
+		execute player command "/bwmenu"
+
+		
+		
+command /setitem [<text>]:
+	permission: is.op
+	trigger:
+		set {item::%arg-1%} to player's held item
+		message "&aSet&7: &e%arg-1%&7."
+		
+command /bwmenu [<text>] [<text>] [<int>]:
+	trigger:
+		if player is not in world "BedWars":
+			message "Error: not here!"
+			stop
+			
+		
+		wait 1 tick
+		
+		set {_id} to {bw.players.id::%player%}
+		set {_color} to {bw.players.list::%{_id}%::%player%}
+		if {_color} is not set:
+			message "no team set"
+			stop
+		set {_iron} to number of iron ingots in player's inventory
+		set {_gold} to number of gold ingots in player's inventory
+		set {_emerald} to number of emeralds in player's inventory
+		set {_diamond} to number of diamonds in player's inventory
+		
+		if arg-1 is not set:
+			wait 1 tick
+			if {_color} = "blue":
+				open chest with 6 row named "          &8-=[ &1Bed Wars &8]=-" to player
+			if {_color} = "red":
+				open chest with 6 row named "          &8-=[ &4Bed Wars &8]=-" to player
+			if {_color} = "green":
+				open chest with 6 row named "          &8-=[ &2Bed Wars &8]=-" to player
+			if {_color} = "yellow":
+				open chest with 6 row named "          &8-=[ &6Bed Wars &8]=-" to player
+			wait 1 tick
+			set {_i} to 0
+			loop 10 times:
+				if {_color} = "blue":
+					format slot {_i} of player with blue stained glass pane named "&b&l*" to run "sudo %player% bwmenu"
+				if {_color} = "red":
+					format slot {_i} of player with red stained glass pane named "&c&l*" to run "sudo %player% bwmenu"
+				if {_color} = "green":
+					format slot {_i} of player with light green stained glass pane named "&a&l*" to run "sudo %player% bwmenu"
+				if {_color} = "yellow":
+					format slot {_i} of player with yellow stained glass pane named "&e&l*" to run "sudo %player% bwmenu"
+				add 1 to {_i}	
+				
+			if {_color} = "blue":
+				format slot 17 of player with blue stained glass pane named "&b&l*" to run "sudo %player% bwmenu"
+			if {_color} = "red":
+				format slot 17 of player with red stained glass pane named "&c&l*" to run "sudo %player% bwmenu"
+			if {_color} = "green":
+				format slot 17 of player with light green stained glass pane named "&a&l*" to run "sudo %player% bwmenu"
+			if {_color} = "yellow":
+				format slot 17 of player with yellow stained glass pane named "&e&l*" to run "sudo %player% bwmenu"
+			
+			if {_color} = "blue":
+				format slot 36 of player with blue stained glass pane named "&b&l*" to run "sudo %player% bwmenu"
+			if {_color} = "red":
+				format slot 36 of player with red stained glass pane named "&c&l*" to run "sudo %player% bwmenu"
+			if {_color} = "green":
+				format slot 36 of player with light green stained glass pane named "&a&l*" to run "sudo %player% bwmenu"
+			if {_color} = "yellow":
+				format slot 36 of player with yellow stained glass pane named "&e&l*" to run "sudo %player% bwmenu"
+			
+			
+			set {_i} to 44
+			loop 10 times:
+				if {_color} = "blue":
+					format slot {_i} of player with blue stained glass pane named "&b&l*" to run "sudo %player% bwmenu"
+				if {_color} = "red":
+					format slot {_i} of player with red stained glass pane named "&c&l*" to run "sudo %player% bwmenu"
+				if {_color} = "green":
+					format slot {_i} of player with light green stained glass pane named "&a&l*" to run "sudo %player% bwmenu"
+				if {_color} = "yellow":
+					format slot {_i} of player with yellow stained glass pane named "&e&l*" to run "sudo %player% bwmenu"
+				add 1 to {_i}
+			wait 1 tick
+			format slot 20 of player with quartz block named "&aBlocks" with lore "&eClick to view", "" to run "sudo %player% bwmenu blocks"
+			
+			format slot 21 of player with gold sword named "&aMelee" with lore "&eClick to view!", "" to run "sudo %player% bwmenu weapons"
+			
+			format slot 22 of player with stone pickaxe named "&aTools" with lore "&eClick to view", "" to run "sudo %player% bwmenu tools"
+			
+			format slot 23 of player with chain boots named "&aArmor" with lore "&eClick to view", "" to run "sudo %player% bwmenu armor"
+			
+			format slot 24 of player with tnt named "&aItems" with lore "&eClick to view", "" to run "sudo %player% bwmenu items"
+			
+			format slot 30 of player with bow named "&aRanged" with lore "&eClick to view", "" to run "sudo %player% bwmenu ranged"
+				
+			format slot 31 of player with book named "&aUpgrades" with lore "&eClick to view", "" to run "sudo %player% bwmenu upgrades"
+				
+			
+			stop
+
+#Wool - 4 iron 16 blocks  
+#Clay - 16 iron for 16 blocks 
+#Wood - 4 gold for 16 blocks 
+#Endstone - 24 iron 16 blocks 
+#Obsidian - 4 emeralds 8 blocks
+
+			
+		if arg-1 is "blocks":
+			if arg-2 is not set:
+			
+				format slot 10 of player with air named "" to close
+				if {_color} = "red":
+					if {_iron} < 4:
+						format slot 10 of player with 16 red wool block named "&cWool" with lore "&7Costs: &f4 Iron", "", "&7Great for bridging across", "&7islands.", "", "&cYou don't have enough Iron!" to run "sudo %player% bwmenu blocks wool"
+					else:	
+						format slot 10 of player with 16 red wool block named "&eWool" with lore "&7Costs: &f4 Iron", "", "&7Great for bridging across", "&7islands.", "", "&eClick to purchase!" to run "sudo %player% bwmenu blocks wool"
+				
+					if {_iron} < 12:
+						format slot 12 of player with 4 red glass block named "&cBlast-Proof Glass" with lore "&7Costs: &f12 Iron", "", "&7Immune to explosions.", "", "&cYou don't have enough Iron!" to run "sudo %player% bwmenu blocks stainedglass"
+					else:	
+						format slot 12 of player with 4 red glass block named "&eBlast-Proof Glass" with lore "&7Costs: &f12 Iron", "", "&7Immune to explosions.", "", "&eClick to purcahse!" to run "sudo %player% bwmenu blocks stainedglass"
+				
+					if {_iron} < 12:
+						format slot 11 of player with 16 red stained clay named "&cHardened Clay" with lore "&7Cost: &f12 Iron", "", "&7Basic block to defend your bed.", "", "&cYou don't have enough Iron!" to run "sudo %player% bwmenu blocks concrete"
+					else:	
+						format slot 11 of player with 16 red stained clay named "&eHardened Clay" with lore "&7Cost: &f12 Iron", "", "&7Basic block to defend your bed.", "", "&eClick to purcahse!" to run "sudo %player% bwmenu blocks concrete"
+				
+						
+				
+				if {_color} = "blue":
+					if {_iron} < 4:
+						format slot 10 of player with 16 blue wool block named "&cWool" with lore "&7Costs: &f4 Iron", "", "&7Great for bridging across", "&7islands.", "", "&cYou don't have enough Iron!" to run "sudo %player% bwmenu blocks wool"
+					else:	
+						format slot 10 of player with 16 blue wool block named "&eWool" with lore "&7Costs: &f4 Iron", "", "&7Great for bridging across", "&7islands.", "", "&eClick to purchase!" to run "sudo %player% bwmenu blocks wool"
+				
+					if {_iron} < 12:
+						format slot 12 of player with 4 blue glass block named "&cBlast-Proof Glass" with lore "&7Costs: &f12 Iron", "", "&7Immune to explosions.", "", "&cYou don't have enough Iron!" to run "sudo %player% bwmenu blocks stainedglass"
+					else:	
+						format slot 12 of player with 4 blue glass block named "&eBlast-Proof Glass" with lore "&7Costs: &f12 Iron", "", "&7Immune to explosions.", "", "&eClick to purcahse!" to run "sudo %player% bwmenu blocks stainedglass"
+				
+					if {_iron} < 12:
+						format slot 11 of player with 16 blue stained clay named "&cHardened Clay" with lore "&7Cost: &f12 Iron", "", "&7Basic block to defend your bed.", "", "&cYou don't have enough Iron!" to run "sudo %player% bwmenu blocks concrete"
+					else:	
+						format slot 11 of player with 16 blue stained clay named "&eHardened Clay" with lore "&7Cost: &f12 Iron", "", "&7Basic block to defend your bed.", "", "&eClick to purcahse!" to run "sudo %player% bwmenu blocks concrete"
+				
+						
+				if {_color} = "yellow":
+					if {_iron} < 4:
+						format slot 10 of player with 16 yellow wool block named "&cWool" with lore "&7Costs: &f4 Iron", "", "&7Great for bridging across", "&7islands.", "", "&cYou don't have enough Iron!" to run "sudo %player% bwmenu blocks wool"
+					else:	
+						format slot 10 of player with 16 yellow wool block named "&eWool" with lore "&7Costs: &f4 Iron", "", "&7Great for bridging across", "&7islands.", "", "&eClick to purchase!" to run "sudo %player% bwmenu blocks wool"
+				
+					if {_iron} < 12:
+						format slot 12 of player with 4 yellow glass block named "&cBlast-Proof Glass" with lore "&7Costs: &f12 Iron", "", "&7Immune to explosions.", "", "&cYou don't have enough Iron!" to run "sudo %player% bwmenu blocks stainedglass"
+					else:	
+						format slot 12 of player with 4 yellow glass block named "&eBlast-Proof Glass" with lore "&7Costs: &f12 Iron", "", "&7Immune to explosions.", "", "&eClick to purcahse!" to run "sudo %player% bwmenu blocks stainedglass"
+				
+					if {_iron} < 12:
+						format slot 11 of player with 16 yellow stained clay named "&cHardened Clay" with lore "&7Cost: &f12 Iron", "", "&7Basic block to defend your bed.", "", "&cYou don't have enough Iron!" to run "sudo %player% bwmenu blocks concrete"
+					else:	
+						format slot 11 of player with 16 yellow stained clay named "&eHardened Clay" with lore "&7Cost: &f12 Iron", "", "&7Basic block to defend your bed.", "", "&eClick to purcahse!" to run "sudo %player% bwmenu blocks concrete"
+				
+						
+				if {_color} = "green":
+					if {_iron} < 4:
+						format slot 10 of player with 16 light green wool block named "&c16 Wool" with lore "&7Costs: &f4 Iron", "", "&7Great for bridging across", "&7islands.", "", "&cYou don't have enough Iron!" to run "sudo %player% bwmenu blocks wool"
+					else:	
+						format slot 10 of player with 16 light green wool block named "&e16 Wool" with lore "&7Costs: &f4 Iron", "", "&7Great for bridging across", "&7islands.", "", "&eClick to purchase!" to run "sudo %player% bwmenu blocks wool"
+				
+					if {_iron} < 12:
+						format slot 12 of player with 4 light green glass block named "&cBlast-Proof Glass" with lore "&7Costs: &f12 Iron", "", "&7Immune to explosions.", "", "&cYou don't have enough Iron!" to run "sudo %player% bwmenu blocks stainedglass"
+					else:	
+						format slot 12 of player with 4 light green glass block named "&eBlast-Proof Glass" with lore "&7Costs: &f12 Iron", "", "&7Immune to explosions.", "", "&eClick to purcahse!" to run "sudo %player% bwmenu blocks stainedglass"
+				
+					if {_iron} < 12:
+						format slot 11 of player with 16 light green stained clay named "&cHardened Clay" with lore "&7Cost: &f12 Iron", "", "&7Basic block to defend your bed.", "", "&cYou don't have enough Iron!" to run "sudo %player% bwmenu blocks concrete"
+					else:	
+						format slot 11 of player with 16 light green stained clay named "&eHardened Clay" with lore "&7Cost: &f12 Iron", "", "&7Basic block to defend your bed.", "", "&eClick to purcahse!" to run "sudo %player% bwmenu blocks concrete"
+				
+				if {_gold} < 4:
+					format slot 15 of player with 16 oak wood planks named "&cOak Wood Planks" with lore "&7Costs: &64 Gold", "", "&7Good Block to defend your bed.", "&7Strong against pickaxes.", "", "&cYou don't have enough Gold!" to run "sudo %player% bwmenu blocks wood"
+				else:	
+					format slot 15 of player with 16 oak wood planks named "&eOak Wood Planks" with lore "&7Costs: &64 Gold", "", "&7Good Block to defend your bed.", "&7Strong against pickaxes.", "", "&eClick to purcahse" to run "sudo %player% bwmenu blocks wood"
+				
+				
+				if {_iron} < 24:
+					format slot 13 of player with 16 end stone block named "&cEnd Stone" with lore "&7Cost: &f24 Iron", "", "&7Solid block to defend your bed.", "", "&cYou don't have enough Iron!" to run "sudo %player% bwmenu blocks endstone"
+				else:	
+					format slot 13 of player with 16 end stone block named "&eEnd Stone" with lore "&7Cost: &f24 Iron", "", "&7Solid block to defend your bed.", "", "&eClick to purcahse!" to run "sudo %player% bwmenu blocks endstone"
+				
+				if {_iron} < 4:
+					format slot 14 of player with 16 ladder item named "&cLadder" with lore "&7Cost: &f4 Iron", "", "&7Useful to save cats stuck in", "&7trees.", "", "&cYou don't have enough Iron!" to run "sudo %player% bwmenu blocks ladder"
+				else:	
+					format slot 14 of player with 16 ladder item named "&eLadder" with lore "&7Cost: &f4 Iron", "", "&7&7Useful to save cats stuck in", "&7trees.", "", "&eClick to purcahse!" to run "sudo %player% bwmenu blocks ladder"
+				
+				if {_emerald} < 4:
+					format slot 16 of player with 4 obsidian block named "&cObsidian" with lore "&7Cost: &24 Emerald", "", "&7Extreme protection for your bed.", "", "&cYou don't have enough Emerald!" to run "sudo %player% bwmenu blocks obsidian"
+				else:	
+					format slot 16 of player with 4 obsidian block named "&eObsidian" with lore "&7Cost: &24 Emerald", "", "&7Extreme protection for your bed.", "", "&eClick to purcahse!" to run "sudo %player% bwmenu blocks obsidian"
+				
+				stop			
+			
+			else if arg-2 is "wool":
+				if {_iron} < 4:
+					message "&8[&bSnap&8] &cNot enough &fIron Ingots&c, you need %4 - {_iron}% more!"
+					execute player command "/bwmenu blocks"
+					stop
+				remove 4 iron ingots from player
+				if {_color} = "red":
+					give player 16 red wool block
+				else if {_color} = "blue":
+					give player 16 blue wool block
+				else if {_color} = "yellow":
+					give player 16 yellow wool block
+				else if {_color} = "green":
+					give player 16 light green wool block
+				execute player command "/bwmenu blocks"
+				
+			else if arg-2 is "wood":
+				if {_gold} < 4:
+					message "&cNot enough &6Gold Ingots&c, you need %4 - {_gold}% more!"
+					execute player command "/bwmenu blocks"
+					stop
+				remove 4 gold ingots from player
+				give player 16 oak wood planks
+				execute player command "/bwmenu blocks"
+				
+	
+			else if arg-2 is "concrete":
+				if {_iron} < 12:
+					message "&cNot enough &fIron Ingots&c, you need %12 - {_iron}% more!"
+					execute player command "/bwmenu blocks"
+					stop
+				remove 12 iron ingots from player
+				if {_color} = "red":
+					give player 16 red stained clay
+				else if {_color} = "blue":
+					give player 16 blue stained clay
+				else if {_color} = "yellow":
+					give player 16 yellow stained clay
+				else if {_color} = "green":
+					give player 16 light green stained clay
+				execute player command "/bwmenu blocks"
+				
+				
+			else if arg-2 is "stainedglass":
+				if {_iron} < 12:
+					message "&cNot enough &fIron Ingots&c, you need %12 - {_iron}% more!"
+					execute player command "/bwmenu blocks"
+					stop
+				remove 12 iron ingots from player
+				if {_color} = "red":
+					give player 16 red glass block
+				else if {_color} = "blue":
+					give player 16 blue glass block
+				else if {_color} = "yellow":
+					give player 16 yellow glass block
+				else if {_color} = "green":
+					give player 16 light green glass block
+				execute player command "/bwmenu blocks"
+				
+			else if arg-2 is "endstone":
+				if {_iron} < 24:
+					message "&cNot enough &fIron Ingots&c, you need %24 - {_iron}% more!"
+					execute player command "/bwmenu blocks"
+					stop
+				remove 24 iron ingots from player
+				give player 16 end stone blocks
+				execute player command "/bwmenu blocks"
+				stop
+			
+			else if arg-2 is "ladder":
+				if {_iron} < 4:
+					message "&cNot enough &fIron Ingots&c, you need %4 - {_iron}% more!"
+					execute player command "/bwmenu blocks"
+					stop
+				remove 4 iron ingots from player
+				give player 16 ladder items
+				execute player command "/bwmenu blocks"
+				stop
+			else if arg-2 is "obsidian":
+				if {_emerald} < 4:
+					message "&cNot enough &2Emerald&c, you need %4 - {_emerald}% more!"
+					execute player command "/bwmenu blocks"
+					stop
+				remove 4 emeralds from player
+				give player 4 obsidian blocks
+				execute player command "/bwmenu blocks"
+				stop
+				
+		else if arg-1 is "weapons":
+			if arg-2 is not set:
+				if {_iron} < 10:
+					format slot 11 of player with stone sword named "&cStone Sword" with lore "&7Cost: &f10 Iron", "", "&cYou don't have enough Iron!" to run "sudo %player% bwmenu weapons stonesword"
+				else:
+					format slot 11 of player with stone sword named "&eStone Sword" with lore "&7Cost: &f10 Iron", "", "&eClick to purchase!" to run "sudo %player% bwmenu weapons stonesword"
+			
+				if {_gold} < 7:
+					format slot 12 of player with iron sword named "&cIron Sword" with lore "&7Cost: &67 Gold", "", "&cYou don't have enough Gold!" to run "sudo %player% bwmenu weapons ironsword"
+				else:
+					format slot 12 of player with iron sword named "&eIron Sword" with lore "&7Cost: &67 Gold", "", "&eClick to purchase!" to run "sudo %player% bwmenu weapons ironsword"
+			
+				if {_emerald} < 4:
+					format slot 13 of player with diamond sword named "&cDiamond Sword" with lore "&7Cost: &24 Emerald", "", "&cYou don't have enough Emerald!" to run "sudo %player% bwmenu weapons diamondsword"
+				else:	
+					format slot 13 of player with diamond sword named "&eDiamond Sword" with lore "&7Cost: &24 Emeralds", "", "&eClick to purchase!" to run "sudo %player% bwmenu weapons diamondsword"
+				
+				format slot 10 of player with air to close
+				format slot 14 of player with air to close
+				format slot 15 of player with air to close
+				format slot 16 of player with air to close
+		
+			else if arg-2 is "stonesword":
+				if {_iron} < 10:
+					message "&cNot enough &fIron Ingots&c, &cyou need %7 - {_iron}% more!"
+					send player title "&c&lNot enough          &f&lIron Ingots" for 1 second with 0 second fade in and 10 tick fade out
+					execute player command "/bwmenu weapons"
+					stop
+				remove 10 iron ingots from player
+				remove all swords from player
+				if {bw.upgrades.sharpness::%{_id}%::%{_color}%} is set:
+					set {bw.players.items::%player%::sword} to 1 stone sword of sharpness 1
+					give player 1 stone sword of sharpness 1
+				else:
+					set {bw.players.items::%player%::sword} to 1 stone sword
+					give player 1 stone sword
+				execute player command "/bwmenu weapons"
+				stop
+				
+			else if arg-2 is "ironsword":
+				if {_gold} < 7:
+					message "&cNot enough &6Gold Ingots&c, &cyou need %7 - {_gold}% more!"
+					execute player command "/bwmenu weapons"
+					stop
+				remove 7 gold ingots from player
+				remove all swords from player
+				if {bw.upgrades.sharpness::%{_id}%::%{_color}%} is set:
+					set {bw.players.items::%player%::sword} to 1 iron sword of sharpness 1
+					give player 1 iron sword of sharpness 1
+				else:
+					set {bw.players.items::%player%::sword} to 1 iron sword
+					give player 1 iron sword
+				execute player command "/bwmenu weapons"
+				stop
+				
+			else if arg-2 is "diamondsword":
+				if {_emerald} < 4:
+					message "&cNot enough &2Emerald&c, &cyou need %7 - {_emerald}% more!"
+					send player title "&c&lNot enough          &a&lEmeralds" for 1 second with 0 second fade in and 10 tick fade out
+					execute player command "/bwmenu weapons"
+					stop
+				remove 4 emeralds from player
+				remove all swords from player
+				if {bw.upgrades.sharpness::%{_id}%::%{_color}%} is set:
+					set {bw.players.items::%player%::sword} to 1 diamond sword of sharpness 1
+					give player 1 diamond sword of sharpness 1
+				else:
+					set {bw.players.items::%player%::sword} to 1 diamond sword
+					give player 1 diamond sword
+				execute player command "/bwmenu weapons"
+				stop
+				
+				
+			else if arg-2 is "bow":
+				if {_gold} < 12:
+					message "&cNot enough &6Gold Ingots&c, you need %12 - {_gold}% more!"
+					execute player command "/bwmenu ranged"
+					stop
+				remove 12 gold ingots from player
+				remove all bows from player
+				give player 1 bow
+				execute player command "/bwmenu ranged"
+				stop
+				
+			else if arg-2 is "bow1":
+				if {_gold} < 26:
+					message "&cNot enough &6Gold Ingots&c, you need %26 - {_gold}% more!"
+					execute player command "/bwmenu ranged"
+					stop
+				remove 26 gold ingots from player
+				remove all bows from player
+				give player 1 bow of power 1
+				execute player command "/bwmenu ranged"
+				stop
+				
+			else if arg-2 is "bow2":
+				if {_emerald} < 6:
+					message "&cNot enough &2Emerald&c, you need %6 - {_emerald}% more!"
+					execute player command "/bwmenu ranged"
+					stop
+				remove 6 emeralds from player
+				remove all bows from player
+				give player 1 bow of power 1 and punch 1
+				execute player command "/bwmenu ranged"
+				stop
+				
+			else if arg-2 is "arrow":
+				if {_gold} < 2:
+					message "&cNot enough &6Gold Ingots&c, you need %4 - {_gold}% more!"
+					execute player command "/bwmenu ranged"
+					stop
+				remove 2 gold ingots from player
+				give player 8 arrows
+				execute player command "/bwmenu ranged"
+				stop
+				
+		else if arg-1 is "ranged":
+			if arg-2 is not set:
+				if {_gold} < 12:
+					format slot 11 of player with bow named "&cBow" with lore "&7Costs: &612 Gold", "", "&cYou don't have enough Gold!" to run "sudo %player% bwmenu weapons bow"
+				else:	
+					format slot 11 of player with bow named "&eBow" with lore "&7Costs: &612 Gold", "", "&eClick to purcahse!" to run "sudo %player% bwmenu weapons bow"
+			
+				if {_gold} < 26:
+					format slot 12 of player with bow of power 1 named "&cBow" with lore "&7Costs: &624 Gold", "", "&cYou don't have enough Gold!" to run "sudo %player% bwmenu weapons bow1"
+				else:	
+					format slot 12 of player with bow of power 1 named "&eBow" with lore "&7Costs: &624 Gold", "", "&eClick to purcahse!" to run "sudo %player% bwmenu weapons bow1"
+			
+				if {_emerald} < 6:
+					format slot 13 of player with bow of power 1 and punch 1 named "&cBow" with lore "&7Costs: &26 Emerald", "", "&cYou don't have enough Emerald!" to run "sudo %player% bwmenu weapons bow2"
+				else:	
+					format slot 13 of player with bow of power 1 and punch 1 named "&eBow" with lore "&7Costs: &26 Emerald", "", "&eClick to purcahse!" to run "sudo %player% bwmenu weapons bow2"
+			
+				if {_gold} < 4:
+					format slot 14 of player with 8 arrows named "&cArrow" with lore "&7Costs&7: &62 Gold", "", "&cYou don't have enough Gold!" to run "sudo %player% bwmenu weapons arrow"
+				else:	
+					format slot 14 of player with 8 arrows named "&eArrow" with lore "&7Costs&7: &62 Gold", "", "&eClick to purcahse!" to run "sudo %player% bwmenu weapons arrow"
+			
+			
+				format slot 10 of player with air to close
+				format slot 15 of player with air to close
+				format slot 16 of player with air to close
+						
+				
+#Weapons: start with wooden sword only 
+#Shears - 20 iron 
+#Wooden pick axe - 10 iron 
+#Pickaxe stone - 20 gold 
+#Axe stone - 20 gold 
+#Stone sword - 20 iron 
+#Iron sword - 8 gold 
+#Diamond sword - 4 emeralds 
+#Bow - 16 gold 
+#Power 1 - 26 gold 
+#Punch 1 power 1 - 6 emeralds 
+#Arrows - 4 gold 16 arrows 
+				
+				
+		else if arg-1 is "tools":
+			if arg-2 is not set:
+				format slot 10 of player with air named "" to close
+			
+				if {_iron} < 20:
+					format slot 10 of player with shears named "&cPermanent Shears" with lore "&7Costs: &f20 Iron", "", "&7Great to get rid of wool. You", "&7will always spawn with these", "&7shears.", "", "&cYou don't have enough Iron!" to run "sudo %player% bwmenu tools shears"
+				else:	
+					format slot 10 of player with shears named "&ePermanent Shears" with lore "&7Costs: &f20 Iron", "", "&7Great to get rid of wool. You", "&7will always spawn with these", "&7shears.", "", "&eClick to purchase!" to run "sudo %player% bwmenu tools shears"
+			
+				if {_gold} < 20:
+					format slot 11 of player with stone pickaxe named "&cPermanent Stone Pickaxe" with lore "&7Costs: &620 Gold", "", "&7You will always spawn with this", "&7Pickaxe.", "", "&cYou don't have enough Gold!" to run "sudo %player% bwmenu tools stonepickaxe"
+				else:	
+					format slot 11 of player with stone pickaxe named "&ePermanent Stone Pickaxe" with lore "&7Costs: &620 Gold", "", "&7You will always spawn with this", "&7Pickaxe.", "", "&eClick to purchase!" to run "sudo %player% bwmenu tools stonepickaxe"
+				
+				if {_emerald} < 3:
+					format slot 12 of player with iron pickaxe named "&cPermanent Iron Pickaxe" with lore "&7Costs: &23 Emerald", "", "&7You will always spawn with this", "&7Pickaxe.", "", "&cYou don't have enough Emerald!" to run "sudo %player% bwmenu tools ironpickaxe"
+				else:	
+					format slot 12 of player with iron pickaxe named "&ePermanent Iron Pickaxe" with lore "&7Costs: &23 Emerald", "", "&7You will always spawn with this", "&7Pickaxe.", "", "&eClick to purchase!" to run "sudo %player% bwmenu tools ironpickaxe"
+				
+				if {_emerald} < 6:
+					format slot 13 of player with diamond pickaxe named "&cPermanent Diamond Pickaxe" with lore "&7Costs: &26 Emerald", "", "&7You will always spawn with this", "&7Pickaxe.", "", "&cYou don't have enough Emerald!" to run "sudo %player% bwmenu tools diamondpickaxe"
+				else:	
+					format slot 13 of player with diamond pickaxe named "&ePermanent Diamond Pickaxe" with lore "&7Costs: &26 Emerald", "", "&7You will always spawn with this", "&7Pickaxe.", "", "&eClick to purchase!" to run "sudo %player% bwmenu tools diamondpickaxe"
+				
+				if {_gold} < 20:
+					format slot 14 of player with stone axe named "&cPermanent Stone Axe" with lore "&7Costs: &620 Gold", "", "&7You will always spawn with this", "&7Axe.", "", "&cYou don't have enough Gold!" to run "sudo %player% bwmenu tools stoneaxe"
+				else:	
+					format slot 14 of player with stone axe named "&ePermanent Stone Axe" with lore "&7Costs: &620 Gold", "", "&7You will always spawn with this", "&7Axe.", "", "&eClick to purchase!" to run "sudo %player% bwmenu tools stoneaxe"
+			
+				
+				if {_emerald} < 3:
+					format slot 15 of player with iron axe named "&cPermanent Iron Axe" with lore "&7Costs: &23 Emerald", "", "&7You will always spawn with this", "&7Axe.", "", "&cYou don't have enough Emerald!" to run "sudo %player% bwmenu tools ironaxe"
+				else:	
+					format slot 15 of player with iron axe named "&ePermanent Iron Axe" with lore "&7Costs: &23 Emerald", "", "&7You will always spawn with this", "&7Axe.", "", "&eClick to purchase!" to run "sudo %player% bwmenu tools ironaxe"
+				
+				if {_emerald} < 6:
+					format slot 16 of player with diamond axe named "&cPermanent Diamond Axe" with lore "&7Costs: &23 Emerald", "", "&7You will always spawn with this", "&7Axe.", "", "&cYou don't have enough Emerald!" to run "sudo %player% bwmenu tools diamondaxe"
+				else:	
+					format slot 16 of player with diamond axe named "&ePermanent Diamond Axe" with lore "&7Costs: &23 Emerald", "", "&7You will always spawn with this", "&7Axe.", "", "&eClick to purchase!" to run "sudo %player% bwmenu tools diamondaxe"
+			
+				stop
+			else if arg-2 is "shears":
+				if {_iron} < 20:
+					message "&8[&bSnap&8] &cNot enough &fIron"
+					execute player command "/bwmenu tools"
+					stop
+				remove 20 iron ingots from player
+				give player 1 shears
+				set {bw.players.items::%player%::shears} to 1 shears
+				execute player command "/bwmenu tools"
+				stop
+				
+			else if arg-2 is "stonepickaxe":
+				if {_gold} < 20:
+					message "&8[&bSnap&8] &cNot enough &6Gold"
+					execute player command "/bwmenu tools"
+					stop
+				remove 20 gold ingots from player
+				remove all pickaxes from player
+				give player 1 stone pickaxe
+				set {bw.players.items::%player%::pickaxe} to 1 stone pickaxe
+				execute player command "/bwmenu tools"
+				stop
+				
+			else if arg-2 is "stoneaxe":
+				if {_gold} < 20:
+					message "&8[&bSnap&8] &cNot enough &6Gold"
+					send player title "&c&lNot enough          &6&lGold Ingots" for 1 second with 0 second fade in and 10 tick fade out
+					execute player command "/bwmenu tools"
+					stop
+				remove 20 gold ingots from player
+				remove all axes from player
+				if {bw.upgrades.sharpness::%{_id}%::%{_color}%} is set:
+					set {bw.players.items::%player%::axe} to 1 stone axe of sharpness 1
+					give player 1 stone axe of sharpness 1
+				else:
+					set {bw.players.items::%player%::axe} to 1 stone axe
+					give player 1 stone axe
+				execute player command "/bwmenu tools"
+				stop
+				
+			else if arg-2 is "ironpickaxe":
+				if {_emerald} < 3:
+					message "&8[&bSnap&8] &cNot enough &2Emeralds"
+					send player title "&c&lNot enough          &2&lEmeralds" for 1 second with 0 second fade in and 10 tick fade out
+					execute player command "/bwmenu tools"
+					stop
+				remove 3 emeralds from player
+				remove all pickaxes from player
+				give player 1 iron pickaxe
+				set {bw.players.items::%player%::pickaxe} to 1 iron pickaxe
+				execute player command "/bwmenu tools"
+				stop
+				
+			else if arg-2 is "diamondpickaxe":
+				if {_emerald} < 6:
+					message "&8[&bSnap&8] &cNot enough &2Emeralds, you need %2 - {_emerald}% more!"
+					execute player command "/bwmenu tools"
+					stop
+				remove 6 emeralds from player
+				remove all pickaxes from player
+				give player 1 iron pickaxe
+				set {bw.players.items::%player%::pickaxe} to 1 diamond pickaxe
+				execute player command "/bwmenu tools"
+				stop
+				
+			else if arg-2 is "ironaxe":
+				if {_emerald} < 3:
+					message "&cNot enough &2Emeralds, you need %3 - {_emerald}% more!"
+					execute player command "/bwmenu tools"
+					stop
+				remove 3 emeralds from player
+				remove all axes from player
+				if {bw.upgrades.sharpness::%{_id}%::%{_color}%} is set:
+					set {bw.players.items::%player%::axe} to 1 iron axe of sharpness 1
+					give player 1 iron axe of sharpness 1
+				else:
+					set {bw.players.items::%player%::axe} to 1 iron axe
+					give player 1 iron axe
+				execute player command "/bwmenu tools"
+				stop
+				
+			else if arg-2 is "diamondaxe":
+				if {_emerald} < 6:
+					message "&cNot enough &2Emeralds&c, you need %6 - {_emerald}% more!"
+					send player title "&c&lNot enough          &2&lEmeralds" for 1 second with 0 second fade in and 10 tick fade out
+					execute player command "/bwmenu tools"
+					stop
+				remove 6 emeralds from player
+				remove all axes from player
+				if {bw.upgrades.sharpness::%{_id}%::%{_color}%} is set:
+					set {bw.players.items::%player%::axe} to 1 diamond axe of sharpness 1
+					give player 1 diamond axe of sharpness 1
+				else:
+					set {bw.players.items::%player%::axe} to 1 diamond axe
+					give player 1 diamond axe
+				execute player command "/bwmenu tools"
+				stop
+				
+	
+#Start with leather armour
+#Armour upgrades: 
+#chain - 40 iron 
+#Iron - 16 gold 
+#Diamond - 6 emeralds 
+
+
+		else if arg-1 is "armor":
+			if arg-2 is not set:
+			
+				format slot 10 of player with air named "" to close
+				if {_iron} < 40:
+					format slot 11 of player with chain boots named "&cPermanent Chainmail Armor" with lore "&7Cost: &f40 Iron", "", "&7Chainmail leggings and boots", "&7which you will always spawn", "&7with.", "", "&cYou don't have enough Iron!" to run "sudo %player% bwmenu armor chain"
+				else:	
+					format slot 11 of player with chain boots named "&ePermanent Chainmail Armor" with lore "&7Cost: &f40 Iron", "", "&7Chainmail leggings and boots", "&7which you will always spawn", "&7with.", "", "&eClick to purchase!" to run "sudo %player% bwmenu armor chain"
+		
+				if {_gold} < 12:
+					format slot 12 of player with iron boots named "&cPermanent Iron Armor" with lore "&7Cost: &612 Gold", "", "&7Iron leggings and boots", "&7you will always spawn with.", "", "&cYou don't have enough Gold!" to run "sudo %player% bwmenu armor iron"
+				else:	
+					format slot 12 of player with iron boots named "&ePermanent Iron Armor" with lore "&7Cost: &612 Gold", "", "&7Iron leggings and boots", "&7you will always spawn with.", "", "&eClick to purchase!" to run "sudo %player% bwmenu armor iron"
+			
+				if {_emerald} < 6:
+					format slot 13 of player with diamond boots named "&cPermanent Diamond Armor" with lore "&7Cost: &26 Emerald", "", "&7Diamond leggings and boots", "&7you will always spawn with.", "", "&cYou don't have enough Emerald!" to run "sudo %player% bwmenu armor diamond"
+				else:	
+					format slot 13 of player with diamond boots named "&ePermanent Diamond Armor" with lore "&7Cost: &26 Emerald", "", "&7Diamond leggings and boots", "&7you will always spawn with.", "", "&eClick to purchase!" to run "sudo %player% bwmenu armor diamond"
+			
+				format slot 14 of player with air named "" to close
+				format slot 15 of player with air named "" to close
+				format slot 16 of player with air named "" to close
+				stop
+			
+			set {_protection} to {bw.upgrades.protection::%{_id}%::%{_color}%}
+			
+			if arg-2 is "chain":
+				if {_iron} < 40:
+					message "&cNot enough &fIron Ingots &cyou need %40 - {_iron}% more!"
+					execute player command "/bwmenu armor"
+					stop
+				remove 40 iron ingots from player
+				if {_protection} is not set:
+					set player's leggings to chain leggings
+					set {bw.players.items::%player%::leggings} to chain leggings
+					set player's boots to chain boots
+					set {bw.players.items::%player%::boots} to chain boots
+				else if {_protection} = 1:
+					set player's leggings to chain leggings of protection 1
+					set {bw.players.items::%player%::leggings} to chain leggings of protection 1
+					set player's boots to chain boots of protection 1
+					set {bw.players.items::%player%::boots} to chain boots of protection 1
+				else if {_protection} = 2:
+					set player's leggings to chain leggings of protection 2
+					set {bw.players.items::%player%::leggings} to chain leggings of protection 2
+					set player's boots to chain boots of protection 2
+					set {bw.players.items::%player%::boots} to chain boots of protection 2
+				else if {_protection} = 3:
+					set player's leggings to chain leggings of protection 3
+					set {bw.players.items::%player%::leggings} to chain leggings of protection 3
+					set player's boots to chain boots of protection 3
+					set {bw.players.items::%player%::boots} to chain boots of protection 3
+				else if {_protection} = 1:
+					set player's leggings to chain leggings of protection 4
+					set {bw.players.items::%player%::leggings} to chain leggings of protection 4
+					set player's boots to chain boots of protection 4
+					set {bw.players.items::%player%::boots} to chain boots of protection 4
+				execute player command "/bwmenu armor"
+				stop
+				
+		
+				
+			
+			else if arg-2 is "iron":
+				if {_gold} < 12:
+					message "&cNot enough &6Gold Ingots &cyou need %12 - {_gold}% more!"
+					execute player command "/bwmenu armor"
+					stop
+				remove 12 gold ingots from player
+				if {_protection} is not set:
+					set player's leggings to iron leggings
+					set {bw.players.items::%player%::leggings} to iron leggings
+					set player's boots to iron boots
+					set {bw.players.items::%player%::boots} to iron boots
+				else if {_protection} = 1:
+					set player's leggings to iron leggings of protection 1
+					set {bw.players.items::%player%::leggings} to iron leggings of protection 1
+					set player's boots to iron boots of protection 1
+					set {bw.players.items::%player%::boots} to iron boots of protection 1
+				else if {_protection} = 2:
+					set player's leggings to iron leggings of protection 2
+					set {bw.players.items::%player%::leggings} to iron leggings of protection 2
+					set player's boots to iron boots of protection 2
+					set {bw.players.items::%player%::boots} to iron boots of protection 2
+				else if {_protection} = 3:
+					set player's leggings to iron leggings of protection 3
+					set {bw.players.items::%player%::leggings} to iron leggings of protection 3
+					set player's boots to iron boots of protection 3
+					set {bw.players.items::%player%::boots} to iron boots of protection 3
+				else if {_protection} = 1:
+					set player's leggings to iron leggings of protection 4
+					set {bw.players.items::%player%::leggings} to iron leggings of protection 4
+					set player's boots to iron boots of protection 4
+					set {bw.players.items::%player%::boots} to iron boots of protection 4
+				execute player command "/bwmenu armor"
+				stop
+				
+			
+			else if arg-2 is "diamond":
+				if {_emerald} < 6:
+					message "&cNot enough &2Emeralds &cyou need %6 - {_emerald}% more!"
+					execute player command "/bwmenu armor"
+					stop
+				remove 6 emeralds from player
+				if {_protection} is not set:
+					set player's leggings to diamond leggings
+					set {bw.players.items::%player%::leggings} to diamond leggings
+					set player's boots to diamond boots
+					set {bw.players.items::%player%::boots} to diamond boots
+				else if {_protection} = 1:
+					set player's leggings to diamond leggings of protection 1
+					set {bw.players.items::%player%::leggings} to diamond leggings of protection 1
+					set player's boots to diamond boots of protection 1
+					set {bw.players.items::%player%::boots} to diamond boots of protection 1
+				else if {_protection} = 2:
+					set player's leggings to diamond leggings of protection 2
+					set {bw.players.items::%player%::leggings} to diamond leggings of protection 2
+					set player's boots to diamond boots of protection 2
+					set {bw.players.items::%player%::boots} to diamond boots of protection 2
+				else if {_protection} = 3:
+					set player's leggings to diamond leggings of protection 3
+					set {bw.players.items::%player%::leggings} to diamond leggings of protection 3
+					set player's boots to diamond boots of protection 3
+					set {bw.players.items::%player%::boots} to diamond boots of protection 3
+				else if {_protection} = 1:
+					set player's leggings to diamond leggings of protection 4
+					set {bw.players.items::%player%::leggings} to diamond leggings of protection 4
+					set player's boots to diamond boots of protection 4
+					set {bw.players.items::%player%::boots} to diamond boots of protection 4
+				execute player command "/bwmenu armor"
+				stop
+
+#Golden apples - 8 gold 
+#Iron golems - 120 iron 
+#Silver fish - 50 iron 
+#TNT - 12 gold 
+#Potions - 1 emerald 
+#Enderpearl - 2 emeralds 
+#Eggs - 16 gold for 16 eggs
+				
+				
+		else if arg-1 is "items":
+			if arg-2 is not set:
+			
+				if {_gold} < 4:
+					format slot 10 of player with tnt named "&cTNT" with lore "&7Costs: &64 Gold", "", "&7Instantly ignites, appropriate", "&7to explode things!", "", "&cYou don't have enough Gold!" to run "sudo %player% bwmenu items tnt"
+				else:	
+					format slot 10 of player with tnt named "&eTNT" with lore "&7Costs: &64 Gold", "", "&7Instantly ignites, appropriate", "&7to explode things!", "", "&eClick to purcahse!" to run "sudo %player% bwmenu items tnt"
+			
+				if {_emerald} < 2:
+					format slot 11 of player with ender pearl named "   &c&lEnderpearl" with lore "", "   &cCosts&7: &2&m2 Emeralds", "", "   &cNot enough Emeralds   ", " " to run "sudo %player% bwmenu items enderpearl"
+				else:	
+					format slot 11 of player with ender pearl named "   &f&lEnderpearl" with lore "", "   &aCosts&7: &22 Emeralds", "", "   &eClick to purchase  ", " " to run "sudo %player% bwmenu items enderpearl"
+			
+				if {_gold} < 8:
+					format slot 12 of player with golden apple named "   &c&lGolden Apple" with lore "", "   &cCosts&7: &68 &6&mGold", "", "   &cNot enough Gold   ", " " to run "sudo %player% bwmenu items goldenapple"
+				else:	
+					format slot 12 of player with golden apple named "   &e&lGolden Apple" with lore "", "   &aCosts&7: &68 Gold", "", "   &eClick to purchase  ", " " to run "sudo %player% bwmenu items goldenapple"
+				
+				if {_gold} < 16:
+					format slot 13 of player with 16 eggs named "   &c&l16 Eggs" with lore "", "   &cCosts&7: &6&m16 Gold", "", "   &cNot enough Gold   ", " " to run "sudo %player% bwmenu items eggs"
+				else:	
+					format slot 13 of player with 16 eggs named "   &b&l16 Eggs" with lore "", "   &aCosts&7: &616 Gold", "", "   &eClick to purchase  ", " " to run "sudo %player% bwmenu items eggs"
+			
+				if {_emerald} < 1:
+					format slot 14 of player with {item::bw_potions_swiftness} named "&c&lSwiftness Potion" with lore "", "   &cCosts&7: &2&m1 Emerald", "", "   &cNot enough Emeralds   ", " " to run "sudo %player% bwmenu items swiftness"
+				else:	
+					format slot 14 of player with {item::bw_potions_swiftness} named "&b&lSwiftness Potion" with lore "", "   &aCosts&7: &21 Emerald", "", "   &eClick to purchase  ", " " to run "sudo %player% bwmenu items swiftness"
+			
+				if {_emerald} < 5:
+					format slot 15 of player with {item::bw_potions_invisibilty} named "&c&lInvisibilty Potion" with lore "", "   &cCosts&7: &2&m5 Emerald", "", "   &cNot enough Emeralds   ", " " to run "sudo %player% bwmenu items invisibility"
+				else:	
+					format slot 15 of player with {item::bw_potions_invisibilty} named "&7&lInvisibilty Potion" with lore "", "   &aCosts&7: &25 Emerald", "", "   &eClick to purchase  ", " " to run "sudo %player% bwmenu items invisibility"
+			
+				if {_emerald} < 1:
+					format slot 16 of player with {item::bw_potions_healing} named "&c&lHealing Potion" with lore "", "   &cCosts&7: &2&m1 Emerald", "", "   &cNot enough Emeralds   ", " " to run "sudo %player% bwmenu items healing"
+				else:	
+					format slot 16 of player with {item::bw_potions_healing} named "&d&lHealing Potion" with lore "", "   &aCosts&7: &21 Emerald", "", "   &eClick to purchase  ", " " to run "sudo %player% bwmenu items healing"
+			
+				stop
+				
+			else if arg-2 is "tnt":
+				if {_gold} < 4:
+					message "&8[&bSnap&8] &cNot enough &6Gold"
+					send player title "&c&lNot enough          &6&lGold Ingots" for 1 second with 0 second fade in and 10 tick fade out
+					execute player command "/bwmenu items"
+					stop
+				remove 4 gold ingots from player
+				give player 1 tnt
+				execute player command "/bwmenu items"
+				stop
+				
+			else if arg-2 is "enderpearl":
+				if {_emerald} < 2:
+					message "&8[&bSnap&8] &cNot enough &2Emeralds"
+					send player title "&c&lNot enough          &2&lEmeralds" for 1 second with 0 second fade in and 10 tick fade out
+					execute player command "/bwmenu items"
+					stop
+				remove 2 emeralds from player
+				give player 1 ender pearl
+				execute player command "/bwmenu items"
+				stop
+				
+			else if arg-2 is "goldenapple":
+				if {_gold} < 8:
+					message "&8[&bSnap&8] &cNot enough &6Gold"
+					send player title "&c&lNot enough          &6&lGold Ingots" for 1 second with 0 second fade in and 10 tick fade out
+					execute player command "/bwmenu items"
+					stop
+				remove 8 gold ingots from player
+				give player 1 golden apple
+				execute player command "/bwmenu items"
+				stop
+				
+			else if arg-2 is "eggs":
+				if {_gold} < 16:
+					message "&8[&bSnap&8] &cNot enough &6Gold"
+					send player title "&c&lNot enough          &6&lGold Ingots" for 1 second with 0 second fade in and 10 tick fade out
+					execute player command "/bwmenu items"
+					stop
+				remove 16 gold ingots from player
+				give player 16 eggs
+				execute player command "/bwmenu items"
+				stop
+				
+			else if arg-2 is "swiftness":
+				if {_emerald} < 1:
+					message "&8[&bSnap&8] &cNot enough &2Emeralds"
+					send player title "&c&lNot enough          &2&lEmeralds" for 1 second with 0 second fade in and 10 tick fade out
+					execute player command "/bwmenu items"
+					stop
+				remove 1 emeralds from player
+				give player {item::bw_potions_swiftness}
+				execute player command "/bwmenu items"
+				stop
+				
+			else if arg-2 is "invisibility":
+				if {_emerald} < 5:
+					message "&8[&bSnap&8] &cNot enough &2Emeralds"
+					send player title "&c&lNot enough          &2&lEmeralds" for 1 second with 0 second fade in and 10 tick fade out
+					execute player command "/bwmenu items"
+					stop
+				remove 5 emeralds from player
+				give player {item::bw_potions_invisibilty}
+				execute player command "/bwmenu items"
+				stop
+				
+			else if arg-2 is "healing":
+				if {_emerald} < 1:
+					message "&8[&bSnap&8] &cNot enough &2Emeralds"
+					send player title "&c&lNot enough          &2&lEmeralds" for 1 second with 0 second fade in and 10 tick fade out
+					execute player command "/bwmenu items"
+					stop
+				remove 1 emeralds from player
+				give player {item::bw_potions_healing}
+				execute player command "/bwmenu items"
+				stop
+				
+						
+		else if arg-1 is "upgrades":
+			if arg-2 is not set:
+				format slot 12 of player with air named "" to close
+				format slot 13 of player with air named "" to close
+				format slot 14 of player with air named "" to close
+				format slot 15 of player with air named "" to close
+				format slot 16 of player with air named "" to close
+				set {_id} to {bw.players.id::%player%}
+				set {_color} to {bw.players.list::%{_id}%::%player%}
+				
+				# Sharpness Upgrade
+				
+				if {bw.upgrades.sharpness::%{_id}%::%{_color}%} is true:
+					format slot 10 of player with iron sword named "&aSharpened Swords" with lore "&7Your team permanently gains", "&7Sharpness I on all swords and", "&7axes!", "", "&7Cost: &b4 Diamonds", "", "&aUNLOCKED" to run "sudo %player% bwmenu upgrades"
+			
+				else if {_diamond} < 4:
+					format slot 10 of player with iron sword named "&cSharpened Swords" with lore "&7Your team permanently gains", "&7Sharpness I on all swords and", "&7axes!", "", "&7Cost: &b4 Diamonds", "", "&cYou don't have enough Diamonds!" to run "sudo %player% bwmenu upgrades sharpness"
+				else:	
+					format slot 10 of player with iron sword named "&eSharpened Swords" with lore "&7Your team permanently gains", "&7Sharpness I on all swords and", "&7axes!", "", "&7Cost: &b4 Diamonds", "", "&eClick to purchase!" to run "sudo %player% bwmenu upgrades sharpness"
+			
+					
+
+				
+				
+				# Protection Upgrade
+				
+				set {_protection} to {bw.upgrades.protection::%{_id}%::%{_color}%}
+				if {_protection} is not set:
+					set {_protection} to 1
+				else: 
+					set {_protection} to {_protection} + 1
+				set {_price} to {_protection} * 2
+			
+				if {_protection} = 1:
+					
+					if {_diamond} < {_price}:
+						format slot 11 of player with iron chestplate named "&cReinforced Armor I" with lore "&7Your team permanently gains", "&7Protection on all armor pieces.", "", "&7Tier 1: Protection I, &b2 diamonds", "&7Tier 2: Protection II, &b4 diamonds", "&7Tier 3: Protection III, &b6 diamonds", "&7Tier 4: Protection IV, &b8 diamonds", "", "&cYou don't have enough Diamonds!" to run "sudo %player% bwmenu upgrades protection %{_protection}%"
+					else:	
+						format slot 11 of player with iron chestplate named "&eReinforced Armor I" with lore "&7Your team permanently gains", "&7Protection on all armor pieces.", "", "&7Tier 1: Protection I, &b2 diamonds", "&7Tier 2: Protection II, &b4 diamonds", "&7Tier 3: Protection III, &b6 diamonds", "&7Tier 4: Protection IV, &b8 diamonds", "", "&eClick to Purchase!" to run "sudo %player% bwmenu upgrades protection %{_protection}%"
+				
+				
+				else if {_protection} = 2:
+					
+					if {_diamond} < {_price}:
+						format slot 11 of player with iron chestplate named "&cReinforced Armor II" with lore "&7Your team permanently gains", "&7Protection on all armor pieces.", "", "&aTier 1: Protection I, &b2 diamonds", "&7Tier 2: Protection II, &b4 diamonds", "&7Tier 3: Protection III, &b6 diamonds", "&7Tier 4: Protection IV, &b8 diamonds", "", "&cYou don't have enough Diamonds!" to run "sudo %player% bwmenu upgrades protection %{_protection}%"
+					else:	
+						format slot 11 of player with iron chestplate named "&eReinforced Armor II" with lore "&7Your team permanently gains", "&7Protection on all armor pieces.", "", "&aTier 1: Protection I, &b2 diamonds", "&7Tier 2: Protection II, &b4 diamonds", "&7Tier 3: Protection III, &b6 diamonds", "&7Tier 4: Protection IV, &b8 diamonds", "", "&eClick to Purchase!" to run "sudo %player% bwmenu upgrades protection %{_protection}%"
+				
+				
+				else if {_protection} = 3:
+					
+					if {_diamond} < {_price}:
+						format slot 11 of player with iron chestplate named "&cReinforced Armor III" with lore "&7Your team permanently gains", "&7Protection on all armor pieces.", "", "&aTier 1: Protection I, &b2 diamonds", "&aTier 2: Protection II, &b4 diamonds", "&7Tier 3: Protection III, &b6 diamonds", "&7Tier 4: Protection IV, &b8 diamonds", "", "&cYou don't have enough Diamonds!" to run "sudo %player% bwmenu upgrades protection %{_protection}%"
+					else:	
+						format slot 11 of player with iron chestplate named "&eReinforced Armor III" with lore "&7Your team permanently gains", "&7Protection on all armor pieces.", "", "&aTier 1: Protection I, &b2 diamonds", "&aTier 2: Protection II, &b4 diamonds", "&7Tier 3: Protection III, &b6 diamonds", "&7Tier 4: Protection IV, &b8 diamonds", "", "&eClick to Purchase!" to run "sudo %player% bwmenu upgrades protection %{_protection}%"
+				
+				else if {_protection} = 4:
+					
+					if {_diamond} < {_price}:
+						format slot 11 of player with iron chestplate named "&cReinforced Armor III" with lore "&7Your team permanently gains", "&7Protection on all armor pieces.", "", "&aTier 1: Protection I, &b2 diamonds", "&aTier 2: Protection II, &b4 diamonds", "&aTier 3: Protection III, &b6 diamonds", "&7Tier 4: Protection IV, &b8 diamonds", "", "&cYou don't have enough Diamonds!" to run "sudo %player% bwmenu upgrades protection %{_protection}%"
+					else:	
+						format slot 11 of player with iron chestplate named "&eReinforced Armor III" with lore "&7Your team permanently gains", "&7Protection on all armor pieces.", "", "&aTier 1: Protection I, &b2 diamonds", "&aTier 2: Protection II, &b4 diamonds", "&aTier 3: Protection III, &b6 diamonds", "&7Tier 4: Protection IV, &b8 diamonds", "", "&eClick to Purchase!" to run "sudo %player% bwmenu upgrades protection %{_protection}%"
+				
+				else if {_protection} = 5:
+					format slot 11 of player with iron chestplate named "&aReinforced Armor III" with lore "&7Your team permanently gains", "&7Protection on all armor pieces.", "", "&aTier 1: Protection I, &b2 diamonds", "&aTier 2: Protection II, &b4 diamonds", "&aTier 3: Protection III, &b6 diamonds", "&aTier 4: Protection IV, &b8 diamonds", "", "&aMax Tier!" to run "sudo %player% bwmenu upgrades protection %{_protection}%"
+				
+				
+			else if arg-2 is "sharpness":
+				if {_diamond} < 4:
+					message "&cNot enough &bDiamonds &cyou need %4 -{_diamond}% more!"
+					send player title "&c&lNot enough          &B&lDiamonds" for 1 second with 0 second fade in and 10 tick fade out
+					execute player command "/bwmenu upgrades"
+					stop
+				remove 4 diamonds from the player
+				
+				set {_id} to {bw.players.id::%player%}
+				set {_color} to {bw.players.list::%{_id}%::%player%}
+				set {bw.upgrades.sharpness::%{_id}%::%{_color}%} to true
+				loop {bw.players.list::%{_id}%::*}:
+					if {bw.players.id::%loop-index%} = {_id}:
+						set {_player} to loop-index parsed as player
+						send "&dSharpened swords has been upgraded" to {_player}
+						if {bw.players.list::%{_id}%::%{_player}%} = {_color}:
+							if "%{bw.players.items::%{_player}%::sword}%" contains "iron":
+								remove all swords from {_player}
+								give {_player} 1 iron sword of sharpness 1
+								set {bw.players.items::%{_player}%::sword} to 1 iron sword of sharpness 1
+							
+							else if "%{bw.players.items::%{_player}%::sword}%" contains "stone":
+								remove all swords from {_player}
+								give {_player} 1 stone sword of sharpness 1
+								set {bw.players.items::%{_player}%::sword} to 1 stone sword of sharpness 1
+		
+							else if "%{bw.players.items::%{_player}%::sword}%" contains "diamond":
+								remove all swords from {_player}
+								give {_player} 1 diamond sword of sharpness 1
+								set {bw.players.items::%{_player}%::sword} to 1 diamond sword of sharpness 1
+							else:
+								remove all swords from {_player}
+								give {_player} 1 wooden sword of sharpness 1
+								set {bw.players.items::%{_player}%::sword} to 1 wooden sword of sharpness 1
+
+						
+				format slot 10 of player with iron sword named "&aSharpened Swords" with lore "&7Your team permanently gains", "&7Sharpness I on all swords and", "&7axes!", "", "&7Cost: &b4 Diamonds", "", "&aUNLOCKED" to run "sudo %player% bwmenu upgrades"
+			
+				stop
+				
+			else if arg-2 is "protection":
+				set {_level} to arg-3
+				if {_level} is not set:
+					stop
+				if {_level} >= 5:
+					stop
+				if {_level} <= 0:
+					stop
+				set {_price} to 2 * {_level}
+				if {_diamond} < {_price}:
+					message "&cNot enough &bDiamonds &cyou need %{_price} - {_diamond}% more!"
+					send player title "&c&lNot enough          &B&lDiamonds" for 1 second with 0 second fade in and 10 tick fade out
+					execute player command "/bwmenu upgrades"
+					stop
+				set {_id} to {bw.players.id::%player%}
+				set {_color} to {bw.players.list::%{_id}%::%player%}
+				set {bw.upgrades.protection::%{_id}%::%{_color}%} to {_level}
+				
+				remove {_price} of diamonds from player
+				
+	
+				loop {bw.players.list::%{_id}%::*}:
+					
+					if {bw.players.id::%loop-index%} = {_id}:
+						set {_player} to loop-index parsed as player 
+						if {bw.players.list::%{_id}%::%{_player}%} = {_color}:
+							if "%{bw.players.items::%{_player}%::boots}%" contains "iron":
+								if {_level} = 1:
+									set {_player}'s boots to 1 iron boots of protection 1
+									set {bw.players.items::%{_player}%::boots} to 1 iron boots of protection 1
+									set {_player}'s leggings to 1 iron leggings of protection 1
+									set {bw.players.items::%{_player}%::leggings} to 1 iron leggings of protection 1
+								else if {_level} = 2:
+									set {_player}'s boots to 1 iron boots of protection 2
+									set {bw.players.items::%{_player}%::boots} to 1 iron boots of protection 2
+									set {_player}'s leggings to 1 iron leggings of protection 2
+									set {bw.players.items::%{_player}%::leggings} to 1 iron leggings of protection 2
+								else if {_level} = 3:
+									set {_player}'s boots to 1 iron boots of protection 3
+									set {bw.players.items::%{_player}%::boots} to 1 iron boots of protection 3
+									set {_player}'s leggings to 1 iron leggings of protection 3
+									set {bw.players.items::%{_player}%::leggings} to 1 iron leggings of protection 3
+								else if {_level} = 4:
+									set {_player}'s boots to 1 iron boots of protection 4
+									set {bw.players.items::%{_player}%::boots} to 1 iron boots of protection 4
+									set {_player}'s leggings to 1 iron leggings of protection 4
+									set {bw.players.items::%{_player}%::leggings} to 1 iron leggings of protection 4
+							
+							else if "%{bw.players.items::%{_player}%::boots}%" contains "diamond":
+								if {_level} = 1:
+									set {_player}'s boots to 1 diamond boots of protection 1
+									set {bw.players.items::%{_player}%::boots} to 1 diamond boots of protection 1
+									set {_player}'s leggings to 1 diamond leggings of protection 1
+									set {bw.players.items::%{_player}%::leggings} to 1 diamond leggings of protection 1
+								else if {_level} = 2:
+									set {_player}'s boots to 1 diamond boots of protection 2
+									set {bw.players.items::%{_player}%::boots} to 1 diamond boots of protection 2
+									set {_player}'s leggings to 1 diamond leggings of protection 2
+									set {bw.players.items::%{_player}%::leggings} to 1 diamond leggings of protection 2
+								else if {_level} = 3:
+									set {_player}'s boots to 1 diamond boots of protection 3
+									set {bw.players.items::%{_player}%::boots} to 1 diamond boots of protection 3
+									set {_player}'s leggings to 1 diamond leggings of protection 3
+									set {bw.players.items::%{_player}%::leggings} to 1 diamond leggings of protection 3
+								else if {_level} = 4:
+									set {_player}'s boots to 1 diamond boots of protection 4
+									set {bw.players.items::%{_player}%::boots} to 1 diamond boots of protection 4
+									set {_player}'s leggings to 1 diamond leggings of protection 4
+									set {bw.players.items::%{_player}%::leggings} to 1 diamond leggings of protection 4
+						
+							else if "%{bw.players.items::%{_player}%::boots}%" contains "chain":
+								if {_level} = 1:
+									set {_player}'s boots to 1 chain boots of protection 1
+									set {bw.players.items::%{_player}%::boots} to 1 chain boots of protection 1
+									set {_player}'s leggings to 1 chain leggings of protection 1
+									set {bw.players.items::%{_player}%::leggings} to 1 chain leggings of protection 1
+								else if {_level} = 2:
+									set {_player}'s boots to 1 chain boots of protection 2
+									set {bw.players.items::%{_player}%::boots} to 1 chain boots of protection 2
+									set {_player}'s leggings to 1 chain leggings of protection 2
+									set {bw.players.items::%{_player}%::leggings} to 1 chain leggings of protection 2
+								else if {_level} = 3:
+									set {_player}'s boots to 1 chain boots of protection 3
+									set {bw.players.items::%{_player}%::boots} to 1 chain boots of protection 3
+									set {_player}'s leggings to 1 chain leggings of protection 3
+									set {bw.players.items::%{_player}%::leggings} to 1 chain leggings of protection 3
+								else if {_level} = 4:
+									set {_player}'s boots to 1 chain boots of protection 4
+									set {bw.players.items::%{_player}%::boots} to 1 chain boots of protection 4
+									set {_player}'s leggings to 1 chain leggings of protection 4
+									set {bw.players.items::%{_player}%::leggings} to 1 chain leggings of protection 4
+									
+							else:
+								if {_level} = 1:
+									set {_player}'s boots to air
+									wait 1 tick
+									set {_player}'s boots to 1 leather boots of protection 1
+									set {bw.players.items::%{_player}%::boots} to 1 leather boots of protection 1
+									set {_player}'s leggings to 1 leather leggings of protection 1
+									set {bw.players.items::%{_player}%::leggings} to 1 leather leggings of protection 1
+								else if {_level} = 2:
+									set {_player}'s boots to air
+									wait 1 tick
+									set {_player}'s boots to 1 leather boots of protection 2
+									set {bw.players.items::%{_player}%::boots} to 1 leather boots of protection 2
+									set {_player}'s leggings to 1 leather leggings of protection 2
+									set {bw.players.items::%{_player}%::leggings} to 1 leather leggings of protection 2
+								else if {_level} = 3:
+									set {_player}'s boots to air
+									wait 1 tick
+									set {_player}'s boots to 1 leather boots of protection 3
+									set {bw.players.items::%{_player}%::boots} to 1 leather boots of protection 3
+									set {_player}'s leggings to 1 leather leggings of protection 3
+									set {bw.players.items::%{_player}%::leggings} to 1 leather leggings of protection 3
+								else if {_level} = 4:
+									set {_player}'s boots to 1 leather boots of protection 4
+									set {bw.players.items::%{_player}%::boots} to 1 leather boots of protection 4
+									set {_player}'s leggings to 1 leather leggings of protection 4
+									set {bw.players.items::%{_player}%::leggings} to 1 leather leggings of protection 4
+								
+				set {_protection} to {_level}
+				add 1 to {_protection}
+				set {_diamond} to number of diamonds in player's inventory
+				set {_price} to {_protection} * 2
+				if {_protection} = 1:
+					
+					if {_diamond} < {_price}:
+						format slot 11 of player with iron chestplate named "&cReinforced Armor I" with lore "&7Your team permanently gains", "&7Protection on all armor pieces.", "", "&7Tier 1: Protection I, &b2 diamonds", "&7Tier 2: Protection II, &b4 diamonds", "&7Tier 3: Protection III, &b6 diamonds", "&7Tier 4: Protection IV, &b8 diamonds", "", "&cYou don't have enough Diamonds!" to run "sudo %player% bwmenu upgrades protection %{_protection}%"
+					else:	
+						format slot 11 of player with iron chestplate named "&eReinforced Armor I" with lore "&7Your team permanently gains", "&7Protection on all armor pieces.", "", "&7Tier 1: Protection I, &b2 diamonds", "&7Tier 2: Protection II, &b4 diamonds", "&7Tier 3: Protection III, &b6 diamonds", "&7Tier 4: Protection IV, &b8 diamonds", "", "&eClick to Purchase!" to run "sudo %player% bwmenu upgrades protection %{_protection}%"
+				
+				
+				else if {_protection} = 2:
+					
+					if {_diamond} < {_price}:
+						format slot 11 of player with iron chestplate named "&cReinforced Armor II" with lore "&7Your team permanently gains", "&7Protection on all armor pieces.", "", "&aTier 1: Protection I, &b2 diamonds", "&7Tier 2: Protection II, &b4 diamonds", "&7Tier 3: Protection III, &b6 diamonds", "&7Tier 4: Protection IV, &b8 diamonds", "", "&cYou don't have enough Diamonds!" to run "sudo %player% bwmenu upgrades protection %{_protection}%"
+					else:	
+						format slot 11 of player with iron chestplate named "&eReinforced Armor II" with lore "&7Your team permanently gains", "&7Protection on all armor pieces.", "", "&aTier 1: Protection I, &b2 diamonds", "&7Tier 2: Protection II, &b4 diamonds", "&7Tier 3: Protection III, &b6 diamonds", "&7Tier 4: Protection IV, &b8 diamonds", "", "&eClick to Purchase!" to run "sudo %player% bwmenu upgrades protection %{_protection}%"
+				
+				
+				else if {_protection} = 3:
+					
+					if {_diamond} < {_price}:
+						format slot 11 of player with iron chestplate named "&cReinforced Armor III" with lore "&7Your team permanently gains", "&7Protection on all armor pieces.", "", "&aTier 1: Protection I, &b2 diamonds", "&aTier 2: Protection II, &b4 diamonds", "&7Tier 3: Protection III, &b6 diamonds", "&7Tier 4: Protection IV, &b8 diamonds", "", "&cYou don't have enough Diamonds!" to run "sudo %player% bwmenu upgrades protection %{_protection}%"
+					else:	
+						format slot 11 of player with iron chestplate named "&eReinforced Armor III" with lore "&7Your team permanently gains", "&7Protection on all armor pieces.", "", "&aTier 1: Protection I, &b2 diamonds", "&aTier 2: Protection II, &b4 diamonds", "&7Tier 3: Protection III, &b6 diamonds", "&7Tier 4: Protection IV, &b8 diamonds", "", "&eClick to Purchase!" to run "sudo %player% bwmenu upgrades protection %{_protection}%"
+				
+				else if {_protection} = 4:
+					
+					if {_diamond} < {_price}:
+						format slot 11 of player with iron chestplate named "&cReinforced Armor III" with lore "&7Your team permanently gains", "&7Protection on all armor pieces.", "", "&aTier 1: Protection I, &b2 diamonds", "&aTier 2: Protection II, &b4 diamonds", "&aTier 3: Protection III, &b6 diamonds", "&7Tier 4: Protection IV, &b8 diamonds", "", "&cYou don't have enough Diamonds!" to run "sudo %player% bwmenu upgrades protection %{_protection}%"
+					else:	
+						format slot 11 of player with iron chestplate named "&eReinforced Armor III" with lore "&7Your team permanently gains", "&7Protection on all armor pieces.", "", "&aTier 1: Protection I, &b2 diamonds", "&aTier 2: Protection II, &b4 diamonds", "&aTier 3: Protection III, &b6 diamonds", "&7Tier 4: Protection IV, &b8 diamonds", "", "&eClick to Purchase!" to run "sudo %player% bwmenu upgrades protection %{_protection}%"
+				
+				else if {_protection} = 5:
+					format slot 11 of player with iron chestplate named "&aReinforced Armor III" with lore "&7Your team permanently gains", "&7Protection on all armor pieces.", "", "&aTier 1: Protection I, &b2 diamonds", "&aTier 2: Protection II, &b4 diamonds", "&aTier 3: Protection III, &b6 diamonds", "&aTier 4: Protection IV, &b8 diamonds", "", "&aMax Tier!" to run "sudo %player% bwmenu upgrades"
+				
+				execute player command "/bwmenu upgrades"
+				stop
+
+command /spam <player> <int> <text>:
+	permission: is.op
+	trigger:
+		if arg-2 > 100:
+			stop
+		loop arg-2 times:
+			send arg-3 to arg-1
+on craft:
+	if player is in world "BedWars":
+		cancel event
+		
+on right click on furnace:
+	if player is in world "BedWars":
+		if player is not sneaking:
+			cancel event
+		
+on right click on dispenser:
+	if player is in world "BedWars":
+		if player is not sneaking:
+			cancel event
+on break:
+	if player is in world "BedWars":
+		set {_id} to {bw.players.id::%player%}
+		if {_id} is set:
+			if event-block is not sponge or light green wool block or blue wool block or yellow wool block or red wool block or obsidian or quartz block or red glass block or blue glass block or yellow glass block or light green glass block or bed block or red stained clay or yellow stained clay or light green stained clay or blue stained clay or green stained clay or end stone or 252 or oak wood planks or red glass pane or yellow glass pane or green glass pane or any bed:
+				cancel event
+				message "You can't break %event-block%"
+command /checksword:
+	trigger:
+		message "%{bw.players.items::%player%::sword}%"			
+		
+on right click on bed block:
+	if player is in world "BedWars":
+		if player is not sneaking:
+			cancel event
+
+
+	
+on command:
+	if player is in world "BedWars":
+		set {_id} to {bw.players.id::%player%}
+		if {_id} is set:
+			if command != "v" or "nearents" or "lagg" or "tps" or "bwmenu" or "quit" or "butcher" or "glow" or "st" or "fc" or "msg" or "r" or "t" or "tell" or "message" or "reply" or "m" or "skript" or "rg" or "setitem" or "near" or "co" or "checksword" or "ban" or "mute" or "cc" or "setpos":
+				message "&8[&bSnap&8] &cThat command is not allowed here!"
+				cancel event
+		else if "%regions at player%" contains "bw_pickteam":
+			if command != "st" or "fc" or "msg" or "r" or "t" or "tell" or "message" or "reply" or "m" or "skript" or "setpos" or "rg" or "quit":
+				message "&8[&bSnap&8] &cThat command is not allowed here!"
+				cancel event
+				
+command /nearents <int>:
+	permission: is.Pluto
+	trigger:
+		loop entities in radius arg-1 of player:
+			message "%loop-entity%"
+on command:
+	if command = "marry" or "tp" or "tpo" or "teleport" or "tpother":
+	
+		set {_loc} to location of player
+		wait 1 tick
+		if player is in world "BedWars" or "Christmas":
+			if player does not have permission "is.staff":
+				teleport player to {_loc}
+				message "&8[&bSnap&8] &cThey are in bedwars you can't teleport now."
+				stop
+			else:
+				if player is in world "BedWars":
+					set gamemode of player to spectator
+					message "&8[&bSnap&8] &7Entered vanish mode"
+		
+	
+	
+	
+	
+	
+	

@@ -1,0 +1,14 @@
+
+		
+function claimAt(location: location) :: object:
+  set {_args::*} to {_location}, true, null
+  return {apis::gp::dataStore}.getClaimAt({_args::*})
+  
+command /checkclaim:
+	trigger:
+		set {_claim} to claimAt(location of player)
+		set {_claimOwner} to {_claim}.getOwnerName()
+		if {_claimOwner} is not set:
+			message "&eCurrent Claim&7: &dunclaimed"
+			stop
+		message "&eCurrent Claim&7: &d%{_claimOwner}%"

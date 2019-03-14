@@ -1,0 +1,67 @@
+
+
+
+
+
+
+on command "action":
+	cancel event
+	execute player command "me %arguments%"
+
+	
+	
+on command "describe":
+	cancel event
+	execute player command "me %arguments%"
+
+		
+	
+command /meignore [<text>]:
+	trigger:
+		if arg-1 is not set:
+			message "&8[&bSnap&8] &7Usage &a/meignore <player>"
+		if {uuid::%arg-1%} is not set:
+			message "&8[&bSnap&8] &7That player has never joined the server"
+			stop
+		if "%{me.ignore::%uuid of player%}%" contains "%{uuid::%arg-1%}%":
+			replace all " %{uuid::%arg-1%}%" with "" in {me.ignore::%uuid of player%}
+			message "&8[&bSnap&8] &7No longer ignoring %arg-1%"
+			stop
+		else:
+			set {me.ignore::%uuid of player%} to "%{me.ignore::%uuid of player%}% %{uuid::%arg-1%}%"
+			message "&8[&bSnap&8] &aNow ignoring %arg-1%"
+	
+command /me [<text>]:
+	trigger:
+		if arg-1 is not set:
+			message "&8[&bSnap&8] &7Try /me (text) to say something"
+			stop
+		set {_msg} to "%arg-1%"
+		if length of {_msg} > 30:
+			message "&8[&bSnap&8] &cSorry that action is too long"
+			stop
+		if {punish.mute::%uuid of player%} is set:
+			if {punish.mute.duration::%uuid of player%} is set:
+				set {_time} to {punish.mute.duration::%uuid of player%} parsed as timespan
+				if {punish.mute::%uuid of player%} was less than {_time} ago:
+					loop all players:
+						if loop-player has permission "is.staff":
+							send "&8(&dMe&7Muted&8) &7%player%&f: &7%arg-1%" to loop-player
+					message "&7* &a%display name of player% &e%arg-1%"
+					stop
+		else:
+			set {_soft} to false
+			loop {softmute::*}:
+				if {_msg} contains "%loop-index%":
+					set {_soft} to true
+					replace all "%loop-index%" with "&c%loop-index%&7" in {_msg}
+			if {_soft} is true:
+				message "&7* &a%player% &e%arg-1%"
+				loop all players:
+					if loop-player has permission "is.staff":
+						send "&8(&cMe&7Muted&8) &7%player's name%&f: &7%{_msg}%" to loop-player
+				stop
+			loop all players:
+				if "%{me.ignore::%uuid of loop-player%}%" does not contain "%uuid of player%":
+					send "&7* &a%display name of player% &e%arg-1%" to loop-player
+			

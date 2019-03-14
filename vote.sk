@@ -1,0 +1,290 @@
+function earnXp(player: player, skill: text):
+	if {mcmmo.doublexp.minutes} is not set:
+		add 10 to {mcmmo.%{_skill}%.xp::%{uuid::%{_player}%}%}
+	else if {mcmmo.doublexp.minutes} > 0:
+		add 20 to {mcmmo.%{_skill}%.xp::%{uuid::%{_player}%}%}
+	else:
+		add 10 to {mcmmo.%{_skill}%.xp::%{uuid::%{_player}%}%}
+	set {_xp} to {mcmmo.%{_skill}%.xp::%{uuid::%{_player}%}%}
+	
+	if {mcmmo.%{_skill}%.level::%{uuid::%{_player}%}%} is not set:
+		set {_level} to 0
+	else:
+		set {_level} to {mcmmo.%{_skill}%.level::%{uuid::%{_player}%}%}
+	if {mcmmo.neededxp::%{_level}%} is not set:
+		stop
+	if {_xp} >= {mcmmo.neededxp::%{_level}%}:
+		levelUp({_player}, {_skill})
+		
+function levelUp(player: player, skill: text):
+	add 1 to {mcmmo.%{_skill}%.level::%{uuid::%{_player}%}%}
+	set {_level} to {mcmmo.%{_skill}%.level::%{uuid::%{_player}%}%}
+	send "&8[&6RPG&8] &aYou just leveled up your &f%{_skill}% &askill." to {_player}
+	send "&8[&6RPG&8] &aNew Level&7: &f%{_level}%" to {_player}
+	send "&8[&6RPG&8] &aType &b/%{_skill}% &ato learn more about this skill." to {_player}
+	firework(location of {_player})
+
+
+
+command /vote [<text>]:
+	trigger:
+		if arg-1 is not set:
+			message "&6&m-----------------------------------------"
+			message "            &c&l❤   &d&lSnapMC   &c&l❤"
+			message ""
+			message "      &bVoting Link 1&7: &c tinyurl.com/y84k3z84"
+			message "      &bVoting Link 2&7: &6 goo.gl/cEKGzr"
+			message "      &bVoting Link 3&7: &e goo.gl/CyJN3w"	
+			message "      &bVoting Link 4&7: &a goo.gl/u4qSDU"
+#			message "      &bVoting Link &7: &a goo.gl/rMKr4m"
+			message "      &bVoting Link 5&7: &b goo.gl/YFTRa1"
+			message "      &bVoting Link 6&7: &d goo.gl/XqCCCw"
+			message "      &bVoting Link 7&7: &9 goo.gl/9jMuVd"
+	#		message "      &e/vote top &7Display top voters"
+			# message "      &bVoting Link 7&7: &9 goo.gl/uWzSi8"
+			
+			message ""
+			message "&6&m-----------------------------------------"
+		else if arg-1 is "top":
+			loop {votecount.player::*}:
+				add 1 to {_size}
+				if {_low.to.high.list::%loop-value%} is not set:
+					set {_low.to.high.list::%loop-value%} to loop-index
+				else:
+					set {_n} to 0
+					loop {_size} times:
+						set {_n} to {_n}+1
+						{_low.to.high.list::%loop-value-1%.%{_n}%} is not set
+						set {_low.to.high.list::%loop-value-1%.%{_n}%} to loop-index
+						
+						stop loop
+			wait 1 tick
+			set {_n} to size of {_low.to.high.list::*}
+			loop {_low.to.high.list::*}:
+				set {_high.to.low.list::%{_n}%} to loop-value
+				set {_n} to {_n}-1
+			
+			open chest with 6 row named "          -=[ &1Top Voters &8]=-" to player
+			wait 1 tick
+			if name of current inventory of player != "          -=[ &1Top Voters &8]=-":
+				close inventory of player
+				stop
+				
+			set {_i} to 0
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/vote top"]
+				add 1 to {_i}				
+			format slot 17 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/vote top"]
+			format slot 36 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/vote top"]
+			set {_i} to 44
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/vote top"]
+				add 1 to {_i}
+		
+			set {_slot} to 19
+			set {_i} to 0
+			loop {_high.to.low.list::*}:
+				
+				add 1 to {_slot}
+				add 1 to {_i}
+				format slot {_slot} of player with {item::head_number%{_i}%} named "&6&n%{uuidName::%loop-value%}%&r &7(##%{_i}%)" with lore "", " &6* &e&lVote Count &7%{votecount.player::%loop-value%}% ", "", " &6* &e&lPlace &7##%{_i}%", "&e" to close
+		
+				
+				if {_slot} is 24:
+					set {_slot} to 28 
+				if {_slot} is 33:
+					stop
+every 34 minutes:
+	loop {VoteTimeout::*}:
+		set {VoteTimeout::%loop-index%} to loop-value - 1
+		if {VoteTimeout::%loop-index%} < 0:
+			delete {VoteTimeout::%loop-index%} 
+	loop all players:
+		if {VoteTimeout::%loop-player%} is not set:
+			execute loop-player command "vote"
+			send "&cYou have not voted in over 24 hours." to loop-player
+
+		
+command /voters:
+	permission: is.op
+	trigger:
+		set {_i} to 0
+		
+		loop {VoteTimeout::*}:
+			add 1 to {_i}
+		message "%{_i}%"
+command /party:
+	trigger:
+		message "&8[&bVote&8] &bParty Crate &7at &c%{timesVoteaddCommandRan}%&8/&a%{VoteaddFinish}% &7votes"
+		send player title "&a&lParty Crate" with subtitle "&7Progress &c%{timesVoteaddCommandRan}%&8/&a%{VoteaddFinish}%"
+command /resetvotes:
+	permission: is.Pluto
+	trigger:
+		delete {votecount.player::*}
+		message "done"
+command /nextvote:
+	trigger:
+		message "&8[&bVote&8] &7You can vote again in &e%{VoteTimeout::%player%}% hours"
+				
+command /totalvotes [<text>]:
+	trigger:
+		if arg-1 is set:
+			message "&8[&bSnap&8] &7Total votes of &e%arg-1%&7: &a%{votecount.player::%arg-1%}%"
+			stop
+		message "&8[&bSnap&8] &7Total votes: &a%{votecount.total}%"
+command /votebroadcast <player>:
+	executable by: console	
+	trigger:
+		earnXp(arg-1, "voting")
+		if {votecount.player::%uuid of arg-1%} is not set:
+			set {votecount.player::%uuid of arg-1%} to 1
+		else:
+			add 1 to {votecount.player::%uuid of arg-1%}
+		if {votecount.total} is not set:
+			set {votecount.total} to 1700
+		else:
+			add 1 to {votecount.total}
+		
+		wait 1 tick
+		add 750 to {bw.balance::%uuid of arg-1%}
+		broadcast "&8[&bVote&8] &a&l%arg-1% &7voted and got a &bVoting Key &7(&e/vote&7)"
+		broadcast "&8[&bVote&8] &bParty Crate &7at &c%{timesVoteaddCommandRan}%&8/&a%{VoteaddFinish}% &7votes"
+		send arg-1 title "&a&lYou Voted" with subtitle "&7Redeem Your Key at &6/warp crates" for 1 second with 1 second fade in and 1 second fade out
+		set {VoteTimeout::%arg-1%} to 24
+		execute console command "eco give %arg-1% 100000"
+		if arg-1 is in world "resource" or "world" or "world_nether" or "world_the_end" or "spawn" or "Avalon" or "resource":
+			execute console command "kp key voting Regular %arg-1% 1"
+		else if arg-1 is in world "Wilderness":
+			send "&8[&bSnap&8] &eThanks for voting you got &a200$" to arg-1
+			add 200 to {wilderness.balance::%uuid of arg-1%}
+		else if arg-1 is in world "Prison":
+			execute console command "kp key voter Regular %arg-1% 1"
+		else:	
+			send arg-1 title "&aOops you just got 1 Voting key" with subtitle "Use /rc to get it later in survival" for 5 second with 1 second fade in and 2 second fade out
+		
+			if {redeem.crate::%arg-1%::voting} is not set:
+				set {redeem.crate::%arg-1%::voting} to 1
+			else:
+				set {redeem.crate::%arg-1%::voting} to {redeem.crate::%arg-1%::voting} + 1
+		send "&8[&bVote&8] &eYou got 750 SkyBlock points" to arg-1 
+
+	
+command /voteadd:
+	permission: is.op
+	trigger:
+		if {timesVoteaddCommandRan} is not set:
+			set {timesVoteaddCommandRan} to 0
+		if {VoteaddFinish} is not set:
+			set {VoteaddFinish} to random integer from 48 to 65
+		set {timesVoteaddCommandRan} to {timesVoteaddCommandRan} + 1
+		
+		if {timesVoteaddCommandRan} >= {VoteaddFinish}:
+			set {_total} to {VoteaddFinish}
+			set {timesVoteaddCommandRan} to 0
+			set {VoteaddFinish} to random integer from 45 to 59
+			
+			execute console command "/keyall party 1"
+			wait 10 ticks
+			loop all players:
+				execute console command "/partytitle %loop-player% %{_total}%"
+			
+	
+command /partytitle <player> <int>:
+	permission: is.op
+	trigger:
+		
+		if {tutorial.start.location::%arg-1%} is set:
+			stop
+		send arg-1 title "&a&lParty Time" with subtitle "&7Server reached &a%arg-2% &7votes" for 1 second with 1 second fade in and 0 second fade out
+		wait 17 ticks
+		send arg-1 title "&c&lParty Time" with subtitle "&7Server reached &a%arg-2% &7votes" for 1 second with 0 second fade in and 0 second fade out
+		wait 7 ticks
+		send arg-1 title "&6&lParty Time" with subtitle "&7Server reached &a%arg-2% &7votes" for 1 second with 0 second fade in and 0 second fade out
+		wait 6 ticks
+		send arg-1 title "&e&lParty Time" with subtitle "&7Server reached &a%arg-2% &7votes" for 1 second with 0 second fade in and 0 second fade out
+		wait 5 tick
+		send arg-1 title "&a&lParty Time" with subtitle "&7Server reached &a%arg-2% &7votes" for 1 second with 0 second fade in and 0 second fade out
+		wait 4 ticks
+		send arg-1 title "&b&lParty Time" with subtitle "&7Server reached &a%arg-2% &7votes" for 1 second with 0 second fade in and 0 second fade out
+		wait 3 ticks
+		send arg-1 title "&d&lParty Time" with subtitle "&7V" for 1 second with 1 second fade in and 0 second fade out
+		wait 2 ticks
+		send arg-1 title "" with subtitle "&7Vi" for 1 second with 0 tick fade in and 0 second fade out
+		wait 1 ticks
+		send arg-1 title "" with subtitle "&7Vis" for 1 second with 0 tick fade in and 0 second fade out
+		wait 1 ticks
+		send arg-1 title "" with subtitle "&7Visi" for 1 second with 0 tick fade in and 0 second fade out
+		wait 1 ticks
+		send arg-1 title "" with subtitle "&7Visit" for 1 second with 0 tick fade in and 0 second fade out
+		wait 1 ticks
+		send arg-1 title "" with subtitle "&7Visit &6/" for 1 second with 0 tick fade in and 0 second fade out
+		wait 1 ticks
+		send arg-1 title "" with subtitle "&7Visit &6/w" for 1 second with 0 tick fade in and 0 second fade out
+		wait 1 ticks
+		send arg-1 title "" with subtitle "&7Visit &6/wa" for 1 second with 0 tick fade in and 0 second fade out
+		wait 1 ticks
+		send arg-1 title "" with subtitle "&7Visit &6/war" for 1 second with 0 tick fade in and 0 second fade out
+		wait 1 ticks
+		send arg-1 title "" with subtitle "&7Visit &6/warp" for 1 second with 0 tick fade in and 0 second fade out
+		wait 1 ticks
+		send arg-1 title "" with subtitle "&7Visit &6/warp c" for 1 second with 0 tick fade in and 0 second fade out
+		wait 1 ticks
+		send arg-1 title "" with subtitle "&7Visit &6/warp cr" for 1 second with 0 tick fade in and 0 second fade out
+		wait 1 ticks
+		send arg-1 title "" with subtitle "&7Visit &6/warp cra" for 1 second with 0 tick fade in and 0 second fade out
+		wait 1 ticks
+		send arg-1 title "" with subtitle "&7Visit &6/warp crat" for 1 second with 0 tick fade in and 0 second fade out
+		wait 1 ticks
+		send arg-1 title "" with subtitle "&7Visit &6/warp crate" for 1 second with 0 tick fade in and 0 second fade out
+		wait 1 ticks
+		send arg-1 title "" with subtitle "&7Visit &6/warp crates" for 2 second with 0 tick fade in and 2 second fade out
+	
+	
+	#&e&l&nuwu&r &f&lor &d&l&nowo&r        &c❤ "                             
+	
+command /owo:
+	trigger:
+		if {owo::%uuid of player%} is set:
+			message "&8[&bSnap&8] &3You have already voted for &dowo&3!"
+			message " &euwu votes: %{uwu.count}%"
+			message " &dowo votes: %{owo.count}%"
+			stop
+		else if {uwu::%uuid of player%} is set:
+			message "&8[&bSnap&8] &3You just switched your vote to &dowo&3!"
+			subtract 1 from {uwu.count}
+			set {owo::%uuid of player%} to true
+			delete {uwu::%uuid of player%}
+			add 1 to {owo.count}
+			message " &euwu votes: %{uwu.count}%"
+			message " &dowo votes: %{owo.count}%"
+		else:
+			message "&8[&bSnap&8] &3You just voted for &dowo&3!"
+			set {owo::%uuid of player%} to true
+			add 1 to {owo.count}
+			message " &euwu votes: %{uwu.count}%"
+			message " &dowo votes: %{owo.count}%"
+			
+			
+command /uwu:
+	trigger:
+		if {uwu::%uuid of player%} is set:
+			message "&8[&bSnap&8] &3You have already voted for &euwu&3!"
+			message " &euwu votes: %{uwu.count}%"
+			message " &dowo votes: %{owo.count}%"
+			stop
+		else if {owo::%uuid of player%} is set:
+			message "&8[&bSnap&8] &3You just switched your vote to &euwu&3!"
+			subtract 1 from {owo.count}
+			set {uwu::%uuid of player%} to true
+			delete {owo::%uuid of player%}
+			add 1 to {uwu.count}
+			message " &euwu votes: %{uwu.count}%"
+			message " &dowo votes: %{owo.count}%"
+		else:
+			add 1 to {uwu.count}
+			message "&8[&bSnap&8] &3You just voted for &euwu&3!"
+			message " &euwu votes: %{uwu.count}%"
+			message " &dowo votes: %{owo.count}%"
+			set {uwu::%uuid of player%} to true
+			
+

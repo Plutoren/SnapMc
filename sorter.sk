@@ -1,0 +1,7 @@
+command /sorter:
+	trigger:
+		if player does not have permission "is.cosmic":
+			message "&8[&bSnap&8] &7You need &9Cosmic &7Rank to use that! &e/buy"
+			stop
+		give player 1 of {item::sorter}
+		message "&8[&bSnap&8] &7Use this tool to magically sort your Chests!"

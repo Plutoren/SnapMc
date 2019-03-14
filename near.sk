@@ -1,0 +1,25 @@
+command /near:
+	trigger:
+		set {_playerCount} to 0
+		loop players in radius 150 of player:
+			if loop-player's gamemode is not spectator:
+				if loop-player is not player:
+					add 1 to {_playerCount}
+					add loop-player to {_players::*}
+					set {_distance} to distance between loop-player and player 
+					set {_distance} to rounded up {_distance} 
+					add {_distance} to {_distances::*} 
+		if {_players::1} is not set:
+			message "&8[&bSnap&8] &6Players nearby: &fnone"
+			stop
+		set {_message} to "&8[&bSnap&8] &6Players nearby:"
+
+		loop {_players::*}:
+		
+			set {_name} to loop-value's display name
+			if "%loop-index%" != "%{_playerCount}%":
+				set {_message} to "%{_message}% %{_name}%&f(&4%{_distances::%loop-index%}%&f),"
+			else:
+				set {_message} to "%{_message}% %{_name}%&f(&4%{_distances::%loop-index%}%&f)"
+
+		message "%{_message}%"

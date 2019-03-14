@@ -1,0 +1,5 @@
+command /giveitem <player> <int> <text>:
+	permission: is.op
+	trigger:
+		if arg-1 is in world "spawn" or "world" or "world_nether" or "world_the_end" or "Avalon" or "resource":
+			give arg-1 arg-2 of {item::%arg-3%}

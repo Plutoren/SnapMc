@@ -1,0 +1,368 @@
+on first join:
+	wait 1 tick
+	teleport player to {pos::hub}
+	set {firstjoin::%player%} to now
+
+on load:
+	delete {tutorial.cooldown::*}
+command /tutorial [<text>] [<text>]:
+	trigger:
+		if arg-1 is set:
+			if arg-1 is "setholo":
+				set {tutorial.holo::%arg-2%} to location of target block of player
+			else:
+				if {tutorial.cooldown::%arg-1%::%player%} is set:
+					message "&8[&eTutorial&8] &fPlease wait until this ends before trying again"
+					teleport player to {pos::tutorial.%arg-1%}
+					stop
+				set {tutorial.cooldown::%arg-1%::%player%} to true
+			if "%regions at player%" does not contain "tutorial":
+				teleport player to {pos::tutorial.%arg-1%}
+				set {_loc} to {tutorial.holo::%arg-1%}
+				wait 3 seconds
+			else:
+				teleport player to {pos::tutorial.%arg-1%}
+				set {_loc} to {tutorial.holo::%arg-1%}
+				
+			if arg-1 is "claimblocks":
+				set {_line1} to "&aClaim blocks represent the number of"
+				set {_line2} to "&eblocks you can claim."
+				set {_line3} to "&aA claim block extends from"
+				set {_line4} to "&abedrock to the sky."
+				set {_line5} to "&eIf you want to claim a large area,"
+				set {_line6} to "&eyou will need lots of claim blocks"
+				set {_line7} to "&aYou can get claim blocks from crates."
+				set {_line8} to "&aOr from &b/buy"
+				set {_line9} to "&dUse &b/claimslist &dto check on your claim blocks"
+		
+			if arg-1 is "cratekeys":
+				set {_line1} to "&aCrate Keys &eare used to collect"
+				set {_line2} to "&eitems from specific crates"
+				set {_line3} to "&eregular crate keys give 1 or 2 items"
+				set {_line4} to "&edepending on the crate."
+				set {_line5} to "&aThere are lots of ways to get"
+				set {_line6} to "&acrate keys, such as voting,"
+				set {_line7} to "&aplaying games, fishing, lucky blocks&a, &b/buy&a..."
+				set {_line8} to "&eYou can redeem your crate keys at &b/warp crates"
+				set {_line9} to "&dRight click a crate with the correct key to redeem it"
+						
+			if arg-1 is "fishing":
+				set {_line1} to "&eWe have custom fish on Snap"
+				set {_line2} to "&eYou just fish with any rod in any water"
+				set {_line3} to "&eand you will catch random types of fish."
+				set {_line4} to "&aEvery fish has a length"
+				set {_line5} to "&aDuring competitions the longest fish wins"
+				set {_line6} to "&aThere is a competition every few hours"
+				set {_line7} to "&eUse &b/fishnext &eto check when the next one is"
+				set {_line8} to "&eUse &b/fishleft &eto see when the current one ends"
+				set {_line9} to "&dThe top fishers will get a crate key"
+			
+			if arg-1 is "vehicles":
+				set {_line1} to "&eVehicles are mostly a donator perk"
+				set {_line2} to "&eYou can select a vehicle with &b/vehicles"
+				set {_line3} to "&aPlace a vehicle chest any where to spawn it"
+				set {_line4} to "&eRight click the vehicle to enter"
+				set {_line5} to "&aUse your normal controls to steer"
+				set {_line6} to "&eHigher ranks get more vehicles"
+				set {_line7} to "&aThe free rank gets access to Brooms"
+				set {_line8} to "&eHigher ranks get things like Helicopters"
+				set {_line9} to "&aPress sneak to depart a vehicle"
+				set {_line10} to "&eSome vehicles can hold 2 people"
+				set {_line11} to "&dShift Right Click to pick up a vehicle"
+			
+			if arg-1 is "prison":
+				set {_line1} to "&eSnap has it's own custom Prison"
+				set {_line2} to "&eIn the prison mode you mine ores"
+				set {_line3} to "&eto progress through the levels"
+				set {_line4} to "&aSnap's Prison adds a few twists"
+				set {_line5} to "&aIncluding Quests,"
+				set {_line6} to "&aMob Arenas, Embassy Events &b/pembassy"
+				set {_line7} to "&aMultipliers, and PvP benefits"
+				set {_line8} to "&eJoin Prison anytime with &b/prison"
+				set {_line9} to "&eCheck your stats with &b/prison stats"
+				set {_line10} to "&aKill other people to increase your multiplier"
+				set {_line11} to "&aIf you are killed your multiplier will drop"
+				set {_line12} to "&dLeave prison with any tp command like &b/hub"
+				
+				
+			if arg-1 is "resource":
+				set {_line1} to "&eThe resource world is a"
+				set {_line2} to "&eseperate world where everything"
+				set {_line3} to "&eyou break gives you money."
+				set {_line4} to "&aRarer blocks give you more money."
+				set {_line5} to "&eEvery hour you recieve a multiplier"
+				set {_line6} to "&efor a few minutes, which doubles or"
+				set {_line7} to "&etriples the money you make,"
+				set {_line8} to "&efor only a few minutes."
+				set {_line9} to "&aBreaking ores has a chance to spawn"
+				set {_line10} to "&ain a Lucky Block."
+				set {_line11} to "&eLucky Blocks sometimes give keys."
+				set {_line12} to "&dVisit the resource world with &b/resource"
+				
+				
+			if arg-1 is "wheretobuild":
+				set {_line1} to "&eYou can build freely in any"
+				set {_line2} to "&eof the 3 default worlds."
+				set {_line3} to "&aYou can easily access a random"
+				set {_line4} to "&alocation in the nether with &b/nether"
+				set {_line5} to "&aor in the end with &b/end"
+				set {_line6} to "&eYou can also pick a random location"
+				set {_line7} to "&ein a specific biome of the overworld"
+				set {_line8} to "&eUsing the command &b/wild"
+				set {_line9} to "&aTry not to build close to"
+				set {_line10} to "&aactive players"
+				set {_line11} to "&eAlways claim your builds"
+				set {_line12} to "&eAlways sethome at your build &b/sethome (name)"
+				set {_line13} to "&dFree Rank can set 3 homes"
+
+			if arg-1 is "pvp":
+				set {_line1} to "&eSnap is a 1.12.2 Server"
+				set {_line2} to "&eHowever we have 1.8 style PvP"
+				set {_line3} to "&a1.8 PvP means you can click as"
+				set {_line4} to "&afast as you want without"
+				set {_line5} to "&athe cool-down added in 1.9+"
+				set {_line6} to "&eThe main place to pvp is &b/warp pvp"
+				set {_line7} to "&aYou will drop items if you die in pvp"
+				set {_line8} to "&aYou can't take damage in the wild"
+				set {_line9} to "&aunless you do &b/toggledamage"
+				set {_line10} to "&aThis prevents tp killing"
+				set {_line11} to "&eYou can't enter warp pvp without"	
+				set {_line12} to "&d2 hours of playtime."
+				
+			if arg-1 is "economy":
+				set {_line1} to "&eThe main shop is &b/warp shop"
+				set {_line2} to "&eCosmic rank gets an inventory shop &b/shop"
+				set {_line3} to "&aThere is also an auction house &b/ah"
+				set {_line4} to "&aHigher ranks can auction multiple items"
+				set {_line5} to "&ePay people for goods with &b/pay (name) (amount)"
+				set {_line6} to "&aYou can get lots of money"
+				set {_line7} to "&afrom crates."
+				set {_line8} to "&ePvP Items and Spawners are often"
+				set {_line9} to "&etraded for millions of dollars."
+				set {_line10} to "&aYou can also purchase money online &b/buy."
+				set {_line11} to "&dScamming is not allowed"	
+				
+			if arg-1 is "minigames":
+				set {_line1} to "&eSnap has lots of minigames"
+				set {_line2} to "&eMany of which are custom"
+				set {_line3} to "&aJust to name a few games"
+				set {_line4} to "&aBedwars &b/bw &aMobArenas &b/ma"
+				set {_line5} to "&aThe Lab &b/lab"
+				set {_line6} to "&aBuilding Game &b/build"
+				set {_line7} to "&eYou can easily access all"
+				set {_line8} to "&eof the minigames with &b/minigames"
+				set {_line9} to "&dSome games give prizes for winning"	
+
+				
+			if arg-1 is "family":
+				set {_line1} to "&eThe Family command is used to"
+				set {_line2} to "&ecreate a group chat"
+				set {_line3} to "&aA lot of players use family chat"
+				set {_line4} to "&ato roleplay with eachother."
+				set {_line5} to "&aCreate with &b/family create (name)"
+				set {_line6} to "&aAdd members with &b/family add (name)"
+				set {_line7} to "&aTalk to your group with &b/fc (message)"
+				set {_line8} to "&dUse &b/family &dfor more commands"		
+																												
+			if {_loc} is set:
+				set {_i} to 15
+				loop 15 times:
+					if {_line%{_i}%} is set:
+						set {_max} to {_i}
+						set {_max} to {_max} parsed as an integer
+						stop loop
+					subtract 1 from {_i}
+				set {_max-6} to {_max} - 6
+				set {_max-5} to {_max} - 5
+				set {_max-4} to {_max} - 4
+				set {_max-3} to {_max} - 3
+				set {_max-2} to {_max} - 2
+				set {_max-1} to {_max} - 1
+					
+				display hologram ";;;;;;;%{_line1}%" at block 3 above block at {_loc} to player for 2 seconds
+				wait 2 seconds
+				if {_line2} is set:
+					display hologram ";;;;;;%{_line1}%;%{_line2}%" at block 3 above block at {_loc} to player for 2 seconds
+					wait 2 seconds
+					if {_line3} is set:
+						display hologram ";;;;;%{_line1}%;%{_line2}%;%{_line3}%" at block 3 above block at {_loc} to player for 2 seconds
+						wait 2 seconds
+						if {_line4} is set:
+							display hologram ";;;;%{_line1}%;%{_line2}%;%{_line3}%;%{_line4}%" at block 3 above block at {_loc} to player for 2 seconds
+							wait 2 seconds
+							if {_line5} is set:
+								display hologram ";;;%{_line1}%;%{_line2}%;%{_line3}%;%{_line4}%;%{_line5}%" at block 3 above block at {_loc} to player for 2 seconds
+								wait 2 seconds
+								if {_line6} is set:
+									display hologram ";;%{_line1}%;%{_line2}%;%{_line3}%;%{_line4}%;%{_line5}%;%{_line6}%" at block 3 above block at {_loc} to player for 2 seconds
+									wait 2 seconds
+									if {_line7} is set:
+										display hologram ";%{_line1}%;%{_line2}%;%{_line3}%;%{_line4}%;%{_line5}%;%{_line6}%;%{_line7}%" at block 3 above block at {_loc} to player for 2 seconds
+										wait 2 seconds
+										if {_line8} is set:
+											display hologram "%{_line1}%;%{_line2}%;%{_line3}%;%{_line4}%;%{_line5}%;%{_line6}%;%{_line7}%;%{_line8}%" at block 3 above block at {_loc} to player for 2 seconds
+											wait 2 seconds
+											if {_line9} is set:
+												display hologram "%{_line2}%;%{_line3}%;%{_line4}%;%{_line5}%;%{_line6}%;%{_line7}%;%{_line8}%;%{_line9}%" at block 3 above block at {_loc} to player for 2 seconds
+												wait 2 seconds
+											if {_line10} is set:
+												display hologram "%{_line3}%;%{_line4}%;%{_line5}%;%{_line6}%;%{_line7}%;%{_line8}%;%{_line9}%;%{_line10}%" at block 3 above block at {_loc} to player for 2 seconds
+												wait 2 seconds
+											if {_line11} is set:
+												display hologram "%{_line4}%;%{_line5}%;%{_line6}%;%{_line7}%;%{_line8}%;%{_line9}%;%{_line10}%;%{_line11}%" at block 3 above block at {_loc} to player for 2 seconds
+												wait 2 seconds
+											if {_line12} is set:
+												display hologram "%{_line5}%;%{_line6}%;%{_line7}%;%{_line8}%;%{_line9}%;%{_line10}%;%{_line11}%;%{_line12}%" at block 3 above block at {_loc} to player for 2 seconds
+												wait 2 seconds
+											if {_line13} is set:
+												display hologram "%{_line6}%;%{_line7}%;%{_line8}%;%{_line9}%;%{_line10}%;%{_line11}%;%{_line12}%;%{_line13}%" at block 3 above block at {_loc} to player for 2 seconds
+												wait 2 seconds
+											display hologram ";%{_line%{_max-6}%}%;%{_line%{_max-5}%}%;%{_line%{_max-4}%}%;%{_line%{_max-3}%}%;%{_line%{_max-2}%}%;%{_line%{_max-1}%}%;%{_line%{_max}%}%" at block 3 above block at {_loc} to player for 2 seconds
+											wait 2 seconds
+										display hologram ";;%{_line%{_max-5}%}%;%{_line%{_max-4}%}%;%{_line%{_max-3}%}%;%{_line%{_max-2}%}%;%{_line%{_max-1}%}%;%{_line%{_max}%}%" at block 3 above block at {_loc} to player for 2 seconds
+										wait 2 seconds
+									display hologram ";;;%{_line%{_max-4}%}%;%{_line%{_max-3}%}%;%{_line%{_max-2}%}%;%{_line%{_max-1}%}%;%{_line%{_max}%}%" at block 3 above block at {_loc} to player for 2 seconds
+									wait 2 seconds
+								display hologram ";;;;%{_line%{_max-3}%}%;%{_line%{_max-2}%}%;%{_line%{_max-1}%}%;%{_line%{_max}%}%" at block 3 above block at {_loc} to player for 2 seconds	
+								wait 2 seconds
+							display hologram ";;;;;%{_line%{_max-2}%}%;%{_line%{_max-1}%}%;%{_line%{_max}%}%" at block 3 above block at {_loc} to player for 2 seconds	
+							wait 2 seconds
+						display hologram ";;;;;;%{_line%{_max-1}%}%;%{_line%{_max}%}%" at block 3 above block at {_loc} to player for 2 seconds	
+						wait 2 seconds
+					display hologram ";;;;;;;%{_line%{_max}%}%" at block 3 above block at {_loc} to player for 2 seconds		
+					
+					
+					
+			delete {tutorial.cooldown::%arg-1%::%player%}	
+			stop
+		if player is in world "pvp":
+			message "&8[&bSnap&8] &7Not in the pvp world!"
+			stop
+		set {tutorial.start.location::%player%} to location of player
+		delete {tutorial.nomove::%player%}
+		set fly mode of player to true
+		set gravity of player to false
+		wait 1 tick
+		teleport player to {pos::tutorial_1}
+		wait 1 tick
+		set fly mode of player to true
+		set gravity of player to false
+		send player title "&6&lWelcome to SnapMc" with subtitle "&c&lCinco&f&lDe&a&lMayo &7&lTheme" for 2 seconds with 2 second fade in and 1 second fade out
+		loop 70 times:
+			push player north at speed .021
+			wait 1 ticks
+		teleport player to {pos::tutorial_2}
+		wait 5 ticks
+		send player title "&bMarry Other Players" with subtitle "&7Use with &b/marry" for 6 seconds with 0 second fade in and 0 second fade out
+		loop 37 times:
+			push player west at speed .0075
+			wait 1 ticks
+		send player title "&bRoleplay in a Family" with subtitle "&7Use with &b/family" for 6 seconds with 0 second fade in and 0 second fade out
+		loop 37 times:
+			push player west at speed .0077
+			wait 1 ticks
+		teleport player to {pos::tutorial_3}
+		wait 5 ticks
+		send player title "&aDrive Cars, Bikes, Tanks..." with subtitle "&7Use with &b/vmenu" for 5 seconds with 0 second fade in and 0 second fade out
+		loop 55 times:
+			push player south west at speed .0079
+			wait 1 ticks
+		teleport player to {pos::tutorial_4}
+		wait 5 ticks
+		send player title "&aBuy Cheap Blocks" with subtitle "&7Visit with &b/warp shop" for 5 seconds with 0 second fade in and 0 second fade out
+		loop 60 times:
+			push player north at speed .017
+			wait 1 ticks
+		send player title "&aEnjoy &31.12.2 &aBlocks" with subtitle "&7Visit with &b/warp shop" for 5 seconds with 0 second fade in and 0 second fade out
+		loop 60 times:
+			push player north at speed .017
+			wait 1 ticks
+		send player title "&eSell Your Loot" with subtitle "&7Visit with &b/warp shop" for 5 seconds with 0 second fade in and 0 second fade out
+		loop 60 times:
+			push player north at speed .017
+			wait 1 ticks
+		teleport player to {pos::tutorial_5}
+		wait 5 ticks
+		send player title "&cPvP with Friends" with subtitle "&7Battle with &b/warp pvp" for 5 seconds with 0 second fade in and 0 second fade out
+		loop 40 times:
+			push player east at speed .008
+			wait 1 ticks
+		send player title "&cEnjoy &71.8 PvP" with subtitle "&7Mechancics" for 5 seconds with 0 second fade in and 0 second fade out
+		loop 30 times:
+			push player east at speed .008
+			wait 1 ticks
+		teleport player to {pos::tutorial_6}
+		wait 5 ticks
+		send player title "&eMake Money Easily" with subtitle "&7Use with &b/resource" for 5 seconds with 0 second fade in and 0 second fade out
+		loop 50 times:
+			push player north at speed .006
+			wait 1 ticks
+		send player title "&eDestroy the Resource World" with subtitle "&7Use with &b/resource" for 5 seconds with 0 second fade in and 0 second fade out
+		loop 50 times:
+			push player north west at speed .005
+			wait 1 ticks
+		teleport player to {pos::tutorial_7}
+		wait 5 ticks
+		send player title "&dRedeem Crates" with subtitle "&7Visit with &b/warp crates" for 5 seconds with 0 second fade in and 0 second fade out
+		loop 50 times:
+			push player north west at speed .008
+			wait 1 ticks
+		send player title "&eEasy Voting Prizes" with subtitle "&7Use with &b/vote" for 5 seconds with 0 second fade in and 0 second fade out
+		loop 55 times:
+			push player north west at speed .008
+			wait 1 ticks
+		send player title "&dVoting Parties" with subtitle "&7Use with &b/party" for 5 seconds with 0 second fade in and 0 second fade out
+		loop 40 times:
+			push player north west at speed .008
+			wait 1 ticks
+		teleport player to {pos::tutorial_8}
+		wait 5 ticks
+		send player title "&dPick Any Biome" with subtitle "&7Use with &b/biome" for 5 seconds with 0 second fade in and 0 second fade out
+		loop 70 times:
+			push player south east at speed .008
+			wait 1 ticks
+		send player title "&dClaim Land" with subtitle "&7Use with &b/menu" for 7 seconds with 0 second fade in and 0 second fade out
+		loop 50 times:
+			push player south east at speed .008
+			wait 1 ticks
+		teleport player to {pos::tutorial_9}
+		wait 5 ticks
+		send player title "&aTry &b/emotes" with subtitle "" for 8 seconds with 0 second fade in and 0 second fade out
+		loop 40 times:
+			push player north east at speed .008
+			wait 1 ticks
+		send player title "&aEnjoy Free &b/Fly" with subtitle "" for 8 seconds with 0 second fade in and 0 second fade out
+		loop 40 times:
+			push player north east at speed .008
+			wait 1 ticks
+		teleport player to {pos::tutorial_10}
+		wait 5 ticks
+		send player title "&aUnique &bMinigames" with subtitle "&7Play with &b/mingames" for 8 seconds with 0 second fade in and 0 second fade out
+		loop 30 times:
+			push player south west at speed .008
+			wait 1 ticks
+		send player title "&aCustom &6Bedwars, Mobarenas, Creative" with subtitle "&7Play with &b/bw /ma /build" for 8 seconds with 0 second fade in and 0 second fade out
+		loop 60 times:
+			push player south west at speed .008
+			wait 1 ticks
+		teleport player to {pos::tutorial_11}
+		wait 5 ticks
+		send player title "&a&lHave Fun on SnapMc" with subtitle "&7For More Help &b/menu" for 8 seconds with 0 second fade in and 0 second fade out
+		loop 90 times:
+			push player north at speed .008
+			wait 1 ticks
+		// teleport player to {tutorial.start.location::%player%}
+		teleport player to {pos::tutorial.lobby}
+		set {_online} to false
+		loop all players:
+			if "%player%" = "%loop-player%":
+				set {_online} to true
+		if {_online} is true:
+			set gravity of player to true
+			delete {tutorial.start.location::%player%}
+on join:
+	set gravity of player to true
+command /gravity <player> <boolean>:
+	permission: is.op
+	trigger:
+		set gravity of arg-1 to arg-2

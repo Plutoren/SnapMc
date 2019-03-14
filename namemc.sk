@@ -1,0 +1,32 @@
+
+command /namemc:
+	trigger:
+		send a request to "https://api.namemc.com/server/snapmc.com/likes?profile=%uuid of player%"
+		set {_resp} to the last http response
+		if "%{_resp}%" does not contain "true":
+			message ""
+			message "&eLeave a Like:&b namemc.com/server/snapmc.com"
+			message "&eType &b/namemc &eonce you liked it to get &d4 Mystery Keys"
+			message ""
+		else:
+			if {namemc::%uuid of player%} is not set:
+				set {namemc::%uuid of player%} to true
+				if player is in world "Hub" or "BedWars" or "MobArena" or "Prison" or "Creative" or "SkyBlock" or "Wilderness" or "OITC" or "Events":
+					add 4 to {redeem.crate::%player%::mystery}
+					message "&eType &b/rc &eto receive your mystery keys at &b/crates"
+				else:
+					execute console command "kp key Mystery regular %player% 4"
+					
+				
+			message ""
+			message "&eThanks for liking us on namemc!"
+			message "&eLink:&b namemc.com/server/snapmc.com"
+			message ""
+		
+		
+		
+		
+#
+#
+# send a request to "https://api.ksoft.si/bans/check?user=217562587938816000" with headers "User-Agent: Enderr", "Content-Type: application/json" and "Authorization: Token ---"
+#        map json last response's body to {_bans::*}

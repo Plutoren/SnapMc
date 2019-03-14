@@ -1,0 +1,163 @@
+
+command /blockparty:
+	trigger:
+		teleport player to {pos::blockparty}
+		
+		
+command /regionat:
+	permission: is.op
+	trigger:
+		message "%regions at player%"
+every 8 seconds:
+	
+	set {_players} to 0
+	loop all players in world "Events":
+		if "%regions at loop-player%" contains "blockparty":
+			add 1 to {_players}
+			if "%regions at loop-player%" contains "blockparty_fall":
+				clear inventory of loop-player
+				teleport loop-player to {pos::blockparty}
+	if {_players} = 0:
+		if block at {pos::blockparty_1} is air:
+			loop blocks between block at {pos::blockparty_1} and block at {pos::blockparty_2}:
+				set {_block_1} to loop-block
+				set {_block_2} to location of loop-block
+				subtract 52 from x coordinate of {_block_2}
+				set {_block_2} to block at {_block_2}
+				loop blocks between block at {_block_1} and block at {_block_2}:
+					set loop-block-2 to light gray wool
+		stop
+	set {_maximum} to random integer from 3 to 30
+	set {_i} to 0
+	loop 30 times:
+		add 1 to {_i}
+		set {_randomRow_%{_i}%} to random integer from 5 to 40
+		set {_randomColumn_%{_i}%} to random integer from 5 to 47
+	add red wool to {_blockTypes::*}
+	add yellow wool to {_blockTypes::*}
+	add green wool to {_blockTypes::*}
+	add purple wool to {_blockTypes::*}
+	add lime wool to {_blockTypes::*}
+	add orange wool to {_blockTypes::*}
+	add diamond block to {_blockTypes::*}
+	add gold block to {_blockTypes::*}
+	add glass block to {_blockTypes::*}
+	set {_i} to 0
+	loop 30 times:
+		add 1 to {_i}
+		set {_color_%{_i}%} to random element of {_blockTypes::*}
+	set {_winningColor} to {_color_3}
+	loop blocks between block at {pos::blockparty_1} and block at {pos::blockparty_2}:
+		set {_block_1} to loop-block
+		set {_block_2} to location of loop-block
+		subtract 52 from x coordinate of {_block_2}
+		set {_block_2} to block at {_block_2}
+		loop blocks between block at {_block_1} and block at {_block_2}:
+			set loop-block-2 to gray wool block
+	wait 1 tick
+	loop blocks between block at {pos::blockparty_1} and block at {pos::blockparty_2}:
+		add 1 to {_row}
+		set {_column} to 0
+		set {_block_1} to loop-block
+		set {_block_2} to location of loop-block
+		subtract 52 from x coordinate of {_block_2}
+		set {_block_2} to block at {_block_2}
+		loop blocks between block at {_block_1} and block at {_block_2}:
+			add 1 to {_column}
+			set {_i} to 0
+			loop 30 times:
+				add 1 to {_i}
+				if {_row} = {_randomRow_%{_i}%}:
+					if {_column} = {_randomColumn_%{_i}%}:
+						set {_radius} to random integer from 1 to 5
+						loop blocks in radius {_radius} of loop-block-2:
+							if loop-block-3 is gray wool block:
+								
+								set loop-block-3 to {_color_%{_i}%}
+	wait 30 ticks
+	
+	loop all players in world "Events":
+		if "%regions at loop-player%" contains "blockparty_area":
+			clear inventory of loop-player
+			set {_slot} to 0
+			loop 9 times:
+				set slot {_slot} of loop-player's inventory to {_winningColor}
+				add 1 to {_slot}
+			set loop-player's helmet to {_winningColor}
+	
+	wait 16 ticks
+	loop all players in world "Events":
+		if "%regions at loop-player%" contains "blockparty_area":
+			set slot 0 of loop-player's inventory to air
+			set slot 8 of loop-player's inventory to air
+			set {_slot} to 1
+			loop 7 times:
+				set slot {_slot} of loop-player's inventory to {_winningColor}
+				add 1 to {_slot}
+	
+	
+	wait 12 ticks
+	loop all players in world "Events":
+		if "%regions at loop-player%" contains "blockparty_area":
+			
+			set slot 0 of loop-player's inventory to air
+			set slot 1 of loop-player's inventory to air
+			set slot 7 of loop-player's inventory to air
+			set slot 8 of loop-player's inventory to air
+			set {_slot} to 2
+			loop 5 times:
+				set slot {_slot} of loop-player's inventory to {_winningColor}
+				add 1 to {_slot}
+	
+	
+	wait 12 ticks
+	loop all players in world "Events":
+		if "%regions at loop-player%" contains "blockparty_area":
+			set slot 0 of loop-player's inventory to air
+			set slot 1 of loop-player's inventory to air
+			set slot 2 of loop-player's inventory to air
+			set slot 6 of loop-player's inventory to air
+			set slot 7 of loop-player's inventory to air
+			set slot 8 of loop-player's inventory to air
+			set {_slot} to 3
+			loop 3 times:
+				set slot {_slot} of loop-player's inventory to {_winningColor}
+				add 1 to {_slot}
+	
+	wait 12 ticks
+	loop all players in world "Events":
+		if "%regions at loop-player%" contains "blockparty_area":
+			set slot 0 of loop-player's inventory to air
+			set slot 1 of loop-player's inventory to air
+			set slot 2 of loop-player's inventory to air
+			set slot 3 of loop-player's inventory to air
+			set slot 5 of loop-player's inventory to air
+			set slot 6 of loop-player's inventory to air
+			set slot 7 of loop-player's inventory to air
+			set slot 8 of loop-player's inventory to air
+			set {_slot} to 4
+			set slot {_slot} of loop-player's inventory to {_winningColor}
+	wait 12 ticks
+	loop all players in world "Events":
+		if "%regions at loop-player%" contains "blockparty_area":
+			set slot 5 of loop-player's inventory to {_winningColor}
+			clear inventory of loop-player
+			set {_slot} to 4
+			set slot {_slot} of loop-player's inventory to air
+	loop blocks between block at {pos::blockparty_1} and block at {pos::blockparty_2}:
+		set {_block_1} to loop-block
+		set {_block_2} to location of loop-block
+		subtract 52 from x coordinate of {_block_2}
+		set {_block_2} to block at {_block_2}
+		loop blocks between block at {_block_1} and block at {_block_2}:
+			if loop-block-2 is not {_winningColor}:
+				set loop-block-2 to air
+	wait 2 seconds
+	loop all players in world "Events":
+		if "%regions at loop-player%" contains "blockparty_area":
+			add 1 to {blockparty::%uuid of loop-player%}
+			send "&8[&bBlock&dParty&8] &aYou now have &e%{blockparty::%uuid of loop-player%}% points" to loop-player
+		
+								
+			
+			

@@ -1,0 +1,473 @@
+
+
+function containsColor(string: string) :: boolean:
+  loop all enum values of color where [{_string} contains "<%object input%>"]:
+    return true
+  return false
+  
+# on script load:
+#  import "org.bukkit.ChatColor"
+function containsFormatting(string: string) :: boolean:
+  loop (...{ChatColor}.values() where [object input.isFormat() is true]) where [{_string} contains "%object input%"]:
+    return true
+  return false
+  
+command /prefix [<text>]:
+	trigger:		
+		if arg-1 is set:
+			if arg-1 is "reset":
+				message "&8[&bSnap&8] &fPrefix Reset"
+				execute console command "pex user %player% prefix """" "
+				stop
+			if player has permission "is.cosmic":
+				if arg-1 is not "ultimate" or "legend" or "hero" or "pro":
+					if containsFormatting(colored arg-1) = true:
+						message "&8[&8Snap&8] &cYou cannot use formats in prefixes!"
+						stop
+					set {_arg1} to colored arg-1
+					replace all " -s" with "" in {_arg1}
+					replace all "&a" with "" in {_arg1}
+					replace all "&b" with "" in {_arg1}
+					replace all "&c" with "" in {_arg1}
+					replace all "&d" with "" in {_arg1}
+					replace all "&e" with "" in {_arg1}
+					replace all "&f" with "" in {_arg1}
+					replace all "&0" with "" in {_arg1}
+					replace all "&1" with "" in {_arg1}
+					replace all "&2" with "" in {_arg1}
+					if "%{_arg1}%" contains "&3":
+						if player does not have permission "is.staff":
+							message "&8[&bSnap&8] &7That prefix contains &3Cyan &7which is reserved for staff!"
+							stop
+					replace all "&3" with "" in {_arg1}
+					replace all "&4" with "" in {_arg1}
+					replace all "&5" with "" in {_arg1}
+					replace all "&6" with "" in {_arg1}
+					replace all "&7" with "" in {_arg1}
+					replace all "&8" with "" in {_arg1}
+					replace all "&9" with "" in {_arg1}
+					replace all "&k" with "" in {_arg1}
+					replace all "&i" with "" in {_arg1}
+					replace all "&m" with "" in {_arg1}
+					replace all "&n" with "" in {_arg1}
+					replace all "&o" with "" in {_arg1}
+					replace all "&l" with "" in {_arg1}
+					replace all "§a" with "" in {_arg1}
+					replace all "§b" with "" in {_arg1}
+					replace all "§c" with "" in {_arg1}
+					replace all "§d" with "" in {_arg1}
+					replace all "§e" with "" in {_arg1}
+					replace all "§f" with "" in {_arg1}
+					replace all "§0" with "" in {_arg1}
+					replace all "§1" with "" in {_arg1}
+					replace all "§2" with "" in {_arg1}
+					if "%{_arg1}%" contains "§3":
+						if player does not have permission "is.staff":
+							message "&8[&bSnap&8] &7That prefix contains &3Cyan &7which is reserved for staff!"
+							stop
+					replace all "§3" with "" in {_arg1}
+					replace all "§4" with "" in {_arg1}
+					replace all "§5" with "" in {_arg1}
+					replace all "§6" with "" in {_arg1}
+					replace all "§7" with "" in {_arg1}
+					replace all "§8" with "" in {_arg1}
+					replace all "§9" with "" in {_arg1}
+					replace all "§k" with "" in {_arg1}
+					replace all "§i" with "" in {_arg1}
+					replace all "§m" with "" in {_arg1}
+					replace all "§n" with "" in {_arg1}
+					replace all "§o" with "" in {_arg1}
+					replace all "§l" with "" in {_arg1}
+					set {_length} to length of {_arg1}
+					replace all " " with "" in {_arg1}
+					
+					if player does not have permission "is.staff":
+						if {_arg1} contains "Mod":
+						
+							replace all "Mod" with "&cMod&f" in {_arg1}
+							message "&8[&bSnap&8] &7That prefix contains a word that is not allowed!"
+							message "             &c&lPrefix&7: &f%{_arg1}%"
+							stop
+						else if {_arg1} contains "Staff":
+							replace all "Staff" with "&cStaff&f" in {_arg1}
+							message "&8[&bSnap&8] &7That prefix contains a word that is not allowed!"
+							message "             &c&lPrefix&7: &f%{_arg1}%"
+							stop
+						else if {_arg1} contains "Manager":
+							replace all "Manager" with "&cManager&f" in {_arg1}
+							message "&8[&bSnap&8] &7That prefix contains a word that is not allowed!"
+							message "             &c&lPrefix&7: &f%{_arg1}%"
+							stop
+						else if {_arg1} contains "Helper":
+							replace all "Helper" with "&cHelper&f" in {_arg1}
+							message "&8[&bSnap&8] &7That prefix contains a word that is not allowed!"
+							message "             &c&lPrefix&7: &f%{_arg1}%"
+							stop
+					if {_arg1} contains "Owner":
+						replace all "Owner" with "&cOwner&f" in {_arg1}
+						message "&8[&bSnap&8] &7That prefix contains a word that is not allowed!"
+						message "             &c&lPrefix&7: &f%{_arg1}%"
+						stop
+					else if {_arg1} contains "0wner":
+						replace all "0wner" with "&c0wner&f" in {_arg1}
+						message "&8[&bSnap&8] &7That prefix contains a word that is not allowed!"
+						message "             &c&lPrefix&7: &f%{_arg1}%"
+						stop
+					else if {_arg1} contains "Dev":
+						replace all "Dev" with "&cDev&f" in {_arg1}
+						message "&8[&bSnap&8] &7That prefix contains a word that is not allowed!"
+						message "             &c&lPrefix&7: &f%{_arg1}%"
+						stop
+						
+					else if {_arg1} contains "Tube":
+						replace all "Tube" with "&cTube&f" in {_arg1}
+						message "&8[&bSnap&8] &7That prefix contains a word that is not allowed!"
+						message "             &c&lPrefix&7: &f%{_arg1}%"
+						stop
+						
+					else if {_arg1} contains "admin":
+						replace all "admin" with "&cAdmin&f" in {_arg1}
+						message "&8[&bSnap&8] &7That prefix contains a word that is not allowed!"
+						message "             &c&lPrefix&7: &f%{_arg1}%"
+						stop
+					else if {_arg1} contains "nig":
+						replace all "nig" with "&cnig&f" in {_arg1}
+						message "&8[&bSnap&8] &7That prefix contains a word that is not allowed!"
+						message "             &c&lPrefix&7: &f%{_arg1}%"
+						stop
+						
+					else if {_arg1} contains "vortex":
+						
+						if player does not have permission "is.vortex":
+							replace all "founder" with "&cvortex&f" in {_arg1}
+							message "&8[&bSnap&8] &7That prefix contains a word that is not allowed!"
+							message "             &c&lPrefix&7: &f%{_arg1}%"
+							stop
+					else if {_arg1} contains "founder":
+						replace all "founder" with "&cfounder&f" in {_arg1}
+						message "&8[&bSnap&8] &7That prefix contains a word that is not allowed!"
+						message "             &c&lPrefix&7: &f%{_arg1}%"
+						stop
+					else if {_arg1} contains "fag":
+						replace all "fag" with "&cfag&f" in {_arg1}
+						message "&8[&bSnap&8] &7That prefix contains a word that is not allowed!"
+						message "             &c&lPrefix&7: &f%{_arg1}%"
+						stop
+					if {_arg1} contains "-s":
+						set {_suffix} to arg-1
+						replace all "&" with "§" in {_suffix}
+						replace all " -s" with "" in {_suffix}
+						set {_length} to length of {_arg1}
+						if {_length} > 12:
+							set {_length} to {_length} - 2
+							message "&8[&bSnap&8] &7That prefix is too long! &c%{_length}%&8/&a10"
+							stop
+						execute console command "setprefix %player% &8[%{_suffix}%&8]"
+						stop
+						
+					if {_arg1} contains "-wl":
+						if player has permission "is.vortex":
+							set {_suffix} to arg-1
+							replace all "&" with "§" in {_suffix}
+							replace all " -wl" with "" in {_suffix}
+							set {_length} to length of {_arg1}
+							if {_length} > 13:
+								set {_length} to {_length} - 3
+								message "&8[&bSnap&8] &7That prefix is too long! &c%{_length}%&8/&a10"
+								stop
+							execute console command "setprefix %player% &f&l[%{_suffix}%&f&l]"
+							stop
+						
+					if {_arg1} contains "-w":
+						if player has permission "is.vortex":
+							set {_suffix} to arg-1
+							replace all "&" with "§" in {_suffix}
+							replace all " -w" with "" in {_suffix}
+							set {_length} to length of {_arg1}
+							if {_length} > 12:
+								set {_length} to {_length} - 2
+								message "&8[&bSnap&8] &7That prefix is too long! &c%{_length}%&8/&a10"
+								stop
+							execute console command "setprefix %player% &f[%{_suffix}%&f]"
+							stop
+						
+					if {_arg1} contains "-gl":
+						if player has permission "is.vortex":
+							set {_suffix} to arg-1
+							replace all "&" with "§" in {_suffix}
+							replace all " -gl" with "" in {_suffix}
+							set {_length} to length of {_arg1}
+							if {_length} > 13:
+								set {_length} to {_length} - 3
+								message "&8[&bSnap&8] &7That prefix is too long! &c%{_length}%&8/&a10"
+								stop
+							execute console command "setprefix %player% &8&l[%{_suffix}%&8&l]"
+							stop
+					if {_length} > 10:
+						message "&8[&bSnap&8] &7That prefix is too long! &c%{_length}%&8/&a10"
+						stop
+					message "&8[&bSnap&8] &7Remember, ANY staff impersonation will get your rank removed!"
+					
+				
+		
+		wait 1 ticks
+		open chest with 6 row named "       &8-=[ &1Prefix Menu &8]=-" to player
+		wait 1 ticks		
+		set {_i} to 0		
+		loop 54 times:		
+			format slot {_i} of player with gray stained glass pane named "&7" to close then run "sudo %player% prefix"
+			add 1 to {_i}	
+		if arg-1 is not set:
+			if player has permission "is.cosmic":
+				message "&8[&bSnap&8] &7You can type &b/prefix (text) &7with your rank"
+		
+		if arg-1 is set:
+			if arg-1 is not "ultimate" or "legend" or "hero" or "pro":
+				if player has permission "is.cosmic":
+					format slot 21 of player with red wool named "&cCancel Prefix Change" with lore " ", " " to close
+					set {_suffix} to arg-1
+					replace all "&" with "§" in {_suffix}
+					format slot 23 of player with green wool named "&aSet Prefix to:  " with lore "", "  &8[%{_suffix}%&8] &f%player's display name%  ", " " to close then run "setprefix %player% &8[%arg-1%&8]"
+					stop	
+		if player has permission "prefix.ultimate":
+			set {_pro} to true
+			set {_hero} to true
+			set {_legend} to true
+			set {_ultiamte} to true
+		if player has permission "prefix.legend":
+			set {_pro} to true
+			set {_hero} to true
+			set {_legend} to true
+		if player has permission "prefix.hero":
+			set {_pro} to true
+			set {_hero} to true
+		if player has permission "prefix.pro":
+			set {_pro} to true
+			
+		if arg-1 is "legend":
+			if {_legend} is not set:
+				message "&8[&bSnap&8] &7You need Legend rank or higher to access those"
+				stop
+			format slot 19 of player with diamond axe named "&eSet Prefix to:  " with lore "", "  &8[&5Marv&delo&fus&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&5Marv&delo&fus&8]"
+			format slot 20 of player with grass block named "&eSet Prefix to:  " with lore "", "  &8[&6Original&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&6Original&8]"
+			format slot 21 of player with gold sword named "&eSet Prefix to:  " with lore "", "  &8[&eIcon&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&eIcon&8]"
+			format slot 22 of player with golden apple named "&eSet Prefix to:  " with lore "", "  &8[&bSuperStar&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bSuperStar&8]"
+			format slot 23 of player with diamond sword named "&eSet Prefix to:  " with lore "", "  &8[&bMaster&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bMaster&8]"
+			format slot 24 of player with pink tulip named "&eSet Prefix to:  " with lore "", "  &8[&dSaint&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dSaint&8]"
+			format slot 25 of player with iron axe named "&eSet Prefix to:  " with lore "", "  &8[&2Out&astand&fing&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2Out&astand&fing&8]"
+			
+			format slot 28 of player with stone sword named "&eSet Prefix to:  " with lore "", "  &8[&dGroovy&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dGroovy&8]"
+			format slot 29 of player with peony named "&eSet Prefix to:  " with lore "", "  &8[&fModel&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&fModel&8]"
+			format slot 30 of player with crafting table named "&eSet Prefix to:  " with lore "", "  &8[&2Warrior&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2Warrior&8]"
+			format slot 31 of player with peony named "&eSet Prefix to:  " with lore "", "  &8[&dMythic&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dMythic&8]"
+			format slot 32 of player with leather chestplate named "&eSet Prefix to:  " with lore "", "  &8[&bMythic&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bMythic&8]"
+			format slot 33 of player with crafting table named "&eSet Prefix to:  " with lore "", "  &8[&dFigment&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dFigment&8]"
+			format slot 34 of player with redstone named "&eSet Prefix to:  " with lore "", "  &8[&c&lHot&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&c&lHot&8]"
+			
+			format slot 37 of player with diamond helmet named "&eSet Prefix to:  " with lore "", "  &8[&dBoss&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dBoss&8]"
+			format slot 38 of player with diamond boots named "&eSet Prefix to:  " with lore "", "  &8[&dFairy&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dFairy&8]"
+			format slot 39 of player with emerald named "&eSet Prefix to:  " with lore "", "  &8[&aMy&fth&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&aMy&fth&8]"
+			format slot 40 of player with rose red named "&eSet Prefix to:  " with lore "", "  &8[&7Smoke&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&7Smoke&8]"
+			format slot 41 of player with gold nugget named "&eSet Prefix to:  " with lore "", "  &8[&5Wi&dse&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&5Wi&dse&8]"
+			format slot 42 of player with slime block named "&eSet Prefix to:  " with lore "", "  &8[&2Fa&abl&fe&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2Fa&abl&fe&8]"
+			format slot 43 of player with gold block named "&eSet Prefix to:  " with lore "", "  &8[&cC&6E&eO&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&cC&6E&eO&8]"
+			stop	
+				
+		
+	
+		if arg-1 is "hero":
+			if {_hero} is not set:
+				message "&8[&bSnap&8] &7You need Hero rank or higher to access those"
+				stop
+			format slot 20 of player with iron axe named "&eSet Prefix to:  " with lore "", "  &8[&6Hercules&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&6Hercules&8]"
+			format slot 21 of player with gold sword named "&eSet Prefix to:  " with lore "", "  &8[&eChampion&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&eChampion&8]"
+			format slot 22 of player with golden apple named "&eSet Prefix to:  " with lore "", "  &8[&bPowerful&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bPowerful&8]"
+			format slot 23 of player with diamond sword named "&eSet Prefix to:  " with lore "", "  &8[&bKing&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bKing&8]"
+			format slot 24 of player with pink tulip named "&eSet Prefix to:  " with lore "", "  &8[&dQueen&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dQueen&8]"
+			
+			format slot 29 of player with wooden axe named "&eSet Prefix to:  " with lore "", "  &8[&fChief&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&fChief&8]"
+			format slot 30 of player with crafting table named "&eSet Prefix to:  " with lore "", "  &8[&2Adventurer&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2Adventurer&8]"
+			format slot 31 of player with peony named "&eSet Prefix to:  " with lore "", "  &8[&bVoyager&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bVoyager&8]"
+			format slot 32 of player with leather chestplate named "&eSet Prefix to:  " with lore "", "  &8[&6Pirate&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&6Pirate&8]"
+			format slot 33 of player with redstone named "&eSet Prefix to:  " with lore "", "  &8[&dPioneer&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dPioneer&8]"
+			
+			format slot 38 of player with leather boots named "&eSet Prefix to:  " with lore "", "  &8[&6Mercenary&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&6Mercenary&8]"
+			format slot 39 of player with gold nugget named "&eSet Prefix to:  " with lore "", "  &8[&eSwashbuckler&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&eSwashbuckler&8]"
+			format slot 40 of player with rose red named "&eSet Prefix to:  " with lore "", "  &8[&6Romantic&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&6Romantic&8]"
+			format slot 41 of player with compass named "&eSet Prefix to:  " with lore "", "  &8[&2Explorer&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2Explorer&8]"
+			format slot 42 of player with slime block named "&eSet Prefix to:  " with lore "", "  &8[&aStuntMan&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&aStuntMan&8]"
+			stop
+			
+		else if arg-1 is "pro":
+			if {_pro} is not set:
+				message "&8[&bSnap&8] &7You need Pro rank or higher to access those"
+				stop
+			format slot 20 of player with apple named "&eSet Prefix to:  " with lore "", "  &8[&aTeacher&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&aTeacher&8]"
+			format slot 21 of player with book named "&eSet Prefix to:  " with lore "", "  &8[&fWriter&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&fWriter&8]"
+			format slot 22 of player with golden apple named "&eSet Prefix to:  " with lore "", "  &8[&dNurse&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dNurse&8]"
+			format slot 23 of player with notch apple named "&eSet Prefix to:  " with lore "", "  &8[&2Doctor&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2Doctor&8]"
+			format slot 24 of player with feather named "&eSet Prefix to:  " with lore "", "  &8[&bArtist&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bArtist&8]"
+			
+			format slot 29 of player with book shelf named "&eSet Prefix to:  " with lore "", "  &8[&eLibrarian&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&eLibrarian&8]"
+			format slot 30 of player with compass named "&eSet Prefix to:  " with lore "", "  &8[&dPilot&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dPilot&8]"
+			format slot 31 of player with diamond boots named "&eSet Prefix to:  " with lore "", "  &8[&bWaiter&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bWaiter&8]"
+			format slot 32 of player with piston named "&eSet Prefix to:  " with lore "", "  &8[&2Plumber&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2Plumber&8]"
+			format slot 33 of player with steak named "&eSet Prefix to:  " with lore "", "  &8[&fChef&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&fChef&8]"
+			stop 
+			
+				
+		if player has permission "prefix.ultimate":
+			format slot 9  of player with pink wool block named "&eSet Prefix to:  " with lore "", "  &8[&4Ulti&fma&bte&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&4Ult&fima&bte&8]"
+			format slot 10 of player with red wool block named "&eSet Prefix to:  " with lore "", "  &8[&4Ult&cima&fte&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&4Ult&cima&fte&8]"
+			format slot 11 of player with light green wool block named "&eSet Prefix to:  " with lore "", "  &8[&aUltimate&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&aUltimate&8]"
+			format slot 12 of player with magenta wool block named "&eSet Prefix to:  " with lore "", "  &8[&6Ultimate&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&6Ultimate&8]"
+			format slot 13 of player with orange wool block named "&eSet Prefix to:  " with lore "", "  &8[&dUltimate&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dUltimate&8]"
+			format slot 14 of player with yellow wool block named "&eSet Prefix to:  " with lore "", "  &8[&eUltimate&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&eUltimate&8]"
+			format slot 15 of player with light blue wool block named "&eSet Prefix to:  " with lore "", "  &8[&bUltimate&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bUltimate&8]"
+			format slot 16 of player with purple wool block named "&eSet Prefix to:  " with lore "", "  &8[&5Ult&dima&fte&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&5Ult&dima&fte&8]"
+			format slot 17 of player with red wool block named "&eSet Prefix to:  " with lore "", "  &8[&dUlt&bima&fte&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dUlt&bima&fte&8]"
+			
+			format slot 18 of player with diamond sword named "&eSet Prefix to:  " with lore "", "  &8[&2God&aEmperor&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2God&aEmperor&8]"
+			format slot 19 of player with diamond axe named "&eSet Prefix to:  " with lore "", "  &8[&5God&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&5God&8]"
+			format slot 20 of player with golden apple named "&eSet Prefix to:  " with lore "", "  &8[&6God&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&6God&8]"
+			format slot 21 of player with notch apple named "&eSet Prefix to:  " with lore "", "  &8[&dGoddess&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&e&dGoddess&8]"
+			format slot 22 of player with diamond named "&eSet Prefix to:  " with lore "", "  &8[&3N&bu&fb&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&3N&bu&fb&8]"
+			format slot 23 of player with grass block named "&eSet Prefix to:  " with lore "", "  &8[&2Demi&f-&aGod&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2Demi&f&aGod&8]"
+			format slot 24 of player with pink tulip named "&eSet Prefix to:  " with lore "", "  &8[&5Demi&d-&fGod&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&5Demi&d-&fGod&8]"
+			format slot 25 of player with peony named "&eSet Prefix to:  " with lore "", "  &8[&dImmortal&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dImmortal&8]"
+			format slot 26 of player with gold ingot named "&eSet Prefix to:  " with lore "", "  &8[&eExecutive&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&eExecutive&8]"
+			
+			format slot 27 of player with iron sword named "&eSet Prefix to:  " with lore "", "  &8[&dWinner&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dWinner&8]"
+			format slot 28 of player with stone sword named "&eSet Prefix to:  " with lore "", "  &8[&bAdmiral&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bAdmiral&8]"
+			format slot 29 of player with water bucket named "&eSet Prefix to:  " with lore "", "  &8[&2Commander&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2Commander&8]"
+			format slot 30 of player with crafting table named "&eSet Prefix to:  " with lore "", "  &8[&aGeneral&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&aGeneral&8]"
+			format slot 31 of player with peony named "&eSet Prefix to:  " with lore "", "  &8[&2Emperor&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2Emperor&8]"
+			format slot 32 of player with leather chestplate named "&eSet Prefix to:  " with lore "", "  &8[&bAngel&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bAngel&8]"
+			format slot 33 of player with crafting table named "&eSet Prefix to:  " with lore "", "  &8[&eMonster&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&eMonster&8]"
+			format slot 34 of player with redstone named "&eSet Prefix to:  " with lore "", "  &8[&cDevil&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&cDevil&8]"
+			format slot 35 of player with lava bucket named "&eSet Prefix to:  " with lore "", "  &8[&cVIP&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&cVIP&8]"
+			
+			format slot 36 of player with diamond helmet named "&eSet Prefix to:  " with lore "", "  &8[&cDeath&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&cDeath&8]"
+			format slot 37 of player with diamond boots named "&eSet Prefix to:  " with lore "", "  &8[&dLife&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dLife&8]"
+			format slot 38 of player with emerald named "&eSet Prefix to:  " with lore "", "  &8[&aDrug&fLord&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&aDrug&fLord&8]"
+			format slot 39 of player with rose red named "&eSet Prefix to:  " with lore "", "  &8[&6N&eoo&6b&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&6N&eoo&6b&8]"
+			format slot 40 of player with gold nugget named "&eSet Prefix to:  " with lore "", "  &8[&cOverLord&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&cOverLord&8]"
+			format slot 41 of player with slime block named "&eSet Prefix to:  " with lore "", "  &8[&4Lord&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&4Lord&8]"
+			format slot 42 of player with diamond block named "&eSet Prefix to:  " with lore "", "  &8[&aClub&2Owner&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&aClub&2Owner&8]"
+			format slot 43 of player with glass block named "&eSet Prefix to:  " with lore "", "  &8[&aSexy&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&aSexy&8]"
+			format slot 44 of player with gold block named "&eSet Prefix to:  " with lore "", "  &8[&cPremium&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&cPremium&8]"
+			stop
+		
+		else if player has permission "prefix.legend":
+			format slot 10 of player with red wool block named "&eSet Prefix to:  " with lore "", "  &8[&4Leg&cend&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&4Leg&cend&8]"
+			format slot 11 of player with light green wool block named "&eSet Prefix to:  " with lore "", "  &8[&aLegend&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&aLegend&8]"
+			format slot 12 of player with magenta wool block named "&eSet Prefix to:  " with lore "", "  &8[&6Legend&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&6Legend&8]"
+			format slot 13 of player with orange wool block named "&eSet Prefix to:  " with lore "", "  &8[&dLegend&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dLegend&8]"
+			format slot 14 of player with yellow wool block named "&eSet Prefix to:  " with lore "", "  &8[&eLegend&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&eLegend&8]"
+			format slot 15 of player with light blue wool block named "&eSet Prefix to:  " with lore "", "  &8[&bLegend&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bLegend&8]"
+			format slot 16 of player with purple wool block named "&eSet Prefix to:  " with lore "", "  &8[&5Leg&dend&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&5Leg&dend&8]"
+			
+			format slot 19 of player with diamond axe named "&eSet Prefix to:  " with lore "", "  &8[&5Marv&delo&fus&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&5Marv&delo&fus&8]"
+			format slot 20 of player with grass block named "&eSet Prefix to:  " with lore "", "  &8[&6Original&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&6Original&8]"
+			format slot 21 of player with gold sword named "&eSet Prefix to:  " with lore "", "  &8[&eIcon&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&eIcon&8]"
+			format slot 22 of player with golden apple named "&eSet Prefix to:  " with lore "", "  &8[&bSuperStar&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bSuperStar&8]"
+			format slot 23 of player with diamond sword named "&eSet Prefix to:  " with lore "", "  &8[&bMaster&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bMaster&8]"
+			format slot 24 of player with pink tulip named "&eSet Prefix to:  " with lore "", "  &8[&dSaint&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dSaint&8]"
+			format slot 25 of player with iron axe named "&eSet Prefix to:  " with lore "", "  &8[&2Out&astand&fing&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2Out&astand&fing&8]"
+			
+			format slot 28 of player with stone sword named "&eSet Prefix to:  " with lore "", "  &8[&dGroovy&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dGroovy&8]"
+			format slot 29 of player with peony named "&eSet Prefix to:  " with lore "", "  &8[&fModel&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&fModel&8]"
+			format slot 30 of player with crafting table named "&eSet Prefix to:  " with lore "", "  &8[&2Warrior&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2Warrior&8]"
+			format slot 31 of player with peony named "&eSet Prefix to:  " with lore "", "  &8[&dMythic&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dMythic&8]"
+			format slot 32 of player with leather chestplate named "&eSet Prefix to:  " with lore "", "  &8[&bMythic&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bMythic&8]"
+			format slot 33 of player with crafting table named "&eSet Prefix to:  " with lore "", "  &8[&dFigment&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dFigment&8]"
+			format slot 34 of player with redstone named "&eSet Prefix to:  " with lore "", "  &8[&c&lHot&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&c&lHot&8]"
+			
+			format slot 37 of player with diamond helmet named "&eSet Prefix to:  " with lore "", "  &8[&dBoss&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dBoss&8]"
+			format slot 38 of player with diamond boots named "&eSet Prefix to:  " with lore "", "  &8[&dFairy&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dFairy&8]"
+			format slot 39 of player with emerald named "&eSet Prefix to:  " with lore "", "  &8[&aMy&fth&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&aMy&fth&8]"
+			format slot 40 of player with rose red named "&eSet Prefix to:  " with lore "", "  &8[&7Smoke&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&7Smoke&8]"
+			format slot 41 of player with gold nugget named "&eSet Prefix to:  " with lore "", "  &8[&5Wi&dse&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&5Wi&dse&8]"
+			format slot 42 of player with slime block named "&eSet Prefix to:  " with lore "", "  &8[&2Fa&abl&fe&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2Fa&abl&fe&8]"
+			format slot 43 of player with gold block named "&eSet Prefix to:  " with lore "", "  &8[&cC&6E&eO&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&cC&6E&eO&8]"
+			stop
+		
+		
+		
+		else if player has permission "prefix.hero":
+			format slot 11 of player with light green wool block named "&eSet Prefix to:  " with lore "", "  &8[&aHero&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&aHero&8]"
+			format slot 12 of player with magenta wool block named "&eSet Prefix to:  " with lore "", "  &8[&dHero&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dHero&8]"
+			format slot 13 of player with orange wool block named "&eSet Prefix to:  " with lore "", "  &8[&6Hero&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&6Hero&8]"
+			format slot 14 of player with yellow wool block named "&eSet Prefix to:  " with lore "", "  &8[&eHero&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&eHero&8]"
+			format slot 15 of player with light blue wool block named "&eSet Prefix to:  " with lore "", "  &8[&bHero&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bHero&8]"
+			
+			format slot 20 of player with iron axe named "&eSet Prefix to:  " with lore "", "  &8[&6Hercules&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&6Hercules&8]"
+			format slot 21 of player with gold sword named "&eSet Prefix to:  " with lore "", "  &8[&eChampion&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&eChampion&8]"
+			format slot 22 of player with golden apple named "&eSet Prefix to:  " with lore "", "  &8[&bPowerful&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bPowerful&8]"
+			format slot 23 of player with diamond sword named "&eSet Prefix to:  " with lore "", "  &8[&bKing&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bKing&8]"
+			format slot 24 of player with pink tulip named "&eSet Prefix to:  " with lore "", "  &8[&dQueen&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dQueen&8]"
+			
+			format slot 29 of player with wooden axe named "&eSet Prefix to:  " with lore "", "  &8[&fChief&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&fChief&8]"
+			format slot 30 of player with crafting table named "&eSet Prefix to:  " with lore "", "  &8[&2Adventurer&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2Adventurer&8]"
+			format slot 31 of player with peony named "&eSet Prefix to:  " with lore "", "  &8[&bVoyager&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bVoyager&8]"
+			format slot 32 of player with leather chestplate named "&eSet Prefix to:  " with lore "", "  &8[&6Pirate&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&6Pirate&8]"
+			format slot 33 of player with redstone named "&eSet Prefix to:  " with lore "", "  &8[&dPioneer&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dPioneer&8]"
+			
+			format slot 38 of player with leather boots named "&eSet Prefix to:  " with lore "", "  &8[&6Mercenary&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&6Mercenary&8]"
+			format slot 39 of player with gold nugget named "&eSet Prefix to:  " with lore "", "  &8[&eSwashbuckler&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&eSwashbuckler&8]"
+			format slot 40 of player with rose red named "&eSet Prefix to:  " with lore "", "  &8[&6Romantic&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&6Romantic&8]"
+			format slot 41 of player with compass named "&eSet Prefix to:  " with lore "", "  &8[&2Explorer&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2Explorer&8]"
+			format slot 42 of player with slime block named "&eSet Prefix to:  " with lore "", "  &8[&aStuntMan&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&aStuntMan&8]"
+			stop
+		
+		
+		else if player has permission "prefix.pro":
+			format slot 11 of player with light green wool block named "&eSet Prefix to:  " with lore "", "  &8[&aPro&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&aPro&8]"
+			format slot 12 of player with magenta wool block named "&eSet Prefix to:  " with lore "", "  &8[&dPro&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dPro&8]"
+			format slot 13 of player with dark green wool block named "&eSet Prefix to:  " with lore "", "  &8[&2Pro&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2Pro&8]"
+			format slot 14 of player with yellow wool block named "&eSet Prefix to:  " with lore "", "  &8[&ePro&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&ePro&8]"
+			format slot 15 of player with light blue wool block named "&eSet Prefix to:  " with lore "", "  &8[&bPro&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bPro&8]"
+			
+			format slot 20 of player with apple named "&eSet Prefix to:  " with lore "", "  &8[&aTeacher&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&aTeacher&8]"
+			format slot 21 of player with book named "&eSet Prefix to:  " with lore "", "  &8[&fWriter&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&fWriter&8]"
+			format slot 22 of player with golden apple named "&eSet Prefix to:  " with lore "", "  &8[&dNurse&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dNurse&8]"
+			format slot 23 of player with notch apple named "&eSet Prefix to:  " with lore "", "  &8[&2Doctor&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2Doctor&8]"
+			format slot 24 of player with feather named "&eSet Prefix to:  " with lore "", "  &8[&bArtist&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bArtist&8]"
+			
+			format slot 29 of player with book shelf named "&eSet Prefix to:  " with lore "", "  &8[&eLibrarian&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&eLibrarian&8]"
+			format slot 30 of player with compass named "&eSet Prefix to:  " with lore "", "  &8[&dPilot&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dPilot&8]"
+			format slot 31 of player with diamond boots named "&eSet Prefix to:  " with lore "", "  &8[&bWaiter&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bWaiter&8]"
+			format slot 32 of player with piston named "&eSet Prefix to:  " with lore "", "  &8[&2Plumber&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&2Plumber&8]"
+			format slot 33 of player with steak named "&eSet Prefix to:  " with lore "", "  &8[&fChef&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&fChef&8]"
+			stop 
+		
+		else if player has permission "prefix.semipro":
+			format slot 11 of player with light gray wool block named "&eSet Prefix to:  " with lore "", "  &8[&7Semi-Pro&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&7Semi-Pro&8]"
+			format slot 12 of player with magenta wool block named "&eSet Prefix to:  " with lore "", "  &8[&dSemi-Pro&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dSemi-Pro&8]"
+			format slot 13 of player with light green wool block named "&eSet Prefix to:  " with lore "", "  &8[&aSemi-Pro&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&aSemi-Pro&8]"
+			format slot 14 of player with yellow wool block named "&eSet Prefix to:  " with lore "", "  &8[&eSemi-Pro&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&eSemi-Pro&8]"
+			format slot 15 of player with light blue wool block named "&eSet Prefix to:  " with lore "", "  &8[&bSemi-Pro&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bSemi-Pro&8]"
+				
+		else if player has permission "prefix.member":
+			format slot 11 of player with light green wool block named "&eSet Prefix to:  " with lore "", "  &8[&aMember&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&aMember&8]"
+			format slot 12 of player with magenta wool block named "&eSet Prefix to:  " with lore "", "  &8[&dMember&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&dMember&8]"
+			format slot 13 of player with light gray wool block named "&eSet Prefix to:  " with lore "", "  &8[&7Member&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&7Member&8]"
+			format slot 15 of player with yellow wool block named "&eSet Prefix to:  " with lore "", "  &8[&eMember&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&eMember&8]"
+			format slot 14 of player with light blue wool block named "&eSet Prefix to:  " with lore "", "  &8[&bMember&8] &f%player's display name%", " " to close then run "setprefix %player% &8[&bMember&8]"
+			format slot 31 of player with gold block named "&6Buy a rank to unlock more" with lore "", "", " &e/buy ", "  " to close then run "sudo %player% buy2"
+			stop
+command /setprefix <player> <text>:
+	permission: is.op
+	trigger:
+		set {_player} to arg-1
+		execute console command "/pex user %{_player}% prefix %arg-2%"
+		send {_player} title "&6&lPrefix Set" with subtitle "%arg-2%" for 2 seconds with 10 tick fade in and 1 second fade out
+		set {prefix::%{_player}%} to "%arg-2%"
+
+
+				
+			
+			
+			
+			
+			

@@ -1,0 +1,36 @@
+command /setshop <text> <int> <int> <text>:
+	permission: is.op
+	trigger:
+		set {signcash::%player%} to arg-3
+		set {signamount::%player%} to arg-2
+		set {signbuy::%player%} to arg-1
+		set {signtext::%player%} to arg-4
+		message "Set"
+		
+		
+on right click on sign:
+	if {signtext::%player%} is set:
+		set line 3 to "%{signtext::%player%}%"
+		if "%{signbuy::%player%}%" contains "buy":
+			set line 1 to "<blue>[Buy]"
+		else if "%{signbuy::%player%}%" contains "sell":
+			set line 1 to "<blue>[Sell]"
+		set line 2 to "%{signamount::%player%}%"
+		set line 4 to "$%{signcash::%player%}%"
+		message "%{signtextnumber::%player%}% &7to &a%{signtext::%player%}%"
+		delete {signtextnumber::%player%}
+		delete {signtext::%player%}
+		
+		
+command /setline <int> <text>:
+	permission: is.op
+	trigger:
+		set {setline.text::%player%} to arg-2
+		message "Set"
+		
+		
+on right click on sign:
+	if {setline.text::%player%} is set:
+		cancel event
+		set line 3 to "%{setline.text::%player%}%"
+		delete {setline.text::%player%}

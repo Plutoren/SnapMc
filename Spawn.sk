@@ -1,0 +1,76 @@
+on right click with golden shovel:
+	if player is in world "spawn":
+		message "&8[&bSnap&8] &7You can't claim here!"
+
+on right click with fishing rod:
+	if player is in world "Spawn":
+		cancel event
+
+on right click with 401:
+	if player is in world "Spawn":
+		cancel event
+
+on region enter:
+	if player is not in world "Spawn":
+		stop
+	if "%event-region%" contains "portal_wild":
+		execute player command "/wild"
+	else if "%event-region%" contains "portal_nether":
+		execute player command "/nether"
+	else if "%event-region%" contains "portal_end":
+		execute player command "/end"
+	else if "%event-region%" contains "portal_shop":
+		execute player command "/warp shop"
+	else if "%event-region%" contains "portal_pvp":
+		execute player command "/pvp"
+
+
+		
+command /spawn:
+	trigger:
+		if player is in world "world" or "world_nether" or "world_the_end" or "resource" or "spawn" or "Elytra Fall":
+			execute player command "/survival"
+		else if player is in world "prison":
+			execute player command "/prison"
+		else if player is in world "Creative":
+			execute player command "/creative"
+		else if player is in world "Skyblock":
+			execute player command "/skyblock spawn"
+		else if player is in world "BedWars":
+			execute player command "/quit"
+		else if player is in world "Hub":
+			execute player command "/servers"
+		else if player is in world "Wilderness":
+			teleport player to {pos::wilderness_spawn}
+		message "&8[&bSnap&8] &eLooking for a different spawn? Try &b/hub"
+			
+
+on first join:
+	wait 1 tick
+	teleport player to {pos::hub}
+	wait 1 tick
+	teleport player to {pos::hub}
+	set player's yaw to {yaw::hub}
+	set player's pitch to {pitch::hub}
+	wait 1 tick
+	teleport player to {pos::hub}
+	wait 1 tick
+	teleport player to {pos::hub}
+	if player's inventory does not contain a compass:
+		give player 1 of {item::serverselector}
+	
+
+on click with 432:
+	if player is in world "spawn":
+		cancel event
+		remove player's tool from player
+on right click with 432:
+	if player is in world "spawn":
+		cancel event	
+		remove player's tool from player
+
+	
+every 5 minutes in world "Hub":
+	set time to 9:00	
+every 5 minutes in world "spawn":
+	set time to 9:00

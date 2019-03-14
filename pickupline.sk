@@ -1,0 +1,36 @@
+command /pickupline [<player>]:
+	trigger:
+		if arg-1 is not set:
+			message "&8[&bSnap&8] &7Try picking a player &b/pickupline <player>"
+			stop
+		if {justusedemote::%player%} was less than 2 minutes ago:
+			message "&8[&bEmote&8] &7Please wait a few minutes before doing another emote"
+			stop
+		set {justusedemote::%player%} to now
+		set {_i} to random integer from 1 to 5
+		if {_i} = 1:
+			message "&b» &e&bHey &a%arg-1's name%&e, You should be a scientist when you grow up to study &a%player's name%'s&e body"
+			send "&b» &e&bHey &a%arg-1's name%&e, You should be a scientist when you grow up to study &a%player's name%'s&e body" to arg-1
+		else if {_i} = 2:
+			message "&b» &a%arg-1's name%&e, How do you like your steak cooked? If you were &a%player's name%&e's I'd bake you well done"
+			send "&b» &a%arg-1's name%&e, How do you like your steak cooked? If you were &a%player's name%&e's I'd bake you well done" to arg-1
+		else if {_i} = 3:
+			message "&b» &a%arg-1's name%&e, do you have a jar? Because &a%player's name%&e would like to reach in there and tickle your pickle"
+			send "&b» &a%arg-1's name%&e, do you have a jar? Because &a%player's name%&e would like to reach in there and tickle your pickle" to arg-1
+		else if {_i} = 4:
+			message "&b» &a%arg-1's name%&e should consider &a%player's name%&e Dora the explorer because they'd like to explore their body"
+			send "&b» &a%arg-1's name%&e should consider &a%player's name%&e Dora the explorer because they'd like to explore their body" to arg-1
+		else if {_i} = 5:
+			message "&b» &eIs &a%arg-1's name%&e a dinosaur in prehistoric times? Because &a%player's name%&e would like to Big Bang them"
+			send "&b» &eIs &a%arg-1's name%&e a dinosaur in prehistoric times? Because &a%player's name%&e would like to Big Bang them" to arg-1
+		else if {_i} = 6:
+			message ""
+		else if {_i} = 7:
+			message ""
+		else if {_i} = 8:
+			message ""
+		else if {_i} = 9:
+			message ""
+		else if {_i} = 10:
+			message ""
+			

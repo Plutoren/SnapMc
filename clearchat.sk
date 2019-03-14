@@ -1,0 +1,6 @@
+command /cc:
+	permission: is.staff
+	trigger:
+		loop 100 times:
+			broadcast ""
+		broadcast "&c&l The chat has been cleared by a Moderator"

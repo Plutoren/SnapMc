@@ -1,0 +1,260 @@
+
+command /setpack <text> <int>:
+	permission: is.op
+	trigger:
+		set {packmax::%arg-1%} to arg-2
+command /packspy <text> [<text>]:
+	permission: is.staff
+	trigger:
+		if arg-2 is set:
+		
+			set {_i} to 0
+			if {packlist%arg-1%::%arg-2%} is set:
+				wait 1 tick
+				open chest with 6 rows named "       &1-=[ &5&lPack Menu &1]=-" to player
+				wait 1 tick
+				
+				
+				
+				loop {pack%arg-1%%arg-2%::*}:
+					format slot {_i} of player with loop-value to close
+					add 1 to {_i}
+				wait 1 tick
+				format slot 45 of player with diamond horse armor named "&cAll Packs" to close then run "sudo %player% packspy %arg-1%"
+
+			else:
+				message "&8[&6Pack&8] &c&lError &7>> &cPack &c&l%arg-2% &cnot found!"
+				message "&8[&6Pack&8] &cCheck &d/pack list &eto see your packs."
+		else:
+			set {_d} to 0
+			wait 1 tick
+			open chest with 6 rows named "       &1-=[ &5&lPack Menu &1]=-" to player
+			wait 1 tick
+			loop {packlist%arg-1%::*}:
+				format slot {_d} of player with {pack%arg-1%%loop-value%::1} named "&d&l%loop-value%" with lore "&e&oClick to view pack", "" to close then run "sudo %player% packspy %arg-1% %loop-value%"
+				add 1 to {_d}
+			
+			if {_d} = 0:
+				message "&8[&6Pack&8] &c&lError &7>> &cNo Packs found!"
+			
+		stop
+command /packrename <text> <text>:
+	permission: is.staff
+	trigger:
+		set {packmax::%arg-2%} to {packmax::%arg-1%}
+		loop {packlist%arg-1%::*}:
+			set {packlist%arg-2%::%loop-index%} to {packlist%arg-1%::%loop-index%}
+		
+		
+		loop {packlist%arg-1%::*}:
+			loop {pack%arg-1%%loop-index%::*}:
+				set {pack%arg-2%%loop-index-1%::%loop-index-2%} to {pack%arg-1%%loop-index-1%::%loop-index-2%}
+		
+on join:
+	if {packmax::%player%} is not set:
+		if player has permission "is.vortex":
+			set {packmax::%player%} to 10
+		else if player has permission "is.donator":
+			set {packmax::%player%} to 2
+		else if player has permission "is.staff":
+			
+			set {packmax::%player%} to 2
+		else:
+			set {packmax::%player%} to 0
+		stop
+	else if {packmax::%player%} < 2:
+		if player has permission "is.donator":
+			set {packmax::%player%} to 2
+		else if player has permission "is.staff":
+			set {packmax::%player%} to 2
+			
+	else if {packmax::%player%} <= 10:
+		if player has permission "is.vortex":
+			set {packmax::%player%} to 10
+
+command /pack [<text>] [<text>]:
+	trigger:
+		if arg-1 is not set:
+			message ""
+			message "       &6&l&nSnap Custom Packs"
+			message ""
+			message "  &b/pack set (name)  &7Save your inventory to a pack"
+			message "  &b/pack get (name)  &7Retrieve a pack if you have space"
+			message "  &b/pack list        &7List your packs"
+			message "  &b/pack list (name) &7Check the items in a pack"
+			message ""
+			stop
+			
+		if arg-1 is "set":
+		
+			
+			if arg-2 is set:
+				
+				if {packmax::%player%} is not set:
+					if player has permission "is.donator":
+						set {packmax::%player%} to 2
+					else if player has permission "is.staff":
+						
+						set {packmax::%player%} to 2
+					else:
+						set {packmax::%player%} to 0
+				if {packmax::%player%} = 0:
+					if player has permission "is.donator":
+						set {packmax::%player%} to 2
+					else if player has permission "is.staff":
+						set {packmax::%player%} to 2
+				if player has permission "is.vortex":
+					if {packmax::%player%} is not set:
+						set {packmax::%player%} to 10
+					else if {packmax::%player%} < 10:
+						set {packmax::%player%} to 10 
+					
+						
+				set {_i} to 0
+				loop {packlist%player%::*}:
+					add 1 to {_i}
+				
+				if {_i} >= {packmax::%player%}:
+					message "&8[&6Pack&8] &c&lError &7>> &cYou must purcahse more packs to do this"
+					message "&8[&6Pack&8] &eTry checking &a/pack list &eto see what packs you have"
+					stop
+				if helmet slot of player is not air:
+					message "&8[&6Pack&8] &c&lError &7>> &cRemove your Hat first" 
+					stop
+				if player is wearing a chestplate:
+					message "&8[&6Pack&8] &c&lError &7>> &cRemove your Chestplate first" 
+					stop
+				if player is wearing leggings:
+					message "&8[&6Pack&8] &c&lError &7>> &cRemove your Leggings first" 
+					stop
+				if player is wearing boots:
+					message "&8[&6Pack&8] &c&lError &7>> &cRemove your Boots first" 
+					stop
+				if chestplate slot of player is not air:
+					message "&8[&6Pack&8] &c&lError &7>> &cRemove your Elytra" 
+					stop
+				if offhand tool is not air:
+					message "&8[&6Pack&8] &c&lError &7>> &cRemove your Offhand" 
+					stop
+						
+				set {_i} to 0
+				loop all items in player's inventory:
+					add 1 to {_i}
+				if {_i} = 0:
+					message "&8[&6Pack&8] &c&lError &7>> &cInventory empty!"
+					stop
+				if {packlist%player%::%arg-2%} is set:
+					message "&8[&6Pack&8] &c&lError &7>> &cPack %arg-2% already exists!"
+					message "&8[&6Pack&8] &cTry &d/pack get %arg-2% &eto empty it."
+					stop
+				set {_i} to 0
+				loop all items in player's inventory:
+					add 1 to {_i}
+					set {pack%player%%arg-2%::%{_i}%} to loop-item
+				set {packlist%player%::%arg-2%} to arg-2
+				execute console command "/ci %player%"
+				message "&8[&6Pack&8] &ePack &d&l%arg-2% &ecreated"
+				message "&8[&6Pack&8] &eCollect it later with &a/pack get %arg-2%"
+					
+			else:
+				message "&8[&6Pack&8] &c&lError &7>> &cProper usage: &a/pack set (name)"
+			stop
+
+
+		else if arg-1 is "get":
+			if arg-2 is set:
+				if {packlist%player%::%arg-2%} is set:
+					set {_i} to 0
+					loop all items in player's inventory:
+						add 1 to {_i}
+					set {_space} to 36 - {_i}
+					set {_i} to 0
+					set {_d} to 0
+					loop {pack%player%%arg-2%::*}:
+						if {_i} >= {_space}:
+							add 1 to {_d}
+							add 1 to {_i}
+							set {pack%player%%arg-2%::%{_d}%} to {pack%player%%arg-2%::%{_i}%}
+							
+							if {_d} != {_i}:
+								delete {pack%player%%arg-2%::%{_i}%}
+							
+							set {_delete} to false
+							
+							
+						else:
+							set {_delete} to true
+							add 1 to {_i}
+							give {pack%player%%arg-2%::%{_i}%} to player
+							delete {pack%player%%arg-2%::%{_i}%}
+					if {_i} > {_space}:
+						message "&8[&6Pack&8] &c&lError &7>> &cInventory Full!"
+						message "&8[&6Pack&8] &c&l%{_d}% &citems still in &d%arg-2%"
+					if {_delete} is true:
+						delete {packlist%player%::%arg-2%}
+						message "&8[&6Pack&8] &ePack Collected"
+				else:
+					message "&8[&6Pack&8] &c&lError &7>> &cPack &c&l%arg-2% &cnot found!"
+					message "&8[&6Pack&8] &cCheck &d/pack list &cto see your packs."
+			else:
+				message "&8[&6Pack&8] &c&lError &7>> &cProper usage: &a/pack get (name)"
+			stop
+
+
+		else if arg-1 is "list":
+			
+			if arg-2 is set:
+			
+				set {_i} to 0
+				if {packlist%player%::%arg-2%} is set:
+					wait 1 tick
+					open chest with 6 rows named "       &1-=[ &5&lPack Menu &1]=-" to player
+					wait 1 tick
+					
+					
+					
+					loop {pack%player%%arg-2%::*}:
+						format slot {_i} of player with loop-value to close
+						add 1 to {_i}
+					wait 1 tick
+					format slot 45 of player with diamond horse armor named "&cAll Packs" to close then run "sudo %player% pack list"
+					format slot 53 of player with nether star named "&bCollect %arg-2% pack" to close then run "sudo %player% pack get %arg-2%"
+
+				else:
+					message "&8[&6Pack&8] &c&lError &7>> &cPack &c&l%arg-2% &cnot found!"
+					message "&8[&6Pack&8] &cCheck &d/pack list &eto see your packs."
+			else:
+				set {_d} to 0
+				wait 1 tick
+				open chest with 6 rows named "       &1-=[ &5&lPack Menu &1]=-" to player
+				wait 1 tick
+				loop {packlist%player%::*}:
+					format slot {_d} of player with {pack%player%%loop-value%::1} named "&d&l%loop-value%" with lore "&e&oClick to view pack", "&e ", "&e" to close then run "sudo %player% pack list %loop-value%"
+					add 1 to {_d}
+				if {packmax::%player%} is not set:
+					set {packmax::%player%} to 0
+				set {_e} to {_d} - {packmax::%player%}
+				
+				format slot 45 of player with chest named "&eTotal Packs: &d%{packmax::%player%}%" with lore "", "&7Purchase more packs with &a/buy", "", "&7Fill a pack with &a/pack set (name)" to close
+
+				if {_i} = 0:
+					message "&8[&6Pack&8] &c&lError &7>> &cNo Packs found!"
+					message "&8[&6Pack&8] &eUse &a/pack set (name) &eto make a pack"
+				else:
+					message "&8[&6Pack&8] &eUse &a/pack get (name) &eto collect a pack"
+					message "&8[&6Pack&8] &eUse &a/pack list (name) &eto view a pack"
+				
+			stop
+			
+		else:
+			message ""
+			message "       &6&l&nSnap Custom Packs"
+			message ""
+			message "&a/pack set (name)  &7Save your inventory to a pack"
+			message "&a/pack get (name)  &7Retrieve a pack if you have space"
+			message "&a/pack list        &7List your packs"
+			message "&a/pack list (name) &7Check the items in a pack"
+			stop
+
+
+			

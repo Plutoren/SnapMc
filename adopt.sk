@@ -1,0 +1,3 @@
+command /adopt:
+	trigger:
+		message "&8[&bSnap&8] &7Adopt people using &b/family"

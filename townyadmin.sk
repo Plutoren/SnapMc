@@ -1,0 +1,17 @@
+command /townyadmin [<text>] [<text>] [<int>]:
+	permission: is.Pluto
+	trigger:
+		if arg-1 is not set:
+			message "lol"
+			stop
+		if arg-1 is "bonusclaims":
+			if arg-3 is not set:
+				message "&cUsage: &7/ta bonusclaims (town) (number)"
+				stop
+			set {_townyName} to arg-2
+			if {townychat.settings::%{_townyName}%::claims.count} is not set:
+				message "Town does not exist"
+				stop
+			add arg-3 to {townychat.settings::%{_townyName}%::claims.count}
+			message "New Claim Count is %{townychat.settings::%{_townyName}%::claims.count}%"
+		

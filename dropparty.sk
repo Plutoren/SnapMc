@@ -1,0 +1,113 @@
+command /dropparty:
+	permission: is.Pluto
+	trigger:
+		loop 10 times:
+			wait 3 second
+			set {_i} to random integer from 1 to 10
+			set {_choice} to random integer from 1 to 10
+			if {_choice} is 1:
+				drop 1 of random element of {fortune.items::*} at {pos::survival_dropparty_%{_i}%}
+				firework({pos::survival_dropparty_%{_i}%})
+			else if {_choice} is 2 or 3 or 4:
+				drop 1 of random element of {keys.items::*} at {pos::survival_dropparty_%{_i}%}
+				firework({pos::survival_dropparty_%{_i}%})
+			else if {_choice} is 5 or 6 or 7 or 8:
+				drop 1 of random element of {cash.items::*} at {pos::survival_dropparty_%{_i}%}
+				firework({pos::survival_dropparty_%{_i}%})
+		loop 10 times:
+			wait 1 second
+			set {_i} to random integer from 4 to 10
+			set {_choice} to random integer from 1 to 10
+			if {_choice} is 1:
+				drop 1 of random element of {fortune.items::*} at {pos::survival_dropparty_%{_i}%}
+				firework({pos::survival_dropparty_%{_i}%})
+			else if {_choice} is 2 or 3 or 4:
+				drop 1 of random element of {keys.items::*} at {pos::survival_dropparty_%{_i}%}
+				firework({pos::survival_dropparty_%{_i}%})
+			else if {_choice} is 5 or 6 or 7 or 8:
+				drop 1 of random element of {cash.items::*} at {pos::survival_dropparty_%{_i}%}
+				firework({pos::survival_dropparty_%{_i}%})
+		loop 10 times:
+			wait 2 second
+			set {_i} to random integer from 1 to 10
+			set {_choice} to random integer from 1 to 10
+			if {_choice} is 1:
+				drop 1 of random element of {fortune.items::*} at {pos::survival_dropparty_%{_i}%}
+				firework({pos::survival_dropparty_%{_i}%})
+			else if {_choice} is 2 or 3 or 4:
+				drop 1 of random element of {keys.items::*} at {pos::survival_dropparty_%{_i}%}
+				firework({pos::survival_dropparty_%{_i}%})
+			else if {_choice} is 5 or 6 or 7 or 8:
+				drop 1 of random element of {cash.items::*} at {pos::survival_dropparty_%{_i}%}
+				firework({pos::survival_dropparty_%{_i}%})
+		loop 10 times:
+			wait 1 second
+			set {_i} to random integer from 2 to 10
+			set {_choice} to random integer from 1 to 10
+			if {_choice} is 1:
+				drop 1 of random element of {fortune.items::*} at {pos::survival_dropparty_%{_i}%}
+				firework({pos::survival_dropparty_%{_i}%})
+			else if {_choice} is 2 or 3 or 4:
+				drop 1 of random element of {keys.items::*} at {pos::survival_dropparty_%{_i}%}
+				firework({pos::survival_dropparty_%{_i}%})
+			else if {_choice} is 5 or 6 or 7 or 8:
+				drop 1 of random element of {cash.items::*} at {pos::survival_dropparty_%{_i}%}
+				firework({pos::survival_dropparty_%{_i}%})
+		loop 20 times:
+			wait 1 second
+			set {_i} to random integer from 1 to 10
+			set {_choice} to random integer from 5 to 10
+			if {_choice} is 1:
+				drop 1 of random element of {fortune.items::*} at {pos::survival_dropparty_%{_i}%}
+				firework({pos::survival_dropparty_%{_i}%})
+			else if {_choice} is 2 or 3 or 4:
+				drop 1 of random element of {keys.items::*} at {pos::survival_dropparty_%{_i}%}
+				firework({pos::survival_dropparty_%{_i}%})
+			else if {_choice} is 5 or 6 or 7 or 8:
+				drop 1 of random element of {cash.items::*} at {pos::survival_dropparty_%{_i}%}
+				firework({pos::survival_dropparty_%{_i}%})
+	
+function firework(location: location):	
+	set {_i} to random integer from 1 to 15
+	if {_i} is 1:
+		launch burst firework colored red at block above {_location} timed 1	
+	else if {_i} is 2:
+		launch burst firework colored blue at block above {_location} timed 1	
+	else if {_i} is 3:
+		launch creeper firework colored green at block above {_location} timed 1	
+	else if {_i} is 4:
+		launch burst firework colored purple at block above {_location} timed 1	
+	else if {_i} is 5:
+		launch star firework colored yellow at block above {_location} timed 1	
+	else if {_i} is 6:
+		launch ball firework colored yellow at block above {_location} timed 1	
+	else if {_i} is 7:
+		launch ball firework colored yellow at block above {_location} timed 1	
+	else if {_i} is 8:
+		launch ball large firework colored yellow at block above {_location} timed 1	
+	else if {_i} is 9:
+		launch creeper firework colored red at block above {_location} timed 1	
+	else if {_i} is 10:
+		launch ball large firework colored blue at block above {_location} timed 1	
+	else if {_i} is 11:
+		launch ball large firework colored red at block above {_location} timed 1	
+	else if {_i} is 12:
+		launch ball large firework colored white at block above {_location} timed 1	
+	else if {_i} is 13:
+		launch ball large firework colored black at block above {_location} timed 1	
+	else if {_i} is 14:
+		launch ball large firework colored red at block above {_location} timed 1	
+	else if {_i} is 15:
+		launch star firework colored red at block above {_location} timed 1	
+		
+command /keyset <text>:
+	permission: is.Pluto
+	trigger:
+		set {keys.items::%arg-1%} to 1 of player's tool
+		message "set"
+		
+command /moneyset <int>:
+	permission: is.op
+	trigger:
+		set {cash.items::%arg-1%} to 1 of player's tool
+		message "set"

@@ -1,0 +1,3 @@
+on sign change:
+	if "%line 4%" is "air" or "0" or "0:0" or "0:0:0":
+		cancel event

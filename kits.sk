@@ -1,0 +1,652 @@
+on command "/pk":
+	cancel event
+on command "/previewkit":
+	cancel event
+on block place: 
+	if player's tool is enchanted:
+		message "&cCancelled placing enchanted item"
+		cancel event	
+	else if player's offhand is enchanted:
+		message "&cCancelled placing enchanted item"
+		cancel event	
+command /setkey <text>:
+	permission: is.op
+	trigger:
+		set {kitpreview.key::%1 of player's tool%} to arg-1
+		message "set"
+
+command /lockkey <text>:
+	permission: is.op
+	trigger:
+		set {kitpreview.crate::%location of target block%} to arg-1
+		message "set"
+		
+
+on inventory click:
+	if player is not "Plutoren":
+		if name of player's current inventory contains "birthday" or "starter" or "galctic" or "explosive" or "mystery" or "event" or "cosmic" or "voting" or "party" or "pro" or "hero" or "legend" or "ultimate" or "vortex" or "deluxe" or "legendary" or "halloween" or "thanksgiving" or "christmas" or "starwars" or "oriental" or "lucky" or "spicy" or "rainbow" or "earth" or "water" or "cloud" or "sun" or "summer":
+			if name of player's current inventory contains "-=[":
+				if name of player's current inventory contains "]=-":
+					if name of player's current inventory does not contain "shop":
+						cancel event
+						close inventory of player
+		if name of player's current inventory contains "You are editing kit:":
+			cancel event
+			close inventory of player
+						
+on right click with tripwire hook:
+	if player is in world "Hub" or "SkyBlock" or "Prison" or "BedWars" or "Wilderness":
+		if 1 of player's tool = {item::key_partykey}:
+			if {redeem.crate::%player%::party} is not set:
+				set {redeem.crate::%player%::party} to 0
+			set {_amount} to item amount of player's tool
+			set {redeem.crate::%player%::party} to {redeem.crate::%player%::party} + {_amount}
+			set player's tool to air
+			message "&8[&bSnap&8] &7You got &dx%{_amount}% Party Key &7redeem with &e/rc" 
+		else if 1 of player's tool = {item::key_vote}:
+			if {redeem.crate::%player%::voting} is not set:
+				set {redeem.crate::%player%::voting} to 0
+			set {_amount} to item amount of player's tool
+			set {redeem.crate::%player%::voting} to {redeem.crate::%player%::voting} + {_amount}
+			set player's tool to air
+			message "&8[&bSnap&8] &7You got &dx%{_amount}% Voting Key &7redeem with &e/rc" 
+		else if 1 of player's tool = {item::key_legendary}:
+			if {redeem.crate::%player%::legendary} is not set:
+				set {redeem.crate::%player%::legendary} to 0
+			set {_amount} to item amount of player's tool
+			set {redeem.crate::%player%::legendary} to {redeem.crate::%player%::legendary} + {_amount}
+			set player's tool to air
+			message "&8[&bSnap&8] &7You got &dx%{_amount}% Legendary Key &7redeem with &e/rc" 
+		else if 1 of player's tool = {item::key_deluxe}:
+			if {redeem.crate::%player%::deluxe} is not set:
+				set {redeem.crate::%player%::deluxe} to 0
+			set {_amount} to item amount of player's tool
+			set {redeem.crate::%player%::deluxe} to {redeem.crate::%player%::deluxe} + {_amount}
+			set player's tool to air
+			message "&8[&bSnap&8] &7You got &dx%{_amount}% Deluxe Key &7redeem with &e/rc" 
+		else if 1 of player's tool = {item::key_ultimate}:
+			if {redeem.crate::%player%::ultimate} is not set:
+				set {redeem.crate::%player%::ultimate} to 0
+			set {_amount} to item amount of player's tool
+			set {redeem.crate::%player%::ultimate} to {redeem.crate::%player%::ultimate} + {_amount}
+			set player's tool to air
+			message "&8[&bSnap&8] &7You got &dx%{_amount}% Ultimate Key &7redeem with &e/rc" 
+		else if 1 of player's tool = {item::key_legend}:
+			if {redeem.crate::%player%::legend} is not set:
+				set {redeem.crate::%player%::legend} to 0
+			set {_amount} to item amount of player's tool
+			set {redeem.crate::%player%::legend} to {redeem.crate::%player%::legend} + {_amount}
+			set player's tool to air
+			message "&8[&bSnap&8] &7You got &dx%{_amount}% Legend Key &7redeem with &e/rc" 
+		else if 1 of player's tool = {item::key_spicy}:
+			if {redeem.crate::%player%::spicy} is not set:
+				set {redeem.crate::%player%::spicy} to 0
+			set {_amount} to item amount of player's tool
+			set {redeem.crate::%player%::spicy} to {redeem.crate::%player%::spicy} + {_amount}
+			set player's tool to air
+			message "&8[&bSnap&8] &7You got &dx%{_amount}% Spicy Key &7redeem with &e/rc" 
+		
+on command "/kits":
+	cancel event
+	message "&8[&bSnap&8] &6Kits: &eStarter, Semi-Pro, Pro, Hero, Legend, Ultimate, Cosmic, Vortex, VortexMax"
+	message "&8[&bSnap&8] &c/kit (name)"
+on command "/kit":
+	if arguments is not set:
+		cancel event
+		message "&8[&bSnap&8] &6Kits: &eStarter, Semi-Pro, Pro, Hero, Legend, Ultimate, Cosmic, Vortex, VortexMax"
+		message "&8[&bSnap&8] &c/kit (name)"
+command /crate:
+	aliases: crates
+	trigger:
+		if player is in world "SkyBlock":
+			execute player command "/warp skyblockcrates"
+			stop
+		if player is in world "Prison":
+			teleport player to {pos::prison_crates}
+			stop
+		execute player command "/warp crates"
+on right click with egg:
+	if player is in world "Spawn":
+		cancel event
+command /unbreaking:
+	permission: is.op
+	trigger:
+		give player 1 of unbreakable player's tool
+# on right click:
+#	if {kitpreview.crate::%location of clicked block%} is set:
+#		if "%{kitpreview.key::%1 of player's tool%}%" != "%{kitpreview.crate::%location of clicked block%}%":
+#			cancel event
+#			message "&8[&bSnap&8] &6&lYou need &6&la %{kitpreview.crate::%location of clicked block%}% Key"
+#			close inventory of player
+#			push player upwards
+#			wait 1 tick
+#			push player backwards
+#			close inventory of player
+#			wait 1 tick
+#			close inventory of player
+#			wait 1 tick
+#			close inventory of player
+#			wait 1 tick
+#			close inventory of player
+
+# on left click:
+#	if {kitpreview.crate::%location of clicked block%} is set:
+#		if "%{kitpreview.key::%1 of player's tool%}%" != "%{kitpreview.crate::%location of clicked block%}%":
+#			cancel event
+#			message "&8[&bSnap&8] &6&lYou need &6&la %{kitpreview.crate::%location of clicked block%}% Key"
+#			close inventory of player
+#			push player upwards
+#			wait 1 tick
+#			push player backwards
+#			close inventory of player
+#			wait 1 tick
+#			close inventory of player
+#			wait 1 tick
+#			close inventory of player
+#			wait 1 tick
+#			close inventory of player
+#			wait 1 tick
+#			close inventory of player
+
+
+command /redeemer [<int>]:
+	permission: is.op
+	trigger:
+		if arg-1 is set:
+			loop {kit.redeemer.cash::*}:
+				if loop-value > arg-1:
+					loop {kit.redeemer.cash::%loop-index%::*}:
+						message "&e%{uuidName::%loop-index-1%}% &7- &d%loop-value-2%x &a%loop-index-2%"
+					message "&eTotal&7: &e%loop-value%"
+					message ""
+		else:
+			loop {kit.redeemer.cash::*}:
+				loop {kit.redeemer.cash::%loop-index%::*}:
+					message "&e%{uuidName::%loop-index-1%}% &7- &d%loop-value-2%x &a%loop-index-2%"
+				message "&eTotal&7: &e%loop-value-1%"
+				message ""
+				
+
+
+on click:
+	if player is not in world "spawn" or "world" or "world_nether" or "world_the_end" or "SkyBlock" or "Avalon":
+		stop
+	if player's tool is a clock:
+		
+		if name of player's tool does not contain "worldedit":
+			stop
+		if lore of player's tool does not contain "0" or "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9":
+			stop
+		cancel event
+		set {_lore::*} to lore of player's tool
+		replace all "&1" with "" in {_lore::1}
+		replace all "&2" with "" in {_lore::1}
+		replace all "&3" with "" in {_lore::1}
+		replace all "&4" with "" in {_lore::1}
+		replace all "&5" with "" in {_lore::1}
+		replace all "&6" with "" in {_lore::1}
+		replace all "&7" with "" in {_lore::1}
+		replace all "&8" with "" in {_lore::1}
+		replace all "&9" with "" in {_lore::1}
+		
+		if {_lore::1} contains "1":
+			set {_lore} to 1
+		else if {_lore::1} contains "2":
+			set {_lore} to 2
+		else if {_lore::1} contains "3":
+			set {_lore} to 3
+		else if {_lore::1} contains "4":
+			set {_lore} to 4
+		else if {_lore::1} contains "5":
+			set {_lore} to 5
+		else if {_lore::1} contains "6":
+			set {_lore} to 6
+		else if {_lore::1} contains "7":
+			set {_lore} to 7
+		else if {_lore::1} contains "8":
+			set {_lore} to 8
+		else if {_lore::1} contains "9":
+			set {_lore} to 9
+			
+		remove 1 of player's tool from player's inventory		
+		message "&8[&bSnap&8] &aWorld edit hours added: &f%{_lore}%"
+		message "&8[&bSnap&8] &aClick here for a guide on World Edit&7:"
+		message "        &e snapmc.com/threads/world-edit-guide.164/"
+		execute console command "/grantworldeditperms %player% %{_lore}%"
+
+	else if player's tool is a grass block:
+		
+		if name of player's tool does not contain "claim":
+			stop
+		if lore of player's tool does not contain "0" or "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9":
+			stop
+		cancel event
+		set {_lore::*} to lore of player's tool
+		replace all "&2" with "" in {_lore::1}
+		replace all "&a" with "" in {_lore::1}
+		set {_lore} to {_lore::1}
+		replace all "," with "" in {_lore}
+		message "&8[&bSnap&8] &aClaim blocks added: &f%{_lore}%"
+		execute console command "/adjustbonusclaimblocks %player% %{_lore}%"
+		remove 1 of player's tool from player's inventory	
+		stop
+	else if player's tool is a redstone lamp:
+		
+		if name of player's tool does not contain "claim":
+			stop
+		if lore of player's tool does not contain "0" or "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9":
+			stop
+		cancel event
+		set {_lore::*} to lore of player's tool
+		set {_lore} to {_lore::1}
+		replace all "&c" with "" in {_lore}
+		
+		replace all "," with "" in {_lore}
+		message "&8[&bSnap&8] &aClaim blocks added: &f%{_lore}%"
+		set {_lore} to {_lore} parsed as an integer
+		execute console command "/adjustbonusclaimblocks %player% %{_lore}%"
+		remove 1 of player's tool from player's inventory	
+		stop
+	else if player's tool is a snow block:
+			
+		if name of player's tool does not contain "claim":
+			stop
+		if lore of player's tool does not contain "0" or "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9":
+			stop
+		cancel event
+		set {_lore::*} to lore of player's tool
+		set {_lore} to {_lore::1}
+		replace all "&2" with "" in {_lore}
+		
+		replace all "," with "" in {_lore}
+		message "&8[&bSnap&8] &aClaim blocks added: &f%{_lore}%"
+		execute console command "/adjustbonusclaimblocks %player% %{_lore}%"
+		remove 1 of player's tool from player's inventory		
+
+	else if player's tool is a hay block:
+			
+		if name of player's tool does not contain "claim":
+			stop
+		if lore of player's tool does not contain "0" or "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9":
+			stop
+		cancel event
+		set {_lore::*} to lore of player's tool
+		set {_lore} to {_lore::1}
+		replace all "&2" with "" in {_lore}
+		
+		replace all "," with "" in {_lore}
+		message "&8[&bSnap&8] &aClaim blocks added: &f%{_lore}%"
+		execute console command "/adjustbonusclaimblocks %player% %{_lore}%"
+		remove 1 of player's tool from player's inventory		
+		stop
+	else if player's tool is  bedrock:
+	
+		if name of player's tool does not contain "claim":
+			stop
+		if lore of player's tool does not contain "0" or "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9":
+			stop
+		cancel event
+		set {_lore::*} to lore of player's tool
+		set {_lore} to {_lore::1}
+		replace all "&7" with "" in {_lore}
+		
+		replace all "," with "" in {_lore}
+		message "&8[&bSnap&8] &aClaim blocks added: &f%{_lore}%"
+		execute console command "/adjustbonusclaimblocks %player% %{_lore}%"
+		remove 1 of player's tool from player's inventory			
+		stop
+	else if player's tool is a jack-o-lantern:
+		if name of player's tool does not contain "claim":
+			stop
+		if lore of player's tool does not contain "0" or "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9":
+			stop
+		cancel event
+		set {_lore::*} to lore of player's tool
+		set {_lore} to {_lore::1}
+		replace all "&2" with "" in {_lore}
+		
+		replace all "," with "" in {_lore}
+		message "&8[&bSnap&8] &aClaim blocks added: &f%{_lore}%"
+		execute console command "/adjustbonusclaimblocks %player% %{_lore}%"
+		remove 1 of player's tool from player's inventory		
+		stop
+	else if player's tool is an gold ingot:
+		
+		if name of player's tool does not contain "cash":
+			stop
+		if lore of player's tool does not contain "0" or "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9":
+			stop
+		cancel event
+		add 1 to {kit.redeemer.cash::%uuid of player%}
+		add 1 to {kit.redeemer.cash::%uuid of player%::%lore of player's tool%}
+		execute console command "/eco give %player% %lore of player's tool%"
+		remove 1 of player's tool from player's inventory		
+		stop
+
+	else if player's tool is a monster spawner:
+			
+		if name of player's tool does not contain "&7&k&7&k&7":
+			stop
+		set {_lore::*} to lore of player's tool
+		set {_amount} to {_lore::1}
+		if {_lore::1} does not contain "spawner":
+			stop
+		cancel event
+		replace all "&6" with "" in {_amount}
+		replace all "&l" with "" in {_amount}
+		replace all "&7" with "" in {_amount}
+		replace all " " with "" in {_amount}
+		replace all "spawner" with "" in {_amount}
+		replace all "|" with "" in {_amount}
+		remove 1 of player's tool from player's inventory
+		wait 1 tick
+		execute console command "/ss give %player% %{_amount}% 1"
+	else if player's tool is a nether star:
+		if name of player's tool does not contain "&e&lServer Wide &d&lDouble Skills XP":
+			stop
+		set {_lore::*} to lore of player's tool
+		if "%{_lore::*}%" does not contain "&3Lasts 2 Hours":
+			stop
+		if "%{_lore::*}%" does not contain "Click to Redeem":
+			stop
+		cancel event
+		remove 1 of player's tool from player's inventory
+		execute console command "/mcmmoaddminutes 120"
+		message "&8[&bSnap&8] &eYou activated double xp for 120 minutes"
+
+
+command /getspawner <text>:
+	permission: is.op
+	trigger:
+		set {_item} to monster spawner named "&7&k&7&k&7   " with lore "   &6&l%arg-1% &7Spawner", " &7"
+		give {_item} to player
+		
+		
+command /unbreakable:
+	permission: is.op
+	trigger:
+		set {_item} to 1 of player's tool
+		remove {_item} from player's inventory
+		give player an unbreakable {_item}
+command /scroll:
+	permission: is.op
+	trigger:
+		set {_i} to 0
+		loop {scroll::elderhelmet::*}:
+			message "&eElder Helmet&d: &3%{uuidName::%loop-index%}% &7- &a%loop-value%"
+			add loop-value to {_i}
+		if {_i} > 0:
+			message "   &eTotal&7: &f%{_i}%"
+		set {_i} to 0
+		loop {scroll::elderchestplate::*}:
+			message "&eElder Chestplate&d: &3%{uuidName::%loop-index%}% &7- &a%loop-value%"
+			add loop-value to {_i}
+		if {_i} > 0:
+			message "   &eTotal&7: &f%{_i}%"
+		set {_i} to 0
+		loop {scroll::elderleggings::*}:
+			message "&eElder Leggings&d: &3%{uuidName::%loop-index%}% &7- &a%loop-value%"
+			add loop-value to {_i}
+		if {_i} > 0:
+			message "   &eTotal&7: &f%{_i}%"
+		set {_i} to 0
+		loop {scroll::elderboots::*}:
+			message "&eElder Boots&d: &3%{uuidName::%loop-index%}% &7- &a%loop-value%"
+			add loop-value to {_i}
+		if {_i} > 0:
+			message "   &eTotal&7: &f%{_i}%"
+		set {_i} to 0
+		loop {scroll::immortalhelmet::*}:
+			message "&6Immortal Helmet&d: &3%{uuidName::%loop-index%}% &7- &a%loop-value%"
+			add loop-value to {_i}
+		if {_i} > 0:
+			message "   &eTotal&7: &f%{_i}%"
+		set {_i} to 0
+		loop {scroll::immortalchestplate::*}:
+			message "&6Immortal Chestplate&d: &3%{uuidName::%loop-index%}% &7- &a%loop-value%"
+			add loop-value to {_i}
+		if {_i} > 0:
+			message "   &eTotal&7: &f%{_i}%"
+		set {_i} to 0
+		loop {scroll::immortalleggings::*}:
+			message "&6Immortal Leggings&d: &3%{uuidName::%loop-index%}% &7- &a%loop-value%"
+			add loop-value to {_i}
+		
+		if {_i} > 0:
+			message "   &eTotal&7: &f%{_i}%"
+		set {_i} to 0
+		loop {scroll::immortalboots::*}:
+			message "&6Immortal Boots&d: &3%{uuidName::%loop-index%}% &7- &a%loop-value%"
+			add loop-value to {_i}
+		if {_i} > 0:
+			message "   &eTotal&7: &f%{_i}%"
+command /getitem <text>:
+	permission: is.op
+	trigger:
+		give player {item::%arg-1%}
+on inventory click:
+	if true is true:
+		if clicked cursor is {item::immortalscroll}:
+			if "%clicked item%" is "%{item::terracottachestplate}%":
+				clear cursor slot of player
+				message "&8[&eScroll&8] &7Scroll Applied to Chestplate"
+				set clicked item to air
+				wait 1 tick
+				remove 1 of {item::immortalscroll} from player
+				give player 1 of {item::immortalchestplate}
+				add 1 to {scroll::immortalchestplate::%uuid of player%}
+				stop
+			else if "%clicked item%" is "%{item::terracottahelmet}%":
+				clear cursor slot of player
+				message "&8[&eScroll&8] &7Scroll Applied to Helmet"
+				set clicked item to air
+				wait 1 tick
+				remove 1 of {item::immortalscroll} from player
+				give player 1 of {item::immortalhelm}
+				add 1 to {scroll::immortalhelmet::%uuid of player%}
+				stop
+			else if "%clicked item%" is "%{item::terracottaleggings}%":
+				clear cursor slot of player
+				message "&8[&eScroll&8] &7Scroll Applied to Leggings"
+				set clicked item to air
+				wait 1 tick
+				remove 1 of {item::immortalscroll} from player
+				give player 1 of {item::immortalleggings}
+				add 1 to {scroll::immortalleggings::%uuid of player%}
+				stop
+			else if "%clicked item%" is "%{item::terracottaboots}%":
+				clear cursor slot of player
+				message "&8[&eScroll&8] &7Scroll Applied to Boots"
+				set clicked item to air
+				wait 1 tick
+				remove 1 of {item::immortalscroll} from player
+				give player 1 of {item::immortalboots}
+				add 1 to {scroll::immortalboots::%uuid of player%}
+				stop
+		else if clicked cursor is {item::elderscroll}:
+			if "%clicked item%" is "%{item::antiquechestplate}%":
+				clear cursor slot of player
+				message "&8[&eScroll&8] &7Scroll Applied to Chestplate"
+				set clicked item to air
+				wait 1 tick
+				remove 1 of {item::elderscroll} from player
+				give player 1 of {item::elderchestplate}
+				add 1 to {scroll::elderchestplate::%uuid of player%}
+				stop
+			else if "%clicked item%" is "%{item::antiquehelmet}%":
+				clear cursor slot of player
+				message "&8[&eScroll&8] &7Scroll Applied to Helmet"
+				set clicked item to air
+				wait 1 tick
+				remove 1 of {item::elderscroll} from player
+				give player 1 of {item::elderhelmet}
+				add 1 to {scroll::elderhelmet::%uuid of player%}
+				stop
+			else if "%clicked item%" is "%{item::antiqueleggings}%":
+				clear cursor slot of player
+				message "&8[&eScroll&8] &7Scroll Applied to Leggings"
+				set clicked item to air
+				wait 1 tick
+				remove 1 of {item::elderscroll} from player
+				give player 1 of {item::elderleggings}
+				add 1 to {scroll::elderleggings::%uuid of player%}
+				stop
+			else if "%clicked item%" is "%{item::antiqueboots}%":
+				clear cursor slot of player
+				message "&8[&eScroll&8] &7Scroll Applied to Boots"
+				set clicked item to air
+				wait 1 tick
+				remove 1 of {item::elderscroll} from player
+				give player 1 of {item::elderboots}
+				add 1 to {scroll::elderboots::%uuid of player%}
+				stop
+					
+command /keyall <text> <int>:
+	permission: is.op
+	trigger:
+		set {_count} to arg-2
+		loop all players:
+			if loop-player is in world "Hub" or "BedWars" or "Prison" or "MobArena" or "Creative" or "SkyBlock" or "Wilderness":
+				if loop-player is in world "Prison":
+					if arg-1 = "0" or "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9" or "10" or "11" or "12":
+						stop
+
+				
+				if {_count} = 1:
+					send loop-player title "&aOops you just got %{_count}% %arg-1% key" with subtitle "Use /rc to get it later" for 5 second with 1 second fade in and 2 second fade out
+				else:
+					send loop-player title "&aOops you just got %{_count}% %arg-1% keys" with subtitle "Use /rc to get them later" for 6 second with 1 second fade in and 2 second fade out
+			
+				if {redeem.crate::%loop-player%::%arg-1%} is not set:
+					set {redeem.crate::%loop-player%::%arg-1%} to {_count}
+				else:
+					set {redeem.crate::%loop-player%::%arg-1%} to {redeem.crate::%loop-player%::%arg-1%} + {_count}	
+				
+			else:
+				execute console command "/kp key %arg-1% regular %loop-player% %{_count}%"
+				if arg-1 != "party":
+					if {_count} = 1:
+						send loop-player title "&aYou got %{_count}% %arg-1% crate" with subtitle "/warp crate to redeem it" for 3 second with 1 second fade in and 2 second fade out
+					else:
+						send loop-player title "&aYou got %{_count}% %arg-1% crates" with subtitle "/warp crate to redeem them" for 3 second with 1 second fade in and 2 second fade out
+		stop
+					
+on command "/kp key":
+	set {_args::*} to arguments split at " "
+
+	if {_args::5} is not set:
+		stop
+	set {_player} to {_args::4} 
+	set {_isOnline} to false
+	
+	
+
+
+	if {_args::6} is set:
+		stop	
+	if "%{_args::5}%" is "1":
+		set {_count} to 1
+	else if "%{_args::5}%" is "2":
+		set {_count} to 2
+	else if "%{_args::5}%" is "3":
+		set {_count} to 3
+	else if "%{_args::5}%" is "4":
+		set {_count} to 4
+	else if "%{_args::5}%" is "5":
+		set {_count} to 5
+	else if "%{_args::5}%" is "6":
+		set {_count} to 6
+	else if "%{_args::5}%" is "7":
+		set {_count} to 7
+	else if "%{_args::5}%" is "8":
+		set {_count} to 8
+	else if "%{_args::5}%" is "9":
+		set {_count} to 9
+	else if "%{_args::5}%" is "10":
+		set {_count} to 10
+	else if "%{_args::5}%" is "11":
+		set {_count} to 11
+	else if "%{_args::5}%" is "12":
+		set {_count} to 12
+	else if "%{_args::5}%" is "13":
+		set {_count} to 13
+	else if "%{_args::5}%" is "14":
+		set {_count} to 14
+	else if "%{_args::5}%" is "15":
+		set {_count} to 15
+	
+	
+	if {_args::4} is "all":
+		loop all players:
+			if loop-player is in world "Hub" or "BedWars" or "Prison" or "MobArena" or "Creative" or "SkyBlock" or "Rooms" or "OITC" or "Events":
+				if loop-player is in world "Prison":
+					if "%{_args::2}%" = "0" or "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9" or "10" or "11" or "12":
+						stop
+				if loop-player is in world "SkyBlock":
+					if "%{_args::2}%" = "builder" or "survivor":
+						stop
+				cancel event
+
+				
+				if {_count} = 1:
+					send loop-player title "&aOops you just got %{_count}% %{_args::2}% key" with subtitle "Use /rc to get it later in survival" for 5 second with 1 second fade in and 2 second fade out
+				else:
+					send loop-player title "&aOops you just got %{_count}% %{_args::2}% keys" with subtitle "Use /rc to get them later in survival" for 6 second with 1 second fade in and 2 second fade out
+			
+				if {redeem.crate::%loop-player%::%{_args::2}%} is not set:
+					set {redeem.crate::%loop-player%::%{_args::2}%} to {_count}
+				else:
+					set {redeem.crate::%loop-player%::%{_args::2}%} to {redeem.crate::%loop-player%::%{_args::2}%} + {_count}	
+				
+			else:
+				if loop-player is not in world "Prison":
+					if "%{_args::2}%" != "party":
+						if {_count} = 1:
+							send loop-player title "&aYou got %{_count}% %{_args::2}% crate" with subtitle "/warp crate to redeem it" for 3 second with 1 second fade in and 2 second fade out
+						else:
+							send loop-player title "&aYou got %{_count}% %{_args::2}% crates" with subtitle "/warp crate to redeem them" for 3 second with 1 second fade in and 2 second fade out
+		stop
+		
+	if {_player} is in world "Hub" or "BedWars" or "Prison" or "MobArena" or "Creative" or "SkyBlock" or "Rooms" or "Events" or "OITC":
+		if {_player} is in world "Prison":
+			if "%{_args::2}%" = "0" or "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9" or "10" or "11" or "12":
+				stop
+		cancel event
+
+		
+		if {_count} = 1:
+			send {_player} title "&aOops you just got %{_count}% %{_args::2}% key" with subtitle "Use /rc to get it later" for 5 second with 1 second fade in and 2 second fade out
+		else:
+			send {_player} title "&aOops you just got %{_count}% %{_args::2}% keys" with subtitle "Use /rc to get them later" for 6 second with 1 second fade in and 2 second fade out
+	
+		if {redeem.crate::%{_player}%::%{_args::2}%} is not set:
+			set {redeem.crate::%{_player}%::%{_args::2}%} to {_count}
+		else:
+			set {redeem.crate::%{_player}%::%{_args::2}%} to {redeem.crate::%{_player}%::%{_args::2}%} + {_count}	
+		
+	else:
+		if {_player} is not in world "Prison":
+			if "%{_args::2}%" != "party":
+				if {_count} = 1:
+					send {_player} title "&aYou got %{_count}% %{_args::2}% crate" with subtitle "/warp crate to redeem it" for 3 second with 1 second fade in and 2 second fade out
+				else:
+					send {_player} title "&aYou got %{_count}% %{_args::2}% crates" with subtitle "/warp crate to redeem them" for 3 second with 1 second fade in and 2 second fade out
+
+command /rc:
+	trigger:
+		if player is in world "Hub" or "BedWars" or "MobArena" or "Prison" or "Creative" or "SkyBlock" or "Wilderness" or "OITC" or "Events":
+			message "&8[&bSnap&8] &7You can't redeem that here"
+		else:
+			message "&8[&bSnap&8] &7Returning any Lost Kit Keys"
+			loop {redeem.crate::%player%::*}:
+				message "&8[&bSnap&8] &dx%loop-value% &e%loop-index% Keys"
+				execute console command "/kp key %loop-index% regular %player% %loop-value%"
+				delete {redeem.crate::%player%::%loop-index%}
+			message "&8[&bSnap&8] &7Done"
+			
+command /rclist:
+	permission: is.op
+	trigger:
+		loop {redeem.crate::*}:
+			message "%loop-index% -- %loop-value%"
+		

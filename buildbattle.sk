@@ -1,0 +1,50 @@
+on sign edit:
+	if "%line 1%" contains "[build]":
+		if player is in world "Creative":
+			if {buildbattle::%player%} is not set:
+				set {buildbattle::%player%} to location of player
+				message "&8[&bBuild&8] &aSet your Building Competition Warp"
+				message "&8[&bBuild&8] &aAccess with &b/bwarp %player%"
+			
+			else:
+				set {buildbattle::%player%} to location of player
+				message "&8[&bBuild&8] &aMoved your Building Competition Warp"
+				message "&8[&bBuild&8] &aAccess with &b/bwarp %player%"
+		
+
+command /bwarpdelete:
+	permission: is.op
+	trigger:
+		delete {buildbattle::*}
+command /bwarp [<text>]:
+	trigger:
+		if arg-1 is not set:
+			message "&8[&bBuild&8] &aYou did not specify a player."
+			message "&8[&bBuild&8] &eRandomly selecting...."
+			set {_buildbattleCopy::*} to {buildbattle::*}
+			loop {_buildbattleCopy::*}:
+				if "%loop-value's world%" != "Creative":
+					delete {_buildbattleCopy::%loop-index%}
+			set {_loc} to a random element of {_buildbattleCopy::*}
+			
+			loop {buildbattle::*}:
+				if {_loc} = loop-value:
+					set {_player} to loop-index
+			message "&8[&bBuild&8] &eSelected &6%{_player}%"
+			teleport player to {_loc}
+			
+		if arg-1 is set:
+			if arg-1 is "list":
+				set {_buildbattleCopy::*} to {buildbattle::*}
+				message "&8[&bBuild&8] &6Members&7:"
+				loop {buildbattle::*}:
+					if "%loop-value's world%" = "Creative":
+						message "  &e%loop-index%"
+				stop
+				
+			if {buildbattle::%arg-1%} is not set:
+				message "&8[&bBuild&8] &eThat player has not entered the competition"
+				stop
+			
+			message "&8[&bBuild&8] &eSelected &6%arg-1%"
+			teleport player to {buildbattle::%arg-1%}

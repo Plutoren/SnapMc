@@ -1,0 +1,14 @@
+command /site:
+	aliases: forums, website
+	trigger:
+		message ""
+		message "&8[&bSnap&8] &d&lForums&7:&e snapmc.com"
+		message "        &7Forums Sign-Up Password&7: &e$napMc"
+		message ""
+
+command /apply:
+	trigger:
+		message ""
+		message "&8[&bSnap&8] &7&lApplication&7:&b snapmc.com/threads/staff-application-format.2/"
+		message ""
+		

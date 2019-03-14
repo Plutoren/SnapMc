@@ -1,0 +1,362 @@
+
+		
+on load:
+	set {_session} to new edit session in world "spawn" with limit -1 
+	paste schematic "plugins/WorldEdit/schematics/koth_air" at {pos::koth} using editsession {_session}
+	
+	
+command /spawnkoth2:
+	trigger:
+		if {koth2.last} was less than 1 hour ago:
+		
+							
+			set {_startDate} to {koth2.last}
+			set {_duration}  to 1 hour
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "&8[&6Snap&eKOTH&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+			stop
+		else if {pvp.lastevent} was less than 20 minutes ago:				
+			set {_startDate} to {pvp.lastevent}
+			set {_duration}  to 20 minutes
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "&8[&c&lPvP&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+			stop
+		set {pvp.lastevent} to now
+		set {koth2.last} to now
+		
+		run player command "/koth start keepinvoffpvp 1 30 2" as op
+		
+command /spawnkoth:
+	trigger:
+		if {koth.last} was less than 1 hour ago:
+		
+							
+			set {_startDate} to {koth.last}
+			set {_duration}  to 1 hour
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "&8[&6Snap&eKOTH&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+			stop
+		else if {pvp.lastevent} was less than 20 minutes ago:				
+			set {_startDate} to {pvp.lastevent}
+			set {_duration}  to 20 minutes
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "&8[&c&lPvP&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+			stop
+		set {pvp.lastevent} to now
+		set {koth.last} to now
+		
+		
+		run player command "/koth start keepinvpvp 1 30 2" as op
+		
+		set {_session} to new edit session in world "spawn" with limit -1 
+		
+		drawComplexSpiral particle "redstone", center {pos::koth}, id "koth-spiral", rainbowMode true, clockwise true, scan true, radius 4, density 200, height 20, effectMod .25, start 0, visibleRange 40
+		drawComplexSpiral particle "redstone", center {pos::koth}, id "koth-spiral2", rainbowMode true, clockwise false, scan true, radius 3, density 200, height 40, effectMod .5, start 0, visibleRange 40
+		drawComplexSpiral particle "redstone", center {pos::koth}, id "koth-spiral3", rainbowMode true, clockwise true, scan true, radius 2, density 200, height 30, effectMod .15, start 60, visibleRange 40
+		drawComplexSpiral particle "redstone", center {pos::koth}, id "koth-spiral4", rainbowMode false, clockwise false, scan true, radius 5, density 200, height 20, effectMod .35, start 10, visibleRange 40
+		drawComplexSpiral particle "redstone", center {pos::koth}, id "koth-spiral5", rainbowMode true, clockwise true, scan true, radius 4, density 200, height 20, effectMod .25, start 100, visibleRange 40
+		drawComplexSpiral particle "redstone", center {pos::koth}, id "koth-spiral6", rainbowMode true, clockwise false, scan true, radius 3, density 200, height 50, effectMod .65, start 50, visibleRange 40
+		drawComplexSpiral particle "redstone", center {pos::koth}, id "koth-spiral7", rainbowMode false, clockwise false, scan true, radius 2, density 200, height 10, effectMod .75, start 0, visibleRange 40
+		drawComplexSpiral particle "redstone", center {pos::koth}, id "koth-spiral8", rainbowMode false, clockwise false, scan true, radius 1, density 200, height 5, effectMod .05, start 10, visibleRange 40
+		drawComplexSpiral particle "redstone", center {pos::koth}, id "koth-spiral9", rainbowMode true, clockwise true, scan true, radius 4, density 200, height 10, effectMod .03, start 1, visibleRange 40
+		
+		wait 2 seconds
+		loop blocks in radius 1 of {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 30%:
+					set loop-block to stone
+				chance of 30%:
+					set loop-block to oak leaves
+				chance of 30%:
+					set loop-block to stone brick
+		loop players in radius 6 of {pos::koth}:
+			push player from block 1 below block at {pos::koth}
+		wait 2 second
+		loop players in radius 8 of {pos::koth}:
+			push player from block 1 below block at {pos::koth}
+		wait 5 ticks
+		loop blocks in radius 2 of {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 30%:
+					set loop-block to stone
+				chance of 30%:
+					set loop-block to oak leaves
+				chance of 30%:
+					set loop-block to stone brick
+		wait 2 second
+		loop players in radius 8 of {pos::koth}:
+			push player from block 1 below block at {pos::koth}
+		wait 5 ticks
+		loop blocks in radius 3 of {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 30%:
+					set loop-block to stone
+				chance of 30%:
+					set loop-block to oak leaves
+				chance of 30%:
+					set loop-block to stone brick
+		wait 38 ticks
+		loop players in radius 8 of {pos::koth}:
+			push player from block 1 below block at {pos::koth}
+		wait 5 ticks
+		loop blocks in radius 4 of {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 30%:
+					set loop-block to stone
+				chance of 30%:
+					set loop-block to oak leaves
+				chance of 30%:
+					set loop-block to stone brick
+		wait 28 ticks
+		loop players in radius 8 of {pos::koth}:
+			push player from block 1 below block at {pos::koth}
+		wait 5 ticks
+		loop blocks in radius 5 of {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 30%:
+					set loop-block to stone
+				chance of 30%:
+					set loop-block to oak leaves
+				chance of 30%:
+					set loop-block to stone brick
+		wait 25 ticks
+		loop players in radius 8 of {pos::koth}:
+			push player from block 1 below block at {pos::koth}
+		wait 5 ticks
+		loop blocks in radius 6 of {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 30%:
+					set loop-block to stone
+				chance of 30%:
+					set loop-block to oak leaves
+				chance of 30%:
+					set loop-block to stone brick
+		wait 20 ticks
+		loop players in radius 8 of {pos::koth}:
+			push player from block 1 below block at {pos::koth}
+		wait 5 ticks
+		loop blocks in radius 6 of block 4 above {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 30%:
+					set loop-block to stone
+				chance of 30%:
+					set loop-block to oak leaves
+				chance of 30%:
+					set loop-block to stone brick
+		wait 10 ticks
+		loop players in radius 8 of {pos::koth}:
+			push player from block 1 below block at {pos::koth}
+		wait 5 ticks
+		loop blocks in radius 6 of block 7 above {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 30%:
+					set loop-block to stone
+				chance of 30%:
+					set loop-block to oak leaves
+				chance of 30%:
+					set loop-block to stone brick
+		loop blocks in radius 6 of {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 30%:
+					set loop-block to stone
+				chance of 30%:
+					set loop-block to oak leaves
+				chance of 30%:
+					set loop-block to stone brick
+		loop blocks in radius 5 of block 4 above {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 30%:
+					set loop-block to stone
+				chance of 20%:
+					set loop-block to cobblestone
+				chance of 10%:
+					set loop-block to air
+		wait 15 ticks
+		loop players in radius 8 of {pos::koth}:
+			push player from block 1 below block at {pos::koth}
+		wait 5 ticks
+		loop blocks in radius 6 of block 10 above {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 20%:
+					set loop-block to stone
+				chance of 10%:
+					set loop-block to oak leaves
+				chance of 10%:
+					set loop-block to stone brick	
+		loop blocks in radius 5 of block 4 above {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 10%:
+					set loop-block to stone
+				chance of 20%:
+					set loop-block to oak leaves
+				chance of 10%:
+					set loop-block to air
+		loop blocks in radius 6 of block 8 above {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 30%:
+					set loop-block to stone
+				chance of 30%:
+					set loop-block to oak leaves
+				chance of 30%:
+					set loop-block to stone brick
+		wait 15 ticks
+		loop blocks in radius 6 of block 12 above {pos::koth}:
+			if y coordinate of loop-block < 88:
+				chance of 10%:
+					set loop-block to stone
+				chance of 10%:
+					set loop-block to oak leaves
+				chance of 15%:
+					set loop-block to cobblestone
+		loop blocks in radius 6 of block 10 above {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 20%:
+					set loop-block to stone
+				chance of 10%:
+					set loop-block to oak leaves
+				chance of 10%:
+					set loop-block to stone brick	
+		loop blocks in radius 5 of block 4 above {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 10%:
+					set loop-block to stone
+				chance of 20%:
+					set loop-block to oak leaves
+				chance of 10%:
+					set loop-block to air
+		loop blocks in radius 6 of block 8 above {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 30%:
+					set loop-block to stone
+				chance of 30%:
+					set loop-block to oak leaves
+				chance of 30%:
+					set loop-block to stone brick
+		wait 15 ticks
+		loop blocks in radius 6 of block 16 above {pos::koth}:
+			if y coordinate of loop-block < 88:
+				chance of 10%:
+					set loop-block to stone
+				chance of 10%:
+					set loop-block to oak leaves
+				chance of 15%:
+					set loop-block to cobblestone
+		wait 5 ticks
+		loop blocks in radius 6 of block 15 above {pos::koth}:
+			if y coordinate of loop-block < 88:
+				chance of 20%:
+					set loop-block to stone
+				chance of 10%:
+					set loop-block to oak leaves
+				chance of 10%:
+					set loop-block to stone brick	
+		loop blocks in radius 5 of block 10 above {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 10%:
+					set loop-block to stone
+				chance of 20%:
+					set loop-block to oak leaves
+				chance of 10%:
+					set loop-block to air
+		wait 2 ticks
+		loop blocks in radius 6 of block 8 above {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 30%:
+					set loop-block to stone
+				chance of 30%:
+					set loop-block to oak leaves
+				chance of 30%:
+					set loop-block to stone brick
+		wait 10 ticks
+		paste schematic "plugins/WorldEdit/schematics/koth_tower" at {pos::koth} using editsession {_session} without air
+		wait 10 ticks
+		loop blocks in radius 6 of block 13 above {pos::koth}:
+			if y coordinate of loop-block < 88:
+				chance of 10%:
+					set loop-block to stone brick
+				chance of 20%:
+					set loop-block to air
+				chance of 15%:
+					set loop-block to cobblestone
+		loop blocks in radius 6 of block 16 above {pos::koth}:
+			if y coordinate of loop-block < 88:
+				chance of 10%:
+					set loop-block to stone brick
+				chance of 40%:
+					set loop-block to air
+				chance of 15%:
+					set loop-block to cobblestone
+		paste schematic "plugins/WorldEdit/schematics/koth_tower" at {pos::koth} using editsession {_session} without air
+		wait 15 ticks
+		loop blocks in radius 5 of block 10 above {pos::koth}:
+			if y coordinate of loop-block < 88:
+				chance of 10%:
+					set loop-block to cobblestone
+				chance of 30%:
+					set loop-block to air
+				chance of 15%:
+					set loop-block to air
+		paste schematic "plugins/WorldEdit/schematics/koth_tower" at {pos::koth} using editsession {_session} without air
+		wait 10 ticks
+		loop blocks in radius 5 of block 6 above {pos::koth}:
+			if y coordinate of loop-block < 88:
+				chance of 35%:
+					set loop-block to air
+		paste schematic "plugins/WorldEdit/schematics/koth_tower" at {pos::koth} using editsession {_session} without air
+		wait 19 ticks
+		loop blocks in radius 7 of block 14 above {pos::koth}:
+			if y coordinate of loop-block < 88:
+				chance of 45%:
+					set loop-block to air
+		paste schematic "plugins/WorldEdit/schematics/koth_tower" at {pos::koth} using editsession {_session} without air
+		wait 17 ticks
+		loop blocks in radius 7 of block 10 above {pos::koth}:
+			if y coordinate of loop-block < 88:
+				chance of 55%:
+					set loop-block to air
+		paste schematic "plugins/WorldEdit/schematics/koth_tower" at {pos::koth} using editsession {_session} without air
+		wait 18 ticks
+		loop blocks in radius 10 of block 15 above {pos::koth}:
+			if y coordinate of loop-block < 88:
+				chance of 75%:
+					set loop-block to air
+		paste schematic "plugins/WorldEdit/schematics/koth_tower" at {pos::koth} using editsession {_session} without air
+		wait 15 ticks
+		loop blocks in radius 10 of block 9 above {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 55%:
+					set loop-block to air
+		paste schematic "plugins/WorldEdit/schematics/koth_tower" at {pos::koth} using editsession {_session} without air
+		wait 14 ticks
+		loop blocks in radius 10 of block 8 above {pos::koth}:
+			if y coordinate of loop-block > 68:
+				chance of 75%:
+					set loop-block to air
+		paste schematic "plugins/WorldEdit/schematics/koth_tower" at {pos::koth} using editsession {_session} without air
+		wait 1 seconds
+		
+		stopEffect id "koth-spiral"
+		stopEffect id "koth-spiral2"
+		stopEffect id "koth-spiral3"
+		stopEffect id "koth-spiral4"
+		stopEffect id "koth-spiral5"
+		stopEffect id "koth-spiral6"
+		stopEffect id "koth-spiral7"
+		stopEffect id "koth-spiral8"
+		stopEffect id "koth-spiral9"
+		
+		paste schematic "plugins/WorldEdit/schematics/koth_tower" at {pos::koth} using editsession {_session}
+		wait 29 minutes
+		paste schematic "plugins/WorldEdit/schematics/koth_air" at {pos::koth} using editsession {_session}

@@ -1,0 +1,44 @@
+# Configuration
+options:
+	command: nv
+	
+	prefix: &8[&bSnap&8] 
+	permission: nv.toggle
+	enableMessage: &aNight Vision Enabled
+	disableMessage: &cNight Vision Disabled
+	noPermissionMessage: &cYou don't have permission!
+
+command /{@command}:
+	aliases: nightvision
+	trigger:	
+		if player has permission "nv.toggle":
+			if player is in world "Wilderness":
+				message "&8[&bSnap&8] &7Sorry you can't use that in this world!"
+				stop
+			if {nv::%player%} is not set:
+				set {nv::%player%} to true
+				apply potion of night vision to player for 999 days			
+				message "{@prefix} {@enableMessage}"
+			else:
+				delete {nv::%player%}
+				remove all night vision from player 
+				message "{@prefix} {@disableMessage}"
+		else:
+			message "{@prefix} {@noPermissionMessage}"
+
+	
+
+	
+# Enables night vision when you rejoin if you already activated it
+on join:
+	if player is in world "Wilderness":
+		stop
+	if {nv::%player%} is set:
+		apply potion of night vision to player for 999 days
+on respawn:
+	if player is in world "Wilderness":
+		stop
+	if {nv::%player%} is set:
+		if player has permission "is.cosmic":
+			wait 5 ticks
+			apply potion of night vision to player for 999 days

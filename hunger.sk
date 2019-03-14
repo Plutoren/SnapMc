@@ -1,0 +1,7 @@
+on hunger meter change:
+	if player has permission "is.hero":
+		if player is not in world "Prison" or "SkyBlock" or "Wilderness":
+			set player's hunger to 20
+	if player is in world "Rooms" or "OITC" or "Events" or "Prison":
+		set player's hunger to 20
+	

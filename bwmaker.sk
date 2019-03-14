@@ -1,0 +1,7 @@
+command /spawnslow <entity type> <text>:
+	permission: is.op
+	trigger:
+		spawn arg-1 at location of player
+		set name of last spawned entity to "%arg-2%"
+		apply slowness 500 to last spawned entity for 999 days
+		

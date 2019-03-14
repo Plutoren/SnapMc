@@ -1,0 +1,26 @@
+every 6 minutes:
+	loop all players:
+		execute loop-player command "/ad"
+		
+command /ad:
+	trigger:
+		chance of 70%:
+			message "&a&m-------------------------------------------"
+			message "         &2☘&a☘&2☘ &2&lSt Patrick's Sale &2☘&a☘&2☘"
+			message "               &6&l20%% Off Everything"
+			message "            &eClick Here&7:&b store.snapmc.com"
+			message "&a&m-------------------------------------------"
+			stop
+		message "&4&m-------------------------------------------"
+		message "      &2☘&a☘&2☘ &d&lMarch Competitions &2☘&a☘&2☘"
+		message "            &b&lWin &a&l$50 Store Credit"
+		message "             &eClick Here&7:&b snapmc.com"
+		message "&4&m-------------------------------------------"
+		
+		
+on join:
+	wait 15 seconds
+	if player exists:
+		execute player command "/ad"
+		
+		

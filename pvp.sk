@@ -1,0 +1,416 @@
+
+on entity revive:
+	if event-entity is a player:
+		if event-entity's offhand is a totem of undying:
+			if "%event-entity's offhand%" contains " totem_of_undyings":
+				set event-entity's offhand to air
+		if event-entity's tool is a totem of undying:
+			if "%tool of event-entity%" contains " totem_of_undyings":
+				set event-entity's tool to air
+ 
+on damage of player:
+	if "%regions at victim%" contains "hub_pvp_keepinv" or "hub_pvp_duels":
+		if victim != attacker:
+			wait 1 tick
+			set {_basehealth} to victim's health
+			set {_absorption} to absorption hearts of victim
+			set {_string} to "&a%victim% "
+			set {_length} to 0
+			loop 12 times:
+				if {_basehealth} > 0:
+					add 1 to {_length}
+					subtract 1 from {_basehealth}
+					set {_string} to "%{_string}%&4❤"
+				else if {_absorption} > 0:
+					add 1 to {_length}
+					subtract 2 from {_absorption}
+					set {_string} to "%{_string}%&e❤"
+			loop 10 times:
+				if {_length} < 10:
+					add 1 to {_length}
+					set {_string} to "%{_string}%&7❤"
+
+			show actionbar with "%{_string}%" to attacker
+on place:
+	if player's world is "spawn":
+		if distance between event-block and player < 1.5:
+			push player down
+	
+on drop:
+	if "%regions at player%" contains "hub_pvp" or "pvp_nodrop":
+		send "&8[&bSnap&8] &cSharing is not allowed in PvP." to event-player
+		cancel event
+			
+	
+on break:
+	if "%regions at player%" contains "hub_pvp":
+		if distance between event-block and player < 3:
+			if player's tool is a pickaxe or shovel or axe:
+				if pitch of player < 50:
+					set {_lastDamage} to metadata "pvp.lastdamage" of player
+					if {_lastDamage} was more than 6 seconds ago:
+						set {_lastBreak} to metadata "pvp.just.broke.block" of player
+						if {_lastBreak} is not set:
+							push player from event-block
+							set metadata "pvp.just.broke.block" of player to now
+						else:
+							if {_lastBreak} was less than 2 seconds ago:
+								stop
+							else:
+								push player from event-block
+								set metadata "pvp.just.broke.block" of player to now
+
+on death of a player:
+	if attacker's tool is an axe:
+		if "%regions at victim%" contains "hub_pvp":
+			set {_loc} to location of victim
+			drop skull of victim at location of block above {_loc}
+			
+
+on any movement:
+	if "%regions at player%" contains "hub_pvp":
+		if {autosprint.off::%uuid of player%} is not set:
+			set sprint state of player to true
+	# else if player is in world "Slender":
+	#	chance of 10%:
+	#		set sprint state of player to false
+			
+			
+command /togglesprint:
+	trigger:
+		if {autosprint.off::%uuid of player%} is not set:
+			set {autosprint.off::%uuid of player%} to true
+			message "&8[&cPvP&8] &cToggled auto sprint off"
+		else:
+			delete {autosprint.off::%uuid of player%} 
+			message "&8[&cPvP&8] &aToggled auto sprint on"
+# on right click with fishing rod:
+#	if player is in world "pvp":
+#		cancel event
+
+command /pvp:
+	trigger:
+		execute player command "/warp pvp"
+on right click with chest:
+	if player is in world "Spawn":
+		if player does not have permission "is.op":
+			cancel event
+on shoot:
+	if shooter is in world "Spawn":
+		if "%regions at shooter%" does not contain "hub_pvp":
+			cancel event
+
+on right click with experience bottle:
+	if player is in world "spawn":
+		cancel event
+
+on command:
+	if "%regions at player%" contains "hub_pvp":
+		if "%player%" != "Plutoren":
+			if command != "msg" or "message" or "tell" or "vote" or "fc" or "familychat" or "r" or "ban" or "kick" or "skills" or "st" or "reply" or "tc":
+				cancel event
+				message "&8[&bSnap&8] &cPlease exit the pvp arena first"
+				stop
+	if "%regions at player%" contains "hub_jan_no_fly" or "hub_feb_no_fly" or "hub_mar_pvp_no_fly" or "hub_apr_no_fly" or "hub_may_no_fly":
+		if "%player%" != "Plutoren":
+			if command contains "fly" or "marry":
+				cancel event
+				message "&8[&bSnap&8] &cPlease exit the pvp area first"
+	if player's world is "resource":
+		if "%player%" != "Plutoren":
+			if command contains "fly":
+				cancel event
+				message "&8[&bSnap&8] &cYou can't fly here!"
+on join:
+	set metadata "pvp.lastdamage" of player to now 
+	set metadata "pvp.justjoinedtime" of player to now 
+	if player is in world "Spawn":
+		loop {pvpwall.blocks::*}:
+			make player see block at loop-value as black stained glass block
+			if block at location of player = block below loop-value:
+				set {_loc} to location of player
+				subtract 1 from z coordinate of {_loc}
+				teleport player to {_loc}
+		set {_time} to 10
+		set {_count} to 1 second
+		loop 10 times:
+			display hologram "&c&lYou are PvP Tagged;&e%{_time}% Seconds" at block north of block at {pvpwall.blocks::15} to player for 1 seconds
+			display hologram "&c&lYou are PvP Tagged;&e%{_time}% Seconds" at block south of block at {pvpwall.blocks::5} to player for 1 seconds
+			
+			loop 2 times:
+				wait 10 ticks
+				if {pvpwall.free::%player%} is set:
+					stop
+				if "%regions at player%" contains "pvp_entrance":
+					loop {pvpwall.blocks::*}:
+						make player see block at loop-value-3 as black stained glass block
+					set {_loc} to location of player
+					add 2 to z coordinate of {_loc}
+					teleport player to {_loc}
+				else if "%regions at player%" contains "pvp_blackout_entrance":
+					loop {pvpwall.blocks::*}:
+						make player see block at loop-value-3 as black stained glass block
+					set {_loc} to location of player
+					subtract 2 from z coordinate of {_loc}
+					teleport player to {_loc}
+			wait 1 ticks
+			set {_lastDamage} to metadata "pvp.lastdamage" of player
+			if {_lastDamage} was less than {_count} ago:
+				stop
+			add 1 second to {_count}
+			subtract 1 from {_time}
+		loop {pvpwall.blocks::*}:
+			make player see block at loop-value as air
+
+
+		
+on damage of a player:
+	if victim is in world "spawn":
+		if victim is "Plutoren":
+			set damage to 0
+			if damage cause is fall or burn:
+				cancel event
+		if "%regions at victim%" contains "hub_pvp":
+			if "%regions at attacker%" contains "hub_pvp":
+				if "%regions at attacker%" contains "pvp_entrance":
+					send "&8[&cPvP&8] &eYou cant attack from here, step into pvp." to attacker
+					cancel event
+					stop
+				else if "%regions at attacker%" contains "pvp_blackout_entrance":
+					send "&8[&cPvP&8] &eYou cant attack from here, step into pvp." to attacker
+					cancel event
+					stop
+				set metadata "pvp.lastdamage" of victim to now
+				if {isdueling::%attacker%} is true:
+					if {duel::%victim%} is not attacker:
+						cancel event
+						send "&c&lError &7>> &cYou're not currently dueling that player!" to attacker
+						
+					else if {duel::%attacker%} is not victim:
+						cancel event
+						send "&c&lError &7>> &cYou're not currently dueling that player!" to attacker
+					stop
+				else if {isdueling::%victim%} is true:
+					if {duel::%victim%} is not attacker:
+						cancel event
+						send "&c&lError &7>> &cYou're not currently dueling that player!" to attacker
+					stop	 
+				loop {pvpwall.blocks::*}:
+					make victim see block at loop-value as black stained glass block
+					if block at location of victim = block below loop-value:
+						set {_loc} to location of victim
+						subtract 1 from z coordinate of {_loc}
+						teleport victim to {_loc}
+				set {_time} to 10
+				set {_count} to 1 second
+				loop 10 times:
+					display hologram "&c&lYou are PvP Tagged;&e%{_time}% Seconds" at block north of block at {pvpwall.blocks::15} to victim for 1 seconds
+					display hologram "&c&lYou are PvP Tagged;&e%{_time}% Seconds" at block south of block at {pvpwall.blocks::5} to victim for 1 seconds
+					
+					loop 2 times:
+						wait 10 ticks
+						if {pvpwall.free::%victim%} is set:
+							stop
+						if "%regions at victim%" contains "pvp_entrance":
+							loop {pvpwall.blocks::*}:
+								make victim see block at loop-value-3 as black stained glass block
+							set {_loc} to location of victim
+							add 2 to z coordinate of {_loc}
+							teleport victim to {_loc}
+						else if "%regions at victim%" contains "pvp_blackout_entrance":
+							loop {pvpwall.blocks::*}:
+								make victim see block at loop-value-3 as black stained glass block
+							set {_loc} to location of victim
+							subtract 2 from z coordinate of {_loc}
+							teleport victim to {_loc}
+					wait 1 ticks
+					set {_lastDamage} to metadata "pvp.lastdamage" of victim
+					if {_lastDamage} was less than {_count} ago:
+						stop
+					add 1 second to {_count}
+					subtract 1 from {_time}
+				loop {pvpwall.blocks::*}:
+					make victim see block at loop-value as air
+					
+			else:
+				if attacker is a player:
+					cancel event
+				stop
+		else:
+			cancel event
+			stop
+	else if victim is in world "BedWars":
+		if attacker is a player:
+			set {_v} to victim
+			set {lastattacker::%{_v}%} to "%attacker%"
+			set {lastdamge::%{_v}%} to now
+			stop
+		
+on glide toggle:
+	if player is in world "spawn":
+		if glide state of player is false:
+			if player does not have permission "is.op":
+				cancel event
+on quit:		
+	if player is in world "spawn":
+		if "%regions at player%" contains "hub_pvp":
+			if "%regions at player%" contains "spec":
+				stop
+				
+			set {_lastDamage} to metadata "pvp.lastdamage" of player
+			if {_lastDamage} was less than 6 seconds ago:
+				set {_pvp.justjoinedtime} to metadata "pvp.justjoinedtime" of player
+				if {_pvp.justjoinedtime} was more than 2 seconds ago:
+					if {combatlog::%player%} is not set:
+						set {combatlog::%player%} to 1
+					else:
+						if {combatlog::%player%} is true:
+							delete {combatlog::%player%}
+							set {combatlog::%player%} to 0
+						add 1 to {combatlog::%player%}
+						
+					if {combatlog::%player%} > 30:
+						broadcast "Error"
+					if {combatlog::%player%} >= 6:
+						execute console command "/ban %player% %{combatlog::%player%}%h Combat Log ##%{combatlog::%player%}%"
+					set {_bal} to player's balance
+					set {_reduce} to {_bal} * 0.004
+					if {_reduce} > 750000:
+						set {_reduce} to 750000
+					remove {_reduce} from player's balance
+					broadcast "&8[&bSnap&8] &e%player% &7just logged out of combat! ##%{combatlog::%player%}%"
+
+					
+# on right click on lever:
+#	if player is in world "spawn":
+#		if "%regions at player%" contains "hub_pvp":
+#			cancel event
+#			wait 1 tick
+#			make player see block at clicked block as lever:4
+#			if {pvp.wall.lever::%player%::%location of clicked block%} is not set:
+#				set {pvp.wall.lever::%player%::%location of clicked block%} to location of clicked block
+#				set {pvp.wall.lever.time::%player%::%location of clicked block%} to now
+#				set {_current} to location of clicked block
+#			loop {pvp.wall.lever.time::%player%::*}:
+#				if loop-value was more than 15 seconds ago:
+#					loop {pvp.wall.lever::%player%::*}:
+#						if {_current} != loop-value-2:
+#							make player see block at loop-value-2 as lever:12
+#							delete {pvp.wall.lever::%player%::%loop-value-2%}
+#							delete {pvp.wall.lever.time::%player%::%loop-value-2%}
+#			if size of {pvp.wall.lever::%player%::*} = 4:
+#				message "&8[&cPvP&8] &7Gate Lifted"
+#				set {pvpwall.free::%player%} to true
+#				loop {pvpwall.blocks::*}:
+#					make player see block at loop-value as air
+#				wait 1 second
+#				loop {pvp.wall.lever::%player%::*}:
+#					make player see block at loop-value as lever:12
+#				delete {pvp.wall.lever::%player%::*} 
+#				delete {pvp.wall.lever.time::%player%::*}
+#				delete {pvpwall.free::%player%}
+
+			
+on load:
+	delete {pvp.lastdamage::*}
+	
+command /combatlog [<text>] [<text>] [<int>]:
+	trigger:
+		if player has permission "is.op":
+			if arg-1 is "set":
+				if arg-3 is not set:
+					stop
+				set {combatlog::%arg-2%} to arg-3
+				message "Done"
+				stop
+		if {combatlog::%player%} is not set:
+			message "&8[&bSnap&8] &eYou have combat logged &b&l0 times"
+		else:
+			message "&8[&bSnap&8] &eYou have combat logged &c&l%{combatlog::%player%}% times"
+		message "        &eYou will be banned on the 6th offence. For 6 Hours."
+		message "        &e7th Offence = 7 hour ban, 8th = 8 hour, etc..."
+		
+		
+		if {combatlog.reset} is not set:
+			set {combatlog.reset} to now
+		if {combatlog.reset} was less than 10 days ago:
+		
+							
+			set {_startDate} to {combatlog.reset}
+			set {_duration}  to 10 days
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "  &dCombat Logs reset in&f:&c %{_timeUntilExpiration}%"
+			stop
+		else:
+			delete {combatlog::*}
+			delete {pvp.lastdamage::*}
+			set {combatlog.reset} to now
+			message "  &dCombat Logs reset in&f:&c 10 Days"
+			
+		
+		
+every hour:
+	if {combatlog.reset} is not set:
+		set {combatlog.reset} to now
+	if {combatlog.reset} was more than 10 days ago:
+		delete {combatlog::*}
+		delete {pvp.lastdamage::*}
+		set {combatlog.reset} to now
+on join:
+	set metadata "pvp.justjoinedtime" of player to now
+	if player is in world "spawn":
+		if "%regions at player%" contains "hub_pvp":
+			if {combatlog::%player%} is set:
+				if {combatlog::%player%} = {combatlog.punish::%player%}:
+					stop
+				set {combatlog.punish::%player%} to {combatlog::%player%}
+				if {combatlog::%player%} = 1:
+					apply potion of slowness 5 to player for 30 seconds
+					apply potion of weakness 2 to player for 30 seconds
+				
+				if {combatlog::%player%} = 2:
+					apply potion of slowness 6 to player for 40 seconds
+					apply potion of weakness 3 to player for 40 seconds
+				if {combatlog::%player%} = 3:
+					apply potion of slowness 6 to player for 50 seconds
+					apply potion of weakness 4 to player for 50 seconds
+					apply potion of blindness 1 to player for 10 seconds
+				if {combatlog::%player%} = 4:
+					apply potion of slowness 6 to player for 60 seconds
+					apply potion of weakness 5 to player for 60 seconds
+					apply potion of blindness 1 to player for 10 seconds
+					apply potion of poison 1 to player for 7 seconds
+				if {combatlog::%player%} = 5:
+					apply potion of slowness 6 to player for 70 seconds
+					apply potion of weakness 6 to player for 70 seconds
+					apply potion of blindness 1 to player for 20 seconds
+					apply potion of poison 1 to player for 15 seconds
+					
+				if {combatlog::%player%} >= 6:
+					apply potion of slowness 6 to player for 80 seconds
+					apply potion of weakness 7 to player for 80 seconds
+					apply potion of blindness 1 to player for 30 seconds
+					
+					
+				
+				message "&8[&bSnap&8] &eYou're returning from a combat log!"
+				message "&8[&bSnap&8] &e6 or more combat logs will get you banned!"
+				broadcast "&8[&bSnap&8] &e%player% &7just logged in after combat logging! ##%{combatlog::%player%}%"
+				set {_bal} to player's balance
+				set {_reduce} to {_bal} * 0.009
+				if {_reduce} > 750000:
+					set {_reduce} to 750000
+				subtract {_reduce} from player's balance
+				message "&8[&bSnap&8] &7You lost 1%% of your balance (&a$%{_reduce}%&7) for combat logging!"
+				
+
+command /dead:
+	trigger:
+		message "&cYou fell over dead..."
+		loop 40 times:
+			set glide state of player to true
+			wait 1 tick
+			

@@ -1,0 +1,764 @@
+options:
+	prefix: &8[&bTowny&8]		
+				
+on command "/t":
+	if player is in world "Towny":
+		cancel event
+		if arguments is set:
+			execute player command "town %arguments%"
+		else:
+			execute player command "town"
+function formatMoney(int: number) :: string:
+	while {_int} >= 1000000000000:
+		add 1 to {_val}
+		subtract 1000000000000 from {_int}
+	if {_val} is set:
+		return "%{_val}%T"
+	while {_int} >= 1000000000:
+		add 1 to {_val}
+		subtract 1000000000 from {_int}
+	if {_val} is set:
+		return "%{_val}%B"
+	while {_int} >= 1000000:
+		add 1 to {_val}
+		subtract 1000000 from {_int}
+	if {_val} is set:
+		return "%{_val}%M"
+	while {_int} >= 1000:
+		add 1 to {_val}
+		subtract 1000 from {_int}
+	if {_val} is set:
+		return "%{_val}%K"
+	if {_int} is not set:
+		return "0"
+	return "%{_int}%"	
+
+every 1 second:
+	loop all players in world "Towny":
+		set {_lastTown} to metadata "towny.lastTown" of loop-player
+		set {_chunkX} to rounded up x coordinate of loop-player / 16
+		set {_chunkZ} to rounded up z coordinate of loop-player / 16
+		if {towny.claims::%{_chunkX}%/%{_chunkZ}%} is set:
+			set {_townAtPlayer} to {towny.claims::%{_chunkX}%/%{_chunkZ}%}
+		else:
+			set {_townAtPlayer} to "&aWilderness"
+		set metadata "towny.lastTown" of loop-player to {_townAtPlayer}
+		if {_lastTown} is set:
+			if {_lastTown} != {_townAtPlayer}:
+				if {_townAtPlayer} = "&aWilderness":
+					send loop-player title "" with subtitle "%{_townAtPlayer}%" for 2 seconds with 5 tick fade in and 1 second fade out
+				else:
+					send loop-player title "" with subtitle "&eTown of &3%{_townAtPlayer}%" for 2 seconds with 5 tick fade in and 1 second fade out
+command /tc [<text>]:
+	trigger:
+
+		if arg-1 is not set:
+			if {townychat.active::%uuid of player%} is not set:
+				if {townychat.player.towny::%uuid of player%} is not set:
+					message "{@prefix} &cYou must join a towny first!"
+					stop
+				message "{@prefix} &aTowny Chat activated"
+				set {townychat.active::%uuid of player%} to true
+			else:
+				message "{@prefix} &cTowny Chat deactivated"
+				delete {townychat.active::%uuid of player%}
+			stop
+		if {townychat.player.towny::%uuid of player%} is not set:
+			message "{@prefix} &cYou must join a towny first!"
+			stop
+		set {_message} to "&8[&6%{townychat.settings::%{townychat.player.towny::%uuid of player%}%::ranks::%uuid of player%}%&8] &f%player's display name%&7:&b %arg-1%"
+		replace all "&" with "§" in {_message}
+		set {_townyName} to {townychat.player.towny::%uuid of player%}
+		loop all players:
+			if {townychat.settings::%{_townyName}%::ranks::%uuid of loop-player%} is set:
+				send "&8[&6%{_townyName}%&8] %{_message}%" to loop-player
+			else if {townychat.spy::%uuid of loop-player%} is set:
+				if loop-player has permission "is.staff":
+					send "&8[&aTSpy&8] &8[&a%{_townyName}%&8] &a%uuid of player%&f:&7 %arg-1%" to loop-player		
+				
+						
+			
+on chat:
+	if {townychat.active::%uuid of player%} is set:
+		if {townychat.player.towny::%uuid of player%} is not set:
+			message "{@prefix} &cYou must join a towny first!"
+			stop
+		cancel event
+		set {_message} to "&8[&6%{townychat.settings::%{townychat.player.towny::%uuid of player%}%::ranks::%uuid of player%}%&8] &f%player's display name%&7:&b %message%"
+		replace all "&" with "§" in {_message}
+		if {townychat.player.towny::%uuid of player%} is not set:
+			message "{@prefix} &cYou must join a towny first!"
+			delete {townychat.active::%uuid of player%}
+			stop
+		set {_townyName} to {townychat.player.towny::%uuid of player%}
+		
+		loop all players:
+			if {townychat.settings::%{_townyName}%::ranks::%uuid of loop-player%} is set:
+				send "&8[&6%{_townyName}%&8] &b%{_message}%" to loop-player
+			else if {townychat.spy::%uuid of loop-player%} is set:
+				send "&8[&aTSpy&8] &8[&a%{_townyName}%&8] &a%uuid of player%&f:&7 %message%" to loop-player		
+		
+
+		
+command /towny:
+	permission: is.staff
+	trigger:
+		teleport player to {pos::towny}
+		
+command /tbonus <text> <int>:
+	permission: is.op
+	trigger:
+		set {_test} to true
+command /town [<text>] [<text>] [<text>]:
+	permission: towny.tester
+	trigger:
+		if {townychat.player.towny::%uuid of player%} is set:
+			set {_townyName} to {townychat.player.towny::%uuid of player%}
+	
+		if arg-1 is not set:
+			execute player command "town help"
+		else if arg-1 is "help":
+			if arg-2 is not set:
+				message ""
+				message "    &7&m---&r &6&lTowny Commands &8[&61&8] &7&m---"
+				message ""
+				message "        <suggest command:/town create SuperAwesomeTown><tooltip:&eStart a new town %nl% %nl%&aClick To Run>&6/town create (name)"
+				message "        <suggest command:/town ranks><tooltip:&eList different town ranks %nl% %nl%&aClick To Run>&6/town ranks"
+				message "        <suggest command:/town rank Plutoren Assistant><tooltip:&eGive someone in your town a rank %nl% %nl%&aClick To Run>&6/town rank (player) (name)"
+				message "        <suggest command:/town kick Plutoren><tooltip:&eKick a player%nl%&efrom your town %nl% %nl%&aClick To Run>&6/town kick (player)"
+				message "        <suggest command:/town invite Plutoren><tooltip:&eInvite someone to %nl%&eyour town %nl% %nl%&aClick To Run>&6/town invite (player)"
+				message "        <suggest command:/town join SilverValley><tooltip:&eJoin an open town %nl%&eor one you've been %nl%&einvite to %nl% %nl%&aClick To Run>&6/town join (name)"
+				message ""
+				message "    &7&m---&r &8<< &7&m--------------&r <run command:/town help 2><tooltip:&6Page 2>&e>><reset> &7&m---"
+			if arg-2 is "1":
+				message ""
+				message "    &7&m---&r &6&lTowny Commands &8[&61&8] &7&m---"
+				message ""
+				message "        <suggest command:/town create SuperAwesomeTown><tooltip:&eStart a new town %nl% %nl%&aClick To Run>&6/town create (name)"
+				message "        <suggest command:/town ranks><tooltip:&eList different town ranks %nl% %nl%&aClick To Run>&6/town ranks"
+				message "        <suggest command:/town rank Plutoren Assistant><tooltip:&eGive someone in your town a rank %nl% %nl%&aClick To Run>&6/town rank (player) (name)"
+				message "        <suggest command:/town kick Plutoren><tooltip:&eKick a player%nl%&efrom your town %nl% %nl%&aClick To Run>&6/town kick (player)"
+				message "        <suggest command:/town invite Plutoren><tooltip:&eInvite someone to %nl%&eyour town %nl% %nl%&aClick To Run>&6/town invite (player)"
+				message "        <suggest command:/town join SilverValley><tooltip:&eJoin an open town %nl%&eor one you've been %nl%&einvite to %nl% %nl%&aClick To Run>&6/town join (name)"
+				message ""
+				message "    &7&m---&r &8<< &7&m--------------&r <run command:/town help 2><tooltip:&6Page 2>&e>><reset> &7&m---"
+			else if arg-2 is "2":
+				message ""
+				message "    &7&m---&r &6&lTowny Commands &8[&62&8] &7&m---"
+				message ""
+				message "        <suggest command:/town leave><tooltip:&eLeave or delete your town %nl% %nl%&aClick To Run>&6/town leave"
+				message "        <suggest command:/town info><tooltip:&eGet info on your town %nl% %nl%&aClick To Run>&6/town info"
+				message "        <suggest command:/town info MyTown><tooltip:&eGet info on a town %nl% %nl%&aClick To Run>&6/town info (name)"
+				message "        <suggest command:/town sethome><tooltip:&eSet a town home %nl% %nl%&aClick To Run>&6/town sethome"
+				message "        <suggest command:/town home><tooltip:&eTeleport to your %nl%&etown home %nl% %nl%&aClick To Run>&6/town home"
+				message "        <suggest command:/town here><tooltip:&eGet info on the %nl%&etown you are standing%nl%&ein currently %nl% %nl%&aClick To Run>&6/town here"
+				message ""
+				message "    &7&m---&r <run command:/town help 1><tooltip:&6Page 1>&e<<<reset> &7&m--------------&r <run command:/town help 3><tooltip:&6Page 3>&e>><reset> &7&m---"
+			else if arg-2 is "3":
+				message ""
+				message "    &7&m---&r &6&lTowny Commands &8[&63&8] &7&m---"
+				message ""
+				message "        <suggest command:/town map><tooltip:&eShows a text map%nl%&eof nearby towns %nl% %nl%&aClick To Run>&6/town map"
+				message "        <suggest command:/tc><tooltip:&eToggle town chat %nl% %nl%&aClick To Run>&6/tc"
+				message "        <suggest command:/tc hello!><tooltip:&eMessage town chat directly %nl% %nl%&aClick To Run>&6/tc (msg)"
+				message ""
+				message "    &7&m---&r <run command:/town help 2><tooltip:&6Page 2>&e<<<reset> &7&m--------------&r &8>> &7&m---"
+			message ""
+			stop
+		else if arg-1 is "spy":
+			if player does not have permission "is.staff":
+				message "{@prefix} &cYou dont have permission to do that!"
+				stop
+			
+			if {townychat.spy::%uuid of player%} is set:
+				delete {townychat.spy::%uuid of player%}
+				message "{@prefix} &cTowny chat spy deactivated"
+				stop
+			message "{@prefix} &aTowny chat spy activated"
+			set {townychat.spy::%uuid of player%} to true
+			stop
+		else if arg-1 is "ranks":
+			message ""
+			message "    &7&m---&r &6&lTowny Ranks&7&m---"
+			message ""
+			message "     &7The following ranks have certain permissions"
+			message "     &7You can make your own ranks, but only these have perms"
+			message ""
+			message " &eKick&f: &7Owner, Assistant"
+			message " &eInvite&f: &7Owner, Assistant, Helper"
+			message " &ePromote&f: &7Owner, Assistant"
+			message " &eBuild&f: &7Owner, Assistant, Helper, Builder"
+			message " &eOpen Town&f: &7Owner"
+			message ""
+			
+			
+			
+			stop
+			
+			
+		else if arg-1 is "here":
+			
+			set {_chunkX} to rounded up x coordinate of player / 16
+			set {_chunkZ} to rounded up z coordinate of player / 16
+			if {towny.claims::%{_chunkX}%/%{_chunkZ}%} is set:
+				execute player command "/town info %{towny.claims::%{_chunkX}%/%{_chunkZ}%}%"
+				# message "{@prefix} &bClaimed by: &f%{towny.claims::%{_chunkX}%/%{_chunkZ}%}%"
+			else:
+				message "{@prefix} &cThis chunk is unclaimed."
+		else if arg-1 is "info" or "i":
+			
+				
+			message ""
+			message "    &7&m---&r &6&lTowny &7&m---"
+			message ""
+			if arg-2 is set:
+			
+				if {townychat.names::%arg-2%} is not set:
+					message "  &7Couldn't find a towny called: &b%arg-2%"
+					message ""
+					stop
+				set {_townyName} to arg-2
+				message "  &3Town Name&f: &b%{_townyName}%"
+				if {townychat.settings::%{_townyName}%::ranks::%uuid of player%} is set:
+					message "  &3My Rank in this Town: &f%{townychat.settings::%{_townyName}%::ranks::%uuid of player%}%"
+					
+				else if {townychat.settings::%{_townyName}%::members::%uuid of player%} is "allowed":
+					message "  &3My status in this town: &aWhitelisted"
+					message "       &7Use &b/town join %{_townyName}% &7to join"
+				else:
+					message "  &3My status in this towny: &cNot Invited"
+				if {townychat.settings::%{_townyName}%::claims.count} is not set:
+					set {townychat.settings::%{_townyName}%::claims.count} to 8
+				set {_maxSize} to size of {townychat.settings::%{_townyName}%::ranks::*} * 8 + {townychat.settings::%{_townyName}%::claims.bonus}
+				set {_usedSize} to {_maxSize} - {townychat.settings::%{_townyName}%::claims.count}
+				message "  &3Town Size&f: &f%{_usedSize}%&8/&f%{_maxSize}%"
+				if {townychat.settings::%{_townyName}%::bank} is set:
+					set {_bank} to formatMoney({townychat.settings::%{_townyName}%::bank})
+				else:
+					set {_bank} to 0
+				message "  &eBank&f: &2$&a%{_bank}%"
+				message ""
+				message "  &3Members&f:"
+				set {_i} to 0
+				loop {townychat.settings::%{_townyName}%::ranks::*}:
+					add 1 to {_i}
+					message "    &f%{_i}%. &b%{uuidName::%loop-index%}%  &8(&7%loop-value%&8)"
+				message ""
+				if {townychat.settings::%{_townyName}%::ranks::%uuid of player%} is not set:
+					if {townychat.settings::%{_townyName}%::open} = true:
+						message "  <run command:/town join %{_townyName}%>&aClick To Join"
+				message ""
+				stop
+				
+			if {townychat.player.towny::%uuid of player%} is not set:
+				message "  &7You are not in a Town!"
+				message ""
+				stop
+		
+			set {_townyName} to {townychat.player.towny::%uuid of player%}
+			
+			
+			
+			message "  &3Towny Name&f: &b%{_townyName}%"
+			message "  &3Towny Rank&f: &b%{townychat.settings::%{_townyName}%::ranks::%uuid of player%}%"
+			if {townychat.settings::%{_townyName}%::claims.count} is not set:
+				set {townychat.settings::%{_townyName}%::claims.count} to 8
+			set {_maxSize} to size of {townychat.settings::%{_townyName}%::ranks::*} * 8 + {townychat.settings::%{_townyName}%::claims.bonus}
+			set {_usedSize} to {_maxSize} - {townychat.settings::%{_townyName}%::claims.count}
+			message "  &3Town Size&f: &f%{_usedSize}%&8/&f%{_maxSize}%"
+			if {townychat.settings::%{_townyName}%::bank} is set:
+				set {_bank} to formatMoney({townychat.settings::%{_townyName}%::bank})
+			else:
+				set {_bank} to 0
+			message "  &eBank&f: &2$&a%{_bank}%"
+			message ""
+			message "  &3Members&f:"
+			set {_i} to 0
+			loop {townychat.settings::%{_townyName}%::ranks::*}:
+				add 1 to {_i}
+				message "&f%{_i}%. &b%{uuidName::%loop-index%}%  &8(&7%loop-value%&8)"
+				
+			
+			message ""
+			stop
+		else if arg-1 is "create" or "new" or "start":
+		
+			
+			if arg-2 is not set:
+				message "{@prefix} &7Try: &b/town create (name)"
+				stop
+			if length of arg-2 > 15:
+				message "{@prefix} &7Name must be less than 15 characters"
+				stop				
+			if arg-3 is set:
+				message "{@prefix} &7Try: &b/town create (name) &7without any spaces"
+				stop	
+			set {_townyName} to arg-2
+		
+			if {townychat.player.towny::%uuid of player%} is set:
+				message "{@prefix} &7You are already in a towny! Try &b/town leave"
+				stop
+				
+			if  {townychat.names::%{_townyName}%} is set:
+				message "{@prefix} &7town &b%arg-2% &7already exists."
+				stop
+				
+			set {townychat.player.towny::%uuid of player%} to {_townyName}
+			
+			set {townychat.settings::%{_townyName}%::members::%uuid of player%} to "allowed"
+			
+			set {townychat.settings::%{_townyName}%::ranks::%uuid of player%} to "Owner"
+			set {townychat.settings::%{_townyName}%::claims.count} to 8
+			
+			set {townychat.names::%{_townyName}%} to {_townyName}
+			
+			broadcast "{@prefix} &7%player% created a new towny named &b%{_townyName}%"
+			stop
+			
+		
+		else if arg-1 is "promote" or "rank" or "rankup":
+			
+			if {_townyName} is not set:
+				message "{@prefix} &7You're not in a towny"
+				stop
+			set {_player} to player
+			if "%{townychat.settings::%{_townyName}%::ranks::%uuid of player%}%" is not "Owner" or "Assistant":
+				message "{@prefix} &7You dont have permission to do that!"
+				stop
+				
+			if arg-2 is not set:
+				message "{@prefix} &7Try: &b/town rank (name) (rank)"
+				stop
+			set {_targetPlayerUuid} to {uuid::%arg-2%}
+			if {_targetPlayerUuid} is not set:
+				message "{@prefix} &7Player not found"
+				stop
+				
+			if arg-3 is not set:
+				message "{@prefix} &7Try: &b/town rank (name) (rank)"
+				stop
+			
+			if arg-3 is "Owner":
+				message "{@prefix} &7You can't set someone as the owner"
+				stop
+				
+			if {townychat.settings::%{_townyName}%::members::%{_targetPlayerUuid}%} is not set:
+				message "{@prefix} &7That person is not in your towny. Try &b/town add (name)"
+				stop
+			if {townychat.settings::%{_townyName}%::ranks::%{_targetPlayerUuid}%} is not set:
+				message "{@prefix} &7That person has not accepted your invite yet"
+				stop	
+			if {townychat.settings::%{_townyName}%::ranks::%{_targetPlayerUuid}%} is "Owner":
+				message "{@prefix} &7You can't change the Owner's rank"
+				stop
+			
+			message "{@prefix} &eSet &b%arg-2% &eto the rank: &f%arg-3%"
+			set {townychat.settings::%{_townyName}%::ranks::%{_targetPlayerUuid}%} to arg-3
+			stop 
+			
+		else if arg-1 is "sethome" or "shome":
+			
+			if {_townyName} is not set:
+				message "{@prefix} &7You're not in a towny"
+				stop
+			set {_loc} to location of player
+			set {townychat.settings::%{_townyName}%::homes::%uuid of player%} to {_loc}
+			message "{@prefix} &7Set your towny home to &6{_loc}"
+			message "{@prefix} &7Others can visit with &b/town home %uuid of player%"
+			stop
+			
+		else if arg-1 is "home" or "h":
+			
+			if {_townyName} is not set:
+				message "{@prefix} &7You're not in a towny"
+				stop
+			if arg-2 is not set:
+				if {townychat.settings::%{_townyName}%::homes::%uuid of player%} is not set:
+					message "{@prefix} &7You don't have a home set. Try &b/town sethome"
+					stop
+				message "{@prefix} &7Teleported to your towny home"
+				teleport player to {townychat.settings::%{_townyName}%::homes::%uuid of player%}
+				stop
+			if {townychat.settings::%{_townyName}%::homes::%arg-2%} is not set:
+				message "{@prefix} &7No home found for &b%arg-2%"
+				stop
+			message "{@prefix} &7Teleported to the towny home of &b%arg-2%"
+			teleport player to {townychat.settings::%{_townyName}%::homes::%arg-2%}
+			stop
+			
+
+			
+		else if arg-1 is "leave" or "exit" or "quit" or "abandon" or "delete":
+			
+			if {_townyName} is not set:
+				message "{@prefix} &7You're not in a towny"
+				stop
+			message ""
+				
+			if "%{townychat.settings::%{_townyName}%::ranks::%uuid of player%}%" is "Owner":
+				message "{@prefix} &7You deleted your town: &e%{_townyName}%"
+				
+				loop {townychat.settings::%{_townyName}%::ranks::*}:
+					delete {townychat.player.towny::%loop-index%}
+				loop {townychat.settings::%{_townyName}%::claims.locations::*}:
+					delete {towny.claims::%loop-value%}
+					delete {towny.plot.owner::%loop-value%}
+					delete {towny.plot.settings::%loop-value%::*}
+					delete {towny.plot.trusted::%loop-value%::*}
+					
+				delete {townychat.settings::%{_townyName}%::members::*}
+				delete {townychat.settings::%{_townyName}%::ranks::*}
+				delete {townychat.settings::%{_townyName}%::homes::*}
+				delete {townychat.settings::%{_townyName}%::*}
+			
+				delete {townychat.names::%{_townyName}%}
+			if {townychat.settings::%{_townyName}%::claims.count} is set:
+				subtract 8 from {townychat.settings::%{_townyName}%::claims.count}
+			
+			delete {townychat.settings::%{_townyName}%::ranks::%uuid of player%}
+			delete {townychat.settings::%{_townyName}%::homes::%uuid of player%}
+			delete {townychat.player.towny::%uuid of player%}
+			delete {townychat.player.towny::%player%}
+			
+			message "{@prefix} &7You left %{_townyName}%"
+			message ""
+			stop
+			
+
+		else if arg-1 is "remove" or "kick" or "blacklist":
+		
+			if {_townyName} is not set:
+				message "{@prefix} &7You're not in a towny"
+				stop			
+		
+			if arg-2 is not set:
+				message "{@prefix} &7Try: &b/town kick (name)"
+				stop
+			set {_targetPlayer} to {uuid::%arg-2%}
+			if {_targetPlayer} is not set:
+				message "{@prefix} &cUnknown player&7: &e%arg-2%"
+				stop
+			set {_player} to uuid of player
+			if "%{townychat.settings::%{_townyName}%::ranks::%{_player}%}%" is not "Owner" or "Assistant":
+				message "{@prefix} &7You don't have permission!"
+				stop	
+			
+			if "%{townychat.settings::%{_townyName}%::members::%{_targetPlayer}%}%" != "allowed":
+				message "{@prefix} &b%{_targetPlayer}% &7is not part of your towny"
+				stop
+				
+			if "%{townychat.settings::%{_townyName}%::ranks::%{_targetPlayer}%}%" == "Owner":
+				message "{@prefix} &b%{_targetPlayer}% &cis the owner and can't be kicked"
+				stop
+			message "{@prefix} &7Removed &d%{uuidName::%{_targetPlayer}%}% &7from the towny"
+			
+			loop {townychat.settings::%{_townyName}%::claims.locations::*}:
+				remove {_targetPlayer} from {towny.plot.trusted::%loop-value%::*}
+				
+			delete {townychat.settings::%{_townyName}%::members::%{_targetPlayer}%}
+			delete {townychat.settings::%{_townyName}%::ranks::%{_targetPlayer}%}
+			delete {townychat.settings::%{_townyName}%::homes::%{_targetPlayer}%}				
+			if {townychat.settings::%{_townyName}%::claims.count} is set:
+				subtract 8 from {townychat.settings::%{_townyName}%::claims.count}
+			if {townychat.player.towny::%{_targetPlayer}%} = {_townyName}:
+				delete {townychat.player.towny::%{_targetPlayer}%}
+			
+		else if arg-1 is "add" or "invite" or "allow" or "whitelist":
+			
+			if {_townyName} is not set:
+				message "{@prefix} &7You're not in a towny"
+				stop			
+			set {_player} to player
+			if arg-2 is not set:
+				message "{@prefix} &7Try: &b/town invite (name)"
+				stop
+				
+			if "%{townychat.settings::%{_townyName}%::ranks::%uuid of player%}%" is not "Owner" or "Assistant" or "Helper":
+				message "{@prefix} &7You don't have enough permissions to invite others."
+				stop			
+			set {_isOnline} to false
+			loop all players:
+				if arg-2 = "%loop-player%":
+					set {_isOnline} to true
+					set {_targetPlayer} to uuid of loop-player
+					stop loop
+					
+			if {_isOnline} is false:
+				message "{@prefix} &b%arg-2% &7is not online"
+				stop
+			
+			
+			if "%{townychat.settings::%{_townyName}%::members::%{_targetPlayer}%}%" = "allowed":
+				message "{@prefix} &b%{_targetPlayer}% &7is already on your whitelist"
+				message "{@prefix} &7That player needs to run &b/town join %{_townyName}%"
+				stop
+				
+			set {townychat.settings::%{_townyName}%::members::%{_targetPlayer}%} to "allowed"
+			message "{@prefix} &eAdded %{uuidName::%{_targetPlayer}%}% to the allowed members list"
+			message "{@prefix} &7They need to run &b/town join %{_townyName}%"
+			
+			send "{@prefix} %player% invited you to their town: &9/town join %{_townyName}%" to arg-2 parsed as player
+			stop
+		else if arg-1 is "map":
+		
+			set {_chunkX} to rounded up x coordinate of player / 16
+			set {_chunkZ} to rounded up z coordinate of player / 16
+			set {_playerX} to {_chunkX}
+			set {_playerZ} to {_chunkZ}
+			subtract 5 from {_chunkX}
+			set {_originalZ} to {_chunkZ}
+			set {_originalX} to {_chunkX}
+			subtract 5 from {_chunkZ}
+			message "    &7&m----&r &6&lTowny Map &7&m----&r"
+			message "                                             &eN"
+			set {_row} to 0
+			loop 10 times:
+				set {_line} to "           "
+				set {_chunkX} to {_originalX}
+				loop 10 times:
+					if {towny.claims::%{_chunkX}%/%{_chunkZ}%} is set:
+						if {_playerX} = {_chunkX}:
+							if {_playerZ} = {_chunkZ}:
+								set {_line} to "%{_line}%<run command:/town info %{towny.claims::%{_chunkX}%/%{_chunkZ}%}%><tooltip:&eTown Name&7: &f%{towny.claims::%{_chunkX}%/%{_chunkZ}%}% %nl% %nl%&aClick to see more info>&a%first character of {towny.claims::%{_chunkX}%/%{_chunkZ}%}%<reset>"
+							else:
+								set {_line} to "%{_line}%<run command:/town info %{towny.claims::%{_chunkX}%/%{_chunkZ}%}%><tooltip:&eTown Name&7: &f%{towny.claims::%{_chunkX}%/%{_chunkZ}%}% %nl% %nl%&aClick to see more info>&e%first character of {towny.claims::%{_chunkX}%/%{_chunkZ}%}%<reset>"
+								
+						else:
+							set {_line} to "%{_line}%<run command:/town info %{towny.claims::%{_chunkX}%/%{_chunkZ}%}%><tooltip:&eTown Name&7: &f%{towny.claims::%{_chunkX}%/%{_chunkZ}%}% %nl% %nl%&aClick to see more info>&e%first character of {towny.claims::%{_chunkX}%/%{_chunkZ}%}%<reset>"
+						if {_townsNear::*} does not contain {towny.claims::%{_chunkX}%/%{_chunkZ}%}:
+							add {towny.claims::%{_chunkX}%/%{_chunkZ}%} to {_townsNear::*}
+					else:
+						if {_playerX} = {_chunkX}:
+							if {_playerZ} = {_chunkZ}:
+								set {_line} to "%{_line}%&aX"
+							else:
+								set {_line} to "%{_line}%&7X"
+						else:
+							set {_line} to "%{_line}%&7X"
+								
+					add 1 to {_chunkX}
+				add 1 to {_chunkZ}
+				add 1 to {_row}
+				if {_row} = 1:
+					set {_line} to "%{_line}%                &eW    &eE"
+				else if {_row} = 2:
+					set {_line} to "%{_line}%                   &eS"
+					
+				message "%{_line}%"
+			message ""
+			stop
+			
+		else if arg-1 is "join" or "enter":
+			
+			
+			if arg-2 is not set:
+				message "{@prefix} &cUsage &7>> &6/town join (towny name)"
+				stop
+			set {_targetPlayer} to uuid of player
+			if {townychat.names::%arg-2%} is not set:
+				message "{@prefix} &7There is no town with the name: &b%arg-2%"
+				stop
+
+			if "%{townychat.settings::%arg-2%::members::%{_targetPlayer}%}%" = "allowed":
+				loop {townychat.names::*}:
+				
+					if loop-index = arg-2:
+						set {_town} to loop-value
+				if {_town} is not set:
+					message "{@prefix} &cUnknown town"
+					stop
+				set {townychat.settings::%{_town}%::ranks::%{_targetPlayer}%} to "Member"
+				set {townychat.player.towny::%uuid of player%} to {_town}
+				add 8 to {townychat.settings::%{_town}%::claims.count}
+				message "{@prefix} &6Joined the Town&7: &e%{_town}%"
+				loop all players:
+					if {townychat.settings::%{_town}%::ranks::%uuid of loop-player%} is set:
+						send "{@prefix} &8[&b%{_town}%&8] &b%player% &7just joined the Town" to loop-player
+					else if {townychat.spy::%uuid of loop-player%} is set:
+						send "{@prefix} &8[&b%{_town}%&8] &b%player% &7just joined the Town" to loop-player			
+				stop
+			else if {townychat.settings::%arg-2%::open} = true:
+				loop {townychat.names::*}:
+					if loop-index = arg-2:
+						set {_town} to loop-value
+				if {_town} is not set:
+					message "{@prefix} &cUnknown town"
+					stop
+				set {townychat.settings::%{_town}%::ranks::%{_targetPlayer}%} to "Member"
+				add 8 to {townychat.settings::%{_town}%::claims.count}
+				set {townychat.player.towny::%uuid of player%} to {_town}
+				message "{@prefix} &6Joined the Town&7: &e%{_town}%"
+				loop all players:
+					if {townychat.settings::%{_town}%::ranks::%uuid of loop-player%} is set:
+						send "{@prefix} &8[&b%{_town}%&8] &b%player% &7just joined the Town" to loop-player
+					else if {townychat.spy::%uuid of loop-player%} is set:
+						send "{@prefix} &8[&b%{_town}%&8] &b%player% &7just joined the Town" to loop-player			
+				stop
+				
+			
+			message "{@prefix} &6You are not whitelisted in that Town!"
+			message "{@prefix} &6Ask the Town to add you!"
+			stop
+			
+			
+			
+			# New stuff
+			
+			
+		else if arg-1 is "open" or "unlock" or "closed" or "close":
+			
+			if {_townyName} is not set:
+				message "{@prefix} &7You're not in a Town"
+				stop			
+				
+			if "%{townychat.settings::%{_townyName}%::ranks::%uuid of player%}%" is not "Owner":
+				message "{@prefix} &7You don't have enough permissions to open your town."
+				stop
+				
+			if {townychat.settings::%{_townyName}%::open} is not set:
+				set {townychat.settings::%{_townyName}%::open} to true
+				message "{@prefix} &7Now anyone can join your town without an invite."
+			else:
+				delete {townychat.settings::%{_townyName}%::open}
+				message "{@prefix} &7Members now need invites to join your town."
+			stop
+	
+		else if arg-1 is "claim":
+			if player is not in world "Towny":
+				message "{@prefix} &cYou must be in the Towny world to use that. &b/towny"
+				stop
+			if {_townyName} is not set:
+				message "{@prefix} &cYou need to be part of a Town &b/town create (name)"
+				stop
+			if "%{townychat.settings::%{_townyName}%::ranks::%uuid of player%}%" is not "Owner" or "Assistant":
+				message "{@prefix} &cYou must be Owner or Assistant to claim land for this Town"
+				stop
+			if {townychat.settings::%{_townyName}%::claims.count} is not set:
+				set {townychat.settings::%{_townyName}%::claims.count} to 8
+			if ({townychat.settings::%{_townyName}%::claims.count} + {townychat.settings::%{_townyName}%::claims.bonus}) <= 0:
+				message "{@prefix} &cYou have &e%{townychat.settings::%{_townyName}%::claims.count}% &cclaim blocks left."
+				stop
+			set {_chunkX} to rounded up x coordinate of player / 16
+			set {_chunkZ} to rounded up z coordinate of player / 16
+			if {towny.claims::%{_chunkX}%/%{_chunkZ}%} is set:
+				message "{@prefix} &cThat chunk is already claimed!"
+				stop
+			set {towny.claims::%{_chunkX}%/%{_chunkZ}%} to {_townyName}
+			add "%{_chunkX}%/%{_chunkZ}%" to {townychat.settings::%{_townyName}%::claims.locations::*}
+			subtract 1 from {townychat.settings::%{_townyName}%::claims.count}
+			message "{@prefix} &aChunk Claimed. You have &e%{townychat.settings::%{_townyName}%::claims.count}% &aclaim blocks left."
+			stop
+			
+		else if arg-1 is "unclaim":
+			if player is not in world "Towny":
+				message "{@prefix} &cYou must be in the Towny world to use that. &b/towny"
+				stop
+			if {_townyName} is not set:
+				message "{@prefix} &cYou need to be part of a Town &b/town create (name)"
+				stop
+			if "%{townychat.settings::%{_townyName}%::ranks::%uuid of player%}%" is not "Owner" or "Assistant":
+				message "{@prefix} &cYou must be Owner or Assistant to unclaim land for this Town"
+				stop
+			if {townychat.settings::%{_townyName}%::claims.count} is not set:
+				set {townychat.settings::%{_townyName}%::claims.count} to 8
+			if {townychat.settings::%{_townyName}%::claims.count} <= 0:
+				message "{@prefix} &cYou have &e%{townychat.settings::%{_townyName}%::claims.count}% &cclaim blocks left."
+				stop
+			set {_chunkX} to rounded up x coordinate of player / 16
+			set {_chunkZ} to rounded up z coordinate of player / 16
+			if {towny.claims::%{_chunkX}%/%{_chunkZ}%} is set:
+				if {towny.claims::%{_chunkX}%/%{_chunkZ}%} is not {_townyName}:
+					message "{@prefix} &cYour town does not own this land"
+					stop
+				delete {towny.claims::%{_chunkX}%/%{_chunkZ}%}
+				add 1 to {townychat.settings::%{_townyName}%::claims.count}
+				message "{@prefix} &7Chunk unclaimed"
+				stop
+			else:
+				message "{@prefix} &7Chunk not claimed"
+			stop
+			
+command /deletealltownydata:
+	permission: is.Pluto
+	trigger:
+		delete {townychat.player.towny::*}
+		delete {townychat.settings::*}
+		delete {towny.plot.trusted::*}
+		delete {towny.plot.owner::*}
+		delete {townychat.names::*}
+		delete {towny.claims::*}
+		
+		
+		
+
+function checkClaim(location: location, player: player) :: boolean:
+	set {_uuid} to uuid of {_player}
+	if {townychat.player.towny::%{_uuid}%} is set:
+		set {_townyName} to {townychat.player.towny::%{_uuid}%}
+	set {_chunkX} to rounded up x coordinate of {_location} / 16
+	set {_chunkZ} to rounded up z coordinate of {_location} / 16
+	if {towny.claims::%{_chunkX}%/%{_chunkZ}%} is set:
+		if {_townyName} != {towny.claims::%{_chunkX}%/%{_chunkZ}%}:
+			if {towny.plot.trusted::%{_chunkX}%/%{_chunkZ}%::*} does not contain {_uuid}:
+				return false
+		if "%{townychat.settings::%{_townyName}%::ranks::%{_uuid}%}%" is not "Owner" or "Assistant" or "Helper" or "Builder":
+			if {towny.plot.trusted::%{_chunkX}%/%{_chunkZ}%::*} does not contain {_uuid}:
+				if {towny.plot.owner::%{_chunkX}%/%{_chunkZ}%} != "%{_uuid}%":
+					return false
+	return true
+				
+	
+function isClaimed(location: location) :: boolean:
+	set {_chunkX} to rounded up x coordinate of {_location} / 16
+	set {_chunkZ} to rounded up z coordinate of {_location} / 16
+	if {towny.claims::%{_chunkX}%/%{_chunkZ}%} is set:
+		return true
+	return false
+			
+# Claim/Grief Prevention		
+on build:
+	if player is in world "Towny":
+		if checkClaim(location of event-block, player) = false:
+			cancel event
+				
+on break:
+	if player is in world "Towny":
+		if checkClaim(location of event-block, player) = false:
+			cancel event	
+			
+on crop trample:
+	if player is in world "Towny":
+		if checkClaim(location of event-block, player) = false:
+			cancel event	
+
+on right click with flint and steel:
+	if player is in world "Towny":
+		if checkClaim(location of clicked block, player) = false:
+			cancel event
+				
+on damage:
+	if victim is in world "Towny":
+		if victim is not a player:
+			if attacker is a player:
+				if checkClaim(location of victim, attacker) = false:
+					cancel event
+					extinguish victim
+					
+on flow:
+	if future event-block's world is "Towny":
+		if isClaimed(location of future event-block) = false:
+			cancel event
+	
+on piston extend:
+	if event-block's world is "Towny":
+		if isClaimed(location of event-block) = false:
+			cancel event
+			
+			
+on piston retract:
+	if event-block's world is "Towny":
+		if isClaimed(location of event-block) = false:
+			cancel event
+			
+
+				

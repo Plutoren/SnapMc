@@ -1,0 +1,105 @@
+on right click with apple:
+	if "%name of player's tool%" contains "iPhone":
+		cancel event
+		execute player command "iphone"
+on right click with iron ingot:
+	if "%name of player's tool%" contains "iPhone":
+		cancel event
+		execute player command "iphone"		
+# ⚡
+
+command /iphone:							
+	executable by: players								
+	aliases: phone								
+	trigger:											
+		wait 1 ticks									
+		open chest with 6 rows named "            &8-=[ &1iPhone &8]=-" to player
+		wait 1 ticks	
+		set {_done} to false
+		chance of 25%:
+			format slot 2 of player with black stained glass pane named "&f● ● ● ● ○ Verizon LTE" to close then run "sudo %player% iphone" 
+			set {_done} to true
+		chance of 25%:
+			if {_done} != true:
+				format slot 2 of player with black stained glass pane named "&f● ● ● ○ ○ Verizon 3G" to close then run "sudo %player% iphone" 
+				set {_done} to true
+		chance of 25%:
+			if {_done} != true:
+				format slot 2 of player with black stained glass pane named "&f● ● ○ ○ ○ AT&T 3G" to close then run "sudo %player% iphone" 
+				set {_done} to true
+		chance of 25%:
+			if {_done} != true:
+				format slot 2 of player with black stained glass pane named "&f○ ○ ○ ○ ○ No Service" to close then run "sudo %player% iphone" 
+				set {_done} to true
+		chance of 25%:
+			if {_done} != true:
+				format slot 2 of player with black stained glass pane named "&f○ ○ ○ ○ ○ Searching..." to close then run "sudo %player% iphone" 
+				set {_done} to true
+		
+		if {_done} != true:
+			format slot 2 of player with black stained glass pane named "&f● ● ● ○ ○ AT&T 3G" to close then run "sudo %player% iphone" 
+		set {_done} to false
+		chance of 25%:
+			format slot 6 of player with green stained glass pane named "&a&l[100%%] &f&l⚡" to close then run "sudo %player% iphone" 
+			set {_done} to true
+		chance of 25%:
+			if {_done} != true:
+				format slot 6 of player with green stained glass pane named "&a&l[88%%] &f⚡" to close then run "sudo %player% iphone" 
+				set {_done} to true
+		chance of 25%:
+			if {_done} != true:
+				format slot 6 of player with green stained glass pane named "&a&l[90%%] &f⚡" to close then run "sudo %player% iphone"
+				set {_done} to true 
+		chance of 25%:
+			if {_done} != true:
+				format slot 6 of player with red stained glass pane named "&c&l[18%%] &f⚡" to close then run "sudo %player% iphone" 
+				set {_done} to true
+		chance of 25%:
+			if {_done} != true:
+				format slot 6 of player with yellow stained glass pane named "&e&l[20%%] &f⚡" to close then run "sudo %player% iphone"
+				set {_done} to true 
+		
+		if {_done} != true:
+			format slot 6 of player with green stained glass pane named "&a&l[100%%] &f⚡" to close then run "sudo %player% iphone" 
+		set {_done} to false
+				
+		format slot 3 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 4 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 5 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone"  
+		format slot 11 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 12 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 13 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 14 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 15 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 20 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 21 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 22 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 23 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 24 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 29 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 30 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 31 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 32 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 33 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 38 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 39 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 40 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 41 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 42 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 47 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 48 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 49 of player with sunflower named "&3&lHome" to close then run "sudo %player% iphone" 
+		format slot 50 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		format slot 51 of player with gray stained glass pane named "&f" to close then run "sudo %player% iphone" 
+		wait 1 tick																	
+		format slot 12 of player with grass block named "&e&lClaiming" with lore "||  &7Click for more||  &7information on||  &7land claiming       || " to close then run "sudo %player% menu3"
+		format slot 13 of player with bookshelf named "&d&lGeneral" with lore "||  &7More commands||  &7and frequently||  &7asked questions     ||  " to close then run "sudo %player% menu5"
+		format slot 14 of player with hay block named "&5&lWarps" with lore "||  &7Click for a list||  &7of warps            ||  " to close then run "sudo %player% menu4"
+		format slot 21 of player with light green wool block named "&b&lGame Center" with lore "||  &7Click to play games||            ||  " to close then run "sudo %player% minigames"
+		
+		# format slot 31
+
+
+		
+		
+		

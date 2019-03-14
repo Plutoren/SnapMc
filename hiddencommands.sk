@@ -1,0 +1,30 @@
+on command:
+	if "%player%" != "<none>" or "Plutoren":
+		if "%command%" contains "essentials" or "minecraft" or "bukkit":
+			message "&8[&bSnap&8] &cNot Supported"
+			cancel event
+			stop
+		else if "%command%" = "kp" or "kitpreview" or "sudo" or "op" or "deop" or "pl" or "plugins" or "?" or "list" or "plist" or "playerlist" or "who" or "online" or "mv" or "multiverse" or "plugman" or "citizens":
+			message "&8[&bSnap&8] &cNot Supported"
+			cancel event
+			stop
+	if "%player%" = "<none>":
+		if "%command%" = "list":
+			cancel event
+			stop
+	set {_cmd::*} to command split at ""
+	if "%{_cmd::1}%" = "e":
+		if "%player%" != "Plutoren" or "<none>":
+			if "%command%" != "excavation" or "elytra" or "event" or "events" or "emote" or "emotetoggle" or "ef" or "embassy" or "emotes" or "end" or "enchant" or "eco" or "endersee" or "ec" or "enderchest" or "eat" or "effect":
+				cancel event
+				message "&8[&bSnap&8] &cNot Supported"
+				stop
+
+on command "/wb":
+	if player does not have permission "is.Pluto":
+		execute player command "/craft"
+			
+command /whoami:
+	trigger:
+		message "&8[&bSnap&8] &7I am &a%player%"
+		

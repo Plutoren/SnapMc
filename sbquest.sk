@@ -1,0 +1,108 @@
+
+		
+command /setsbquestitem <text> <int> <int> <int> <int>:
+	permission: is.op
+	trigger:
+		if arg-5 * arg-3 > 2304:
+			message "That maximum means the player will need to hold more than 2304 items (max inventory)"
+			stop
+		set {sb.quest.item::%arg-1%} to player's tool
+		set {sb.quest.level::%arg-1%} to arg-2
+		set {sb.quest.itemsNeeded::%arg-1%} to arg-3
+		set {sb.quest.prizePoints::%arg-1%} to arg-4
+		set {sb.quest.maximum::%arg-1%} to arg-5 * arg-3
+		message "set"
+		
+command /setsbquestmaximum <text> <int>:
+	permission: is.op
+	trigger:
+		if  {sb.quest.maximum::%arg-1%} is not set:
+			message "not set"
+			stop
+		set {sb.quest.maximum::%arg-1%} to {sb.quest.itemsNeeded::%arg-1%} * arg-2
+		message "set"
+
+command /setsbquestkeep <text>:
+	permission: is.op
+	trigger:
+		set {sb.quest.keepItem::%arg-1%} to true
+		message "set"
+command /sbquest <player> <integer> <text> <integer> <integer> <integer>:
+	permission: is.op
+	trigger:
+		# player
+		# player level needed
+		# item id
+		# items needed
+		# prize points 
+		# maximum amount
+		
+		if {sb.player.level::%uuid of arg-1%} is not set:
+			set {_playerLevel} to 1
+		else:
+			set {_playerLevel} to {sb.player.level::%uuid of arg-1%}
+		if {_playerLevel} < arg-2:
+			send "&8[&bSB&8] &7You need to be &elevel %arg-2%&7 &7to do this quest." to arg-1
+			stop
+		if {sb.quest.player.stats::%uuid of arg-1%::%arg-3%} is not set:
+			set {sb.quest.player.stats::%uuid of arg-1%::%arg-3%} to 1
+		
+		set {_item} to {sb.quest.item::%arg-3%}
+		set {_itemPlayerHas} to amount of {_item} in arg-1's inventory
+		set {_itemsNeeded} to arg-4 * {sb.quest.player.stats::%uuid of arg-1%::%arg-3%}
+		set {_prizePoints} to arg-5 * {sb.quest.player.stats::%uuid of arg-1%::%arg-3%}
+		set {_maximum} to arg-6
+		if {_itemsNeeded} > {_maximum}:
+			send "&8[&bSB&8] &eYou cannot complete this quest again"
+			stop
+		if {_itemPlayerHas} < {_itemsNeeded}:
+			
+			if "%name of current inventory of player%" != "     -=[ &1SkyBlock Quests &8]=-":
+				open chest with 6 row named "     -=[ &1SkyBlock Quests &8]=-" to arg-1
+			wait 1 tick
+			if "%name of current inventory of arg-1%" != "     -=[ &1SkyBlock Quests &8]=-":
+				close inventory of arg-1
+				stop
+				
+			set {_i} to 0
+			loop 9 times:
+				format slot {_i} of arg-1 with blue stained glass pane named "&b&l*" to close
+				add 1 to {_i}				
+			#format slot 17 of arg-1 with blue stained glass pane named "&b&l*" to close
+			# format slot 36 of arg-1 with blue stained glass pane named "&b&l*" to close
+			set {_i} to 45
+			loop 9 times:
+				format slot {_i} of arg-1 with blue stained glass pane named "&b&l*" to close
+				add 1 to {_i}
+			set {_itemsLeft} to {_itemsNeeded}
+			set {_i} to 1
+			loop 36 times:
+				if {_itemsLeft} > 0:
+					set {_amount} to {_itemsLeft}
+					if {_itemsLeft} > 64:
+						set {_amount} to 64
+					format slot {sb.quest.menu.order::%{_i}%} of arg-1 with {_amount} of {_item} named "" with lore "|| &e&lQuest&7: ||||   &7Amount&f: &6%{_itemsNeeded}%||   &7Prize&f: &6%{_prizePoints}% points || &e" to close
+				else:
+					stop
+				subtract 64 from {_itemsLeft}
+				add 1 to {_i}
+			stop
+		else:
+			send "&8[&bSB&8] &eQuest Completed. You got &d%{_prizePoints}% points." to arg-1
+			add  {_prizePoints} to {bw.balance::%uuid of arg-1%}
+			send "&8[&bSB&8] &7You now have &a%{bw.balance::%uuid of arg-1%}% points" to arg-1
+			if {sb.quest.keepItem::%arg-3%} is not set:
+				remove {_itemsNeeded} of {_item} from arg-1's inventory
+			add 1 to {sb.quest.player.stats::%uuid of arg-1%::%arg-3%}
+			if "%name of current inventory of arg-1%" = "     -=[ &1SkyBlock Quests &8]=-":
+				execute arg-1 command "sb quest %arg-2%"
+				
+	
+command /setsbmenu <int> <int>:
+	permission: is.op
+	trigger:
+		set {sb.quest.menu.order::%arg-1%} to arg-2
+	
+			
+
+		

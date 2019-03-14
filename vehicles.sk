@@ -1,0 +1,70 @@
+command /vmenu:
+	aliases: vehicles
+	trigger:
+		if player is in world "Spawn":
+			message "&8[&bSnap&8] &eHead to a main build world to use this &b/wild"
+			stop
+		open chest with 3 row named "      &8-=[ &1Vehicle Menu &8]=-" to player
+		wait 1 ticks									
+		set {_i} to 0									
+		loop 27 times:									
+			format slot {_i} of player with gray stained glass pane named "&7" to close then run "sudo %player% vmenu"
+			add 1 to {_i}	 														
+		format slot 4 of player with stick named "&e&lBrooms" with lore "", " &eClick for more ", " &eRank: &7Member ", " " to close then run "sudo %player% broomshop2"
+		format slot 10 of player with oak fence gate named "&e&lBikes" with lore "", " &eClick for more ", " &eRank: &aPro ", " " to close then run "sudo %player% bikeshop2"
+		format slot 11 of player with oak wood plank named "&e&lRafts" with lore "", " &eClick for more ", " &eRank: &aPro ", " " to close then run "sudo %player% raftshop2"
+		format slot 12 of player with rail item named "&e&lTrains" with lore "", " &eClick for more ", " &eRank: &6Hero ", " " to close then run "sudo %player% trainshop2"
+		format slot 13 of player with grass block named "&e&lCars" with lore "", " &eClick for more ", " &eRank: &6Hero ", " " to close then run "sudo %player% carshop2"
+		format slot 14 of player with chest named "&e&lTanks" with lore "", "  &eClick for more ", " &eRank: &dLegend ", " " to close then run "sudo %player% tankshop2"
+		format slot 15 of player with elytra item named "&e&lPlanes" with lore "", " &eClick for more ", " &eRank: &dLegend ", " " to close then run "sudo %player% planeshop2"
+		format slot 16 of player with water bucket named "&e&lSubmarines" with lore "", " &eClick for more ", " &eRank: &bUltimate ", " " to close then run "sudo %player% submarineshop2"
+		format slot 21 of player with hopper named "&e&lHelicopters" with lore "", " &eClick for more ", " &eRank: &bUltimate ", " " to close then run "sudo %player% helicoptershop2"
+		format slot 23 of player with iron horse armor named "&e&lHover Bikes" with lore "", " &eClick for more ", " &eRank: &9Cosmic ", " " to close then run "sudo %player% hoverbikeshop2"
+		
+		
+command /bikeshop2:
+	trigger:
+		wait 1 tick
+		execute player command "/bikeshop"
+				
+command /carshop2:
+	trigger:
+		wait 1 tick
+		execute player command "/carshop"
+		
+command /tankshop2:
+	trigger:
+		wait 1 tick
+		execute player command "/tankshop"
+		
+command /planeshop2:
+	trigger:
+		wait 1 tick
+		execute player command "/planeshop"
+		
+command /submarineshop2:
+	trigger:
+		wait 1 tick
+		execute player command "/submarineshop"
+		
+command /raftshop2:
+	trigger:
+		wait 1 tick
+		execute player command "/raftshop"
+		
+command /broomshop2:
+	trigger:
+		wait 1 tick
+		execute player command "/broomshop"
+command /trainshop2:
+	trigger:
+		wait 1 tick
+		execute player command "/trainshop"
+command /helicoptershop2:
+	trigger:
+		wait 1 tick
+		execute player command "/helicoptershop"
+command /hoverbikeshop2:
+	trigger:
+		wait 1 tick
+		execute player command "/hoverbikeshop"

@@ -1,0 +1,8 @@
+
+command /cape:
+	permission: is.op
+	trigger:
+		drawCape file "rainbow.png", center player, id "cape%player%", rainbowMode false, dynamicMode true, visibleRange 32, pulseDelay 1
+		wait 10 seconds
+		stopeffect "%player%"
+		stopeffect "cape%player%"

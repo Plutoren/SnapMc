@@ -1,0 +1,41 @@
+command /sell [<text>]:
+	trigger:
+		
+		if player is in world "Prison":
+			execute console command "prison sell %player%"
+			stop
+		if player does not have permission "sell.all":
+			message "&8[&bSnap&8] &eYou can buy this on &bstore.snapmc.com &eunder other >> commands"
+			stop
+		if player is not in world "world" or "world_nether" or "world_the_end" or "spawn":
+			message "&8[&bSnap&8] &eYou cant use that in this world"
+			stop
+		if arg-1 is not set:
+			message "&8[&bSnap&8] &7Currently you can sell the following:"
+			message "       &fIron Ingots &7- &a$17 &7per ingot"
+			message "       &6Gold Ingots &7- &a$20 &7per ingot"
+			stop
+		if arg-1 is "iron":
+			set {_i} to the number of iron ingots in the player's inventory
+			set {_j} to the number of iron blocks in the player's inventory
+			set {_price} to {_i} * 17
+			set {_price2} to {_j} * 17 * 9
+			set {_price} to {_price2} + {_price}
+			add {_price} to player's balance
+			remove all iron ingots from player's inventory
+			remove all iron blocks from player's inventory
+			add {_j} * 9 to {_i}
+			message "&8[&bSnap&8] &fYou sold %{_i}% iron ingots for &a$%{_price}%"
+			stop
+		if arg-1 is "gold":
+			set {_i} to the number of gold ingots in the player's inventory
+			set {_j} to the number of gold blocks in the player's inventory
+			set {_price} to {_i} * 20
+			set {_price2} to {_j} * 20 * 9
+			set {_price} to {_price2} + {_price}
+			add {_price} to player's balance
+			remove all gold ingots from player's inventory
+			remove all gold blocks from player's inventory
+			add {_j} * 9 to {_i}
+			message "&8[&bSnap&8] &6You sold %{_i}% gold ingots for &a$%{_price}%"
+			stop

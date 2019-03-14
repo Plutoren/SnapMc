@@ -1,0 +1,200 @@
+command /rewards [<text>]:
+	aliases: reward, streak, streaks
+	trigger:
+		if arg-1 is set:
+			
+			if arg-1 is "top":
+				loop {streak.count::*}:
+					add 1 to {_size}
+					if {_low.to.high.list::%loop-value%} is not set:
+						set {_low.to.high.list::%loop-value%} to loop-index
+					else:
+						set {_n} to 0
+						loop {_size} times:
+							set {_n} to {_n}+1
+							{_low.to.high.list::%loop-value-1%.%{_n}%} is not set
+							set {_low.to.high.list::%loop-value-1%.%{_n}%} to loop-index
+							
+							stop loop
+				wait 1 tick
+				set {_n} to size of {_low.to.high.list::*}
+				loop {_low.to.high.list::*}:
+					set {_high.to.low.list::%{_n}%} to loop-value
+					set {_n} to {_n}-1
+				
+				open chest with 6 row named "        -=[ &1Top Streaks &8]=-" to player
+				wait 1 tick
+				if "%name of current inventory of player%" != "        -=[ &1Top Streaks &8]=-":
+					close inventory of player
+					stop
+					
+				set {_i} to 0
+				loop 10 times:
+					format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/streak top"]
+					add 1 to {_i}				
+				format slot 17 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/streak top"]
+				format slot 36 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/streak top"]
+				set {_i} to 44
+				loop 10 times:
+					format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/streak top"]
+					add 1 to {_i}
+			
+				set {_slot} to 19
+				set {_i} to 0
+				loop {_high.to.low.list::*}:
+					
+					add 1 to {_slot}
+					add 1 to {_i}
+					format slot {_slot} of player with {item::head_number%{_i}%} named "&eStreak of &6&n%{uuidName::%loop-value%}%&r &7(##%{_i}%)" with lore "", " &6* &e&lStreak Count &7%{streak.count::%loop-value%}% ", "", " &6* &e&lPlace &7##%{_i}%", " &e" to run "sudo %player% streak %{uuidName::%loop-value%}%"
+			
+					
+					if {_slot} is 24:
+						set {_slot} to 28 
+					if {_slot} is 33:
+						stop
+				stop
+			if {streak.count::%{uuid::%arg-1%}%} is not set:
+				message "&7&m----------------------------------------------"
+				message "  &6&lStreaks"
+				message "    &fThat player does not have a streak!"
+				message "&7&m----------------------------------------------"
+			else:
+				message "&7&m----------------------------------------------"
+				message "  &6&lStreaks"
+				message "    &fThe Streak of %{uuidName::%{uuid::%arg-1%}%}% is currently &d%{streak.count::%{uuid::%arg-1%}%}%"
+				set {_startDate} to {rewards.day::%arg-1%}
+				set {_duration} to 23 hours
+				set {_now} to now
+				set {_endDate} to {_startDate}
+				add {_duration} to {_endDate}
+				set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+				message "    &fThey must wait &e%{_timeUntilExpiration}%" 
+				message "    &fUntil they can increase their streak"
+				message "&7&m----------------------------------------------"
+			stop
+			
+		if {rewards.day::%player%} is not set:
+			set {rewards.day::%player%} to now
+			subtract 1 day from {rewards.day::%player%}
+		if {rewards.day::%player%} was more than 23 hours ago:
+			if {streak.count::%uuid of player%} is not set:
+				set {streak.count::%uuid of player%} to 1
+				set {_next} to now
+				add 30 hours to {_next}
+				set {streak.limit::%uuid of player%} to {_next}
+				message "&7&m----------------------------------------------"
+				message "  &6&lStreaks"
+				message "    &fYou started a streak, come back in &e23 hours &fto increase it!"
+				message "    &fYour streak will reset if you dont come back in 30 hours!"
+				message "    &fYou can reset the 30 hours by typing /streak anytime."
+				message "&7&m----------------------------------------------"
+
+			else:
+				if {streak.limit::%uuid of player%} was more than 1 second ago:
+					set {streak.count::%uuid of player%} to 1
+					message "&7&m----------------------------------------------"
+					message "  &6&lStreaks"
+					message "    &fYou restarted a streak, come back in &e23 hours &fto increase it!"
+					message "    &fYour streak will reset if you dont come back in 30 hours!"
+					message "    &fYou can reset the 30 hours by typing /streak anytime."
+					message "&7&m----------------------------------------------"
+				else:
+					add 1 to {streak.count::%uuid of player%}		
+					set {_next} to now
+					add 30 hours to {_next}
+					set {streak.limit::%uuid of player%} to {_next}
+					message "&7&m----------------------------------------------"
+					message "  &6&lStreaks"
+					message "    &fYou increased your streak to &d%{streak.count::%uuid of player%}%"
+					message "    &fYou now have &e30 hours &funtil it resets."		
+					message "&7&m----------------------------------------------"
+					
+		
+			set {rewards.day::%player%} to now
+			set {_i} to random integer from 1 to 3
+			if {_i} is 1:
+				if player is in world "spawn" or "world" or "world_nether" or "world_the_end" or "resource" or "Elytra Fall":
+					
+					add 100000 to player's balance
+					message "&8[&bRewards&8] &eYou got &a$100,000"
+				else if player is in world "Wilderness":
+					add 200 to {wilderness.balance::%uuid of player%}
+					message "&8[&bRewards&8] &eYou got &a$200"
+				else if player is in world "SkyBlock":
+					execute console command "/sb givepoints %player% 1000"
+					message "&8[&bRewards&8] &eYou got &a1,000 points"
+				else if player is in world "Prison":
+					execute console command "/kp key 3 regular %player% 1"
+				else:
+					message "&8[&bRewards&8] &eYou can't collect daily rewards in this world"
+					
+			else if {_i} is 2:
+				if player is in world "spawn" or "world" or "world_nether" or "world_the_end" or "resource" or "Elytra Fall" or "Avalon":
+					
+					add 200000 to player's balance
+					message "&8[&bRewards&8] &eYou got &a$200,000"
+				else if player is in world "Wilderness":
+					add 300 to {wilderness.balance::%uuid of player%}
+					message "&8[&bRewards&8] &eYou got &a$300"
+				else if player is in world "SkyBlock":
+					execute console command "/sb givepoints %player% 1000"
+					message "&8[&bRewards&8] &eYou got &a1,000 points"
+				else if player is in world "Prison":
+					execute console command "/kp key 4 regular %player% 1"
+				else:
+					message "&8[&bRewards&8] &eYou can't collect daily rewards in this world"
+					
+			else if {_i} is 3:
+				if player is in world "spawn" or "world" or "world_nether" or "world_the_end" or "resource" or "Elytra Fall" or "Avalon":
+					execute console command "/kp key Shamrock regular %player% 1"
+				else if player is in world "Wilderness":
+					add 150 to {wilderness.balance::%uuid of player%}
+					message "&8[&bRewards&8] &eYou got &a$150"
+				else if player is in world "SkyBlock":
+					execute console command "/kp key rainbow regular %player% 1"
+				else if player is in world "Prison":
+					execute console command "/kp key convict regular %player% 1"
+				else:
+					message "&8[&bRewards&8] &eYou can't collect daily rewards in this world"
+					
+		else:
+		
+			message "&8[&bRewards&8] &eYou got a reward on &b%{rewards.day::%player%}%"
+		
+			if {streak.count::%uuid of player%} is not set:
+				set {streak.count::%uuid of player%} to 1
+				set {_next} to now
+				add 30 hours to {_next}
+				set {streak.limit::%uuid of player%} to {_next}
+				message "&7&m----------------------------------------------"
+				message "  &6&lStreaks"
+				message "    &fYou started a streak, come back in &e23 hours &fto increase it!"
+				message "    &fYour streak will reset if you dont come back in 30 hours!"
+				message "    &fYou can reset the 30 hours by typing /streak anytime."
+				message "&7&m----------------------------------------------"
+			else:
+				set {_next} to now
+				add 30 hours to {_next}
+				set {streak.limit::%uuid of player%} to {_next}
+				message "&7&m----------------------------------------------"
+				message "  &6&lStreaks"
+				message "    &fYour Streak is currently &d%{streak.count::%uuid of player%}%"
+				message "    &fYou extended the time until your streak resets." 
+				message "    &fYou now have &e30 hours &funtil it resets."		
+				
+				set {_startDate} to {rewards.day::%player%}
+				set {_duration} to 23 hours
+				set {_now} to now
+				set {_endDate} to {_startDate}
+				add {_duration} to {_endDate}
+				set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+				message "    &fYou must wait &e%{_timeUntilExpiration}%" 
+				message "    &fUntil you can increase your streak"
+				message "&7&m----------------------------------------------"
+
+command /setstreak <text> <int>:
+	permission: is.op
+	trigger:
+		set {_uuid} to {uuid::%arg-1%}
+		set {streak.count::%{_uuid}%} to arg-2
+				

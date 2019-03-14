@@ -1,0 +1,1676 @@
+command /prisonquest <player> <integer> <text>:
+	permission: is.op
+	trigger:
+		if {prison.level::%uuid of arg-1%} < arg-2:
+			send "&8[&ePrison&8] &7You must be &fRank %arg-2%&7 to do this quest" to arg-1
+			stop
+		if {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} is not set:
+			set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to 1
+		
+		
+		if arg-3 is "ironingot4":
+			set {_amount} to 200
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHello" to arg-1
+				wait 1 second
+				send "   &You have been very helpful" to arg-1
+				wait 1 second
+				send "   &fI don't need anything else" to arg-1
+				stop
+			set {_has} to amount of iron ingots in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHello young convict" to arg-1
+				wait 2 seconds
+				send "   &fHow are you today" to arg-1
+				wait 2 seconds	
+				send "   &fGreat, great" to arg-1
+				wait 2 seconds		
+				send "   &fI could use a favor" to arg-1
+				wait 2 seconds	
+				send "   &fI really need some iron ingots" to arg-1
+				wait 2 seconds	
+				send "   &fCan you bring me &e%{_amount}% &firon ingots" to arg-1
+				wait 2 seconds	
+				send "   &fThanks" to arg-1
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYou got the iron ingots I needed!" to arg-1
+				wait 1 second
+				send "   &fThank you so much" to arg-1
+				remove {_amount} of iron ingots from arg-1's inventory
+				wait 1 second 
+				send "   &fHere take this quest point" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and a Rank 4 Key" to arg-1
+				execute console command "/kp key 4 regular %arg-1% 1"
+				wait 1 second
+				send "   &fPleasure Doing Business!" to arg-1
+		
+		
+		
+		else if arg-3 is "coal4":
+			set {_amount} to 250
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHello" to arg-1
+				wait 1 second
+				send "   &You have been very helpful" to arg-1
+				wait 1 second
+				send "   &fI don't need anything at the moment" to arg-1
+				stop
+			set {_has} to amount of coal in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHello my fellow prisoner" to arg-1
+				wait 2 seconds
+				send "   &fWhat are you up to?" to arg-1
+				wait 2 seconds	
+				send "   &fWell I know what you should do instead" to arg-1
+				wait 2 seconds		
+				send "   &fBring me &e%{_amount}% &fcoal" to arg-1
+				wait 2 seconds	
+				send "   &fGreat, Thanks, Good Luck" to arg-1
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYou got the coal I needed!" to arg-1
+				wait 1 second
+				send "   &fThank you so much" to arg-1
+				remove {_amount} of coal item from arg-1's inventory
+				wait 1 second 
+				send "   &fHere take this quest point" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 200% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 200)
+				wait 1 second
+				send "   &fPleasure Doing Business!" to arg-1
+				
+				
+				
+		else if arg-3 is "stone4":
+			set {_amount} to 350
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHello again" to arg-1
+				wait 1 second
+				send "   &fYou have been very helpful" to arg-1
+				wait 1 second
+				send "   &fI don't need anything at the moment" to arg-1
+				stop
+			set {_has} to amount of cobblestone in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fSup" to arg-1
+				wait 2 seconds
+				send "   &fHey you look strong" to arg-1
+				wait 2 seconds	
+				send "   &fI really need a lot of stone" to arg-1
+				wait 2 seconds		
+				send "   &fBring me &e%{_amount}% &fcobblestone please" to arg-1
+				wait 2 seconds	
+				send "   &fAlright get to it then" to arg-1
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYou got the cobblestone I needed!" to arg-1
+				wait 1 second
+				send "   &fThank you so very much" to arg-1
+				remove {_amount} of cobblestone from arg-1's inventory
+				wait 1 second 
+				send "   &fHere take this quest point" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 100% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 100)
+				wait 1 second
+				send "   &fThanks for helping!" to arg-1
+		
+				
+		else if arg-3 is "stone5":
+			set {_amount} to 200
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHello again" to arg-1
+				wait 1 second
+				send "   &fYou have been very helpful" to arg-1
+				wait 1 second
+				send "   &fI don't need anything at the moment" to arg-1
+				stop
+			set {_has} to amount of stone in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fWell hello there" to arg-1
+				wait 2 seconds
+				send "   &fHey you're a miner right?" to arg-1
+				wait 2 seconds	
+				send "   &fI really need a ton of stone" to arg-1
+				wait 2 seconds		
+				send "   &fBring me &e%{_amount}% &fstone please" to arg-1
+				wait 2 seconds	
+				send "   &fGet on with it then" to arg-1
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYou got the stone I asked for!" to arg-1
+				wait 1 second
+				send "   &fThank you so very much" to arg-1
+				remove {_amount} of stone from arg-1's inventory
+				wait 1 second 
+				send "   &fHere take this quest point" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 300% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 300)
+				wait 1 second
+				send "   &fThanks for helping!" to arg-1		
+				
+		else if arg-3 is "wood5":
+			set {_amount} to 300
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHello again" to arg-1
+				wait 1 second
+				send "   &fYou have been very helpful" to arg-1
+				wait 1 second
+				send "   &I don't need anything at the moment" to arg-1
+				stop
+			set {_has} to amount of oak wood log in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fWell hello there" to arg-1
+				wait 2 seconds
+				send "   &fHey I could use some help" to arg-1
+				wait 2 seconds	
+				send "   &fI really need some oak wood logs for a... project" to arg-1
+				wait 2 seconds		
+				send "   &fCan you give me &e%{_amount}% &foak wood logs please" to arg-1
+				wait 2 seconds	
+				send "   &fGet on with it then" to arg-1
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYou got the wood I asked for!" to arg-1
+				wait 1 second
+				send "   &fThank you so very much" to arg-1
+				remove {_amount} of oak wood log from arg-1's inventory
+				wait 1 second 
+				send "   &fHere take this quest point" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 250% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 250)
+				wait 1 second
+				send "   &fThanks for helping!" to arg-1	
+
+		else if arg-3 is "stonepickaxe5":
+			set {_amount} to 15
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 36:
+				send "   &fHello again" to arg-1
+				wait 1 second
+				send "   &fYou have been very helpful" to arg-1
+				wait 1 second
+				send "   &fI don't need anything at the moment" to arg-1
+				stop
+			set {_has} to amount of stone pickaxes in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHello My Friend!" to arg-1
+				wait 2 seconds
+				send "   &fI need some tools" to arg-1
+				wait 2 seconds	
+				send "   &fSpecifically I need stone pickaxes" to arg-1
+				wait 2 seconds		
+				send "   &fCan you give me &e%{_amount}% &fstone pickaxes" to arg-1
+				wait 2 seconds	
+				send "   &fAwesome thanks" to arg-1
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYou got the stone pickaxes I asked for!" to arg-1
+				wait 1 second
+				send "   &fThank you so very much" to arg-1
+				remove {_amount} of stone pickaxes from arg-1's inventory
+				wait 1 second 
+				send "   &fHere take this quest point" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and a Rank 5 Key" to arg-1
+				execute console command "/kp key 5 regular %arg-1% 1"
+				wait 1 second
+				send "   &fThanks for helping!" to arg-1					
+				
+		
+		else if arg-3 is "lapis5":
+			set {_amount} to 350
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHello again" to arg-1
+				wait 1 second
+				send "   &fYou have been very helpful" to arg-1
+				wait 1 second
+				send "   &I don't need anything at the moment" to arg-1
+				stop
+			set {_has} to amount of lapis in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fWell hello there" to arg-1
+				wait 2 seconds
+				send "   &fHey you look stupid enough to help me" to arg-1
+				wait 2 seconds	
+				send "   &fI mean, kind.. right.." to arg-1
+				wait 2 seconds	
+				send "   &fAnyway, I am looking for some lapis" to arg-1
+				wait 2 seconds		
+				send "   &fCan you bring me &e%{_amount}% &flapis?" to arg-1
+				wait 2 seconds	
+				send "   &fGood Luck" to arg-1
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYou got the lapis I asked for!" to arg-1
+				wait 1 second
+				send "   &fThank you so very much" to arg-1
+				remove {_amount} of lapis from arg-1's inventory
+				wait 1 second 
+				send "   &fHere take this quest point" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 350% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 350)
+				wait 1 second
+				send "   &fThanks for helping!" to arg-1	
+
+		else if arg-3 is "redstone5":
+			set {_amount} to 100
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHello again friend" to arg-1
+				wait 1 second
+				send "   &fYou have been very helpful" to arg-1
+				wait 1 second
+				send "   &I don't need anything at the moment" to arg-1
+				stop
+			set {_has} to amount of redstone in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHola mi amigo" to arg-1
+				wait 2 seconds
+				send "   &fNecesito Redstone" to arg-1
+				wait 2 seconds		
+				send "   &fTrÃƒÆ’Ã‚Â¡eme &e%{_amount}% &fredstone?" to arg-1
+				wait 2 seconds	
+				send "   &fGracias" to arg-1
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fGracias!" to arg-1
+				wait 1 second
+				send "   &fToma este punto de bÃƒÆ’Ã‚Âºsqueda" to arg-1
+				remove {_amount} of redstone from arg-1's inventory
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh y &e%{_amount} * 650% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 650)
+				wait 1 second
+				send "   &fSi, Si! llegar de nuevo!" to arg-1	
+
+				
+		else if arg-3 is "redstone6":
+			set {_amount} to 400
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHello again stranger" to arg-1
+				wait 1 second
+				send "   &fYou have been very helpful" to arg-1
+				wait 1 second
+				send "   &I don't need anything at the moment" to arg-1
+				stop
+			set {_has} to amount of redstone in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHello Stranger" to arg-1
+				wait 2 seconds
+				send "   &fHey I need some help" to arg-1
+				wait 2 seconds	
+				send "   &fI mean, if you're able to" to arg-1
+				wait 2 seconds	
+				send "   &fI need some redstone" to arg-1
+				wait 2 seconds		
+				send "   &fCan you bring me &e%{_amount}% &fredstone?" to arg-1
+				wait 2 seconds	
+				send "   &fGreat, thanks" to arg-1
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fSweet! You got the redstone I wanted!" to arg-1
+				wait 1 second
+				send "   &fThank you so very much" to arg-1
+				remove {_amount} of redstone from arg-1's inventory
+				wait 1 second 
+				send "   &fHere take this quest point" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 650% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 650)
+				wait 1 second
+				send "   &fThanks for helping!" to arg-1			
+				
+				
+		else if arg-3 is "ironhelmet6":
+			set {_amount} to 8
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 36:
+				send "   &fHey kid" to arg-1
+				wait 1 second
+				send "   &fYou have been very helpful" to arg-1
+				wait 1 second
+				send "   &I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of iron helmets in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey kid" to arg-1
+				wait 2 seconds
+				send "   &fHey I need some supplies" to arg-1
+				wait 2 seconds	
+				send "   &fDo you think you could help?" to arg-1
+				wait 2 seconds	
+				send "   &fI need some iron helmets" to arg-1
+				wait 2 seconds		
+				send "   &fCan you bring me &e%{_amount}% &firon helmets?" to arg-1
+				wait 2 seconds	
+				send "   &fGreat, thanks" to arg-1
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYay! You got the iron helmets I wanted!" to arg-1
+				wait 1 second
+				send "   &fThat's just grand" to arg-1
+				remove {_amount} of iron bars from arg-1's inventory
+				wait 1 second 
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 40000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 40000)
+				wait 1 second
+				send "   &fThanks for helping!" to arg-1
+
+		else if arg-3 is "ironbars6":
+			set {_amount} to 300
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey dude" to arg-1
+				wait 1 second
+				send "   &fYou have been very helpful" to arg-1
+				wait 1 second
+				send "   &I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of iron bars in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHello young adventurer" to arg-1
+				wait 2 seconds
+				send "   &fNot sure if you heard but the prisoners broke the iron bars.. AGAIN" to arg-1
+				wait 2 seconds	
+				send "   &fDo you think you could help?" to arg-1
+				wait 2 seconds	
+				send "   &fI need a lot of iron bars" to arg-1
+				wait 2 seconds		
+				send "   &fCan you bring me &e%{_amount}% &firon bars?" to arg-1
+				wait 1 seconds	
+				send "   &fI have to stay here and make sure no one leaves" to arg-1
+				wait 1 second
+				send "   &fThat would be spectacular" to arg-1
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYay! You got the iron bars I wanted!" to arg-1
+				wait 1 second
+				send "   &fThat's just grand" to arg-1
+				remove {_amount} of iron bars from arg-1's inventory
+				wait 1 second 
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 800% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 800)
+				wait 1 second
+				send "   &fThanks for helping!" to arg-1
+
+		else if arg-3 is "goldingots7":
+			set {_amount} to 200
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of gold ingot in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fOh God" to arg-1
+				wait 2 seconds
+				send "   &fYou hear all the screaming and banging?" to arg-1
+				wait 2 seconds	
+				send "   &fYeah thats the warden" to arg-1
+				wait 2 seconds	
+				send "   &fHe ran out of riches and so hes throwing a tantrum in his office" to arg-1
+				wait 2 seconds		
+				send "   &fCan you help me make him stop crying like a baby and get me &e%{_amount}% &fgold ingots?" to arg-1
+				wait 1 seconds	
+				send "   &fPlease hurry" to arg-1
+				wait 1 second
+				send "   &fPlease." to arg-1
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYou got the gold ingots?" to arg-1
+				wait 1 second
+				send "   &fFinally now we can have peace and quiet once again" to arg-1
+				remove {_amount} of gold ingot from arg-1's inventory
+				wait 1 second 
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 1000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 1000)
+				wait 1 second
+				send "   &fThank you sir, go on with your mining. Scum." to arg-1
+
+		else if arg-3 is "ironswords7":
+			set {_amount} to 25
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 36:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of iron sword in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey you" to arg-1
+				wait 2 seconds
+				send "   &fRecently the Warden has hired some new guards" to arg-1
+				wait 2 seconds	
+				send "   &fbut he hired way too much and so now half of them are unarmed" to arg-1
+				wait 2 seconds	
+				send "   &fcan you help by getting &e%{_amount}% &firon swords?" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYou got those iron swords we needed?" to arg-1
+				wait 1 second
+				send "   &fThank you, now the prison is guarded once again" to arg-1
+				remove {_amount} of iron sword from arg-1's inventory
+				wait 1 second 
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 80000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 80000)
+				wait 1 second
+				send "   &fThanks again!" to arg-1
+
+		else if arg-3 is "stonebricks7":
+			set {_amount} to 100
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of stone brick in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fI need your help" to arg-1
+				wait 2 seconds
+				send "   &fThe floor got damaged by the uprise of unexpected water in the sewers" to arg-1
+				wait 2 seconds	
+				send "   &fso unless you want to be swimming in poopy and disgusting water" to arg-1
+				wait 2 seconds	
+				send "   &fcan you get me &e%{_amount}% &fstonebricks to repair the floor?" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fCell block 3 is almost drowned" to arg-1
+				wait 1 second
+				send "   &fOh you got the stonebricks we needed? hot damn" to arg-1
+				remove {_amount} of stone brick from arg-1's inventory
+				wait 1 second 
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 800% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 800)
+				wait 1 second
+				send "   &fNext time we will monitor the sewers better" to arg-1
+
+		else if arg-3 is "gyarspickaxes7":
+			set {_amount} to 25
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 36:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of iron pickaxe in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fOh the horror" to arg-1
+				wait 2 seconds
+				send "   &fGyar ran out of sharp objects to eat!!" to arg-1
+				wait 2 seconds	
+				send "   &fNow shes on a rampage and eating everyones tools!!!" to arg-1
+				wait 2 seconds	
+				send "   &fhelp, we need to get &e%{_amount}% &fof iron pickaxes to feed her before we all run out of tools!" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fHelp, Gyar is trying to eat my shovel" to arg-1
+				wait 1 second
+				send "   &fThank god, you got those pickaxes just in time." to arg-1
+				remove {_amount} of iron pickaxe from arg-1's inventory
+				wait 1 second
+				send "   &fHere Gyar, Fetch." to arg-1
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 50000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 50000)
+				wait 1 second
+				send "   &fHopefully this doesn't happen again" to arg-1
+
+		else if arg-3 is "charscoal7":
+			set {_amount} to 100
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of coal in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fWhat is all that noise?" to arg-1
+				wait 2 seconds
+				send "   &fOh no, I think someone stole all of char's coal again" to arg-1
+				wait 2 seconds	
+				send "   &fUgh, his screaming hurts" to arg-1
+				wait 2 seconds	
+				send "   &fCan you help me make him stop crying like a baby? Get him &e%{_amount}% &fpieces of coal to make him stop crying" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYou got the coal?" to arg-1
+				wait 1 second
+				send "   &fNow my ears wont have to bleed for another hour" to arg-1
+				remove {_amount} of coal from arg-1's inventory
+				wait 1 second
+				send "   &fThank you" to arg-1
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 1100% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 1100)
+
+		else if arg-3 is "wardenscarpet7":
+			set {_amount} to 15
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of wool in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey, Whats Up" to arg-1
+				wait 2 seconds
+				send "   &fI got a job for you" to arg-1
+				wait 2 seconds	
+				send "   &fSomeone spilt chocolate milk on the Warden's brand new carpet and now hes very upset" to arg-1
+				wait 2 seconds	
+				send "   &fCan you help him make a new one and get me &e%{_amount}% &fWool? Thanks" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYou got the wool?" to arg-1
+				wait 1 second
+				send "   &fGood, now maybe we can get the Warden to give us a raise" to arg-1
+				remove {_amount} of wool from arg-1's inventory
+				wait 1 second
+				send "   &fThank you" to arg-1
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 1200% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 1200)
+
+		else if arg-3 is "scientists7":
+			set {_amount} to 40
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of gunpowder in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey, Whats Up" to arg-1
+				wait 2 seconds
+				send "   &fDid you hear about the recent explosion at the nearby lab?" to arg-1
+				wait 2 seconds	
+				send "   &fYeah, one of the scientists accidentally mixed 2 very reactive explosive chemicals together" to arg-1
+				wait 2 seconds	
+				send "   &fHe needs all the help he can get to replace the chemicals, can you get me &e%{_amount}% &fgun powder" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYou got the gun powder?" to arg-1
+				wait 1 second
+				send "   &fGreat! Now we can get some more of that highly addictive Coca Cola" to arg-1
+				remove {_amount} of gunpowder from arg-1's inventory
+				wait 1 second
+				send "   &fThank you" to arg-1
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 5000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 5000)
+
+		else if arg-3 is "cellblock7":
+			set {_amount} to 100
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of stone brick stair in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey there!" to arg-1
+				wait 2 seconds
+				send "   &fCan you help us? Too bad you have no choice" to arg-1
+				wait 2 seconds	
+				send "   &fThe Warden has some new blueprints for a new Cell Block but doesn't have enough materials" to arg-1
+				wait 2 seconds	
+				send "   &fCan you get him &e%{_amount}% &fStonebrick Stairs?" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fHi again, you got the stone brick stairs?" to arg-1
+				wait 1 second
+				send "   &fGreat! Now we can continue the building" to arg-1
+				remove {_amount} of stone brick stair from arg-1's inventory
+				wait 1 second
+				send "   &fThank you" to arg-1
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 1000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 1000)
+
+		else if arg-3 is "worldedit7":
+			set {_amount} to 400
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of oak plank in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fUgh!!" to arg-1
+				wait 2 seconds
+				send "   &fSOMEONE managed to get into the Prison and use worldedit to remove a good chunk of the floor" to arg-1
+				wait 2 seconds	
+				send "   &fCan you please help us before any other prisoners end up falling through the void?" to arg-1
+				wait 2 seconds	
+				send "   &fWe need &e%{_amount}% &fOak Planks" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fAnd there goes another prisoner into the void" to arg-1
+				wait 1 second
+				send "   &fOh great you got those Oak Planks we needed, Thanks" to arg-1
+				remove {_amount} of oak plank from arg-1's inventory
+				wait 1 second
+				send "   &fNow the prisoners won't fall through the void" to arg-1
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 900% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 900)
+
+		else if arg-3 is "plutosmine7":
+			set {_amount} to 200
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of stone in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey there tough.... person" to arg-1
+				wait 2 seconds
+				send "   &fPluto needs help!" to arg-1
+				wait 2 seconds	
+				send "   &fHes trying to build another mine for level 13 but hes too lazy and cant gather stone himself" to arg-1
+				wait 2 seconds	
+				send "   &fcan you get &e%{_amount}% &fStone" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fHey, you got that Stone Pluto needed?" to arg-1
+				wait 1 second
+				send "   &fSweeeet! Thank you" to arg-1
+				remove {_amount} of stone from arg-1's inventory
+				wait 1 second
+				send "   &fNow we can continue to make prison more enjoyable" to arg-1
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 1200% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 1200)
+
+		else if arg-3 is "cafeteria8":
+			set {_amount} to 200
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of cooked porkchop in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fYou hear all those stomachs rumbling?" to arg-1
+				wait 2 seconds
+				send "   &fme neither but I know there is" to arg-1
+				wait 2 seconds	
+				send "   &fThe Cafeteria ran out of food so now all the prisoners are starving" to arg-1
+				wait 2 seconds	
+				send "   &fcan you get &e%{_amount}% &fof Cooked Porkchop" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYou got the Cooked Porkchop the Cafeteria needs?" to arg-1
+				wait 1 second
+				send "   &fYay, Thank you" to arg-1
+				remove {_amount} of cooked porkchop from arg-1's inventory
+				wait 1 second
+				send "   &fNow we don't have to chew on the floor tiles" to arg-1
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 1500% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 1500)
+
+		else if arg-3 is "owlsfeathers8":
+			set {_amount} to 75
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of feather in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHave you seen owl anywhere?" to arg-1
+				wait 2 seconds
+				send "   &fOh no, I think he might've lost a lot of his feathers so now he cant take flight" to arg-1
+				wait 2 seconds	
+				send "   &fIf he can't take flight then he cant get back to the server" to arg-1
+				wait 2 seconds	
+				send "   &fwe need to help him, can you get me &e%{_amount}% &ffeathers" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYou have the feathers owl needs?" to arg-1
+				wait 1 second
+				send "   &fHip Hip Horray, now owl can come back" to arg-1
+				remove {_amount} of feather from arg-1's inventory
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 5200% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 5200)
+
+		else if arg-3 is "guardsarmor8":
+			set {_amount} to 10
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 36:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of iron boots in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey there, Someone of the Guards are complaining that their armor is starting to break" to arg-1
+				wait 2 seconds
+				send "   &fThis is a big problem for a Prison as big as ours" to arg-1
+				wait 2 seconds	
+				send "   &fCan you get the guards some new armor? we need &e%{_amount}% &firon boots" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYou got the iron boots we needed?" to arg-1
+				wait 1 second
+				send "   &fThank you, Now we more armor to treat for our guards" to arg-1
+				remove {_amount} of iron boots from arg-1's inventory
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 92000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 92000)
+
+		else if arg-3 is "guardsarrows8":
+			set {_amount} to 80
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of arrow in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey there" to arg-1
+				wait 2 seconds
+				send "   &fYou see how unprotective our Prison is? exactly, the Guard have run out of arrows to defend us from mobs" to arg-1
+				wait 2 seconds	
+				send "   &fCan you kill some skeletons and steal some of their arrows for us? we need &e%{_amount}% &farrows" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYou got the arrows we needed?" to arg-1
+				wait 1 second
+				send "   &fWow, thank you. Hopefully those stupid skeletons don't come back around" to arg-1
+				remove {_amount} of arrow from arg-1's inventory
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 120000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 120000)
+
+		else if arg-3 is "boneblocks7":
+			set {_amount} to 15
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of bone block in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fWhats Up" to arg-1
+				wait 2 seconds
+				send "   &fHey, can you help a guard out? These stupid skeletons in the yard are really annoying" to arg-1
+				wait 2 seconds	
+				send "   &fCan you show the skeletons what were made of and turn their riddled little bones into blocks, bring me &e%{_amount}% &fbone blocks" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYou got those bone blocks?" to arg-1
+				wait 1 second
+				send "   &fWow, thank you. Hopefully those stupid skeletons don't come back around" to arg-1
+				remove {_amount} of bone block from arg-1's inventory
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 99000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 99000)
+
+		else if arg-3 is "sticks8":
+			set {_amount} to 250
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of stick in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey there! Im the blacksmith" to arg-1
+				wait 2 seconds
+				send "   &fUsually id be here making some tools for people but recently, I ran out of sticks" to arg-1
+				wait 2 seconds	
+				send "   &fI was wondering if you could help me! I really need &e%{_amount}% &fsticks" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fWe meet again!" to arg-1
+				wait 1 second
+				send "   &fDo you have my sticks I needed? Awha Yeah, thank you so much" to arg-1
+				remove {_amount} of stick from arg-1's inventory
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 50000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 50000)
+
+
+		else if arg-3 is "nightrobber9":
+			set {_amount} to 200
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of chest in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fYou, yes you" to arg-1
+				wait 2 seconds
+				send "   &fWe recently just caught the person who was running around breaking everyones chest" to arg-1
+				wait 2 seconds	
+				send "   &fbut now everyone is angry that all their chests are gone, can you help me replace &e%{_amount}% &fchests?" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fGot the chests we need for replacement?" to arg-1
+				wait 1 second
+				send "   &fSplended, hopefully this doesn't end up happening again" to arg-1
+				remove {_amount} of chest from arg-1's inventory
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 99000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 99000)
+
+		else if arg-3 is "signpainter9":
+			set {_amount} to 45
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 576:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of wall sign in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fWhats Up" to arg-1
+				wait 2 seconds
+				send "   &fDid you hear about the Sign Painter? he ran out of signs and now hes sad he can't give anyone helpful tips anymore" to arg-1
+				wait 2 seconds	
+				send "   &fcan you help me cheer him up? Oh how great!  can you get me &e%{_amount}% &fsigns?" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fDo you have the Sign Painter's new signs?" to arg-1
+				wait 1 second
+				send "   &fYay, now we can get some more helpful tips" to arg-1
+				remove {_amount} of wall sign from arg-1's inventory
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 5500% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 5500)
+
+		else if arg-3 is "queenwolfiesbones9":
+			set {_amount} to 50
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of bone in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey there" to arg-1
+				wait 2 seconds
+				send "   &fCan you help out my best friend UThicc? her wolf's ran away and she ran out of bones to lure them home" to arg-1
+				wait 2 seconds	
+				send "   &fCan you help me get her &e%{_amount}% &fbones?" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fHey do you have those bones yet?" to arg-1
+				wait 1 second
+				send "   &fOh how great, thank you. Now UThicc is happy with her wolf's again" to arg-1
+				remove {_amount} of bone from arg-1's inventory
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 25000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 25000)
+
+		else if arg-3 is "blazerods9":
+			set {_amount} to 50
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of blaze rod in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fThank god you're here" to arg-1
+				wait 2 seconds
+				send "   &fThe Power Plant is running low on blaze rods to fuel the Prison, without power the Prison Cells will all unlock and all the prisoners will end up running free" to arg-1
+				wait 2 seconds	
+				send "   &fCan you help stop this from happening and get &e%{_amount}% &fblaze rods?" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fDo you have those blaze rods?" to arg-1
+				wait 1 second
+				send "   &fThanks so much, the Prison is saved from another crisis" to arg-1
+				remove {_amount} of blaze rod from arg-1's inventory
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 50000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 50000)
+
+		else if arg-3 is "string9":
+			set {_amount} to 20
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of string in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey, no time to talk just listen" to arg-1
+				wait 2 seconds
+				send "   &ftheres been a spider infestation around cell block 4 and the Prison Yard" to arg-1
+				wait 2 seconds	
+				send "   &fCan you go out and kill some Spiders for me, we can use them for string! I need &e%{_amount}% &fstring" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fDid you kill all those spiders and gather their insides?" to arg-1
+				wait 1 second
+				send "   &fThank you, hopefully those pesky spiders don't come around here again" to arg-1
+				remove {_amount} of string from arg-1's inventory
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 50000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 50000)
+
+		else if arg-3 is "wool9":
+			set {_amount} to 15
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of wool in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHello there" to arg-1
+				wait 2 seconds
+				send "   &fCan you help me out? Great! I need wool for new cell block beds" to arg-1
+				wait 2 seconds	
+				send "   &fI need &e%{_amount}% &fpieces of wool" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fHi Again" to arg-1
+				wait 1 second
+				send "   &fOh you got the wool? Thank you!" to arg-1
+				remove {_amount} of wool from arg-1's inventory
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 50000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 50000)
+
+
+		else if arg-3 is "flesh9":
+			set {_amount} to 25
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of rotten flesh in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHi th3r3 p3rs0n" to arg-1
+				wait 2 seconds
+				send "   &fList3n im r3ally hung3ry" to arg-1
+				wait 2 seconds	
+				send "   &fcan y0u pl3as3 get me &e%{_amount}% &fz0mbie fl3sh t0 3at?" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fSTRANGER DANGER" to arg-1
+				wait 1 second
+				send "   &foh its just you again, did y0u g3t my fl3sh? y4y th4nk y0u" to arg-1
+				remove {_amount} of rotten flesh from arg-1's inventory
+				wait 1 second
+				send "   &fH3r3 t4ke this qu3st p0int!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 30000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 30000)
+
+		else if arg-3 is "beds9":
+			set {_amount} to 10
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 36:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of bed in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHello fellow prisoner" to arg-1
+				wait 2 seconds
+				send "   &fCan you help me out? Gyar has went around stealing everyones beds now all the cells are bedless" to arg-1
+				wait 2 seconds	
+				send "   &fWe need to replace the beds in each and every cell, can you get me &e%{_amount}% &fbeds" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fHello again prisoner" to arg-1
+				wait 1 second
+				send "   &fDo you have those beds we needed? Sweet! thank you." to arg-1
+				remove {_amount} of bed from arg-1's inventory
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 30000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 30000)
+
+		else if arg-3 is "effysdiamonds10":
+			set {_amount} to 30
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 36:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of wooden shovel in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey dude, over here!" to arg-1
+				wait 2 seconds
+				send "   &fPlease help me, I really need to mine the diamonds down at the mine but I don't have the right mining tool" to arg-1
+				wait 2 seconds	
+				send "   &fCan you get me &e%{_amount}% &fwooden shovels" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fHi again" to arg-1
+				wait 1 second
+				send "   &fI see those shovels in your pocket! Hand them over or I will have to kill you for them" to arg-1
+				remove {_amount} of wooden shovel from arg-1's inventory
+				wait 1 second
+				send "   &fThanks fellow prisoner, Here take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 40000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 40000)
+
+		else if arg-3 is "blazepowder10":
+			set {_amount} to 36
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of blaze powder in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey there" to arg-1
+				wait 2 seconds
+				send "   &fCan you help me? Pluto recently put down some blaze spawners down in the prison yard" to arg-1
+				wait 2 seconds	
+				send "   &fAnd since I can't move, can you go kill a bunch and get me their dust for potions? I need &e%{_amount}% &fblaze powder" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fHi" to arg-1
+				wait 1 second
+				send "   &fOh, you got the dust I needed? Thank you person. Ill tell Santa to put you on the nice list this year" to arg-1
+				remove {_amount} of blaze powder from arg-1's inventory
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 9000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 9000)
+
+		else if arg-3 is "coalblocks10":
+			set {_amount} to 25
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of block of coal in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHello" to arg-1
+				wait 2 seconds
+				send "   &fI have a job for you, the train station is running low on train fuel for their coal powered trains" to arg-1
+				wait 2 seconds	
+				send "   &fCan you get &e%{_amount}% &fcoal blocks" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fHi" to arg-1
+				wait 1 second
+				send "   &fYou have the coal blocks? Awesome! thanks" to arg-1
+				remove {_amount} of block of coal from arg-1's inventory
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 5000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 5000)
+
+
+		else if arg-3 is "goldnuggets10":
+			set {_amount} to 300
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of gold nugget in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey there" to arg-1
+				wait 2 seconds
+				send "   &fWait, you look pretty strong" to arg-1
+				wait 2 seconds
+				send "   &fCan you go mine a bunch of gold and bring me them in nugget form?" to arg-1
+				wait 2 seconds	
+				send "   &fI need &e%{_amount}% &fgold nuggets" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fHey Again!" to arg-1
+				wait 1 second
+				send "   &fSweet you got the nuggets I asked for" to arg-1
+				remove {_amount} of gold nugget from arg-1's inventory
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 1200% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 1200)
+
+		else if arg-3 is "torches10":
+			set {_amount} to 150
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of torch in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fWhats up prisoner" to arg-1
+				wait 2 seconds
+				send "   &fI need a favour from you" to arg-1
+				wait 2 seconds	
+				send "   &fCan you craft me &e%{_amount}% &ftorches" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fHey man" to arg-1
+				wait 1 second
+				send "   &fNice, you got those torches I needed" to arg-1
+				remove {_amount} of torch from arg-1's inventory
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 1500% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 1500)
+
+		else if arg-3 is "bows10":
+			set {_amount} to 10
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 36:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of bow in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey there, I have a job for you" to arg-1
+				wait 2 seconds
+				send "   &fThe Warden recently hired some new archers but ran out of bows to give them" to arg-1
+				wait 2 seconds	
+				send "   &fCan you get him &e%{_amount}% &fbows" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fYou got the bows the Warden needed?" to arg-1
+				wait 1 second
+				send "   &fThank you, maybe someone should watch how many people the Warden hires" to arg-1
+				remove {_amount} of torch from arg-1's inventory
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 60000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 60000)
+
+		else if arg-3 is "cookedchicken10":
+			set {_amount} to 45
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of cooked chicken in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHello there Prisoner" to arg-1
+				wait 2 seconds
+				send "   &fCan you help me out, I want to throw a dinner for all the guards but I don't have enough chickens" to arg-1
+				wait 2 seconds	
+				send "   &fCan you get me &e%{_amount}% &fcooked chickens" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fHello again prisoner" to arg-1
+				wait 1 second
+				send "   &fOh, you have the chickens I asked for" to arg-1
+				remove {_amount} of cooked chicken from arg-1's inventory
+				wait 1 second
+				send "   &fThank you!" to arg-1
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 500% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 500)
+
+
+		else if arg-3 is "cobblestone11":
+			set {_amount} to 300
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of cobblestone in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey I need help" to arg-1
+				wait 2 seconds	
+				send "   &fCan you get me &e%{_amount}% &fcobblestone" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fHey again" to arg-1
+				wait 1 second
+				send "   &fDo you have the cobble I needed? Sweet!" to arg-1
+				remove {_amount} of cobblestone from arg-1's inventory
+				wait 1 second
+				send "   &fThanks!" to arg-1
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 900% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 900)
+
+		else if arg-3 is "redstone11":
+			set {_amount} to 150
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of redstone in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey I need help" to arg-1
+				wait 2 seconds	
+				send "   &fCan you get me &e%{_amount}% &fredstone" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fHey again" to arg-1
+				wait 1 second
+				send "   &fDo you have the redstone I needed? Sweet!" to arg-1
+				remove {_amount} of redstone from arg-1's inventory
+				wait 1 second
+				send "   &fThanks!" to arg-1
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 500% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 500)
+
+		else if arg-3 is "gold11":
+			set {_amount} to 180
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of gold ingot in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey I need help" to arg-1
+				wait 2 seconds	
+				send "   &fCan you get me &e%{_amount}% &fgold ingots" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fHey again" to arg-1
+				wait 1 second
+				send "   &fDo you have the gold ingots I needed? Sweet!" to arg-1
+				remove {_amount} of gold ingot from arg-1's inventory
+				wait 1 second
+				send "   &fThanks!" to arg-1
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 500% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 500)
+
+
+		else if arg-3 is "string11":
+			set {_amount} to 64
+			set {_amount} to {_amount} * {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} 
+			if {_amount} > 2304:
+				send "   &fHey" to arg-1
+				wait 1 second
+				send "   &fThanks for helping me" to arg-1
+				wait 1 second
+				send "   &fBut I don't need anything else" to arg-1
+				stop
+			set {_has} to amount of string in arg-1's inventory
+			if {_has} < {_amount}:
+				send "   &fHey I need help" to arg-1
+				wait 2 seconds
+				send "   &fSome of the archer's bows need to be repaired" to arg-1
+				wait 2 seconds	
+				send "   &fCan you get &e%{_amount}% &fstring" to arg-1		
+				wait 1 second
+				if {_has} > 0:
+					send "&8[&ePrison&8] &7You only have &c%{_has}%&8/&a%{_amount}%" to arg-1
+			else:
+				set {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} to {prison.quest.player.stats::%uuid of arg-1%::%arg-3%} + 1
+				send "   &fHi Again" to arg-1
+				wait 1 second
+				send "   &fDo you have the string to repair the bows? Sweet!" to arg-1
+				remove {_amount} of string from arg-1's inventory
+				wait 1 second
+				send "   &fThanks!" to arg-1
+				wait 1 second
+				send "   &fHere take this quest point!" to arg-1
+				set {prison.quests.player.points::%uuid of arg-1%} to {prison.quests.player.points::%uuid of arg-1%} + 1
+				wait 1 second
+				send "   &fOh and &e%{_amount} * 2000% progress points" to arg-1
+				set {prison.balance::%uuid of arg-1%} to {prison.balance::%uuid of arg-1%} + ({_amount} * 2000)				

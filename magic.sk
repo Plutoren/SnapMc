@@ -1,0 +1,201 @@
+		
+on quit:
+	if player has permission "is.ultimate":
+		loop {magic.particle::%player%::*}:
+			stopEffect id "%loop-value%"
+			delete {magic.particle::%player%::%loop-value%}
+		delete {magic.timer::%player%}
+		
+command /stopparticles:
+	permission: is.op
+	trigger:
+		stop all particle effects
+
+on join:
+	if player has permission "is.legend":
+		execute console command "joineffect %player% 19"
+
+command /joineffect <player> <integer>:
+	permission: is.op
+	trigger:
+		wait 2 ticks
+		stopEffect "%arg-1%-joineffect-%arg-2%"
+		drawWarpRings style arg-2, particle "redstone", RGB 80, 255, 255, center location of block at arg-1, id "%arg-1%-joineffect-%arg-2%", rainbowMode true, scan true, height 20, radius 4, ringCount 40, ringDensity 20, visibleRange 32, pulseDelay 2
+		wait 2 seconds
+		stopEffect "%arg-1%-joineffect-%arg-2%"
+			
+command /stopeffect <text>:
+	permission: is.op
+	trigger:
+		stopEffect "%arg-1%"
+
+		
+	
+command /magic [<text>] [<integer>] [<text>]:
+	trigger:
+	
+		if player does not have permission "magic.use":
+			message "&8[&bSnap&8] &7Purchase &bUltimate &7rank to unlock magic! &b/buy"
+			stop
+		
+		if arg-1 is not set:
+			wait 1 tick
+			open chest with 3 row named "        &8-=[ &1Magic Menu &8]=-" to player
+			wait 1 ticks									
+			set {_i} to 0									
+			loop 27 times:									
+				format slot {_i} of player with gray stained glass pane named "&7" to close then run "sudo %player% magic"
+				add 1 to {_i}	 														
+			format slot 9 of player with red wool block named "&4&lNyan Cat" with lore "||  ||&a/magic nyancat ||||  &eClick to select|| " to close then run "sudo %player% magic nyancat"
+			format slot 10 of player with ender pearl named "&3&lBubble" with lore "||  ||&a/magic bubble ||||  &eClick to select|| " to close then run "sudo %player% magic bubble"
+			format slot 11 of player with lava bucket named "&c&lFire Breath" with lore "||  ||&a/magic firebreath ||||  &eClick to select|| " to close then run "sudo %player% magic firebreath"
+			format slot 12 of player with grass block named "&a&lPlanet" with lore "||  ||&a/magic planet ||||  &eClick to select|| " to close then run "sudo %player% magic planet"
+			format slot 13 of player with feather named "&e&lWings" with lore "||  ||&a/magic wings (number) [rainbow]||||  &eClick to select default wings|| " to close then run "sudo %player% magic wings 1"
+			format slot 14 of player with iron block named "&3&lObject" with lore "||  ||&a/magic object (number)||||  &eClick to select default object|| " to close then run "sudo %player% magic object 1"
+			format slot 15 of player with gold nugget named "&b&lSpiral" with lore "||  ||&a/magic spiral ||||  &eClick to select|| " to close then run "sudo %player% magic spiral"
+			format slot 16 of player with ender pearl named "&a&lSphere" with lore "||  ||&a/magic sphere (number) ||||  &eClick to select default sphere|| " to close then run "sudo %player% magic sphere 1"
+			format slot 17 of player with barrier named "&cCancel" with lore "||  ||&a/magic cancel ||||  &eClick to Cancel|| " to close then run "sudo %player% magic cancel"
+					
+		if arg-1 is not "cancel" or "planet" or "wings" or "bubble" or "firebreath" or "object" or "nyancat" or "spiral" or "sphere":
+			message "&7&m-------------------------------------"
+			message "   &6Enable particles to see magic"
+			message " &d/magic nyancat"
+			message " &d/magic bubble"
+			message " &d/magic firebreath"
+			message " &d/magic planet"
+			message " &d/magic wings (number) [rainbow]"
+			message " &d/magic object (number)"
+			message " &d/magic spiral"
+			message " &d/magic sphere (number)"
+			message " &d/magic cancel"
+			message "&7&m-------------------------------------"
+			stop
+		
+		
+		
+		
+		if arg-1 is "cancel":
+			message "&8[&dMagic&8] &fMagic Cancelled"
+			loop {magic.particle::%player%::*}:
+				stopEffect id "%loop-value%"
+				delete {magic.particle::%player%::%loop-value%}
+			delete {magic.timer::%player%}
+			stop
+			
+			
+				
+		if {magic.timer::%player%} is set:
+			message "&8[&dMagic&8] &fYour active spell was cancelled"
+			loop {magic.particle::%player%::*}:
+				stopEffect id "%loop-value%"
+				delete {magic.particle::%player%::%loop-value%}
+			delete {magic.timer::%player%}
+			
+				
+				
+		
+		if arg-1 is "bubble":	
+			set {_timeout} to 1200 seconds
+			message "&8[&dMagic&8] &fBubble Enabled for &a%{_timeout}%"
+			set {magic.timer::%player%} to {_timeout}
+			drawComplexCircle particle "redstone", RGB 5, 255, 193, center player, id "%player%-bubble1", randomRotation true, radius .8, density 20, start 0, visibleRange 100, xRotation 23, yRotation 120, zRotation 0
+			set {magic.particle::%player%::1} to "%player%-bubble1"
+			drawComplexCircle particle "redstone", RGB 0, 255, 0, center player, id "%player%-bubble2", randomRotation false, radius .8, density 20, start 0, visibleRange 100, xRotation 70, yRotation 10, zRotation 0
+			set {magic.particle::%player%::2} to "%player%-bubble2"
+			drawComplexCircle particle "redstone", RGB 255, 0, 0, center player, id "%player%-bubble3", randomRotation false, radius .8, density 20, start 0, visibleRange 100, xRotation 0, yRotation 60, zRotation 0
+			set {magic.particle::%player%::3} to "%player%-bubble3"
+			drawComplexCircle particle "redstone", RGB 0, 0, 255, center player, id "%player%-bubble4", randomRotation true, radius .8, density 20, start 0, visibleRange 100, xRotation 25, yRotation 54, zRotation 0
+			set {magic.particle::%player%::4} to "%player%-bubble4"
+			
+			
+		if arg-1 is "nyancat":
+			set {_timeout} to 1200 seconds
+			message "&8[&dMagic&8] &fNyan Cat enabled for &a%{_timeout}%"
+			set {magic.timer::%player%} to {_timeout}
+			drawNyanCat center player, id "%player%-nyancat", visibleRange 30
+			set {magic.particle::%player%::1} to "%player%-nyancat"
+		
+		if arg-1 is "firebreath":
+			set {_timeout} to 7 seconds
+			message "&8[&dMagic&8] &fFire breath enabled for &a%{_timeout}%"
+			set {magic.timer::%player%} to {_timeout}
+			drawDragonBreath particle "flame", center player, id "%player%-firebreath", arcPitch .05, arcCount 30, arcDensity 50, arcSteps 4, arcLength 7, visibleRange 30
+			set {magic.particle::%player%::1} to "%player%-firebreath"
+
+		if arg-1 is "planet":
+			set {_timeout} to 60 seconds
+			message "&8[&dMagic&8] &fPlanet enabled for &a%{_timeout}%"
+			set {magic.timer::%player%} to {_timeout}
+			drawPlanet particle1 "redstone", RGB 0, 255, 10, particle2 "redstone", RGB2 0, 10, 255, center location of player, id "%player%-planet", radius 2, density 450, precision 70, bumpHeight .25, visibleRange 30, tps 1, second 2
+			set {magic.particle::%player%::1} to "%player%-planet"
+		
+		if arg-1 is "wings":
+			if arg-2 is not set:
+				message "&8[&dMagic&8] &fCorrect usage &b/magic wings (number)"
+				stop
+		
+				
+				
+			set {_timeout} to 1200 seconds
+			message "&8[&dMagic&8] &fWings enabled for &a%{_timeout}%"
+			set {magic.timer::%player%} to {_timeout}
+			set {_rainbow} to false
+			if arg-3 is set:
+				set {_rainbow} to true
+			drawWings style arg-2, particle1 "flame", speed 0, XYZ 0, 0, 0, particle2 "redstone", particle3 "redstone", center player, id "%player%-wings", rainbowMode {_rainbow}, flapSpeed 1, flapRange 35, angle 140, height 0, space 0.2, visibleRange 30, tps 0, second 3
+			set {magic.particle::%player%::1} to "%player%-wings"
+
+		if arg-1 is "object":
+			if arg-2 is not set:
+				message "&8[&dMagic&8] &fCorrect usage &b/magic object (number)"
+				stop
+			set {_timeout} to 10 seconds
+			message "&8[&dMagic&8] &fObject created for &a%{_timeout}%"
+			set {magic.timer::%player%} to {_timeout}
+			drawWarpRings style arg-2, particle "redstone", RGB 80, 255, 255, center location of block at player, id "%player%-object", rainbowMode true, scan true, height 2, radius 2, ringCount 40, ringDensity 20, visibleRange 32, pulseDelay 2
+			set {magic.particle::%player%::1} to "%player%-object"
+	
+		if arg-1 is "spiral":
+			set {_timeout} to 1200 seconds
+			message "&8[&dMagic&8] &fSpiral enabled for &a%{_timeout}%"
+			set {magic.timer::%player%} to {_timeout}
+			drawComplexSpiral particle "redstone", center player, id "%player%-spiral", rainbowMode true, clockwise true, scan true, radius 1, density 20, height 5, effectMod .05, start 0, visibleRange 30
+			set {magic.particle::%player%::1} to "%player%-spiral"
+			
+		if arg-1 is "sphere":
+			if arg-2 is not set:
+				message "&8[&dMagic&8] &fCorrect usage &b/magic sphere (number)"
+				stop
+			set {_timeout} to 9 seconds
+			message "&8[&dMagic&8] &fSphere created for &a%{_timeout}%"
+			set {magic.timer::%player%} to {_timeout}
+			drawSphere style arg-2, particle "redstone", center location of player, id "%player%-sphere", rainbowMode true, radius 2, density 40, visibleRange 32, pulseDelay 2
+			set {magic.particle::%player%::1} to "%player%-sphere"
+	
+		
+	
+every 5 second:
+	loop {magic.timer::*}:
+		if loop-value < 1 second:
+			loop {magic.particle::%loop-index-1%::*}:
+				stopEffect id "%loop-value-2%"
+				delete {magic.particle::%loop-index-1%::%loop-value-2%}
+			delete {magic.timer::%loop-index-1%}
+			stop
+		send action bar from "&d&n&lMagic&r &8<> &c%{magic.timer::%loop-index%}% left" to "%loop-index%" parsed as player
+		# set {magic.timer::%loop-index%} to {magic.timer::%loop-index%} - 5 seconds
+		subtract 5 seconds from {magic.timer::%loop-index%}
+	
+
+command /checkparticles:
+	permission: is.op
+	trigger:
+		set {_var::*} to id names
+		message "%{_var::*}%"
+
+command /msphere:
+	permission: is.op
+	trigger:
+		drawSphere style 5, particle "redstone", RGB 255, 0, 0, center location of player, id "%player%-msphere", rainbowMode false, radius 2, density 20, visibleRange 32, pulseDelay 6
+
+		

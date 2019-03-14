@@ -1,0 +1,8 @@
+command /voterankupgrades:
+	permission: is.Pluto
+	trigger:
+		loop {votecount.player::*}:
+			if loop-value > 19:
+				set {_name} to {uuidName::%loop-index%}
+				message "%{_name}% has %loop-value% votes" 
+				

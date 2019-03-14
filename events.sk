@@ -1,0 +1,194 @@
+command /now:
+	trigger:
+		message "%now%"
+		
+
+		
+command /event:
+	trigger:
+		message "&8[&dEvent&8] &7Next event in &e%{event.next}% minutes"
+		
+command /eventnow:
+	permission: is.Pluto
+	trigger:
+		set {event.next} to 0
+every minute:
+	if {event.next} <= 0:
+		set {event.next} to 45
+		set {_players} to 0
+		loop all players:
+			add 1 to {_players}
+		if {_players} < 13:
+			stop
+		set {_i} to random integer from 4 to 5
+		if {_i} is 1:
+			delete {oitc::*}
+			set {event.name} to "OITC"
+			set {event.minutes} to 10
+			broadcast "&8[&dEvent&8] &6Serverwide Event&7: &fOne In The Chamber Event"
+			broadcast "           &6Prize&7: &f3 Radioactive Keys"
+			broadcast "           &6Duration&7: &f10 minutes"
+			broadcast "           &6Join&7: &b/oitc"
+		else if {_i} is 2:
+			delete {blockparty::*}
+			set {event.name} to "blockparty"
+			set {event.minutes} to 6
+			broadcast "&8[&dEvent&8] &6Serverwide Event&7: &fBlockParty"
+			broadcast "           &6Prize&7: &a$10,000,000"
+			broadcast "           &6Duration&7: &f6 minutes"
+			broadcast "           &6Join&7: &b/blockparty"
+		else if {_i} is 3:
+			delete {kitpvp.event.kills::*}
+			delete {kitpvp.points::*}
+			loop players in world "FortCraft":
+				teleport loop-player to {pos::kitpvp}
+				clear loop-player's inventory
+				heal loop-player
+			set {event.name} to "kitpvp"
+			set {event.minutes} to 20
+			set {fortnite.storm.width} to 100
+
+			broadcast "&8[&dEvent&8] &6Serverwide Event&7: &fKitPvP"
+			broadcast "           &6Prize&7: &a6 Valentines Keys"
+			broadcast "           &6Duration&7: &f20 minutes"
+			broadcast "           &6Join&7: &b/kitpvp"
+		else if {_i} is 4 or 5:
+			loop players in world "FortCraft":
+				teleport loop-player to {pos::kitpvp}
+				clear loop-player's inventory
+				heal loop-player
+			set {event.name} to "bedwars"
+			set {event.minutes} to 1
+
+			broadcast "&8[&dEvent&8] &6Serverwide Event&7: &fBEDWARS"
+			broadcast "           &6Prize&7: &a$20,000,000 &7(Split between winners)"
+			broadcast "           &6Duration&7: &f1 Minute To Join"
+			broadcast "           &6Join&7: &b/bw"
+		
+		set {_barFill} to {event.minutes} * 13
+		create bossbar titled "&6Event &e%{event.name}% &3%{event.minutes}% Minutes &d/%{event.name}%" and id "event" for all players with value {_barFill} with colors YELLOW with style SEGMENTED_6
+
+	else:
+		subtract 1 from {event.next}
+		
+every minute:
+	if {event.minutes} is set:
+		subtract 1 from {event.minutes}
+		if {event.minutes} <= 0:
+			remove bossbar "event"
+			delete {event.minutes}
+			if {event.name} = "OITC":
+				
+				loop {oitc::*}:
+					add 1 to {_size}
+					if {_low.to.high.list::%loop-value%} is not set:
+						set {_low.to.high.list::%loop-value%} to loop-index
+					else:
+						set {_n} to 0
+						loop {_size} times:
+							set {_n} to {_n}+1
+							{_low.to.high.list::%loop-value-1%.%{_n}%} is not set
+							set {_low.to.high.list::%loop-value-1%.%{_n}%} to loop-index
+							
+							stop loop
+				wait 1 tick
+				set {_n} to size of {_low.to.high.list::*}
+				loop {_low.to.high.list::*}:
+					set {_high.to.low.list::%{_n}%} to loop-value
+					set {_n} to {_n}-1
+					
+				loop {_high.to.low.list::*}:
+					set {_winner} to "%{uuidName::%loop-value%}%"
+					if {_winner} is set:
+					
+						# OITC Prize
+						add 3 to {redeem.crate::%{_winner}%::radioactive}
+						send "&8[&dEvent&8] &aYou Won the Event! Type &b/rc &alater to get your keys." to {_winner} parsed as player
+					delete {oitc::*}
+					stop loop
+			
+				broadcast "&8[&dEvent&8] &cServerwide Event Ended"
+				broadcast "           &cPrize&7: &a3 Radioactive Keys"
+				broadcast "           &cWinner&7: &f%{_winner}%"
+			else if {event.name} = "blockparty":
+				
+				loop {blockparty::*}:
+					add 1 to {_size}
+					if {_low.to.high.list::%loop-value%} is not set:
+						set {_low.to.high.list::%loop-value%} to loop-index
+					else:
+						set {_n} to 0
+						loop {_size} times:
+							set {_n} to {_n}+1
+							{_low.to.high.list::%loop-value-1%.%{_n}%} is not set
+							set {_low.to.high.list::%loop-value-1%.%{_n}%} to loop-index
+							
+							stop loop
+				wait 1 tick
+				set {_n} to size of {_low.to.high.list::*}
+				loop {_low.to.high.list::*}:
+					set {_high.to.low.list::%{_n}%} to loop-value
+					set {_n} to {_n}-1
+					
+				loop {_high.to.low.list::*}:
+					set {_winner} to "%{uuidName::%loop-value%}%"
+					if {_winner} is set:
+						# blockparty Prize
+						execute console command "eco give %{_winner}% 10000000"
+						send "&8[&dEvent&8] &aYou Won the Event!" to {_winner} parsed as player
+					delete {blockparty::*}
+					stop loop
+			
+			
+			
+			
+				broadcast "&8[&dEvent&8] &cServerwide Event Ended"
+				broadcast "           &cPrize&7: &a$10,000,000"
+				broadcast "           &cWinner&7: &f%{_winner}%"
+			else if {event.name} = "kitpvp":
+				
+				loop {kitpvp.event.kills::*}:
+					add 1 to {_size}
+					if {_low.to.high.list::%loop-value%} is not set:
+						set {_low.to.high.list::%loop-value%} to loop-index
+					else:
+						set {_n} to 0
+						loop {_size} times:
+							set {_n} to {_n}+1
+							{_low.to.high.list::%loop-value-1%.%{_n}%} is not set
+							set {_low.to.high.list::%loop-value-1%.%{_n}%} to loop-index
+							
+							stop loop
+				wait 1 tick
+				set {_n} to size of {_low.to.high.list::*}
+				loop {_low.to.high.list::*}:
+					set {_high.to.low.list::%{_n}%} to loop-value
+					set {_n} to {_n}-1
+					
+				loop {_high.to.low.list::*}:
+					set {_winner} to "%{uuidName::%loop-value%}%"
+					if {_winner} is set:					
+						# kitpvp Prize
+						add 6 to {redeem.crate::%{_winner}%::Valentines}
+						send "&8[&dEvent&8] &aYou Won the Event! Type &b/rc &alater to get your keys." to {_winner} parsed as player
+					delete {kitpvp.event.kills::*}
+					stop loop
+			
+			
+			
+			
+				broadcast "&8[&dEvent&8] &cServerwide Event Ended"
+				broadcast "           &cPrize&7: &a3 Valentines Keys"
+				broadcast "           &cWinner&7: &f%{_winner}%"
+		else:
+			set {_barFill} to {event.minutes} * 10
+			create bossbar titled "&6Event &e%{event.name}% &3%{event.minutes}% Minutes &d/%{event.name}%" and id "event" for all players with value {_barFill} with colors YELLOW with style SEGMENTED_6
+
+		
+
+on command:
+	if player is in world "Events":
+		if player does not have permission "is.Pluto":
+			if command contains "auc" or "echest" or "eechest" or "fish" or "mf" or "eec" or "kit" or "fly" or "ender" or "auction" or "setwarp" or "ah" or "auctionhouse" or "shop" or "pack" or "packs" or "ec" or "enderchest" or "heal" or "feed" or "tp" or "setwarp" or "sethome":
+				cancel event
+				message "&8[&fChristmas&8] &7You can't use that command here!"				

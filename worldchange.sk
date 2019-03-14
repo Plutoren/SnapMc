@@ -1,0 +1,708 @@
+
+command /clearair:
+	permission: is.op
+	trigger:
+		set {_test} to 0 
+		loop {uuid::*}: 
+			loop {hub.inventory.save::%loop-value%::*}:
+				if "%loop-value-2%" = "0 air":
+					delete {hub.inventory.save::%loop-value-1%::%loop-index-2%}
+					add 1 to {_test}
+			loop {creative.inventory.save::%loop-value%::*}:
+				if "%loop-value-2%" = "0 air":
+					delete {creative.inventory.save::%loop-value-1%::%loop-index-2%}
+					add 1 to {_test}
+			loop {prison.inventory.save::%loop-value%::*}:
+				if "%loop-value-2%" = "0 air":
+					delete {prison.inventory.save::%loop-value-1%::%loop-index-2%}
+					add 1 to {_test}
+			loop {skyblock.inventory.save::%loop-value%::*}:
+				if "%loop-value-2%" = "0 air": 
+					delete {skyblock.inventory.save::%loop-value-1%::%loop-index-2%}
+					add 1 to {_test}
+			loop {world.inventory.save::%loop-value%::*}:
+				if "%loop-value-2%" = "0 air":
+					delete {world.inventory.save::%loop-value-1%::%loop-index-2%}
+					add 1 to {_test}
+			loop {wilderness.inventory.save::%loop-value%::*}:
+				if "%loop-value-2%" = "0 air":
+					delete {wilderness.inventory.save::%loop-value-1%::%loop-index-2%}
+					add 1 to {_test}
+		loop {uuidName::*}:
+			loop {bw.inventory.save::%loop-value%::*}:
+				if "%loop-value-2%" = "0 air":
+					delete {bw.inventory.save::%loop-value-1%::%loop-index-2%}
+					add 1 to {_test}
+		message "Removed %{_test}% air saves"
+
+	
+on skellett world change:
+	remove all potion effects from player
+	set metadata "worldedit.grace" of player to false
+	if {nv::%player%} is true:
+		if "%player's world%" != "Wilderness":
+			apply potion of night vision to player for 999 days
+	if "%past changed world%" = "Hub":
+		set {hub.xp.level::%uuid of player%} to player's level
+		set {hub.xp.level.progress::%uuid of player%} to level progress of player
+		
+		message "&8[&bSnap&8] &7Exiting the Hub return with &e/hub"
+		
+		set {_i} to 0
+		loop 36 times:
+			if slot {_i} of player's inventory is not air:
+				set {hub.inventory.save::%uuid of player%::%{_i}%} to slot {_i} of player's inventory
+			add 1 to {_i}
+		if player's helmet is not air:
+			set {hub.inventory.save::%uuid of player%::helmet} to player's helmet
+		if player's chestplate is not air:
+			set {hub.inventory.save::%uuid of player%::chestplate} to player's chestplate
+		if player's leggings is not air:
+			set {hub.inventory.save::%uuid of player%::leggings} to player's leggings
+		if player's boots is not air:
+			set {hub.inventory.save::%uuid of player%::boots} to player's boots
+		if player's offhand is not air:
+			set {hub.inventory.save::%uuid of player%::offhand} to player's offhand
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to air
+		set player's offhand to air
+		set player's gamemode to survival
+		set player's fly state to false	
+		
+
+
+	if "%past changed world%" = "SkyBlock":
+		
+		message "&8[&bSnap&8] &7Thanks for playing skyblock"
+		set {skyblock.xp.level::%uuid of player%} to player's level
+		set {skyblock.xp.level.progress::%uuid of player%} to level progress of player
+		
+		set {_i} to 0
+		loop 36 times:
+			if slot {_i} of player's inventory is not air:
+				set {skyblock.inventory.save::%uuid of player%::%{_i}%} to slot {_i} of player's inventory
+			add 1 to {_i}
+		if player's helmet is not air:
+			set {skyblock.inventory.save::%uuid of player%::helmet} to player's helmet
+		if player's chestplate is not air:
+			set {skyblock.inventory.save::%uuid of player%::chestplate} to player's chestplate
+		if player's leggings is not air:
+			set {skyblock.inventory.save::%uuid of player%::leggings} to player's leggings
+		if player's boots is not air:
+			set {skyblock.inventory.save::%uuid of player%::boots} to player's boots
+		if player's offhand is not air:
+			set {skyblock.inventory.save::%uuid of player%::offhand} to player's offhand
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to air
+		set player's offhand to air
+		set player's gamemode to survival
+		set player's fly state to false	
+
+	if "%past changed world%" = "Wilderness":
+		
+		message "&8[&bSnap&8] &7Thanks for playing non-op survival"
+		
+		set {wilderness.xp.level::%uuid of player%} to player's level
+		set {wilderness.xp.level.progress::%uuid of player%} to level progress of player
+		set {_i} to 0
+		loop 36 times:
+			if slot {_i} of player's inventory is not air:
+				set {wilderness.inventory.save::%uuid of player%::%{_i}%} to slot {_i} of player's inventory
+			add 1 to {_i}
+		if player's helmet is not air:
+			set {wilderness.inventory.save::%uuid of player%::helmet} to player's helmet
+		if player's chestplate is not air:
+			set {wilderness.inventory.save::%uuid of player%::chestplate} to player's chestplate
+		if player's leggings is not air:
+			set {wilderness.inventory.save::%uuid of player%::leggings} to player's leggings
+		if player's boots is not air:
+			set {wilderness.inventory.save::%uuid of player%::boots} to player's boots
+		if player's offhand is not air:
+			set {wilderness.inventory.save::%uuid of player%::offhand} to player's offhand
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to air
+		set player's offhand to air
+		set player's gamemode to survival
+		set player's fly state to false	
+
+		
+	if "%past changed world%" = "Prison":
+		
+		message "&8[&bSnap&8] &7Thanks for playing prison"
+		
+		set {prison.xp.level::%uuid of player%} to player's level
+		set {prison.xp.level.progress::%uuid of player%} to level progress of player
+		set {_i} to 0
+		loop 36 times:
+			if slot {_i} of player's inventory is not air:
+				set {prison.inventory.save::%uuid of player%::%{_i}%} to slot {_i} of player's inventory
+			add 1 to {_i}
+		if player's helmet is not air:
+			set {prison.inventory.save::%uuid of player%::helmet} to player's helmet
+		if player's chestplate is not air:
+			set {prison.inventory.save::%uuid of player%::chestplate} to player's chestplate
+		if player's leggings is not air:
+			set {prison.inventory.save::%uuid of player%::leggings} to player's leggings
+		if player's boots is not air:
+			set {prison.inventory.save::%uuid of player%::boots} to player's boots
+		if player's offhand is not air:
+			set {prison.inventory.save::%uuid of player%::offhand} to player's offhand
+		clear player's inventory
+		remove all effects from player
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to air
+		set player's offhand to air
+		set player's gamemode to survival
+		set player's fly state to false	
+		
+			
+	if "%past changed world%" = "RPG":
+		
+		message "&8[&bSnap&8] &7Thanks for playing RPG"
+		
+		set {rpg.xp.level::%uuid of player%} to player's level
+		set {rpg.xp.level.progress::%uuid of player%} to level progress of player
+		set {_i} to 0
+		loop 36 times:
+			if slot {_i} of player's inventory is not air:
+				set {rpg.inventory.save::%uuid of player%::%{_i}%} to slot {_i} of player's inventory
+			add 1 to {_i}
+		if player's helmet is not air:
+			set {rpg.inventory.save::%uuid of player%::helmet} to player's helmet
+		if player's chestplate is not air:
+			set {rpg.inventory.save::%uuid of player%::chestplate} to player's chestplate
+		if player's leggings is not air:
+			set {rpg.inventory.save::%uuid of player%::leggings} to player's leggings
+		if player's boots is not air:
+			set {rpg.inventory.save::%uuid of player%::boots} to player's boots
+		if player's offhand is not air:
+			set {rpg.inventory.save::%uuid of player%::offhand} to player's offhand
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to air
+		set player's offhand to air
+		set player's gamemode to survival
+		set player's fly state to false
+		
+	
+		
+	if "%past changed world%" = "Rooms":
+		
+		
+		set {rooms.xp.level::%uuid of player%} to player's level
+		set {rooms.xp.level.progress::%uuid of player%} to level progress of player
+		set {_i} to 0
+		loop 36 times:
+			if slot {_i} of player's inventory is not air:
+				set {rooms.inventory.save::%uuid of player%::%{_i}%} to slot {_i} of player's inventory
+			add 1 to {_i}
+		if player's helmet is not air:
+			set {rooms.inventory.save::%uuid of player%::helmet} to player's helmet
+		if player's chestplate is not air:
+			set {rooms.inventory.save::%uuid of player%::chestplate} to player's chestplate
+		if player's leggings is not air:
+			set {rooms.inventory.save::%uuid of player%::leggings} to player's leggings
+		if player's boots is not air:
+			set {rooms.inventory.save::%uuid of player%::boots} to player's boots
+		if player's offhand is not air:
+			set {rooms.inventory.save::%uuid of player%::offhand} to player's offhand
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to air
+		set player's offhand to air
+		set player's gamemode to survival
+		set player's fly state to false
+		
+	if "%past changed world%" = "Christmas":
+		
+
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to air
+		set player's offhand to air
+		set player's gamemode to survival
+		set player's fly state to false
+		set player's gravity to true
+		
+		
+	if "%past changed world%" = "OITC":
+		
+
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to air
+		set player's offhand to air
+		set player's gamemode to survival
+		set player's fly state to false
+		set player's gravity to true
+		
+		
+	if "%past changed world%" = "FortCraft":
+		
+
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to air
+		set player's offhand to air
+		set player's gamemode to survival
+		set player's fly state to false
+		set player's gravity to true
+		
+	if "%past changed world%" = "The Parkour Temple":
+		
+
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to air
+		set player's offhand to air
+		set player's gamemode to survival
+		set player's fly state to false
+		set player's gravity to true
+		
+		
+	if "%past changed world%" = "Events":
+		
+
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to air
+		set player's offhand to air
+		set player's gamemode to survival
+		set player's fly state to false
+		set player's gravity to true
+
+		
+	if "%past changed world%" = "BedWars":
+		message "&8[&bSnap&8] &7Thanks for playing bedwars"
+		if {scoreboard.toggle::%uuid of player%} is set:
+			set title of skoreboard player to ""
+			set slot 1 of skoreboard player to ""
+			set slot 2 of skoreboard player to ""
+			set slot 3 of skoreboard player to ""
+			set slot 4 of skoreboard player to ""
+			set slot 5 of skoreboard player to ""
+			set slot 6 of skoreboard player to ""
+			set slot 7 of skoreboard player to "" 
+			set slot 8 of skoreboard player to "" 
+			set slot 9 of skoreboard player to "" 
+			set slot 10 of skoreboard player to ""
+			set slot 11 of skoreboard player to ""
+			set slot 12 of skoreboard player to ""
+		if {lastattacker::%player%} is set:
+			delete {lastattacker::%player%}
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player 's leggings to air
+		set player's boots to air
+		set player's offhand to air
+		set player's gamemode to survival
+		
+	if "%past changed world%" = "Creative":
+		message "&8[&bSnap&8] &7Thanks for playing creative"
+		
+		set {creative.xp.level::%uuid of player%} to player's level
+		set {creative.xp.level.progress::%uuid of player%} to level progress of player
+		set {_i} to 0
+		loop 36 times:
+			if slot {_i} of player's inventory is not air:
+				set {creative.inventory.save::%uuid of player%::%{_i}%} to slot {_i} of player's inventory
+			add 1 to {_i}
+		if player's helmet is not air:
+			set {creative.inventory.save::%uuid of player%::helmet} to player's helmet
+		if player's chestplate is not air:
+			set {creative.inventory.save::%uuid of player%::chestplate} to player's chestplate
+		if player's leggings is not air:
+			set {creative.inventory.save::%uuid of player%::leggings} to player's leggings
+		if player's boots is not air:
+			set {creative.inventory.save::%uuid of player%::boots} to player's boots
+		if player's offhand is not air:
+			set {creative.inventory.save::%uuid of player%::offhand} to player's offhand
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to air
+		set player's offhand to air
+		set player's gamemode to survival
+		set player's fly state to false	
+	
+	if "%past changed world%" = "spawn" or "world" or "world_nether" or "world_the_end" or "Lab" or "resource" or "Elytra Fall" or "Avalon" or "Towny":
+		set {world.xp.level::%uuid of player%} to player's level
+		set {world.xp.level.progress::%uuid of player%} to level progress of player
+		if "%player's world%" = "Prison" or "Creative" or "BedWars" or "SkyBlock" or "Hub" or "Wilderness" or "Rooms" or "RPG" or "Christmas" or "OITC" or "Events" or "The Parkour Temple" or "FortCraft":
+			
+			set {_i} to 0
+			loop 36 times:
+				if slot {_i} of player's inventory is not air:
+					set {world.inventory.save::%uuid of player%::%{_i}%} to slot {_i} of player's inventory
+				add 1 to {_i}
+			if player's helmet is not air:
+				set {world.inventory.save::%uuid of player%::helmet} to player's helmet
+			if player's chestplate is not air:
+				set {world.inventory.save::%uuid of player%::chestplate} to player's chestplate
+			if player's leggings is not air:
+				set {world.inventory.save::%uuid of player%::leggings} to player's leggings
+			if player's boots is not air:
+				set {world.inventory.save::%uuid of player%::boots} to player's boots
+			if player's offhand is not air:
+				set {world.inventory.save::%uuid of player%::offhand} to player's offhand
+			clear player's inventory
+			set player's helmet to air
+			set player's chestplate to air
+			set player's leggings to air
+			set player's boots to air
+			set player's offhand to air
+			set player's gamemode to survival
+			set player's fly state to false	
+		
+	wait 4 ticks
+	
+	set glide state of player to false
+	if "%player's world%" = "spawn" or "world" or "world_nether" or "world_the_end" or "resource" or "Elytra Fall" or "Avalon" or "Towny":
+		if {world.xp.level::%uuid of player%} is set:
+			set player's level to {world.xp.level::%uuid of player%}
+			set level progress of player to {world.xp.level.progress::%uuid of player%}
+		else:
+			set player's level to 0
+			set level progress of player to 0
+		loop {world.inventory.save::%uuid of player%::*}:
+			if loop-index = "helmet":
+				set player's helmet to loop-value
+				
+			else if loop-index = "chestplate":
+				set player's chestplate to loop-value
+			else if loop-index = "leggings":
+				set player's leggings to loop-value
+			else if loop-index = "boots":
+				set player's boots to loop-value
+			else if loop-index = "offhand":
+				set player's offhand to loop-value
+			else:
+				set {_i} to loop-index parsed as integer
+				set slot {_i} of player's inventory to loop-value
+		delete {world.inventory.save::%uuid of player%::*}
+		
+	if "%player's world%" is "Prison":
+		if {prison.xp.level::%uuid of player%} is set:
+			set player's level to {prison.xp.level::%uuid of player%}
+			set level progress of player to {prison.xp.level.progress::%uuid of player%}
+		else:
+			set player's level to 0
+			set level progress of player to 0
+		loop {prison.inventory.save::%uuid of player%::*}:
+			if loop-index = "helmet":
+				set player's helmet to loop-value
+				
+			else if loop-index = "chestplate":
+				set player's chestplate to loop-value
+			else if loop-index = "leggings":
+				set player's leggings to loop-value
+			else if loop-index = "boots":
+				set player's boots to loop-value
+			else if loop-index = "offhand":
+				set player's offhand to loop-value
+			else:
+				set {_i} to loop-index parsed as integer
+				set slot {_i} of player's inventory to loop-value
+		delete {prison.inventory.save::%uuid of player%::*}
+	
+		 
+		if {prison.checkpoint::%uuid of player%} is not set:
+			set {prison.checkpoint::%uuid of player%} to {pos::prison_boat1}
+			set {prison.playetools.pickaxe::%uuid of player%} to {item::prison_pickaxe_0}
+			set {prison.playetools.sword::%uuid of player%} to {item::prison_sword_0}
+			set {prison.playetools.boots::%uuid of player%} to {item::prison_boots_0}
+			set {prison.level::%uuid of player%} to 0
+			set {prison.balance::%uuid of player%} to 0
+			teleport player to {pos::prison_boat1}
+			apply slowness 3 to player for 5 seconds
+			send player title "&6Welcome to the Prison Boat" with subtitle "Prisoner &8##&7%uuid of player%" for 5 seconds with 3 second fade in and 1 second fade out
+			wait 9 seconds
+			if {prison.checkpoint::%uuid of player%} != {pos::prison_boat1}:
+				stop
+			set {_i} to random integer from 1 to 9
+			send player title "&6Make your way to Cell &8##&f00%{_i}%" with subtitle "" for 16 seconds with 3 second fade in and 5 second fade out
+			wait 20 seconds
+			if {prison.checkpoint::%uuid of player%} != {pos::prison_boat1}:
+				stop
+			send player title "&6What is taking you so long?" with subtitle "&6Make your way to Cell &8##&f00%{_i}%" for 16 seconds with 3 second fade in and 5 second fade out
+
+	
+	if "%player's world%" is "RPG":
+		if {rpg.xp.level::%uuid of player%} is set:
+			set player's level to {rpg.xp.level::%uuid of player%}
+			set level progress of player to {rpg.xp.level.progress::%uuid of player%}
+		else:
+			set player's level to 0
+			set level progress of player to 0
+		loop {rpg.inventory.save::%uuid of player%::*}:
+			if loop-index = "helmet":
+				set player's helmet to loop-value
+				
+			else if loop-index = "chestplate":
+				set player's chestplate to loop-value
+			else if loop-index = "leggings":
+				set player's leggings to loop-value
+			else if loop-index = "boots":
+				set player's boots to loop-value
+			else if loop-index = "offhand":
+				set player's offhand to loop-value
+			else:
+				set {_i} to loop-index parsed as integer
+				set slot {_i} of player's inventory to loop-value
+		delete {rpg.inventory.save::%uuid of player%::*}
+		
+	if "%player's world%" = "OITC":
+		
+
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to leather boots
+		set player's offhand to air
+		set player's gamemode to survival
+		set player's fly state to false
+		set player's gravity to true
+		set player's health to 3
+		give player 1 wooden sword
+		give player 1 bow of power 20
+		give player 1 arrow
+		
+	if "%player's world%" = "Events":
+		
+
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to air
+		set player's offhand to air
+		set player's gamemode to survival
+		set player's fly state to false
+		set player's gravity to true
+		
+		
+	if "%player's world%" = "FortCraft":
+		
+		teleport player to {pos::kitpvp}
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to air
+		set player's offhand to air
+		set player's gamemode to survival
+		set player's fly state to false
+		set player's gravity to true
+		
+		
+	if "%player's world%" = "The Parkour Temple":
+		
+
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to air
+		set player's offhand to air
+		set player's gamemode to survival
+		set player's fly state to false
+		set player's gravity to true
+			
+	
+	if "%player's world%" is "Rooms":
+		if {rooms.xp.level::%uuid of player%} is set:
+			set player's level to {rooms.xp.level::%uuid of player%}
+			set level progress of player to {rooms.xp.level.progress::%uuid of player%}
+		else:
+			set player's level to 0
+			set level progress of player to 0
+		loop {rooms.inventory.save::%uuid of player%::*}:
+			if loop-index = "helmet":
+				set player's helmet to loop-value
+				
+			else if loop-index = "chestplate":
+				set player's chestplate to loop-value
+			else if loop-index = "leggings":
+				set player's leggings to loop-value
+			else if loop-index = "boots":
+				set player's boots to loop-value
+			else if loop-index = "offhand":
+				set player's offhand to loop-value
+			else:
+				set {_i} to loop-index parsed as integer
+				set slot {_i} of player's inventory to loop-value
+		delete {rooms.inventory.save::%uuid of player%::*}
+		
+	if "%player's world%" is "Creative":
+			
+		set player's gamemode to creative
+		if {creative.xp.level::%uuid of player%} is set:
+			set player's level to {creative.xp.level::%uuid of player%}
+			set level progress of player to {creative.xp.level.progress::%uuid of player%}
+		else:
+			set player's level to 0
+			set level progress of player to 0
+		loop {creative.inventory.save::%uuid of player%::*}:
+			if loop-index = "helmet":
+				set player's helmet to loop-value
+				
+			else if loop-index = "chestplate":
+				set player's chestplate to loop-value
+			else if loop-index = "leggings":
+				set player's leggings to loop-value
+			else if loop-index = "boots":
+				set player's boots to loop-value
+			else if loop-index = "offhand":
+				set player's offhand to loop-value
+			else:
+				set {_i} to loop-index parsed as integer
+				set slot {_i} of player's inventory to loop-value
+		delete {creative.inventory.save::%uuid of player%::*}
+		
+	if "%player's world%" is "SkyBlock":
+			
+		set player's gamemode to survival
+		if {skyblock.xp.level::%uuid of player%} is set:
+			set player's level to {skyblock.xp.level::%uuid of player%}
+			set level progress of player to {skyblock.xp.level.progress::%uuid of player%}
+		else:
+			set player's level to 0
+			set level progress of player to 0
+		loop {skyblock.inventory.save::%uuid of player%::*}:
+			if loop-index = "helmet":
+				set player's helmet to loop-value
+				
+			else if loop-index = "chestplate":
+				set player's chestplate to loop-value
+			else if loop-index = "leggings":
+				set player's leggings to loop-value
+			else if loop-index = "boots":
+				set player's boots to loop-value
+			else if loop-index = "offhand":
+				set player's offhand to loop-value
+			else:
+				set {_i} to loop-index parsed as integer
+				set slot {_i} of player's inventory to loop-value
+		delete {skyblock.inventory.save::%uuid of player%::*}
+		
+	if "%player's world%" is "Hub":
+			
+		set player's gamemode to survival
+		set fly mode of player to false
+		if {hub.xp.level::%uuid of player%} is set:
+			set player's level to {hub.xp.level::%uuid of player%}
+			set level progress of player to {hub.xp.level.progress::%uuid of player%}
+		else:
+			set player's level to 0
+			set level progress of player to 0
+		loop {hub.inventory.save::%uuid of player%::*}:
+			if loop-index = "helmet":
+				set player's helmet to loop-value
+				
+			else if loop-index = "chestplate":
+				set player's chestplate to loop-value
+			else if loop-index = "leggings":
+				set player's leggings to loop-value
+			else if loop-index = "boots":
+				set player's boots to loop-value
+			else if loop-index = "offhand":
+				set player's offhand to loop-value
+			else:
+				set {_i} to loop-index parsed as integer
+				set slot {_i} of player's inventory to loop-value
+		delete {hub.inventory.save::%uuid of player%::*}
+		if player's inventory does not contain a compass:
+			give player 1 of {item::serverselector}
+	
+	if "%player's world%" is "Wilderness":
+			
+		set player's gamemode to survival
+		if {wilderness.xp.level::%uuid of player%} is set:
+			set player's level to {wilderness.xp.level::%uuid of player%}
+			set level progress of player to {wilderness.xp.level.progress::%uuid of player%}
+		else:
+			set player's level to 0
+			set level progress of player to 0
+		loop {wilderness.inventory.save::%uuid of player%::*}:
+			if loop-index = "helmet":
+				set player's helmet to loop-value
+				
+			else if loop-index = "chestplate":
+				set player's chestplate to loop-value
+			else if loop-index = "leggings":
+				set player's leggings to loop-value
+			else if loop-index = "boots":
+				set player's boots to loop-value
+			else if loop-index = "offhand":
+				set player's offhand to loop-value
+			else:
+				set {_i} to loop-index parsed as integer
+				set slot {_i} of player's inventory to loop-value
+		delete {wilderness.inventory.save::%uuid of player%::*}		
+		if {wilderness.hasVisited::%uuid of player%} is not set:
+			set {wilderness.hasVisited::%uuid of player%} to now
+			give player 1 wooden sword
+			give player 1 stone pickaxe
+			give player 1 stone axe
+			give player 1 stone shovel
+			give player 16 torches
+			give player 2 bread
+			give player 2 steak
+			give player 2 cooked porkchop
+			give player 1 melon seeds
+			give player 1 pumpkin seeds
+			give player 1 sugar cane
+			set player's helmet to 1 leather helmet
+			give player 1 boat
+			
+		
+command /getinventory <text>:
+	permission: is.Pluto
+	trigger:
+		loop {world.inventory.save::%{uuid::%arg-1%}%::*}:
+			if loop-index = "helmet":
+				set player's helmet to loop-value
+				
+			else if loop-index = "chestplate":
+				set player's chestplate to loop-value
+			else if loop-index = "leggings":
+				set player's leggings to loop-value
+			else if loop-index = "boots":
+				set player's boots to loop-value
+			else if loop-index = "offhand":
+				set player's offhand to loop-value
+			else:
+				set {_i} to loop-index parsed as integer
+				set slot {_i} of player's inventory to loop-value
+		
+		
+		
+		

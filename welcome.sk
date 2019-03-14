@@ -1,0 +1,42 @@
+on first join:
+	broadcast "&8[&bSnap&8] &eWelcome &a%player's name% &eto SnapMC"
+
+			
+on first join:
+	set {someonejustjoined} to now
+	set {justjoinedname} to "%player's name%"
+	wait 10 seconds
+	execute player command "firstjoinad"
+	
+command /firstjoinad:
+	trigger:
+		# execute console command "adminmusic play %player% 105"
+		message "&c&lDid you know you can use in-game money on our store? 8m = 1 USD!!! &b/buy"
+		wait 20 seconds
+		message "&c&lYou can get a free rank from voting just type &b/vote &c&lthen visit &b/crates"
+		wait 20 seconds
+		message "&c&lFor a limited time you can get 4 free mystery keys by liking us on namemc. &b/namemc"
+		wait 20 seconds
+		message "&c&lJoin our discord and get access to tons of memes. &b/discord"
+		wait 20 seconds
+		message "&c&lAdjust your music with &b/music"
+	
+	
+on chat:
+	if "%message%" contains "welcome":
+		if {someonejustjoined} was less than 10 seconds ago:
+			if {justwelcomed::%player%} is not set:
+				if player is in world "SkyBlock":
+					set {_i} to random integer from 10 to 30
+					add {_i} to {bw.balance::%uuid of player%}
+					message "&8[&bSB&8] &7You got &a%{_i}% points &7for welcoming &e%{justjoinedname}%"
+				else:
+					set {_i} to random integer from 5000 to 15000
+					add {_i} to player's balance
+					message "&8[&bSnap&8] &7You got &a$%{_i}% &7for welcoming &e%{justjoinedname}%"
+				set {justwelcomed::%player%} to true
+				wait 10 seconds
+				delete {justwelcomed::%player%}
+				
+on load:
+	delete {justwelcomed::*}

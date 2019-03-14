@@ -1,0 +1,9 @@
+on join:
+	set {_alts} to 0
+	loop all players:
+		if ip of loop-player = ip of player:
+			if loop-player != player:
+				add 1 to {_alts}
+	if {_alts} > 3:
+		wait 1 tick
+		execute console command "kick %player% Too many players on this IP -s"

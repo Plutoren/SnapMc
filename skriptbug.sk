@@ -1,0 +1,4 @@
+command /lorebug:
+	trigger:
+		set {_item} to {item::testblock}
+		message lore of {_item}

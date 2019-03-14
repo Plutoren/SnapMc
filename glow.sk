@@ -1,0 +1,24 @@
+command /glow:
+	trigger:
+		if player does not have permission "use.glow":
+			message "&8[&bSnap&8] &7You need to buy this command /buy"
+			stop
+		
+		if glowing state of player is false:
+			if "%regions at player%" contains "hub_may_no_fly":
+				message "&8[&bSnap&8] &7You can't use glow in pvp"
+				stop
+			make player glow
+			message "&8[&bSnap&8] &3Activated Glow"
+		else:
+			make player stop glowing
+			remove all effects from player
+			message "&8[&bSnap&8] &cDeactivated Glow"
+
+
+every 2 seconds:
+	loop all players in world "spawn":
+		if "%regions at loop-player%" contains "hub_may_no_fly":
+			make loop-player stop glowing
+	loop all players in world "BedWars":
+		make loop-player stop glowing

@@ -1,0 +1,420 @@
+every 25 minutes:
+	set {chatgame.count} to random integer from 1 to 10
+	if {chatgame.count} is 1:
+		set {_first} to random integer from 10 to 500
+		set {_second} to random integer from 10 to 500
+		set {chatgame.answer} to {_first} + {_second}
+		broadcast "&a&lChat Games &8// &7Solve &e%{_first}% + %{_second}% &7to get rewards!" 
+	else if {chatgame.count} is 2:
+		set {_first} to random integer from 2 to 12
+		set {_second} to random integer from 5 to 10
+		set {chatgame.answer} to {_first} * {_second}
+		broadcast "&a&lChat Games &8// &7Solve &e%{_first}% * %{_second}% &7to get rewards!" 
+	else if {chatgame.count} is 3:
+		set {_first} to random integer from 200 to 500
+		set {_second} to random integer from 40 to 199
+		set {chatgame.answer} to {_first} - {_second}
+		broadcast "&a&lChat Games &8// &7Solve &e%{_first}% - %{_second}% &7to get rewards!" 
+	else if {chatgame.count} is 4:
+		set {_message} to ""
+		set {_min} to 10000
+		loop 9 times:
+			add 1 to {_i}
+			set {_num} to random integer from 10 to 1000
+			if {_num} < {_min}:
+				set {_min} to {_num}
+			if {_i} = 9:
+				set {_message} to "%{_message}%&e%{_num}%&7."
+			else:
+				set {_message} to "%{_message}%&e%{_num}%&7, "
+		set {chatgame.answer} to {_min}
+		broadcast "&a&lChat Games &8// &7What is the smallest number in this list?"
+		broadcast "&a&lChat Games &8// &e%{_message}%" 
+	else if {chatgame.count} is 5:
+		set {_message} to ""
+		set {_max} to 0
+		loop 9 times:
+			add 1 to {_i}
+			set {_num} to random integer from 10 to 1000
+			if {_num} > {_max}:
+				set {_max} to {_num}
+			if {_i} = 9:
+				set {_message} to "%{_message}%&e%{_num}%&7."
+			else:
+				set {_message} to "%{_message}%&e%{_num}%&7, "
+		set {chatgame.answer} to {_max}
+		broadcast "&a&lChat Games &8// &7What is the biggest number in this list?"
+		broadcast "&a&lChat Games &8// &e%{_message}%" 
+	else if {chatgame.count} is 6:
+		set {_message} to ""
+		set {_max} to 0
+		set {_select} to random integer from 2 to 9
+		set {_divis} to random integer from 4 to 10
+		loop 10 times:
+			add 1 to {_i}
+			set {_num} to random integer from 10 to 100
+			if {_select} = {_i}:
+				set {_num} to random integer from 2 to 10
+				set {_num} to {_num} * {_divis}
+				set {chatgame.answer} to {_num}
+			else if {_num} mod {_divis} = 0:
+				add 1 to {_num}
+			if {_i} = 10:
+				set {_message} to "%{_message}%&e%{_num}%&7."
+			else:
+				set {_message} to "%{_message}%&e%{_num}%&7, "
+		broadcast "&a&lChat Games &8// &7Which number is divisible by %{_divis}%?"
+		broadcast "&a&lChat Games &8// &e%{_message}%" 
+	else if {chatgame.count} is 7:
+		set {_message} to ""
+		
+		set {_start} to random integer from 1 to 200
+		set {_increment} to random integer from 4 to 20
+		set {_count} to random integer from 1 to 4
+		set {_num} to {_start}
+		loop 4 times:
+			add 1 to {_i}
+			set {_num} to {_num} + {_increment}
+			set {_input} to {_num}
+			if {_i} = {_count}:
+				set {_input} to "_"
+				set {chatgame.answer} to {_num}
+			else:
+				set {_input} to {_num}
+			if {_i} = 4:
+				set {_message} to "%{_message}%&e%{_input}%&7."
+			else:
+				set {_message} to "%{_message}%&e%{_input}%&7, "
+		
+		
+		broadcast "&a&lChat Games &8// &7What is the missing number?"
+		broadcast "&a&lChat Games &8// &e%{_message}%" 
+		
+	else if {chatgame.count} is 8:
+		set {_word} to random element of {chatgames.words::*}
+		set {_letters::*} to {_word} split at ""
+		set {_length} to length of {_word}
+		set {_scrambled} to ""
+		add 1 to {_length}
+		loop {_length} times:
+			set {_letter} to random element of {_letters::*}
+			remove {_letter} from {_letters::*}
+			set {_scrambled} to "%{_scrambled}% %{_letter}%"	
+		replace all " " with "" in {_scrambled}	
+		
+		set {chatgame.answer} to {_word}
+		
+		broadcast "&a&lChat Games &8// &7Unscramble: &e%{_scrambled}%"
+	else if {chatgame.count} is 9:
+		add "&e" to {_colorcodes::*}
+		add "&b" to {_colorcodes::*}
+		add "&f" to {_colorcodes::*}
+		add "&a" to {_colorcodes::*}
+		add "&6" to {_colorcodes::*}
+		set {_colornames::&e} to "yellow"
+		set {_colornames::&b} to "blue"
+		set {_colornames::&f} to "white"
+		set {_colornames::&a} to "green"
+		set {_colornames::&6} to "orange"
+		set {_colorcode} to random element of {_colorcodes::*}
+		set {_colorname} to {_colornames::%{_colorcode}%}
+		set {_max} to random integer from 2 to 8
+		set {_total} to 0
+		loop 3 times:
+			set {_line} to ""
+			loop 10 times:
+			
+				set {_i} to random integer from 1 to {_max}
+				if {_i} is 1:
+					set {_line} to "%{_line}% %{_colorcode}%▉"
+					add 1 to {_total}
+				else if {_i} is 2:
+					set {_line} to "%{_line}% &7▉"
+				else if {_i} is 3:
+					set {_line} to "%{_line}% &c▉"
+				else if {_i} is 4:
+					set {_line} to "%{_line}% &4▉"
+				else if {_i} is 5:
+					set {_line} to "%{_line}% &8▉"
+				else if {_i} is 6:
+					set {_line} to "%{_line}% &5▉"
+				else if {_i} is 7:
+					set {_line} to "%{_line}% &d▉"
+				else if {_i} is 8:
+					set {_line} to "%{_line}% %{_colorcode}%⬤"
+				replace all " " with "" in {_line}
+			broadcast "&a&lChat Games &8// %{_line}%"
+		
+		set {chatgame.answer} to {_total}
+		broadcast "&a&lChat Games &8// &7How many %{_colorcode}% %{_colorname}% &7squares are there?"
+		
+		
+		
+		
+	else if {chatgame.count} is 10:
+		add "&e" to {_colorcodes::*}
+		add "&b" to {_colorcodes::*}
+		add "&f" to {_colorcodes::*}
+		add "&a" to {_colorcodes::*}
+		add "&6" to {_colorcodes::*}
+		set {_colornames::&e} to "yellow"
+		set {_colornames::&b} to "blue"
+		set {_colornames::&f} to "white"
+		set {_colornames::&a} to "green"
+		set {_colornames::&6} to "orange"
+		set {_colorcode} to random element of {_colorcodes::*}
+		set {_colorcode2} to random element of {_colorcodes::*}
+		set {_colorname} to {_colornames::%{_colorcode}%}
+		set {_colorname2} to {_colornames::%{_colorcode2}%}
+		set {_max} to random integer from 2 to 10
+		set {_total} to 0
+		loop 3 times:
+			set {_line} to ""
+			loop 10 times:
+			
+				set {_i} to random integer from 1 to {_max}
+				if {_i} is 1:
+					set {_line} to "%{_line}% %{_colorcode}%▉"
+				else if {_i} is 2:
+					set {_line} to "%{_line}% %{_colorcode2}%▉"
+				else if {_i} is 3:
+					set {_line} to "%{_line}% &7▉"
+					add 1 to {_total}
+				else if {_i} is 4:
+					set {_line} to "%{_line}% &c▉"
+					add 1 to {_total}
+				else if {_i} is 5:
+					set {_line} to "%{_line}% &4▉"
+					add 1 to {_total}
+				else if {_i} is 6:
+					set {_line} to "%{_line}% &8▉"
+					add 1 to {_total}
+				else if {_i} is 7:
+					set {_line} to "%{_line}% &5▉"
+					add 1 to {_total}
+				else if {_i} is 8:
+					set {_line} to "%{_line}% &d▉"
+					add 1 to {_total}
+				else if {_i} is 9:
+					set {_line} to "%{_line}% %{_colorcode}%⬤"
+				else if {_i} is 10:
+					set {_line} to "%{_line}% %{_colorcode2}%⬤"
+				replace all " " with "" in {_line}
+			broadcast "&a&lChat Games &8// %{_line}%"
+		if {_colorname} = {_colorname2}:
+			broadcast "&a&lChat Games &8// &7How many squares are &c&nnot %{_colorcode}% %{_colorname}%&7?"
+		else:
+			broadcast "&a&lChat Games &8// &7How many squares are &c&nnot %{_colorcode}% %{_colorname}% &7or %{_colorcode2}% %{_colorname2}%&7?"
+		set {chatgame.answer} to {_total}
+command /chatgamesaddword <text>:
+	permission: is.op
+	trigger:
+		add arg-1 to {chatgames.words::*}
+
+
+command /chatgamesremoveword <text>:
+	permission: is.op
+	trigger:
+		remove arg-1 from {chatgames.words::*}	
+		
+command /chatgamelistwords:
+	permission: is.op
+	trigger:
+		message "%{chatgames.words::*}%"
+command /chatgamestest:
+	permission: is.op
+	trigger:
+		add "&e" to {_colorcodes::*}
+		add "&b" to {_colorcodes::*}
+		add "&f" to {_colorcodes::*}
+		add "&a" to {_colorcodes::*}
+		add "&6" to {_colorcodes::*}
+		set {_colornames::&e} to "yellow"
+		set {_colornames::&b} to "blue"
+		set {_colornames::&f} to "white"
+		set {_colornames::&a} to "green"
+		set {_colornames::&6} to "orange"
+		set {_colorcode} to random element of {_colorcodes::*}
+		set {_colorcode2} to random element of {_colorcodes::*}
+		set {_colorname} to {_colornames::%{_colorcode}%}
+		set {_colorname2} to {_colornames::%{_colorcode2}%}
+		set {_max} to random integer from 2 to 10
+		set {_total} to 0
+		loop 3 times:
+			set {_line} to ""
+			loop 10 times:
+			
+				set {_i} to random integer from 1 to {_max}
+				if {_i} is 1:
+					set {_line} to "%{_line}% %{_colorcode}%▉"
+				else if {_i} is 2:
+					set {_line} to "%{_line}% %{_colorcode2}%▉"
+				else if {_i} is 3:
+					set {_line} to "%{_line}% &7▉"
+					add 1 to {_total}
+				else if {_i} is 4:
+					set {_line} to "%{_line}% &c▉"
+					add 1 to {_total}
+				else if {_i} is 5:
+					set {_line} to "%{_line}% &4▉"
+					add 1 to {_total}
+				else if {_i} is 6:
+					set {_line} to "%{_line}% &8▉"
+					add 1 to {_total}
+				else if {_i} is 7:
+					set {_line} to "%{_line}% &5▉"
+					add 1 to {_total}
+				else if {_i} is 8:
+					set {_line} to "%{_line}% &d▉"
+					add 1 to {_total}
+				else if {_i} is 9:
+					set {_line} to "%{_line}% %{_colorcode}%⬤"
+				else if {_i} is 10:
+					set {_line} to "%{_line}% %{_colorcode2}%⬤"
+				replace all " " with "" in {_line}
+			message "&a&lChat Games &8// %{_line}%"
+		if {_colorname} = {_colorname2}:
+			message "&a&lChat Games &8// &7How many squares are &c&nnot %{_colorcode}% %{_colorname}%&7?"
+		else:
+			message "&a&lChat Games &8// &7How many squares are &c&nnot %{_colorcode}% %{_colorname}% &7or %{_colorcode2}% %{_colorname2}%&7?"
+
+on load:
+	set  {chatgames.lastanswer} to now
+		
+
+on chat:
+	if {chatgame.count} is set:
+		if {familychat.active::%player%} is not set:
+			if {staffchat::%player%} is not set:
+				if {chatgame.count} is set:
+					if {chatgames.lastanswer} was more than 60 seconds ago:
+						if message = "%{chatgame.answer}%":
+							set {chatgames.lastanswer} to now
+							
+							delete {chatgame.count}
+							delete {chatgame.answer}
+							add 1 to {chatgame.stats::%uuid of player%}
+							add 1 to {chatgame.stats.monthly::%uuid of player%}
+							wait 1 tick
+							broadcast "&a&lChat Games &8// &e%player% &7has won the game!"
+							if "%player's world%" = "world" or "world_the_end" or "world_nether" or "Avalon" or "Elytra Fall" or "spawn" or "resource":
+								execute console command "kp key Shamrock regular %player% 1"
+							else:
+								if {redeem.crate::%player%::Shamrock} is not set:
+									set {redeem.crate::%player%::Shamrock} to 1
+								else:
+									set {redeem.crate::%player%::Shamrock} to {redeem.crate::%player%::Shamrock} + 1	
+								
+								message "&a&lChat Games &8// &7Collect your price in &b/survival &7with &b/rc"
+	
+command /chatgame [<text>]:
+	aliases: chatgames
+	trigger:
+		if arg-1 is not set:
+			message "There's literally only 2 commands and it is /chatgames top/overall"
+			stop
+		if arg-1 is "reset":
+			if player has permission "is.Pluto":
+				delete {chatgame.stats.monthly::*}
+				message "done"
+		if arg-1 is "top":
+			loop {chatgame.stats.monthly::*}:
+				if loop-value > 5:
+					add 1 to {_size}
+					if {_low.to.high.list::%loop-value%} is not set:
+						set {_low.to.high.list::%loop-value%} to loop-index
+					else:
+						set {_n} to 0
+						loop {_size} times:
+							set {_n} to {_n}+1
+							{_low.to.high.list::%loop-value-1%.%{_n}%} is not set
+							set {_low.to.high.list::%loop-value-1%.%{_n}%} to loop-index
+							
+							stop loop
+			wait 1 tick
+			set {_n} to size of {_low.to.high.list::*}
+			loop {_low.to.high.list::*}:
+				set {_high.to.low.list::%{_n}%} to loop-value
+				set {_n} to {_n}-1
+			
+			open chest with 6 row named "       -=[ &1Top Chatgames &8]=-" to player
+			wait 1 tick
+			if name of current inventory of player != "       -=[ &1Top Chatgames &8]=-":
+				close inventory of player
+				stop
+				
+			set {_i} to 0
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/vote top"]
+				add 1 to {_i}				
+			format slot 17 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/vote top"]
+			format slot 36 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/vote top"]
+			set {_i} to 44
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/vote top"]
+				add 1 to {_i}
+		
+			set {_slot} to 19
+			set {_i} to 0
+			loop {_high.to.low.list::*}:
+				
+				add 1 to {_slot}
+				add 1 to {_i}
+				format slot {_slot} of player with {item::head_number%{_i}%} named "&6&n%{uuidName::%loop-value%}%&r &7(##%{_i}%)" with lore "", " &6* &e&lWin Count &7%{chatgame.stats.monthly::%loop-value%}% ", "", " &6* &e&lPlace &7##%{_i}%", "&e" to close
+		
+				
+				if {_slot} is 24:
+					set {_slot} to 28 
+				if {_slot} is 33:
+					stop
+					
+		else if arg-1 is "overall":
+			loop {chatgame.stats::*}:
+				if loop-value > 5:
+					add 1 to {_size}
+					if {_low.to.high.list::%loop-value%} is not set:
+						set {_low.to.high.list::%loop-value%} to loop-index
+					else:
+						set {_n} to 0
+						loop {_size} times:
+							set {_n} to {_n}+1
+							{_low.to.high.list::%loop-value-1%.%{_n}%} is not set
+							set {_low.to.high.list::%loop-value-1%.%{_n}%} to loop-index
+							
+							stop loop
+			wait 1 tick
+			set {_n} to size of {_low.to.high.list::*}
+			loop {_low.to.high.list::*}:
+				set {_high.to.low.list::%{_n}%} to loop-value
+				set {_n} to {_n}-1
+			
+			open chest with 6 row named "       -=[ &1Top Chatgames &8]=-" to player
+			wait 1 tick
+			if name of current inventory of player != "       -=[ &1Top Chatgames &8]=-":
+				close inventory of player
+				stop
+				
+			set {_i} to 0
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/vote top"]
+				add 1 to {_i}				
+			format slot 17 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/vote top"]
+			format slot 36 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/vote top"]
+			set {_i} to 44
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/vote top"]
+				add 1 to {_i}
+		
+			set {_slot} to 19
+			set {_i} to 0
+			loop {_high.to.low.list::*}:
+				
+				add 1 to {_slot}
+				add 1 to {_i}
+				format slot {_slot} of player with {item::head_number%{_i}%} named "&6&n%{uuidName::%loop-value%}%&r &7(##%{_i}%)" with lore "", " &6* &e&lWin Count &7%{chatgame.stats::%loop-value%}% ", "", " &6* &e&lPlace &7##%{_i}%", "&e" to close
+		
+				
+				if {_slot} is 24:
+					set {_slot} to 28 
+				if {_slot} is 33:
+					stop

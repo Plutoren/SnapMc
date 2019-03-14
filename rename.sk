@@ -1,0 +1,27 @@
+command /re <text>:
+	aliases: rename
+	permission: is.char
+	trigger:
+		if player is not in world "Creative":
+			message "Creative only"
+			stop
+		set {_arg} to arg-1
+		replace all "&" with "§" in {_arg}
+		set name of player's tool to "&f%{_arg}%"
+		
+command /lo <text>:
+	aliases: lore
+	permission: is.char
+	trigger:
+		if player is not in world "Creative":
+			message "Creative only"
+			stop
+		set {_arg} to arg-1
+		replace all "&" with "§" in {_arg}
+		set lore of player's tool to ""
+		set {_lore::*} to {_arg} split at "||"
+		loop {_lore::*}:
+			add 1 to {_i}
+			set line {_i} of lore of player's tool to loop-value
+		apply strength to player for 1 second
+		remove all strength from player 

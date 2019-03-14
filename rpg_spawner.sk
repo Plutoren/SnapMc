@@ -1,0 +1,220 @@
+command /rpgspawner [<text>] [<text>] [<text>]:
+	permission: is.op
+	trigger:
+		if arg-1 is "create":
+			if arg-2 is not set:
+				message "create what"
+				stop
+			set {rpg.spawners.type::%arg-2%} to 0
+			message "Created %arg-2%"
+			stop
+		if arg-1 is "setname":
+			if arg-3 is not set:
+				message "arg-2"
+				stop
+			if {rpg.spawners.type::%arg-2%} is not set:
+				message "no spawner of %arg-2%"
+				stop
+			set {rpg.spawners.name::%arg-2%} to arg-3
+			message "set name to %arg-3%"
+			stop
+		else if arg-2 is 
+				
+			
+	
+		
+		
+		
+
+Options:
+	#Style Options (&m?)(|)(?)(¦)(?)
+	Style: &m- # The style of choice
+	Length: 15 #Length Increases the amount of increments the health bar has
+	Height: 0.8 #how high or low the bar is 
+
+	
+on skript load:
+	clear {HoloHealth::*}
+	
+every 10 seconds:
+	loop {HoloHealth::*}:
+		if loop-value is dead:
+			delete holo object entity uuid of loop-value
+			remove loop-value from {HoloHealth::*}
+
+command /cleardungeonspawnercount:
+	permission: is.Pluto
+	trigger:
+		delete {rpg.spawner.count::*}
+on death:
+	if victim is in world "RPG":
+		wait 1 ticks
+		if holo object entity uuid of victim exists:
+			set {_uuid} to entity uuid of victim
+			delete holo object entity uuid of victim
+			set {_spawner} to metadata "origin.spawner" of victim
+			if {_spawner} is set:
+				subtract 1 from {rpg.spawner.count::%{_spawner}%}
+		
+		
+on explode:
+	#Creepers explode fix
+	if event-entity is in world "RPG":
+		if holo object entity uuid of event-entity exists:
+			set {_uuid} to uuid of event-entity
+			delete holo object entity uuid of event-entity
+			set {_spawner} to metadata "origin.spawner" of event-entity
+			if {_spawner} is set:
+				subtract 1 from {rpg.spawner.count::%{_spawner}%}
+function capitalizeFirst(text: text) :: text:
+	set {_first-char} to first character of {_text}
+	set {_remaining} to last (length of {_text} - 1) characters of {_text}
+	set {_output} to "%{_first-char} in upper case%%{_remaining}%"
+	return {_output}
+
+function capitalizeSentence(text: text, delimiter: text = " ") :: text:
+	set {_words::*} to split {_text} by {_delimiter}
+	set {_return} to ""
+	loop {_words::*}:
+		set {_return} to "%{_return}%%capitalizeFirst(loop-value)% "
+	return {_return}
+  
+function UpdateBar(entity: entity):
+	if {_entity}'s world != "RPG":
+		stop
+	wait 1 ticks
+	set {_level} to metadata "dungeon.level" of {_entity}
+	if {_level} is not set:
+		set metadata "dungeon.level" of {_entity} to random integer from 1 to 5
+	set {_level} to metadata "dungeon.level" of {_entity}
+	#We wait a tick to get updated health value's if attacking quickly
+	{_entity} is not a player
+	{_entity} is not a dropped item
+	{_entity} is not a projectile
+	{_entity} is not a armor stand
+	{_entity} is not a villager
+	
+	set {_Euuid} to entity uuid of {_entity}
+	set {_Symbol} to "{@Style}"
+	set {_H} to hitbox length of {_entity} 
+	set {_H} to {_H}+{@Height}
+
+	set {_CurHp} to health of {_entity}
+	set {_MaxHp} to max health of {_entity}
+	
+	set {_hpAmount} to {_CurHp}/{_MaxHp}*{@Length}
+	set {_size} to {_hpAmount}
+	
+	
+	if holo object "%{_Euuid}%" exists:
+		wait 1 ticks
+		#Holo object exists doesnt have does not exists 
+	else:	   
+		create bound holo object "" with id "%{_Euuid}%" to {_entity} offset by 0, {_h}, 0
+		add {_entity} to {HoloHealth::*}
+
+	if holo object "%{_Euuid}%" exists:
+		loop {_hpAmount} times:
+			add {_Symbol} to {_endresult::*}
+			add 1 to {_missing}
+			
+		if {_endresult::*} isn't set:
+			set {_end} to ""
+		else:
+			set {_end} to "%{_endresult::*}%"
+		replace every "," with "" in {_end}
+		replace every " " with "" in {_end}
+		replace every "and" with "" in {_end}
+		
+		if {_end} isn't set:
+			set {_end} to ""
+			
+		set {_missAmount} to {@Length}-{_missing}
+		loop {_missAmount} times:
+			add {_Symbol} to {_missresult::*}
+		if {_missresult::*} isn't set:
+			set {_miss} to ""
+		else:
+			set {_miss} to "%{_missresult::*}%"
+		replace every "," with "" in {_miss}
+		replace every " " with "" in {_miss}
+		replace every "and" with "" in {_miss}
+		set {_type} to {_entity}'s type 
+		set {_mob} to capitalizeSentence("%{_type}%")
+		edit holo object "%{_Euuid}%" to "&a%{_end}%&c%{_miss}%;&6%{_mob}%&eLevel %{_level}%" 
+
+# on right click on floor head:
+#	if "%regions at player%" contains "dungeon":
+#		set {_found} to metadata "dungeon.gold.%location of clicked block%" of player
+#		if {_found} is not set:
+#			make player see clicked block as air
+#			message "&8[&6Dungeon&8] &e+1 Gold"
+#			set metadata "dungeon.gold.%location of clicked block%" of player to true
+
+#Damage
+on damage:
+	if attacker is a player:
+		if victim is in world "RPG":
+			UpdateBar(victim)
+	else if victim is in world "RPG":
+		if holo object entity uuid of victim exists:
+			UpdateBar(victim)
+			
+				   
+#Removes the bar on untarget 
+on untarget:
+	if entity's world is "RPG":
+		set {_uuid} to uuid of entity
+		wait 5 ticks
+		if target of entity is not set:
+			delete holo object entity uuid of entity
+		
+#If entiy is targeting a player spawn's the bar 
+#Much nicer to see a full health bar then begin to get lower as you attack
+on target:
+	if entity's world is "RPG":
+		if target of entity is a player:
+			UpdateBar(entity)
+
+			
+#Despawn mob's / unloaded chunk removal of health bar's
+on chunk unload:
+	loop entities of event-chunk:
+		loop-value is in world "RPG"
+		loop-value is not a player
+		loop-value is not a dropped item
+		loop-value is not a projectile
+		loop-value is not a armor stand
+		if holo object entity uuid of loop-value exists:
+			set {_uuid} to uuid of loop-value
+			delete holo object entity uuid of loop-value
+		set {_spawner} to metadata "origin.spawner" of loop-value
+		if {_spawner} is set:
+			subtract 1 from {rpg.spawner.count::%{_spawner}%}
+on hunger meter change:
+	if player is in world "RPG":
+		cancel event
+spawner spawn:
+	if entity is in world "RPG":
+		cancel event
+		if {rpg.spawner.count::%event-location%} is not set:
+			set {rpg.spawner.count::%event-location%} to 0
+		if {rpg.spawner.count::%event-location%} > 0:
+			stop
+		add 1 to {rpg.spawner.count::%event-location%}
+		set {_spawned} to true
+		if "%entity%" is "zombie":
+			spawn 1 zombie at location of entity
+		else if "%entity%" is "spider":
+			spawn 1 spider at location of entity
+		else:
+			set {_spawned} to false
+		if {_spawned} is true:
+			set metadata "origin.spawner" of last spawned entity to event-location
+
+on spawn:
+	if event-entity is in world "RPG":
+		if event.getSpawnReason().toString() is not "CUSTOM":
+			cancel the event				
+			
+			

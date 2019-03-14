@@ -1,0 +1,12 @@
+on place tnt:
+	if player is not in world "BedWars":
+		cancel event
+		message "&8[&bSnap&8] &cYou can't place that here."
+		if player's world is "spawn":
+			if distance between event-block and player < 1.5:
+				push player down
+	else:
+		cancel event
+		remove 1 tnt from player
+		spawn primed tnt at event-block
+

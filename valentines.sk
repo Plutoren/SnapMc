@@ -1,0 +1,32 @@
+command /blowakiss <player>:
+	trigger:
+		set {_i} to 0
+		if distance between location of player and location of arg-1 is less than 60:
+			if {justblewakiss::%player%} is not set:
+				set {justblewakiss::%player%} to now
+			else if {justblewakiss::%player%} was less than 5 seconds ago:
+				message "&8[&bSnap&8] &7Please wait at least 5 seconds to send another kiss!"
+				stop
+			set {justblewakiss::%player%} to now
+			add 1 to {totalkisses}
+			message "&8[&cSnap&8] &dYou blew a kiss to %arg-1%"
+			send "&8[&cSnap&8] &d%player% &djust blew you a kiss! &fCatch it!" to arg-1 
+			send "&8[&cSnap&8] &7Send a kiss back with &b/blowakiss %player%" to arg-1
+			loop blocks between block at location of player and block at location of arg-1:
+				if {_i} is 60:
+					stop
+				add 1 to {_i}
+				wait 1 ticks
+				create 2 of heart particles at location of loop-block 
+		else:
+			message "&8[&bSnap&8] &7Player must be within 60 blocks of you!"
+on load:
+	delete {justblewakiss::*}
+command /totalkisses:
+	trigger:
+		message "&8[&bSnap&8] &c%{totalkisses}% &ehave been sent"
+		
+on damage of player:
+	if "%regions at victim%" contains "hub_pvp":
+		create 3 of heart particles at location of victim
+			

@@ -1,0 +1,815 @@
+command /rotate:
+	trigger:
+		loop 400 times:
+			set {_loc} to location of player
+			add 1 to yaw of {_loc}
+			teleport player to {_loc}
+			wait 1 tick
+# import:
+#	org.bukkit.util.EulerAngle as test
+
+
+
+command /hype:
+	permission: is.vortex
+	trigger:
+		set {_lastused} to metadata "fortnite.dance.last" of player
+		if {_lastused} is not set:
+			set metadata "fortnite.dance.last" of player to now
+		else:
+			if {_lastused} was less than 16 seconds ago:
+				message "&8[&bSnap&8] &7Please wait before running this command again"
+				stop
+			else:
+				set metadata "fortnite.dance.last" of player to now
+					
+		spawn armor stand at location of player
+		set {_armorStand} to last spawned entity
+		set helmet of last spawned entity to skull of player
+		set chestplate of last spawned entity to leather chestplate
+		set leggings of last spawned entity to leather leggings
+		set boots of last spawned entity to leather boots
+		{_armorStand}.setSmall(true)
+		{_armorStand}.setBasePlate(false)
+		{_armorStand}.setGravity(false)
+		{_armorStand}.setArms(true)
+		
+		
+		set {_leftArmAngle} to {_armorStand}.getLeftArmPose()
+		set {_leftArmAngle} to {_leftArmAngle}.add(-.55,0,0)
+		{_armorStand}.setLeftArmPose({_leftArmAngle})
+		
+		
+		set {_rightArmAngle} to {_armorStand}.getRightArmPose()
+		set {_rightArmAngle} to {_rightArmAngle}.add(-.55,0,0)
+		{_armorStand}.setRightArmPose({_rightArmAngle})
+		
+		
+		set {_rightLegAngle} to {_armorStand}.getRightLegPose()
+		set {_rightLegAngle} to {_rightLegAngle}.add(-.7,0,0)
+		{_armorStand}.setRightLegPose({_rightLegAngle})
+		
+		
+		set {_headAngle} to {_armorStand}.getHeadPose()
+		set {_headAngle} to {_headAngle}.add(-.1,.8,0)
+		{_armorStand}.setHeadPose({_headAngle})
+		
+		
+		teleport {_armorStand} to block 2 above player
+		loop 3 times:
+			loop 4 times:
+				loop 6 times:
+					set {_loc} to location of player
+					add 1.9 to y coordinate of {_loc}
+					teleport {_armorStand} to {_loc}
+					set yaw of {_armorStand} to yaw of player
+					set pitch of {_armorStand} to pitch of player
+					set {_leftArmAngle} to {_leftArmAngle}.add(.2,0,0)
+					{_armorStand}.setLeftArmPose({_leftArmAngle})
+					set {_rightArmAngle} to {_rightArmAngle}.add(.2,0,0)
+					{_armorStand}.setRightArmPose({_rightArmAngle})
+					set {_rightLegAngle} to {_rightLegAngle}.add(.13,0,0)
+					{_armorStand}.setRightLegPose({_rightLegAngle})
+					set {_headAngle} to {_headAngle}.add(-.07,0,0)
+					{_armorStand}.setHeadPose({_headAngle})
+					wait 1 tick
+				loop 6 times:
+					set {_loc} to location of player
+					add 1.9 to y coordinate of {_loc}
+					teleport {_armorStand} to {_loc}
+					set {_leftArmAngle} to {_leftArmAngle}.add(-.2,0,0)
+					{_armorStand}.setLeftArmPose({_leftArmAngle})
+					set {_rightArmAngle} to {_rightArmAngle}.add(-.2,0,0)
+					{_armorStand}.setRightArmPose({_rightArmAngle})
+					set {_rightLegAngle} to {_rightLegAngle}.add(-.13,0,0)
+					{_armorStand}.setRightLegPose({_rightLegAngle})
+					set {_headAngle} to {_headAngle}.add(.07,0,0)
+					{_armorStand}.setHeadPose({_headAngle})
+					wait 1 tick
+			
+			loop 6 times:
+				set {_loc} to location of player
+				add 1.9 to y coordinate of {_loc}
+				teleport {_armorStand} to {_loc}
+				set {_rightArmAngle} to {_rightArmAngle}.add(-.43,0,-.1)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_rightLegAngle} to {_rightLegAngle}.add(.13,0,0)
+				{_armorStand}.setRightLegPose({_rightLegAngle})
+				set {_headAngle} to {_headAngle}.add(-.07,0,0)
+				{_armorStand}.setHeadPose({_headAngle})
+				wait 1 tick
+			loop 4 times:
+				loop 6 times:
+					set {_loc} to location of player
+					add 1.9 to y coordinate of {_loc}
+					teleport {_armorStand} to {_loc}
+					set {_rightArmAngle} to {_rightArmAngle}.add(.2,0,0)
+					{_armorStand}.setRightArmPose({_rightArmAngle})
+					set {_rightLegAngle} to {_rightLegAngle}.add(-.13,0,0)
+					{_armorStand}.setRightLegPose({_rightLegAngle})
+					set {_headAngle} to {_headAngle}.add(.07,0,0)
+					{_armorStand}.setHeadPose({_headAngle})
+					wait 1 tick
+				loop 6 times:
+					set {_loc} to location of player
+					add 1.9 to y coordinate of {_loc}
+					teleport {_armorStand} to {_loc}
+					set {_rightArmAngle} to {_rightArmAngle}.add(-.2,0,0)
+					{_armorStand}.setRightArmPose({_rightArmAngle})
+					set {_rightLegAngle} to {_rightLegAngle}.add(.13,0,0)
+					{_armorStand}.setRightLegPose({_rightLegAngle})
+					set {_headAngle} to {_headAngle}.add(-.07,0,0)
+					{_armorStand}.setHeadPose({_headAngle})
+					wait 1 tick
+			loop 6 times:
+				set {_loc} to location of player
+				add 1.9 to y coordinate of {_loc}
+				teleport {_armorStand} to {_loc}
+				set {_rightArmAngle} to {_rightArmAngle}.add(.43,0,.1)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_rightLegAngle} to {_rightLegAngle}.add(-.13,0,0)
+				{_armorStand}.setRightLegPose({_rightLegAngle})
+				set {_headAngle} to {_headAngle}.add(.07,0,0)
+				{_armorStand}.setHeadPose({_headAngle})
+				wait 1 tick
+		kill {_armorStand}
+				
+		
+		
+
+command /newhype:
+	permission: is.op
+	trigger:
+		spawn armor stand at location of player
+		set {_armorStand} to last spawned entity
+		set helmet of last spawned entity to skull of player
+		set chestplate of last spawned entity to leather chestplate
+		set leggings of last spawned entity to leather leggings
+		set boots of last spawned entity to leather boots
+		{_armorStand}.setSmall(true)
+		{_armorStand}.setBasePlate(false)
+		{_armorStand}.setGravity(false)
+		{_armorStand}.setArms(true)
+		
+		
+		set {_leftArmAngle} to {_armorStand}.getLeftArmPose()
+		set {_leftArmAngle} to {_leftArmAngle}.add(-.55,0,0)
+		{_armorStand}.setLeftArmPose({_leftArmAngle})
+		
+		
+		set {_rightArmAngle} to {_armorStand}.getRightArmPose()
+		set {_rightArmAngle} to {_rightArmAngle}.add(-.55,0,0)
+		{_armorStand}.setRightArmPose({_rightArmAngle})
+		
+		
+		set {_rightLegAngle} to {_armorStand}.getRightLegPose()
+		set {_rightLegAngle} to {_rightLegAngle}.add(-.7,0,0)
+		{_armorStand}.setRightLegPose({_rightLegAngle})
+		
+		
+		set {_headAngle} to {_armorStand}.getHeadPose()
+		set {_headAngle} to {_headAngle}.add(-.1,.8,0)
+		{_armorStand}.setHeadPose({_headAngle})
+		while true:
+			if health of {_armorStand} < 9:
+				message "Killed"
+				stop
+			loop 4 times:
+				loop 6 times:
+					set yaw of {_armorStand} to yaw of player
+					set pitch of {_armorStand} to pitch of player
+					set {_leftArmAngle} to {_leftArmAngle}.add(.2,0,0)
+					{_armorStand}.setLeftArmPose({_leftArmAngle})
+					set {_rightArmAngle} to {_rightArmAngle}.add(.2,0,0)
+					{_armorStand}.setRightArmPose({_rightArmAngle})
+					set {_rightLegAngle} to {_rightLegAngle}.add(.13,0,0)
+					{_armorStand}.setRightLegPose({_rightLegAngle})
+					set {_headAngle} to {_headAngle}.add(-.07,0,0)
+					{_armorStand}.setHeadPose({_headAngle})
+					wait 1 tick
+				loop 6 times:
+					set {_leftArmAngle} to {_leftArmAngle}.add(-.2,0,0)
+					{_armorStand}.setLeftArmPose({_leftArmAngle})
+					set {_rightArmAngle} to {_rightArmAngle}.add(-.2,0,0)
+					{_armorStand}.setRightArmPose({_rightArmAngle})
+					set {_rightLegAngle} to {_rightLegAngle}.add(-.13,0,0)
+					{_armorStand}.setRightLegPose({_rightLegAngle})
+					set {_headAngle} to {_headAngle}.add(.07,0,0)
+					{_armorStand}.setHeadPose({_headAngle})
+					wait 1 tick
+			
+			loop 6 times:
+				set {_rightArmAngle} to {_rightArmAngle}.add(-.43,0,-.1)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_rightLegAngle} to {_rightLegAngle}.add(.13,0,0)
+				{_armorStand}.setRightLegPose({_rightLegAngle})
+				set {_headAngle} to {_headAngle}.add(-.07,0,0)
+				{_armorStand}.setHeadPose({_headAngle})
+				wait 1 tick
+			loop 4 times:
+				loop 6 times:
+					set {_rightArmAngle} to {_rightArmAngle}.add(.2,0,0)
+					{_armorStand}.setRightArmPose({_rightArmAngle})
+					set {_rightLegAngle} to {_rightLegAngle}.add(-.13,0,0)
+					{_armorStand}.setRightLegPose({_rightLegAngle})
+					set {_headAngle} to {_headAngle}.add(.07,0,0)
+					{_armorStand}.setHeadPose({_headAngle})
+					wait 1 tick
+				loop 6 times:
+					set {_rightArmAngle} to {_rightArmAngle}.add(-.2,0,0)
+					{_armorStand}.setRightArmPose({_rightArmAngle})
+					set {_rightLegAngle} to {_rightLegAngle}.add(.13,0,0)
+					{_armorStand}.setRightLegPose({_rightLegAngle})
+					set {_headAngle} to {_headAngle}.add(-.07,0,0)
+					{_armorStand}.setHeadPose({_headAngle})
+					wait 1 tick
+			loop 6 times:
+				set {_rightArmAngle} to {_rightArmAngle}.add(.43,0,.1)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_rightLegAngle} to {_rightLegAngle}.add(-.13,0,0)
+				{_armorStand}.setRightLegPose({_rightLegAngle})
+				set {_headAngle} to {_headAngle}.add(.07,0,0)
+				{_armorStand}.setHeadPose({_headAngle})
+				wait 1 tick
+		kill {_armorStand}
+				
+
+
+command /newfloss:
+	permission: is.op
+	trigger:
+		spawn armor stand at location of player
+		set {_armorStand} to last spawned entity
+		set helmet of last spawned entity to skull of player
+		set chestplate of last spawned entity to leather chestplate
+		set leggings of last spawned entity to leather leggings
+		set boots of last spawned entity to leather boots
+		{_armorStand}.setSmall(true)
+		{_armorStand}.setBasePlate(false)
+		{_armorStand}.setGravity(false)
+		{_armorStand}.setArms(true)
+		
+		
+		set {_leftArmAngle} to {_armorStand}.getLeftArmPose()
+		set {_leftArmAngle} to {_leftArmAngle}.add(-.35,0,0)
+		{_armorStand}.setLeftArmPose({_leftArmAngle})
+		
+		
+		set {_rightArmAngle} to {_armorStand}.getRightArmPose()
+		set {_rightArmAngle} to {_rightArmAngle}.add(-.35,0,0)
+		{_armorStand}.setRightArmPose({_rightArmAngle})
+		
+		
+		
+		set {_bodyAngle} to {_armorStand}.getBodyPose()
+		
+		set {_loc} to location of player
+		teleport {_armorStand} to {_loc}
+
+		
+
+		loop 4 times:
+			
+			set {_leftArmAngle} to {_leftArmAngle}.add(0,0,0.2)
+			{_armorStand}.setLeftArmPose({_leftArmAngle})
+			set {_rightArmAngle} to {_rightArmAngle}.add(0,0,0.2)
+			{_armorStand}.setRightArmPose({_rightArmAngle})
+			set {_bodyAngle} to {_bodyAngle}.add(0,0,0.02)
+			{_armorStand}.setBodyPose({_bodyAngle})
+			wait 1 tick	
+		while true:
+			if health of {_armorStand} < 9:
+				message "Killed"
+				stop
+			loop 8 times:
+				
+				set {_leftArmAngle} to {_leftArmAngle}.add(0,0,-0.2)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(0,0,-0.2)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_bodyAngle} to {_bodyAngle}.add(0,0,-0.02)
+				{_armorStand}.setBodyPose({_bodyAngle})
+				wait 1 tick	
+			loop 8 times:
+				
+				set {_leftArmAngle} to {_leftArmAngle}.add(0.12,0,0.2)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(0,0,0.2)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_bodyAngle} to {_bodyAngle}.add(0,0,0.02)
+				{_armorStand}.setBodyPose({_bodyAngle})
+				wait 1 tick	
+			loop 8 times:
+				set {_leftArmAngle} to {_leftArmAngle}.add(-0.12,0,-0.2)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(0,0,-0.2)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_bodyAngle} to {_bodyAngle}.add(0,0,-0.02)
+				{_armorStand}.setBodyPose({_bodyAngle})
+				wait 1 tick	
+			loop 8 times:
+				set {_leftArmAngle} to {_leftArmAngle}.add(0,0,0.2)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(0,0,0.2)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_bodyAngle} to {_bodyAngle}.add(0,0,0.02)
+				{_armorStand}.setBodyPose({_bodyAngle})
+				wait 1 tick	
+				
+				
+			loop 8 times:
+				set {_leftArmAngle} to {_leftArmAngle}.add(0,0,-0.2)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(0.12,0,-0.2)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_bodyAngle} to {_bodyAngle}.add(0,0,-0.02)
+				{_armorStand}.setBodyPose({_bodyAngle})
+				wait 1 tick	
+			loop 8 times:
+				set {_leftArmAngle} to {_leftArmAngle}.add(0,0,0.2)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(-0.12,0,0.2)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_bodyAngle} to {_bodyAngle}.add(0,0,0.02)
+				{_armorStand}.setBodyPose({_bodyAngle})
+				wait 1 tick	
+		kill {_armorStand}
+			
+	
+
+command /floss:
+	permission: is.vortex
+	trigger:
+		set {_lastused} to metadata "fortnite.dance.last" of player
+		if {_lastused} is not set:
+			set metadata "fortnite.dance.last" of player to now
+		else:
+			if {_lastused} was less than 16 seconds ago:
+				message "&8[&bSnap&8] &7Please wait before running this command again"
+				stop
+			else:
+				set metadata "fortnite.dance.last" of player to now
+		spawn armor stand at location of player
+		set {_armorStand} to last spawned entity
+		set helmet of last spawned entity to skull of player
+		set chestplate of last spawned entity to leather chestplate
+		set leggings of last spawned entity to leather leggings
+		set boots of last spawned entity to leather boots
+		{_armorStand}.setSmall(true)
+		{_armorStand}.setBasePlate(false)
+		{_armorStand}.setGravity(false)
+		{_armorStand}.setArms(true)
+		
+		
+		set {_leftArmAngle} to {_armorStand}.getLeftArmPose()
+		set {_leftArmAngle} to {_leftArmAngle}.add(-.35,0,0)
+		{_armorStand}.setLeftArmPose({_leftArmAngle})
+		
+		
+		set {_rightArmAngle} to {_armorStand}.getRightArmPose()
+		set {_rightArmAngle} to {_rightArmAngle}.add(-.35,0,0)
+		{_armorStand}.setRightArmPose({_rightArmAngle})
+		
+		
+		
+		set {_bodyAngle} to {_armorStand}.getBodyPose()
+		
+
+		
+		
+		teleport {_armorStand} to block 2 above player
+
+		loop 4 times:
+			set {_loc} to location of player
+			add 1.9 to y coordinate of {_loc}
+			teleport {_armorStand} to {_loc}
+			
+			set {_leftArmAngle} to {_leftArmAngle}.add(0,0,0.2)
+			{_armorStand}.setLeftArmPose({_leftArmAngle})
+			set {_rightArmAngle} to {_rightArmAngle}.add(0,0,0.2)
+			{_armorStand}.setRightArmPose({_rightArmAngle})
+			set {_bodyAngle} to {_bodyAngle}.add(0,0,0.02)
+			{_armorStand}.setBodyPose({_bodyAngle})
+			wait 1 tick	
+		loop 7 times:
+			loop 8 times:
+				set {_loc} to location of player
+				add 1.9 to y coordinate of {_loc}
+				teleport {_armorStand} to {_loc}
+				
+				set {_leftArmAngle} to {_leftArmAngle}.add(0,0,-0.2)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(0,0,-0.2)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_bodyAngle} to {_bodyAngle}.add(0,0,-0.02)
+				{_armorStand}.setBodyPose({_bodyAngle})
+				wait 1 tick	
+			loop 8 times:
+				set {_loc} to location of player
+				add 1.9 to y coordinate of {_loc}
+				teleport {_armorStand} to {_loc}
+				
+				set {_leftArmAngle} to {_leftArmAngle}.add(0.12,0,0.2)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(0,0,0.2)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_bodyAngle} to {_bodyAngle}.add(0,0,0.02)
+				{_armorStand}.setBodyPose({_bodyAngle})
+				wait 1 tick	
+			loop 8 times:
+				set {_loc} to location of player
+				add 1.9 to y coordinate of {_loc}
+				teleport {_armorStand} to {_loc}
+				
+				set {_leftArmAngle} to {_leftArmAngle}.add(-0.12,0,-0.2)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(0,0,-0.2)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_bodyAngle} to {_bodyAngle}.add(0,0,-0.02)
+				{_armorStand}.setBodyPose({_bodyAngle})
+				wait 1 tick	
+			loop 8 times:
+				set {_loc} to location of player
+				add 1.9 to y coordinate of {_loc}
+				teleport {_armorStand} to {_loc}
+				
+				set {_leftArmAngle} to {_leftArmAngle}.add(0,0,0.2)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(0,0,0.2)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_bodyAngle} to {_bodyAngle}.add(0,0,0.02)
+				{_armorStand}.setBodyPose({_bodyAngle})
+				wait 1 tick	
+				
+				
+			loop 8 times:
+				set {_loc} to location of player
+				add 1.9 to y coordinate of {_loc}
+				teleport {_armorStand} to {_loc}
+				
+				set {_leftArmAngle} to {_leftArmAngle}.add(0,0,-0.2)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(0.12,0,-0.2)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_bodyAngle} to {_bodyAngle}.add(0,0,-0.02)
+				{_armorStand}.setBodyPose({_bodyAngle})
+				wait 1 tick	
+			loop 8 times:
+				set {_loc} to location of player
+				add 1.9 to y coordinate of {_loc}
+				teleport {_armorStand} to {_loc}
+				
+				set {_leftArmAngle} to {_leftArmAngle}.add(0,0,0.2)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(-0.12,0,0.2)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_bodyAngle} to {_bodyAngle}.add(0,0,0.02)
+				{_armorStand}.setBodyPose({_bodyAngle})
+				wait 1 tick	
+		kill {_armorStand}
+			
+	
+
+
+command /newclick:
+	permission: is.op
+	trigger:
+		set {_loc} to location of player
+		set {_original} to {_loc}
+		subtract 2.0 from y coordinate of {_loc}
+		spawn armor stand at {_loc}
+		set {_armorStand} to last spawned entity
+		set helmet of last spawned entity to skull of player
+		set chestplate of last spawned entity to leather chestplate
+		set leggings of last spawned entity to leather leggings
+		set boots of last spawned entity to leather boots
+		{_armorStand}.setSmall(true)
+		{_armorStand}.setBasePlate(false)
+		{_armorStand}.setGravity(false)
+		{_armorStand}.setArms(true)
+		
+		
+		set {_startleftArmAngle} to {_armorStand}.getLeftArmPose()
+		
+		set {_startrightArmAngle} to {_armorStand}.getRightArmPose()
+		
+		set {_startleftLegAngle} to {_armorStand}.getLeftLegPose()
+		
+		set {_startrightLegAngle} to {_armorStand}.getRightLegPose()
+		
+		set {_startheadAngle} to {_armorStand}.getHeadPose()
+		
+		
+		while true:
+			if health of {_armorStand} < 9:
+				message "Killed"
+				stop
+			wait 18 ticks
+			set {_leftArmAngle} to {_armorStand}.getLeftArmPose()
+			
+			set {_rightArmAngle} to {_armorStand}.getRightArmPose()
+			
+			set {_leftLegAngle} to {_armorStand}.getLeftLegPose()
+			
+			set {_rightLegAngle} to {_armorStand}.getRightLegPose()
+			
+			set {_headAngle} to {_armorStand}.getHeadPose()
+			
+			set {_headAngle} to {_headAngle}.add(-.1,0,0)
+			{_armorStand}.setHeadPose({_headAngle})
+		
+			set {_height} to 2.0
+			
+			loop 3 times:
+				set {_loc} to {_original}
+				add {_height} to y coordinate of {_loc}
+				subtract .04 from {_height}
+				teleport {_armorStand} to {_loc}
+				set {_leftArmAngle} to {_leftArmAngle}.add(.03,0,0)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(.05,0,0)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_rightLegAngle} to {_rightLegAngle}.add(-.2,0,0)
+				{_armorStand}.setRightLegPose({_rightLegAngle})
+				set {_headAngle} to {_headAngle}.add(-.07,0,0)
+				{_armorStand}.setHeadPose({_headAngle})
+				wait 1 tick	
+			loop 3 times:
+				set {_loc} to {_original}
+				add {_height} to y coordinate of {_loc}
+				teleport {_armorStand} to {_loc}
+				set {_leftArmAngle} to {_leftArmAngle}.add(0,0,-.1)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(.05,0,.05)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_rightLegAngle} to {_rightLegAngle}.add(-.05,0,.05)
+				{_armorStand}.setRightLegPose({_rightLegAngle})
+				set {_headAngle} to {_headAngle}.add(-.07,0,0)
+				{_armorStand}.setHeadPose({_headAngle})
+				wait 1 tick
+			loop 3 times:
+				set {_loc} to {_original}
+				add {_height} to y coordinate of {_loc}
+				add .01 to {_height}
+				teleport {_armorStand} to {_loc}
+				set {_leftArmAngle} to {_leftArmAngle}.add(-0.25,0,0)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(-0.25,0,0)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_rightLegAngle} to {_rightLegAngle}.add(-.01,.01,.075)
+				{_armorStand}.setRightLegPose({_rightLegAngle})
+				wait 1 tick	
+			loop 3 times:
+				set {_loc} to {_original}
+				add {_height} to y coordinate of {_loc}
+				add .12 to {_height}
+				teleport {_armorStand} to {_loc}
+				set {_leftArmAngle} to {_leftArmAngle}.add(-0.66,0,0.4)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(-0.4,0,-0.1)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_rightLegAngle} to {_rightLegAngle}.add(-.01,.02,.15)
+				{_armorStand}.setRightLegPose({_rightLegAngle})
+				wait 1 tick	
+			loop 3 times:
+				set {_loc} to {_original}
+				add {_height} to y coordinate of {_loc}
+				add .03 to {_height}
+				teleport {_armorStand} to {_loc}
+				set {_leftArmAngle} to {_leftArmAngle}.add(0.1,0,0.15)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(0.1,0,0.1)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_rightLegAngle} to {_rightLegAngle}.add(.01,0,-.02)
+				{_armorStand}.setRightLegPose({_rightLegAngle})
+				set {_leftLegAngle} to {_leftLegAngle}.add(-.1,0,0.31)
+				{_armorStand}.setLeftLegPose({_leftLegAngle})
+				wait 1 tick	
+			loop 3 times:
+				set {_loc} to {_original}
+				add {_height} to y coordinate of {_loc}
+				subtract .08 from {_height}
+				teleport {_armorStand} to {_loc}
+				set {_leftArmAngle} to {_leftArmAngle}.add(0.2,0,-0.25)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(0.1,0,0.1)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_rightLegAngle} to {_rightLegAngle}.add(.01,0,-.15)
+				{_armorStand}.setRightLegPose({_rightLegAngle})
+				set {_leftLegAngle} to {_leftLegAngle}.add(.1,0,-0.20)
+				{_armorStand}.setLeftLegPose({_leftLegAngle})
+				set {_headAngle} to {_headAngle}.add(.07,0,0)
+				{_armorStand}.setHeadPose({_headAngle})
+				wait 1 tick	
+			loop 3 times:
+				set {_loc} to {_original}
+				add {_height} to y coordinate of {_loc}
+				subtract .12 from {_height}
+				teleport {_armorStand} to {_loc}
+				set {_leftArmAngle} to {_leftArmAngle}.add(0.2,0,-0.35)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(0.1,0,0.1)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_rightLegAngle} to {_rightLegAngle}.add(.01,0,-.07)
+				{_armorStand}.setRightLegPose({_rightLegAngle})
+				set {_leftLegAngle} to {_leftLegAngle}.add(.1,0,-0.10)
+				{_armorStand}.setLeftLegPose({_leftLegAngle})
+				set {_headAngle} to {_headAngle}.add(.07,0,0)
+				{_armorStand}.setHeadPose({_headAngle})
+				wait 1 tick	
+				
+			{_armorStand}.setLeftArmPose({_startleftArmAngle})
+			wait 1 tick
+			{_armorStand}.setRightArmPose({_startrightArmAngle})
+			wait 1 tick
+			{_armorStand}.setRightLegPose({_startrightLegAngle})
+			wait 1 tick
+			{_armorStand}.setLeftLegPose({_startleftLegAngle})
+			{_armorStand}.setHeadPose({_startheadAngle})
+		kill {_armorStand}
+			
+
+command /click:
+	permission: is.vortex
+	trigger:
+		set {_lastused} to metadata "fortnite.dance.last" of player
+		if {_lastused} is not set:
+			set metadata "fortnite.dance.last" of player to now
+		else:
+			if {_lastused} was less than 16 seconds ago:
+				message "&8[&bSnap&8] &7Please wait before running this command again"
+				stop
+			else:
+				set metadata "fortnite.dance.last" of player to now
+		set {_loc} to location of player
+		add 1.9 to Y coordinate of {_loc}
+		spawn armor stand at {_loc}
+		set {_armorStand} to last spawned entity
+		set helmet of last spawned entity to skull of player
+		set chestplate of last spawned entity to leather chestplate
+		set leggings of last spawned entity to leather leggings
+		set boots of last spawned entity to leather boots
+		{_armorStand}.setSmall(true)
+		{_armorStand}.setBasePlate(false)
+		{_armorStand}.setGravity(false)
+		{_armorStand}.setArms(true)
+		
+		
+		set {_startleftArmAngle} to {_armorStand}.getLeftArmPose()
+		
+		set {_startrightArmAngle} to {_armorStand}.getRightArmPose()
+		
+		set {_startleftLegAngle} to {_armorStand}.getLeftLegPose()
+		
+		set {_startrightLegAngle} to {_armorStand}.getRightLegPose()
+		
+		set {_startheadAngle} to {_armorStand}.getHeadPose()
+		
+		
+		loop 5 times:
+			wait 15 ticks
+			set {_leftArmAngle} to {_armorStand}.getLeftArmPose()
+			
+			set {_rightArmAngle} to {_armorStand}.getRightArmPose()
+			
+			set {_leftLegAngle} to {_armorStand}.getLeftLegPose()
+			
+			set {_rightLegAngle} to {_armorStand}.getRightLegPose()
+			
+			set {_headAngle} to {_armorStand}.getHeadPose()
+			
+			set {_headAngle} to {_headAngle}.add(-.1,0,0)
+			{_armorStand}.setHeadPose({_headAngle})
+			
+			set {_height} to 2.0
+		
+			loop 3 times:
+				set {_loc} to location of player
+				if {_loc} is not set:
+					kill {_armorStand}
+					stop
+				add {_height} to y coordinate of {_loc}
+				subtract .04 from {_height}
+				teleport {_armorStand} to {_loc}
+				set {_leftArmAngle} to {_leftArmAngle}.add(.03,0,0)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(.05,0,0)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_rightLegAngle} to {_rightLegAngle}.add(-.2,0,0)
+				{_armorStand}.setRightLegPose({_rightLegAngle})
+				set {_headAngle} to {_headAngle}.add(-.07,0,0)
+				{_armorStand}.setHeadPose({_headAngle})
+				wait 1 tick	
+			loop 3 times:
+				set {_loc} to location of player
+				if {_loc} is not set:
+					kill {_armorStand}
+					stop
+				add {_height} to y coordinate of {_loc}
+				teleport {_armorStand} to {_loc}
+				set {_leftArmAngle} to {_leftArmAngle}.add(0,0,-.1)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(.05,0,.05)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_rightLegAngle} to {_rightLegAngle}.add(-.05,0,.05)
+				{_armorStand}.setRightLegPose({_rightLegAngle})
+				set {_headAngle} to {_headAngle}.add(-.07,0,0)
+				{_armorStand}.setHeadPose({_headAngle})
+				wait 1 tick
+			loop 3 times:
+				set {_loc} to location of player
+				if {_loc} is not set:
+					kill {_armorStand}
+					stop
+				add {_height} to y coordinate of {_loc}
+				add .01 to {_height}
+				teleport {_armorStand} to {_loc}
+				set {_leftArmAngle} to {_leftArmAngle}.add(-0.25,0,0)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(-0.25,0,0)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_rightLegAngle} to {_rightLegAngle}.add(-.01,.01,.075)
+				{_armorStand}.setRightLegPose({_rightLegAngle})
+				wait 1 tick	
+			loop 3 times:
+				set {_loc} to location of player
+				if {_loc} is not set:
+					kill {_armorStand}
+					stop
+				add {_height} to y coordinate of {_loc}
+				add .12 to {_height}
+				teleport {_armorStand} to {_loc}
+				set {_leftArmAngle} to {_leftArmAngle}.add(-0.66,0,0.4)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(-0.4,0,-0.1)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_rightLegAngle} to {_rightLegAngle}.add(-.01,.02,.15)
+				{_armorStand}.setRightLegPose({_rightLegAngle})
+				wait 1 tick	
+			loop 3 times:
+				set {_loc} to location of player
+				if {_loc} is not set:
+					kill {_armorStand}
+					stop
+				add {_height} to y coordinate of {_loc}
+				add .03 to {_height}
+				teleport {_armorStand} to {_loc}
+				set {_leftArmAngle} to {_leftArmAngle}.add(0.1,0,0.15)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(0.1,0,0.1)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_rightLegAngle} to {_rightLegAngle}.add(.01,0,-.02)
+				{_armorStand}.setRightLegPose({_rightLegAngle})
+				set {_leftLegAngle} to {_leftLegAngle}.add(-.1,0,0.31)
+				{_armorStand}.setLeftLegPose({_leftLegAngle})
+				wait 1 tick	
+			loop 3 times:
+				set {_loc} to location of player
+				if {_loc} is not set:
+					kill {_armorStand}
+					stop
+				add {_height} to y coordinate of {_loc}
+				subtract .08 from {_height}
+				teleport {_armorStand} to {_loc}
+				set {_leftArmAngle} to {_leftArmAngle}.add(0.2,0,-0.25)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(0.1,0,0.1)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_rightLegAngle} to {_rightLegAngle}.add(.01,0,-.15)
+				{_armorStand}.setRightLegPose({_rightLegAngle})
+				set {_leftLegAngle} to {_leftLegAngle}.add(.1,0,-0.20)
+				{_armorStand}.setLeftLegPose({_leftLegAngle})
+				set {_headAngle} to {_headAngle}.add(.07,0,0)
+				{_armorStand}.setHeadPose({_headAngle})
+				wait 1 tick	
+			loop 3 times:
+				set {_loc} to location of player
+				if {_loc} is not set:
+					kill {_armorStand}
+					stop
+				add {_height} to y coordinate of {_loc}
+				subtract .12 from {_height}
+				teleport {_armorStand} to {_loc}
+				set {_leftArmAngle} to {_leftArmAngle}.add(0.2,0,-0.35)
+				{_armorStand}.setLeftArmPose({_leftArmAngle})
+				set {_rightArmAngle} to {_rightArmAngle}.add(0.1,0,0.1)
+				{_armorStand}.setRightArmPose({_rightArmAngle})
+				set {_rightLegAngle} to {_rightLegAngle}.add(.01,0,-.07)
+				{_armorStand}.setRightLegPose({_rightLegAngle})
+				set {_leftLegAngle} to {_leftLegAngle}.add(.1,0,-0.10)
+				{_armorStand}.setLeftLegPose({_leftLegAngle})
+				set {_headAngle} to {_headAngle}.add(.07,0,0)
+				{_armorStand}.setHeadPose({_headAngle})
+				wait 1 tick	
+				
+			{_armorStand}.setLeftArmPose({_startleftArmAngle})
+			wait 1 tick
+			{_armorStand}.setRightArmPose({_startrightArmAngle})
+			wait 1 tick
+			{_armorStand}.setRightLegPose({_startrightLegAngle})
+			wait 1 tick
+			{_armorStand}.setLeftLegPose({_startleftLegAngle})
+		kill {_armorStand}
+			
+			
+			

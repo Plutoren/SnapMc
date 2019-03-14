@@ -1,0 +1,147 @@
+
+# #######################################################
+ # ----- Menu Command -----								#
+ # Actually /menu (redirect)							#	
+ #														#
+command /menu2:											#	
+	executable by: players								#
+	aliases: /claimhelp									#
+	trigger:											#
+		wait 2 ticks
+		open chest with 3 row named "         &8-=[ &1Help Menu &8]=-" to player
+		wait 1 ticks									#
+		set {_i} to 0									#
+		loop 27 times:									#
+			format slot {_i} of player with gray stained glass pane named "&7" to close then run "sudo %player% menu2"
+			add 1 to {_i}	 							#							
+		format slot 11 of player with grass block named "&e&lClaim Commands" with lore "", "  &7Click for more", "  &7information on", "  &7land claiming       ", " " to close then run "sudo %player% menu3"
+		format slot 13 of player with ender pearl named "&d&lServer Warps" with lore "", "  &7Click for a list", "  &7of warps            ", "  " to close then run "sudo %player% menu4"
+		format slot 15 of player with bookshelf named "&d&lMore Help" with lore "", "  &7More commands", "  &7and frequently", "  &7asked questions     ", "  " to close then run "sudo %player% menu5"
+# #######################################################
+
+
+
+
+# #######################################################
+ # ----- Menu 3 Claim Commands -----					#
+ #														#
+command /menu3:											#	
+	executable by: players								#
+	aliases: /claimhelp									#
+	trigger:											#
+		wait 1 ticks									#
+		open chest with 6 rows named "        &8-=[ &1Claim Menu &8]=-" to player
+		wait 1 ticks									#
+		set {_i} to 0									#
+		loop 54 times:									#
+			format slot {_i} of player with gray stained glass pane named "&7Back" to close then run "sudo %player% menu2" 
+			add 1 to {_i}								#
+		wait 1 tick										#							
+		format slot 28 of player with golden shovel named "&e&lClaim Tool" with lore "&7Used to select corners of a claim.", "", "&eClick for a free shovel" to close then run "give %player% goldshovel 1"
+		format slot 12 of player with red wool block named "&c&lUntrust a player" with lore "&7Revokes any permissions granted", "&7to a player in your claim.", "", "   &a/untrust (name)", "   &a/ut (name)", "", "&eClick here then view chat" to close then run "tellraw %player% ["""",{""text"":""                                                        \n""},{""text"":""----=[ "",""color"":""gold""},{""text"":""yt "",""obfuscated"":true,""color"":""gold""},{""text"":""Click here to open your command"",""color"":""yellow"",""clickEvent"":{""action"":""suggest_command"",""value"":""/untrust ""},""hoverEvent"":{""action"":""show_text"",""value"":""Click here.""}},{""text"":"" ""},{""text"":""kh"",""obfuscated"":true,""color"":""gold""},{""text"":"" ]=----\n                                                         "",""color"":""gold""}]"
+		format slot 11 of player with light green wool block named "&a&lTrust a Friend" with lore "&7Gives another player permission", "&7to edit in your claim.", "", "   &a/trust (name)", "   &a/t (name)", "", "&eClick here then view chat" to close then run "tellraw %player% ["""",{""text"":""                                                        \n""},{""text"":""----=[ "",""color"":""gold""},{""text"":""yt "",""obfuscated"":true,""color"":""gold""},{""text"":""Click here to open your command"",""color"":""yellow"",""clickEvent"":{""action"":""suggest_command"",""value"":""/trust ""},""hoverEvent"":{""action"":""show_text"",""value"":""Click here.""}},{""text"":"" ""},{""text"":""kh"",""obfuscated"":true,""color"":""gold""},{""text"":"" ]=----\n                                                         "",""color"":""gold""}]"
+		format slot 14 of player with lever named "&a&lAccess Trust" with lore "&7Gives a player permission", "&7to use your buttons,", "&7levers, and beds.", "", "   &a/AccessTrust (name)", "   &a/at (name)", "", "&eClick here then view chat" to close then run "tellraw %player% ["""",{""text"":""                                                        \n""},{""text"":""----=[ "",""color"":""gold""},{""text"":""yt "",""obfuscated"":true,""color"":""gold""},{""text"":""Click here to open your command"",""color"":""yellow"",""clickEvent"":{""action"":""suggest_command"",""value"":""/AccessTrust ""},""hoverEvent"":{""action"":""show_text"",""value"":""Click here.""}},{""text"":"" ""},{""text"":""kh"",""obfuscated"":true,""color"":""gold""},{""text"":"" ]=----\n                                                         "",""color"":""gold""}]"
+		wait 1 ticks									#
+		format slot 37 of player with book of unbreaking 1 named "&2&lClaims List" with lore "&7Lists your claims", "&7and claim block details.", "", "   &a/claimslist", "", "&eClick to Run" to close then run "sudo %player% claimslist"
+		format slot 41 of player with redstone block named "&c&lUntrust ALL" with lore "&7Removes all permissions for", "&7all players in your claim.", "", "   &a/untrust all", "", "&eClick here then view chat" to close then run "tellraw %player% ["""",{""text"":""                                                        \n""},{""text"":""----=[ "",""color"":""gold""},{""text"":""yt "",""obfuscated"":true,""color"":""gold""},{""text"":""Click here to open your command"",""color"":""yellow"",""clickEvent"":{""action"":""suggest_command"",""value"":""/untrust all""},""hoverEvent"":{""action"":""show_text"",""value"":""Click here.""}},{""text"":"" ""},{""text"":""kh"",""obfuscated"":true,""color"":""gold""},{""text"":"" ]=----\n                                                         "",""color"":""gold""}]"
+		format slot 32 of player with book named "&a&lTrust List" with lore "&7Lists the permissions", "&7for the claim you're standing in.", "", "   &a/TrustList", "", "&eClick to Run" to close then run "sudo %player% trustlist"
+		wait 1 ticks									#
+		format slot 15 of player with chest named "&a&lContainter Trust" with lore "&7Gives a player permission", "&7to use your buttons, levers,", "&7beds, crafting gear,", "&7containers, and animals.", "", "   &a/ContainerTrust (name)", "   &a/ct (name)", "", "&eClick here then view chat" to close then run "tellraw %player% ["""",{""text"":""                                                        \n""},{""text"":""----=[ "",""color"":""gold""},{""text"":""yt "",""obfuscated"":true,""color"":""gold""},{""text"":""Click here to open your command"",""color"":""yellow"",""clickEvent"":{""action"":""suggest_command"",""value"":""/ContainerTrust ""},""hoverEvent"":{""action"":""show_text"",""value"":""Click here.""}},{""text"":"" ""},{""text"":""kh"",""obfuscated"":true,""color"":""gold""},{""text"":"" ]=----\n                                                         "",""color"":""gold""}]"
+		format slot 30 of player with cookie named "&b&lSubdivide Claims" with lore "&7Switches your shovel", "&7to subdivision mode", "&7so you can subdivide your claims.", "", "   &a/SubdivideClaims", "   &a/sc", "", "&eClick to run" to close then run "sudo %player% subdivideclaims"
+		format slot 39 of player with glowstone named "&b&lBasic Claims" with lore "&7Puts your shovel", "&7back in basic claims mode.", "", "   &a/BasicClaims", "   &a/bc", "", "&eClick to run" to close then run "sudo %player% basicclaims"
+		wait 1 ticks									#
+		format slot 34 of player with lava bucket named "&6&lAbandon Claim" with lore "&7Deletes the claim you're standing in.", "", "   &a/AbandonClaim", "", "&eClick to Run" to close then run "sudo %player% abandonclaim"
+		format slot 43 of player with tnt named "&c&lAbandon &d&lALL Claims" with lore "&7Deletes &eall &7of your claims.", "", "   &a/AbandonAllClaims", "", "&eClick here then view chat" to close then run "tellraw %player% ["""",{""text"":""                                                        \n""},{""text"":""----=[ "",""color"":""gold""},{""text"":""yt "",""obfuscated"":true,""color"":""gold""},{""text"":""Click here to open your command"",""color"":""yellow"",""clickEvent"":{""action"":""suggest_command"",""value"":""/AbandonAllClaims""},""hoverEvent"":{""action"":""show_text"",""value"":""Click here.""}},{""text"":"" ""},{""text"":""kh"",""obfuscated"":true,""color"":""gold""},{""text"":"" ]=----\n                                                         "",""color"":""gold""}]"
+# #######################################################
+
+
+ 
+# #######################################################
+ # ----- Menu 4 Warps Command -----						#	
+ #														#
+command /menu4:											#	
+	executable by: players								#
+	trigger:											#
+		wait 1 ticks									#
+		open chest with 5 rows named "         &8-=[ &1Warp Menu &8]=-" to player
+		wait 1 ticks									#
+		set {_i} to 0									#
+		loop 45 times:									#
+			format slot {_i} of player with gray stained glass pane named "&7Back" to close then run "sudo %player% menu2" 
+			add 1 to {_i}								#
+		format slot 10 of player with gold block named "&e&lShop" with lore "", "  &7Buy Items from     ", "  &7the server shop ", " " to close then run "warp shop %player%"
+		format slot 11 of player with diamond sword named "&c&lPVP" with lore "", "  &7Battle with others", "  &7and collect loot   ", "", "  &eClick to teleport", "  &eto a safezone ", " " to close then run "warp pvp %player%"
+		format slot 15 of player with red rose named "&e&lAdopt" with lore "", "  &7Adopt someone      ", "  &7or be adopted    ", " " to close then run "warp adopt %player%"
+		format slot 16 of player with bed item named "&d&lFind Love" with lore "", "  &7Single and ready   ", "  &7to mingle?", " " to close then run "warp findlove %player%"
+		format slot 33 of player with lily pad named "&e&lParkour" with lore "", "  &7Jump through an    ", "  &7awesome course ", " " to close then run "sudo %player% parkour"
+		format slot 13 of player with netherrack named "&c&lNether" with lore "", "  &7Visit the nether      ", " " to close then run "warp nether %player%"
+		format slot 22 of player with end stone named "&d&lEnd" with lore "", "  &7Visit the end      ", " " to close then run "warp end %player%"
+		format slot 29 of player with grass block named "&a&lWild" with lore "", "  &7Teleport to a      ", "  &7random location  ", " " to close then run "sudo %player% wild2"
+		# format slot 14 of player with monster spawner named "&f&lGrinder" with lore "", "  &7Kill mobs and gather", "  &7items and xp" to close then run "warp grinder %player%"
+		
+# #######################################################
+
+
+
+# #######################################################
+ # ----- Menu 5 FAQ Command -----						#
+ # 														#	
+ #														#
+command /menu5:											#	
+	executable by: players								#
+	trigger:											#
+		wait 1 ticks									#
+		open chest with 4 rows named "          &8-=[ &1FAQ Menu &8]=-" to player
+		wait 1 ticks									#
+		set {_i} to 0									#
+		loop 36 times:									#
+			format slot {_i} of player with gray stained glass pane named "&7Back" to close then run "sudo %player% menu2"
+			add 1 to {_i}	 
+		format slot 10 of player with water bucket named "&b&lFamily" with lore "", "  &7Start a family", "", "   &a/family", "", " &eClick here then view chat" to close then run "sudo %player% family"
+		format slot 12 of player with experience bottle named "&6&lVote" with lore "", "  &7View voting links", "  &7Get a &a&lVoting Key ", "", "   &a/vote", "", " &eClick to Run" to close then run "sudo %player% vote2"
+		format slot 14 of player with compass named "&b&lSpawn" with lore "", "  &7Teleport to the spawn", "", "   &a/spawn", "", " &eClick to Run" to close then run "sudo %player% spawn"
+		format slot 16 of player with cake item named "&c&lDiscord" with lore "", "  &7Join the server    ", "  &7discord  ", "", "   &a/discord", "", " &eClick to Run" to close then run "sudo %player% discord"
+		wait 1 ticks									#
+		format slot 20 of player with bed item named "&b&lMarry a player" with lore "", "  &7Lists marriage", "  &7related commands   ", "", "   &a/marry", "", " &eClick to run" to close then run "sudo %player% marry"
+		format slot 22 of player with gold ingot named "&e&lServer Ranks Store" with lore "", "  &7Buy ranks and gear", "", "   &a/buy", "", " &eClick to run" to close then run "sudo %player% buy2"
+		format slot 24 of player with book named "&c&lServer Rules" with lore "", "  &7Server rules", "", "   &a/rules", "", " &eClick to run" to close then run "sudo %player% rules2"
+# #######################################################
+
+
+
+
+# #######################################################
+ # ----- Command redirects -----						#
+ # Stupid command redirects (Don't delete!)				#
+ # 														#
+on command "/menu":										#
+	cancel event		
+	execute player command "/menu2"						#
+on command "/help":										#
+	cancel event	
+	execute player command "/menu2"						#
+command buy2:											#
+	trigger:											#
+		wait 1 tick										#
+		execute player command "/buy"					#
+command /vote2:											#
+	trigger:											#
+		execute player command "/vote"					#
+command /roleplay2:										#
+	trigger:											#
+		wait 2 ticks									#
+		execute player command "/roleplay"				#
+command /shop2:											#
+	trigger:											#
+		wait 2 ticks									#
+		execute player command "/shop"					#
+command /rules2:										#
+	trigger:		
+		execute player command "/rules"					#
+command /wild2:											#
+	trigger:											#
+		execute player command "/wild"					#
+command /warps1:										#
+	trigger:											#
+		execute player command "/warps"					#
+# #######################################################

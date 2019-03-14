@@ -1,0 +1,77 @@
+command /setgoldrush <int>:
+	permission: is.staff
+	trigger:
+		set {goldrush.location::%arg-1%} to location of target block of player
+		message "set %arg-1%"
+	
+
+command /goldrush:
+	trigger:
+		if {lastgoldrush} was less than 120 minutes:
+		
+							
+			set {_startDate} to {lastgoldrush}
+			set {_duration}  to 120 minutes
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "&8[&6Gold&eRush&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+			stop
+		if {pvp.lastevent} was less than 20 minutes ago:				
+			set {_startDate} to {pvp.lastevent}
+			set {_duration}  to 20 minutes
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "&8[&c&lPvP&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+			stop
+		set {pvp.lastevent} to now
+		set {lastgoldrush} to now
+ 
+		broadcast "&8[&cPvP&8] &fA &eGold Rush &fEvent has Started in &cPvP!"
+		set {_i} to 1
+		loop 30 times:
+			set block at {goldrush.location::%{_i}%} to gold ore
+			add 1 to {_i}
+			
+		wait 60 seconds
+		set {_i} to 1
+		loop 30 times:
+			set block at {goldrush.location::%{_i}%} to clay block
+			add 1 to {_i}
+		broadcast "&8[&cPvP&8] &fThe &eGold Rush &fEvent has ended!"
+		
+on break of gold ore:
+	if "%regions at player%" contains "hub_pvp":
+		cancel event
+		set event-block to clay block
+		set {_i} to a random integer from 1 to 3
+		
+		if {_i} is 1:
+			set {_prize} to a random integer from 10 to 20
+			set {_prize} to {_prize} * 1000
+			add {_prize} to player's balance
+			message "&8[&6Gold&eRush&8] &aYou found a &dTier I &aPrize&f: &6$%{_prize}%"
+		else if {_i} is 2:
+			set {_prize} to a random integer from 20 to 40
+			set {_prize} to {_prize} * 1000
+			add {_prize} to player's balance
+			message "&8[&6Gold&eRush&8] &aYou found a &dTier II &aPrize&f: &6$%{_prize}%"
+		else if {_i} is 3:
+			set {_prize} to a random integer from 50 to 60
+			set {_prize} to {_prize} * 1000
+			add {_prize} to player's balance
+			message "&8[&6Gold&eRush&8] &aYou found a &dTier III &aPrize&f: &6$%{_prize}%"
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

@@ -1,0 +1,1430 @@
+
+
+options:
+	timewait: 6 seconds
+
+command /emotes [<text>]:
+	trigger:	
+		if arg-1 is not set:
+			message "&7&m-------------------------------"
+			message "      &e&lEmotes by Snap"
+			message ""
+			message "      &b/emotes &7(&b1&7-&b3&7)"
+			message "&7&m-------------------------------"
+			stop
+		if arg-1 is "1":
+			message "&7&m-------------------------------"
+			message " &8- &b/hug <player> &7Share a hug"
+			message " &8- &b/judge <player> &7Rate a player"
+			message " &8- &b/mad <player> &7You mad bro?"
+			message " &8- &b/love <player> &7Share the love"
+			message " &8- &b/angry &7Feeling salty?"
+			message " &8- &b/happy &7Clap your hands"
+			message " &8- &b/fear &7Are you afraid?"
+			message " &8- &b/sad &7Not so happy?"
+			message " &8- &b/r00d &7That's r00d"
+			message "&7&m-------------------------------"
+			stop
+			
+		else if arg-1 is "2":
+			message "&7&m-------------------------------"
+			message " &8- &b/annoyed <player> &7Are you annoyed?"
+			message " &8- &b/confused &7What?"
+			message " &8- &b/tired &7Sleepy?"
+			message " &8- &b/triggered &7Oh wow"
+			message " &8- &b/crush <player> &7That special somone"
+			message " &8- &b/lost &7Umm sorry come again"
+			message " &8- &b/moist &7Sticky?"
+			message "&7&m-------------------------------"
+			stop
+		else if arg-1 is "3":
+			message "&7&m-------------------------------"
+			message " &8- &b/eat &7Hungry?"
+			message " &8- &b/sit &7Need a break?"
+			message " &8- &b/suicide &7Are we done here?"
+			message " &8- &b/gyar &7Gyar the bear?"
+			message " &8- &b/nub &7What a nub"
+			message " &8- &b/fact &7This is a command"
+			message " &8- &b/cry &7Don't cry you big baby"
+			message "&7&m-------------------------------"
+			
+		else:
+			message "&7&m-------------------------------"
+			message "	  &e&lEmotes by Snap"
+			message ""
+			message "	   &b/emotes &7(&b1&7-&b3&7)"
+			message "&7&m-------------------------------"
+		
+			
+on load:
+	delete {justusedemote::*} 
+command /emotetoggle:
+	trigger:
+		if {emote.toggle::%uuid of player%} is not set:
+			set {emote.toggle::%uuid of player%} to false
+			message "&8[&bEmotes&8] &cPlayer's can no longer use emote commands on you."
+		else:
+			delete {emote.toggle::%uuid of player%}
+			message "&8[&bEmotes&8] &aPlayer's can now use your name in emotes again."
+ 
+command /hug [<text>]:
+	trigger:
+		if player does not have permission "emote.member":
+			message "&8[&bEmotes&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		if arg-1 is not set:
+			message "&8[&bEmotes&8] &7Please add a player &b/hug (player)"
+			stop
+		set {justusedemote::%player%} to now
+		if "%arg-1%" = "all" or "everyone":
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ajust gave you a hug"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ajust gave everyone a hug"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ajust gave a group hug... to everyone!"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ahugged everyone"
+				stop
+			broadcast "&b» &e%player's name% &agave you a big hug <3"
+			stop
+		loop all players:
+			if "%arg-1%" = "%loop-player%":
+				set {_target} to loop-player
+		if {_target} is not set:
+			message "&8[&bEmotes&8] &7Try /hug (name)"
+			stop
+		if "%{_target}%" is "<none>":
+			message "&8[&bEmotes&8] &7Player not found. Try /hug (name)"
+			if player has permission "is.op":
+				message "%{_target}%"
+			stop
+		if {emote.toggle::%{uuid::%{_target}%}%} is set:
+			message "&8[&bEmotes&8] &eThat player has emotes toggled off"
+			stop
+		if "%player%" = "%{_target}%":
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ajust tried to hug themself..."
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ajust gave themself a hug"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ajust hugged themself..."
+				stop
+			broadcast "&b» &e%player's name% &ahugged themself &d:("
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &agave a hug to &e%{_target}%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &agave a big hug to &e%{_target}%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &agave a giant hug to &e%{_target}%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &agave a bear hug to &e%{_target}%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &agave a cute hug to &e%{_target}%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &agave a lovely hug to &e%{_target}%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &agave a crushing hug to &e%{_target}%"
+			stop
+		broadcast "&b» &e%player's name% &agave a hug to &e%{_target}%"
+		
+		
+	
+ 
+command /judge [<player>]:
+	trigger:
+		if player does not have permission "emote.member":
+			message "&8[&bEmotes&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		if arg-1 is not set:
+			message "&8[&bEmotes&8] &7Please add a player &b/judge (player)"
+			stop
+		if {emote.toggle::%uuid of arg-1%} is set:
+			message "&8[&bEmotes&8] &eThat player has emotes toggled off"
+			stop
+		set {justusedemote::%player%} to now
+		if "%player%" = "%arg-1%":
+			chance of 25%:
+				broadcast "&b» &e%player's name% &awant's to rate themself..."
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais judging themself"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais weird"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais creepy &2:c"
+				stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &athinks &e%arg-1's name% &ais cute"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &athinks &e%arg-1's name% &ais hot"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &athinks &e%arg-1's name% &ais amazing"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &athinks &e%arg-1's name% &ais great"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &athinks &e%arg-1's name% &ais cool"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &asays &e%arg-1's name% &ais lame"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &asays &e%arg-1's name% &ais beautiful"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &asays &e%arg-1's name% &ais sexy"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &asays &e%arg-1's name% &ais meh"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &asays &e%arg-1's name% &ais gross"
+			stop
+		broadcast "&b» &e%player's name% &athinks &e%arg-1's name% &ais super cute" 
+ 
+ 	
+ 
+command /mad [<player>]:
+	trigger:
+		if player does not have permission "emote.member":
+			message "&8[&bEmotes&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		if {emote.toggle::%uuid of arg-1%} is set:
+			message "&8[&bEmotes&8] &eThat player has emotes toggled off"
+			stop
+		set {justusedemote::%player%} to now
+		if arg-1 is not set:
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais mad"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais really really mad"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais super mad"
+				stop
+			broadcast "&b» &e%player's name% &ais not happy &4>:I"
+			stop
+		if "%player%" = "%arg-1%":
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais mad at themself"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais really mad at themself"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais super mad at themself"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais furious with themself &4>:("
+				stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais mad at &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais super mad at &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais unpleased with &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais very mad at &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &adoesn't like &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais irritated by &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &adoesn't like &e%arg-1's name% &avery much"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &adislikes &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais annoyed by &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais displeased with &e%arg-1's name%&a's actions"
+			stop
+		broadcast "&b» &e%player's name% &ais quite mad at &e%arg-1's name%" 
+ 
+ 			
+	 	
+ 
+command /love [<player>]:
+	trigger:
+		if player does not have permission "emote.member":
+			message "&8[&bEmotes&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		if {emote.toggle::%uuid of arg-1%} is set:
+			message "&8[&bEmotes&8] &eThat player has emotes toggled off"
+			stop
+		set {justusedemote::%player%} to now
+		if arg-1 is not set:
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais in love with someone"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais really really in love"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais very much in love"
+				stop
+			broadcast "&b» &e%player's name% &ais in love &c<3"
+			stop
+		if "%player%" = "%arg-1%":
+			chance of 25%:
+				broadcast "&b» &e%player's name% &atried to love themself..."
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &areally does love themself"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &aloves themself"
+				stop
+			broadcast "&b» &e%player's name% &ais in love... with themself...? &4<3"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais in love with &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &aloves &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &areally loves &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &aloves &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &asorta loves &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais super in love with &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &amight just love &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &abasically loves &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais so in love with &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &areally really loves &e%arg-1's name%"
+			stop
+		broadcast "&b» &e%player's name% &ais quite in love with &e%arg-1's name%" 
+ 	
+command /angry:
+	trigger:
+		if player does not have permission "emote.member":
+			message "&8[&bEmotes&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		set {justusedemote::%player%} to now
+
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais angry"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais very angry"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais incredibly angry"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais so angry theu might explode"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais seriously angry"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &acan't contain their anger"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais feeling angry"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais quite angry"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais an angry dude"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais super angry"
+			stop
+		broadcast "&b» &e%player's name% &ais really really angry" 
+	
+command /happy:
+	trigger:
+		if player does not have permission "emote.member":
+			message "&8[&bEmotes&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		set {justusedemote::%player%} to now
+
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais happy"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais very happy"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais incredibly happy"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais so happy they might die"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais super happy"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais insanely happy"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais feeling very happy"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais quite happy"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais a happy dude"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais seriously very happy"
+			stop
+		broadcast "&b» &e%player's name% &ais really really happy" 
+
+
+command /fear:
+	trigger:
+		if player does not have permission "emote.member":
+			message "&8[&bEmotes&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		set {justusedemote::%player%} to now
+
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais scared"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ajust saw something scary"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ajust saw something they can't unsee"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais very scared"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais super scared"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais intensely scared"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &awants to hide under a blanket"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &awants to run and hide"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais to scared to speak"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais seriously very scared"
+			stop
+		broadcast "&b» &e%player's name% &ais really really scared" 		
+		
+		
+		
+		
+command /sad:
+	trigger:
+		if player does not have permission "emote.member":
+			message "&8[&bEmotes&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		set {justusedemote::%player%} to now
+
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais sad"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais sad &1D:"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais feeling some grief"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais very depressed"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais unhappy and very sad"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais insanely sad"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais feeling very unhappy"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais quite sad"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais a unhappy person"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais ridiculously sad"
+			stop
+		broadcast "&b» &e%player's name% &ais really really unhappy" 
+		
+		
+		
+command /annoyed [<player>]:
+	trigger:
+		if player does not have permission "emote.pro":
+			message "&8[&bEmotes&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		if {emote.toggle::%uuid of arg-1%} is set:
+			message "&8[&bEmotes&8] &eThat player has emotes toggled off"
+			stop
+		set {justusedemote::%player%} to now
+		if arg-1 is not set:
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais so annoyed"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais irritating themself"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais very annoyed"
+				stop
+			broadcast "&b» &e%player's name% &ais annoyed"
+			stop
+		if "%player%" = "%arg-1%":
+			chance of 25%:
+				broadcast "&b» &e%player's name% &atried to annoy themself..."
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ahas annoyed themself"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &aloves to annoy themself"
+				stop
+			broadcast "&b» &e%player's name% &ais annoying... themself...?"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais annoyed with &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &awants to murder &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &awants to stab &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais about to punch &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais so annoyed by &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais super annoyed with &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &amight just kill &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &abasically hates &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais really annoyed with &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais rather annoyed with &e%arg-1's name%"
+			stop
+		broadcast "&b» &e%player's name% &ais quite annoyed with &e%arg-1's name%" 
+ 			
+		
+command /confused:
+	trigger:
+		if player does not have permission "emote.pro":
+			message "&8[&bEmotes&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		set {justusedemote::%player%} to now
+
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais confused"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais confuzled &dD:"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais lost"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais totally lost"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais seriously confused"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais so confused"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais not sure what happens now"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais not sure what to do"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais super confused"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais ridiculously confused"
+			stop
+		broadcast "&b» &e%player's name% &ais really really confused" 
+		
+		
+				
+command /tired:
+	trigger:
+		if player does not have permission "emote.pro":
+			message "&8[&bEmotes&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		set {justusedemote::%player%} to now
+
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais tired"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais very tired"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais feeling fatigued"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais really tired"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais sleepy"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &aneeds a nap"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais going to need a nap"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais about to fall asleep"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &acan't wait to rest"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais ridiculously tired"
+			stop
+		broadcast "&b» &e%player's name% &ais really really tired" 
+	
+
+command /triggered:
+	trigger:
+		if player does not have permission "emote.pro":
+			message "&8[&bEmotes&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		set {justusedemote::%player%} to now
+
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais triggered"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais very triggered"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais feeling triggered"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais really triggered"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais so triggered rn"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais seriously triggered"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais going to need a nap"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais about to fall asleep"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &acan't wait to rest"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais ridiculously tired"
+			stop
+		broadcast "&b» &e%player's name% &ais really really tired" 
+					
+		
+command /crush [<player>]:
+	trigger:
+		if player does not have permission "emote.pro":
+			message "&8[&bEmotes&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		if arg-1 is not set:
+			message "&8[&bEmotes&8] &7Please add a player &b/bitch (player)"
+			stop
+		if {emote.toggle::%uuid of arg-1%} is set:
+			message "&8[&bEmotes&8] &eThat player has emotes toggled off"
+			stop
+		set {justusedemote::%player%} to now
+		if "%player%" = "%arg-1%":
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ahas a crush on themself?"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &athinks they are cute"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &akinda might like themself"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &aadores themself"
+				stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &aThinks &e%arg-1's name% &ais cute!"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ahas a bit of a crush on &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &amight have a crush on &e%arg-1's name%&e's"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais shy but has a crush on &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &aThinks &e%arg-1's name% &ais a cutie"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ahas a little crush on &e%arg-1's name% &a"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &awants to marry &e%arg-1's name%"
+			stop
+		broadcast "&b» &e%player's name% &areally wants to date &e%arg-1's name%"
+				
+		
+command /lost:
+	trigger:
+		if player does not have permission "emote.pro":
+			message "&8[&bEmote&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		set {justusedemote::%player%} to now
+
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais lost"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais very lost"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais lost and does not know where they are"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &adoes not know who they are"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &athinks they are a potato"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &athinks they are a staple"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &athinks they are a bagel"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &athinks they are a airplane"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &athinks they are a space ship"
+			stop
+		broadcast "&b» &e%player's name% &athinks they are a pie"
+			
+			
+command /moist:
+	trigger:
+		if player does not have permission "emote.pro":
+			message "&8[&bEmote&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		set {justusedemote::%player%} to now
+
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais feeling very moist"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &awas not feeling moistfull"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &afeels good"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &afeels moist"
+			stop				
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais oddly moist"
+			stop		
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais a little sticky all over"
+			stop		
+		broadcast "&b» &e%player's name% &ais moist"
+		
+command /eat:
+	trigger:
+		if player does not have permission "emote.hero":
+			message "&8[&bSnap&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		set {justusedemote::%player%} to now
+
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais eating"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais eating dirt"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &adecided to eat dog food"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &alikes eating sardines"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &adecided to eat dog food"
+			stop
+		chance of 50%:
+			broadcast "&b» &e%player's name% &awill eat soap for any meals"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ajust ate hair"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &aeats smelly cheese"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &alikes to eat pea soup"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &adecided to eat dog food"
+			stop
+		broadcast "&b» &e%player's name% &awill be eating tree bark"
+		stop
+		
+command /sit:
+	trigger:
+		if player does not have permission "emote.hero":
+			message "&8[&bSnap&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		set {justusedemote::%player%} to now
+
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais sitting"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &alearned how to sit"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &awill sit on you"
+			wait 5 ticks
+			make player say "this is what im going to do is sit on you"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &aneeds help sitting"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &adoesn't know where to sit"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &acannot find a place to sit at"
+			stop
+		broadcast "&b» &e%player's name% &adoes't know what sitting is&7(please help me)"
+		
+		
+command /suicide:
+	trigger:
+		if player does not have permission "emote.hero":
+			message "&8[&bEmotes&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		set {justusedemote::%player%} to now
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ajust ate a tide pod."
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ajumped off a cliff, into the ocean, and was eaten by a shark."
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &adrank a bottle of bleach."
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &atried to hug a bear."
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ajumped off a building."
+			stop
+		chance of 5%:
+			broadcast "&b» &e%player's name% &atried to eat Cheeslius's cooking."
+			stop
+		chance of 1%:
+			broadcast "&b» &e%player's name% &ainsulted Gyarbear in front of Cheeslius."
+			stop					  
+		chance of 10%:
+			broadcast "&b» &e%player's name% &atried to take Plutoren's Ice Cream."
+			stop
+		chance of 4%:
+			broadcast "&b» &e%player's name% &alet slip to DavidGoulding that they don't like Ellie Goulding..."
+			stop
+		chance of 6%:
+			broadcast "&b» &e%player's name% &ahurt QueenWolfiee's wolves..."
+			stop
+		chance of 4%:
+			broadcast "&b» &e%player's name% &ais in trouble with QueenWolfiee."
+			stop
+		broadcast "&b» &e%player's name% &ajumped off a cliff, into the ocean, and was eaten by a kraken."
+		
+		
+		
+command /cancer:
+	trigger:
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		set {justusedemote::%player%} to now
+		chance of 25%:
+			broadcast "&b» &e%player's name% &awishes cancer could get cancer and die."
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ahates cancer."
+			stop
+		chance of 15%:
+			broadcast "&b» &e%player's name% &afights cancer."
+			stop
+		message "&b» &e%player's name% &eknows cancer gets us all in the end."		
+		
+		
+		
+		
+		
+command /gyar:
+	trigger:
+		if player does not have permission "emote.pro":
+			message "&8[&bEmote&8] &7You need a higher rank to be gyar"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		set {justusedemote::%player%} to now
+		chance of 25%:
+			broadcast "&b» &e%player's name% &awants to visit the cyanide shop"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &awants to mix their bleach with cyanide"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &awants to buy a life"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &athinks they are a nubby potato"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &awants to die"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &abelieves that they are a nub"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &awants to play with fire"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais trying to find their sanity"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &afeels like eating glue"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &atried to perform dragon magic, it failed like their life"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &awants to know where their cyanide is"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &aWheres my cyanide?"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &awants to know why the tanks are so loud ffs"
+			stop
+		broadcast "&b» &e%player's name% &athinks CharrDino is the biggest nub"
+		
+		
+		
+		
+		
+		
+		
+command /nub:
+	trigger:
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		set {justusedemote::%player%} to now
+ 
+		chance of 15%:
+			broadcast "&b» &aOnly nubs like &e%player's name% &adig straight down to find caves"
+			stop
+		chance of 15%:
+			broadcast "&b» &e%player's name% &ahugged a cactus for too long"
+			stop
+		chance of 15%:
+			broadcast "&b» &e%player's name% &athought the nether was a huge hot tub"
+			stop
+		chance of 15%:
+			broadcast "&b» &e%player's name% &aate too many pufferfish"
+			stop
+		chance of 15%:
+			broadcast "&b» &e%player's name% &aforgot to sneak while trying to look into a ravine"
+			stop
+		chance of 15%:
+			broadcast "&b» &e%player's name% &alooked right at an enderman. You would think that &e%player's name% &awould have known better."
+			stop
+		chance of 5%:
+			broadcast "&b» &e%player's name% &aencountered a skeleton horseman and became a porcupine"
+			stop
+		chance of 5%:
+			broadcast "&b» &e%player's name% &ais such a nub that they died by just standing in one spot"
+			stop
+		broadcast "&b» &e%player's name% &ais so much of a nub that they tried to break stone with their fist"
+ 
+command /fact:
+	trigger:
+		if player does not have permission "emote.hero":
+			message "&8[&bEmote&8] &7You need a higher rank for that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		set {justusedemote::%player%} to now
+ 
+		chance of 5%:
+			broadcast "&b» &aScientists predict that if &e%player's name% &ajumped in a volcano they would die"
+			stop
+		chance of 5%:
+			broadcast "&b» &aAccording to &e%player's name%&a's belief, cyanide kills you"
+			stop
+		chance of 5%:
+			broadcast "&b» &e%player's name% &asays that going to school makes you smarter"
+			stop
+		chance of 5%:
+			broadcast "&b» &e%player's name% &asays smashing your head against a car door allows you to lose up to 100 braincells a second"
+			stop
+		chance of 5%:
+			broadcast "&b» &e%player's name% &asays Minecraft seems to be a block game"
+			stop
+		chance of 5%:
+			broadcast "&b» &e%player's name% &asays creepers could kill"
+			stop
+		chance of 5%:
+			broadcast "&b» &e%player's name% &asays Chickens make clucking noises"
+			stop
+		chance of 5%:
+			broadcast "&b» &e%player's name% &ahas proven that fire could burn you"
+			stop
+		chance of 5%:
+			broadcast "&b» &aAccording to &e%player's name%, &aDonald Trump is the president"
+			stop
+		chance of 5%:
+			broadcast "&b» &aThe reason why North Korea is starving is because &e%player's name% &ahas been eating all the food in the pantry"
+			stop
+		chance of 8%:
+			broadcast "&b» &e%player's name% &aScientists have confirmed stabbing yourself could cause pain"
+			stop
+		chance of 9%:
+			broadcast "&b» &e%player's name% &aProven by Gyarbear that if you were to pour 420 galons of cyanide into a pool it will summon a bear"
+			stop
+		chance of 5%:
+			broadcast "&b» &e%player's name% &aAccording to Scientists, a earthquake could cause damage"
+			stop
+		chance of 5%:
+			broadcast "&b» &e%player's name% &aHurricane Irma could cause damage"
+			stop
+		chance of 5%:
+			broadcast "&b» &e%player's name% &aPopular belief has proven that shooting a staple gun at your arm could cause pain"
+			stop
+		chance of 5%:
+			broadcast "&b» &e%player's name% &aPopular belief has proven that shooting a nail gun at your arm could cause serious bleeding and pain"
+			stop
+		chance of 5%:
+			broadcast "&b» &e%player's name% &alost his Disney Contract"
+			stop
+		chance of 1%:
+			broadcast "&b» &e%player's name% &aproved that you can eat Strawberries without getting aids"
+			stop
+		chance of 5%:
+			broadcast "&b» &e%player's name% &asays Minecraft might be for kids"
+			stop
+		chance of 5%:
+			broadcast "&b» &e%player's name% &asays guns aren't safe for children, what a downie"
+			stop
+		chance of 5%:
+			broadcast "&b» &aApparently &e%player's name%&a is banned at McDonalds"
+			stop
+		chance of 5%:
+			broadcast "&b» &a&e%player's name%&a has proven that oil and other gases might not be safe to drink"
+			stop
+		chance of 5%:
+			broadcast "&b» &a&e%player's name%&a says that it has been scientifically proven that Chuck Norris drove his mother home from the hospital, which he built, when he was born"
+			stop
+		chance of 5%:
+			broadcast "&b» &aAccording to &e%player's name%&a the Infinity stone is in Vision's head"
+			stop
+		chance of 10%:
+			broadcast "&b» &e%player's name% &asays eating raw meat could give you food poison"
+			stop
+		chance of 10%:
+			broadcast "&b» &e%player's name% &asays mosquito are assholes"
+			stop
+		chance of 10%:
+			broadcast "&b» &e%player's name% &asays American Airlines saved $40,000 in 1987 by eliminating one olive from each salad served in first-class"
+			stop
+		chance of 10%:
+			broadcast "&b» &e%player's name% &asays if the population of China walked past you in single file, the line would never end because of the rate of reproduction."
+			stop
+		chance of 10%:
+			broadcast "&b» &e%player's name% &asays the electric chair was invented by a dentist."
+			stop
+		chance of 10%:
+			broadcast "&b» &e%player's name% &asays starfish don't have brains."
+			stop
+		chance of 15%:
+			broadcast "&b» &e%player's name% &asays all polar bears are left-handed"
+			stop
+		chance of 15%:
+			broadcast "&b» &e%player's name% &asays rubberbands last longer when refrigerated"
+			stop
+		chance of 15%:
+			broadcast "&b» &e%player's name% &asays cat's urine glows under a black light"
+			stop
+		chance of 15%:
+			broadcast "&b» &e%player's name% &asays midgets have night vision"
+			stop
+		broadcast "&b» &e%player's name% &asays the average chocolate bar has 8 insects' legs in it."
+		stop
+		
+		
+			
+command /cry:
+	trigger:
+		if player does not have permission "emote.hero":
+			message "&8[&bEmotes&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		set {justusedemote::%player%} to now
+		chance of 25%:
+			broadcast "&b» &e%player's name% &awants to cry"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais crying"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais about to cry"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais crying now"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ahas tears flowing down their cheeks"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &acan't contain their tears"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais feeling so sad they are going to cry"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais crying so much"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais seriously crying"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ais crying out loud"
+			stop
+		broadcast "&b» &e%player's name% &ais really crying" 
+		
+		
+command /r00d [<player>]:
+	trigger:
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		if arg-1 is not set:
+			message "&8[&bEmotes&8] &7Please add a player &b/r00d (player)"
+			stop
+		if {emote.toggle::%uuid of arg-1%} is set:
+			message "&8[&bEmotes&8] &eThat player has emotes toggled off"
+			stop
+		set {justusedemote::%player%} to now
+		if "%player%" = "%arg-1%":
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais being r00d to themselves."
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais R00D"
+				stop
+			chance of 2%:
+				broadcast "&b» &e%player's name% &aFound _Raiinbow’s secret command!."
+				stop
+			broadcast "&b» &e%player's name% &a is soo r00d tbh, &dsmh.."
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &athinks &e%arg-1's name%&a is r00d."
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ajust r00d slapped &e%arg-1's name%&a!"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &agave a giant r00d to &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &asays &e%arg-1's name%&a is r00d."
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &asays &e%arg-1's name%&a acting r00d."
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &asecretly thinks &e%arg-1's name%&a is r00d."
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &agave a big, r00d slap to &e%arg-1's name%"
+			stop
+		broadcast "&b» &e%player's name% &asays &e%arg-1's name%&a‘s number is 1-800-R00D"	
+		
+command /thicc [<player>]:
+	trigger:
+		if player does not have permission "emote.ultimate":
+			message "&8[&bEmotes&8] &7You need a higher rank to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		if {emote.toggle::%uuid of arg-1%} is set:
+			message "&8[&bEmotes&8] &eThat player has emotes toggled off"
+			stop
+		if arg-1 is not set:
+			message "&8[&bEmotes&8] &7Please add a player &b/thicc (player)"
+			stop
+		set {justusedemote::%player%} to now
+		if "%player%" = "%arg-1%":
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais THICC!"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ais not THICC!"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &athinks themselves are THICC?"
+				stop
+			broadcast "&b» &e%player's name% &ais admitting they’re not THICC!"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &athinks &e%arg-1's name% &ais THICC!"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &athinks &e%arg-1's name% &ais THICC, but not as much as QueenGoat"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &athinks &e%arg-1's name% &ais not THICC!"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &awishes they were as THICC as &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &athinks &e%arg-1's name% &ais hella THICC"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &athinks &e%arg-1's name% &awill never be THICC"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &athinks that &e%arg-1's name% &ais lacking in thiccness."
+
+			
+		
+command /slap [<player>]:
+	trigger:
+		if player does not have permission "emote.vortex":
+			message "&8[&bEmotes&8] &7You need &dVortex Rank &7to use that"
+			stop
+		if {justusedemote::%player%} is not set:
+			set {justusedemote::%player%} to now
+		else if {justusedemote::%player%} was less than 6 seconds ago:
+			message "&8[&bEmote&8] &7Please wait a few seconds before doing another emote"
+			stop
+		if {emote.toggle::%uuid of arg-1%} is set:
+			message "&8[&bEmotes&8] &eThat player has emotes toggled off"
+			stop
+		if arg-1 is not set:
+			message "&8[&bEmotes&8] &7Please add a player &b/slap (player)"
+			stop
+		set {justusedemote::%player%} to now
+		if "%player%" = "%arg-1%":
+			chance of 25%:
+				broadcast "&b» &e%player's name% &ajust slapped themself!"
+				stop
+			chance of 25%:
+				broadcast "&b» &e%player's name% &abitch slapped themself!"
+				stop
+			broadcast "&b» &e%player's name% &ajust slapped their own face"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ajust slapped &e%arg-1's name%"
+			stop
+		chance of 25%:
+			broadcast "&b» &e%player's name% &ajust bitch slapped &e%arg-1's name%"
+			stop
+		broadcast "&b» &e%player's name% &aslapped &e%arg-1's name% &aright in the face."
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

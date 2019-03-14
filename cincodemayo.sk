@@ -1,0 +1,20 @@
+on death of player:
+	if victim is in world "Spawn":
+		if "%regions at victim%" contains "hub_pvp":
+			if "%tool of attacker%" contains "✦ &d&l&nPiñata&r &f✦":
+				chance of 50%:
+					add {item::candy.1} to drops
+				chance of 50%:
+					add {item::candy.2} to drops
+				chance of 50%:
+					add {item::candy.3} to drops
+				chance of 50%:
+					add {item::candy.4} to drops
+				chance of 30%:
+					add {item::candy.1} to drops
+				chance of 30%:
+					add {item::candy.2} to drops
+				chance of 30%:
+					add {item::candy.3} to drops
+				chance of 30%:
+					add {item::candy.4} to drops

@@ -1,0 +1,14 @@
+command /masstitle <text>:
+	permission: is.op
+	trigger:
+		set {_arg} to "%arguments%"
+		set {_msg::*} to {_arg} split at "@"
+		set {_title} to {_msg::1}
+		set {_subtitle} to {_msg::2}
+		replace all "&" with "§" in {_title}
+		replace all "&" with "§" in {_subtitle}
+		set {_i} to a random integer from 0 to 4
+		loop {_i} times:
+			wait 1 second
+		send all players title "%{_title}%" with subtitle "%{_subtitle}%" for 3 seconds with 1 second fade in and 1 second fade out
+		

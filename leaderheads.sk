@@ -1,0 +1,27 @@
+command /exemptall:
+	permission: is.op
+	trigger:
+		message "starting"
+		loop all players:
+			if {firstjoin::%loop-player%} was less than 3 day ago:
+				if {exempt::%loop-player%} is not set:
+					execute console command "leaderheads addexempt %loop-player%"
+					set {exempt::%loop-player%} to true
+			else:
+				if {unexempt::%loop-player%} is not set:
+					execute console command "leaderheads removeexempt %player%"
+					set {unexempt::%loop-player%} to true
+			wait 1 second
+		message "done"
+			
+on join:
+	if {firstjoin::%player%} was less than 3 day ago:
+		if {exempt::%player%} is not set:
+			execute console command "leaderheads addexempt %player%"
+			set {exempt::%player%} to true
+	else:
+		if {unexempt::%player%} is not set:
+			execute console command "leaderheads removeexempt %player%"
+			set {unexempt::%player%} to true
+			
+	

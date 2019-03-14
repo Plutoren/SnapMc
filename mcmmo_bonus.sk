@@ -1,0 +1,23 @@
+
+		
+every minute:
+	if {mcmmo.doublexp.minutes} is set:
+		subtract 1 from {mcmmo.doublexp.minutes}
+		if {mcmmo.doublexp.minutes} <= 0:
+			delete {mcmmo.doublexp.minutes}
+			remove bossbar "skills"
+		else:
+			set {_barFill} to rounded up ({mcmmo.doublexp.minutes} / 2)
+			create bossbar titled "&bDouble Skills XP &3%{mcmmo.doublexp.minutes}% Minutes &d/skills" and id "skills" for all players with value {_barFill} with colors BLUE with style solid
+			
+command /mcmmoaddminutes <int>:
+	permission: is.Pluto
+	trigger:
+		if {mcmmo.doublexp.minutes} is not set:
+			set {mcmmo.doublexp.minutes} to 0
+		if {mcmmo.doublexp.minutes} < 0:
+			set {mcmmo.doublexp.minutes} to 0
+		add arg-1 to {mcmmo.doublexp.minutes}
+		message "&bDouble xp extended by %arg-1% minutes to %{mcmmo.doublexp.minutes}% minutes"
+			
+	

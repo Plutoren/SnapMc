@@ -1,0 +1,264 @@
+command /tod [<text>]:
+	aliases: truthordare
+	trigger:
+		#
+		if "%arg-1%" is not set:
+			message "&8[&eTruth&7or&6Dare&8] &fType &b/tod <player> &fto challenge someone!"
+			stop
+		if arg-1 is "dare":
+			if {tod.time::%player%} is not set:
+				message "&8[&eTruth&7or&6Dare&8] &fYou do not have any pending requests."
+				stop
+			if {tod.time::%player%} was more than 20 minutes ago:
+				message "&8[&eTruth&7or&6Dare&8] &fYou do not have any pending requests."
+				stop
+			set {_i} to random integer from 1 to 38
+			if {_i} is 1:
+				set {_dare} to "give a random player 50k."
+			else if {_i} is 2:
+				set {_dare} to "run to the back of pvp and back"
+			else if {_i} is 3:
+				set {_dare} to "take a screenshot of yourself in game and post it on discord"
+			else if {_i} is 4:
+				set {_dare} to "curse like a sailor for 10 seconds straight"
+			else if {_i} is 5:
+				set {_dare} to "write something embarrasing on a sign in your home and leave it for 1 day"
+			else if {_i} is 6:
+				set {_dare} to "change their skin to something stupid"
+			else if {_i} is 7:
+				set {_dare} to "make up a song about yoursef"
+			else if {_i} is 8:
+				set {_dare} to "make up a song about SnapMc"
+			else if {_i} is 9:
+				set {_dare} to "make up a song about Minecraft"
+			else if {_i} is 10:
+				set {_dare} to "imitate a celebrity for 3 minutes"
+			else if {_i} is 11:
+				set {_dare} to "imitate a popular youtuber for 3 minutes"
+			else if {_i} is 12:
+				set {_dare} to "imitate popular youtube videos until someone can guess who you are imitating"
+			else if {_i} is 13:
+				set {_dare} to "imitate a staff member until someone guesses who you are imitating"
+			else if {_i} is 14:
+				set {_dare} to "be someone's pet for the next 5 minutes"
+			else if {_i} is 15:
+				set {_dare} to "compose a poem on the spot based on minecraft"
+			else if {_i} is 16:
+				set {_dare} to "do your best impression of a baby"
+			else if {_i} is 17:
+				set {_dare} to "pretend to be a food until someone guesses what food you are"
+			else if {_i} is 18:
+				set {_dare} to "message someone ""Happy new Year """
+			else if {_i} is 19:
+				set {_dare} to "talk for a full minute in public room 1 on discord about food"
+			else if {_i} is 20:
+				set {_dare} to "tell someone they are very beautiful in private messages"
+			else if {_i} is 21:
+				set {_dare} to "copy another player's skin for a day"
+			else if {_i} is 22:
+				set {_dare} to "screenshot your browser history and post it on discord"
+			else if {_i} is 23:
+				set {_dare} to "quack like a duck before speaking for the next 5 minutes"
+			else if {_i} is 24:
+				set {_dare} to "do not speak for the next 2 minutes"
+			else if {_i} is 25:
+				set {_dare} to "leave your partner and marry someone else"
+			else if {_i} is 26:
+				set {_dare} to "propose to someone on the server"
+			else if {_i} is 27:
+				set {_dare} to "do your best impression of someone on the server"
+			else if {_i} is 28:
+				set {_dare} to "pretend to be a dog for 3 minutes"
+			else if {_i} is 29:
+				set {_dare} to "interupt 3 people by saying ""That's a LIE"""
+			else if {_i} is 30:
+				set {_dare} to "act like a monkey for 2 minutes"
+			else if {_i} is 31:
+				set {_dare} to "give a random player trust in your claim for 5 minutes"
+			else if {_i} is 32:
+				set {_dare} to "make up a story and tell it"
+			else if {_i} is 33:
+				set {_dare} to "act like a cheerleader for 3 minutes"
+			else if {_i} is 34:
+				set {_dare} to "communicate only with animal sounds for 3 minutes"
+			else if {_i} is 35:
+				set {_dare} to "repeat everything someone says in chat for 2 minutes"
+			else if {_i} is 36:
+				set {_dare} to "fill your house with lava"
+			else if {_i} is 37:
+				set {_dare} to "pretend to be someone's wife for 5 minutes"
+			else if {_i} is 38:
+				set {_dare} to "type words backwards for 3 minutes"
+			broadcast "&8[&eTruth&7Or&6Dare&8] &b&l%{tod.from::%player%}% &fdares &d&l%player% &fto &6%{_dare}%"
+			delete {tod.from::%player%}
+			delete {tod.time::%player%}
+			stop
+		if arg-1 is "truth":
+			if {tod.time::%player%} is not set:
+				message "&8[&eTruth&7or&6Dare&8] &fYou do not have any pending requests."
+				stop
+			if {tod.time::%player%} was more than 20 minutes ago:
+				message "&8[&eTruth&7or&6Dare&8] &fYou do not have any pending requests."
+				stop
+			set {_i} to random integer from 1 to 67
+			if {_i} is 1:
+				set {_dare} to "What are you most self-conscious about?"
+			else if {_i} is 2:
+				set {_dare} to "What would you do if you were the opposite sex for a month?"
+			else if {_i} is 3:
+				set {_dare} to "What is the most expensive thing you have stolen?"
+			else if {_i} is 4:
+				set {_dare} to "What is the most childish thing you still do?"
+			else if {_i} is 5:
+				set {_dare} to "What do most of your friends think about you that is totally untrue?"
+			else if {_i} is 6:
+				set {_dare} to "Who here would you most like to make out with?"
+			else if {_i} is 7:
+				set {_dare} to "Have you ever cheated or been cheated on?"
+			else if {_i} is 8:
+				set {_dare} to "What is the meanest you have been to someone that didn’t deserve it?"
+			else if {_i} is 9:
+				set {_dare} to "What is something that people think you would never do but you have?"
+			else if {_i} is 10:
+				set {_dare} to "Tell me about your most awkward date."
+			else if {_i} is 11:
+				set {_dare} to "What is your deepest darkest fear?"
+			else if {_i} is 12:
+				set {_dare} to "What is the silliest thing you have an emotional attachment to?"
+			else if {_i} is 13:
+				set {_dare} to "What is the most embarrassing thing your parents have caught you doing?"
+			else if {_i} is 14:
+				set {_dare} to "What is the scariest dream you have ever had?"
+			else if {_i} is 15:
+				set {_dare} to "What is the most embarrassing thing in your room?"
+			else if {_i} is 16:
+				set {_dare} to "What is the stupidest thing you have ever done?"
+			else if {_i} is 17:
+				set {_dare} to "Who have you loved but they didn’t love you back?"
+			else if {_i} is 18:
+				set {_dare} to "What is something that you have never told anyone?"
+			else if {_i} is 19:
+				set {_dare} to "What was the cruelest joke you played on someone?"
+			else if {_i} is 20:
+				set {_dare} to "What is the most embarrassing thing you have put up on social media?"
+			else if {_i} is 21:
+				set {_dare} to "What is the most embarrassing nickname you have ever had?"
+			else if {_i} is 22:
+				set {_dare} to "What is your biggest regret?"
+			else if {_i} is 23:
+				set {_dare} to "Tell me something you don’t want me to know."
+			else if {_i} is 24:
+				set {_dare} to "What have you done that people here would judge you most for doing?"
+			else if {_i} is 25:
+				set {_dare} to "Who is your crush?"
+			else if {_i} is 26:
+				set {_dare} to "Have you ever peed in the pool?"
+			else if {_i} is 27:
+				set {_dare} to "Of the people in this server, who do you want to trade lives with?"
+			else if {_i} is 28:
+				set {_dare} to "Did you have an imaginary friend growing up?"
+			else if {_i} is 29:
+				set {_dare} to "Have you ever walked into a wall?"
+			else if {_i} is 30:
+				set {_dare} to "Do you sing in the shower?"
+			else if {_i} is 31:
+				set {_dare} to "What was your most embarrassing moment in public?"
+			else if {_i} is 32:
+				set {_dare} to "Who do you like the least in this server and why?"
+			else if {_i} is 33:
+				set {_dare} to "How would you rate your looks on a scale of 1 to 10?"
+			else if {_i} is 34:
+				set {_dare} to "Would you trade your sibling in for a million dollars?"
+			else if {_i} is 35:
+				set {_dare} to "Would you trade in your pet for a million dollars?"
+			else if {_i} is 36:
+				set {_dare} to "If you could only hear one song for the rest of your life, what would it be?"
+			else if {_i} is 37:
+				set {_dare} to "If you could go back in time in erase one thing you said or did, what would it be?"
+			else if {_i} is 38:
+				set {_dare} to "Who is one person you pretend to like, but actually don’t?"
+			else if {_i} is 39:
+				set {_dare} to "What children’s movie could you watch over and over again?"
+			else if {_i} is 40:
+				set {_dare} to "What app on your phone do you waste the most time on?"
+			else if {_i} is 41:
+				set {_dare} to "Have you ever pretended to be sick to get out of something? If so, what was it?"
+			else if {_i} is 42:
+				set {_dare} to "Would you have voted for or against Trump?"
+			else if {_i} is 43:
+				set {_dare} to "What song on the radio do you sing with every time it comes on?"
+			else if {_i} is 44:
+				set {_dare} to "Are you scared of the dark?"
+			else if {_i} is 45:
+				set {_dare} to "If you were home by yourself all day, what would you do?"
+			else if {_i} is 46:
+				set {_dare} to "When was the last time you brushed your teeth?"
+			else if {_i} is 47:
+				set {_dare} to "What is something you’ve done to try to be ‘cooler’?"
+			else if {_i} is 48:
+				set {_dare} to "What do your favorite pajamas look like?"
+			else if {_i} is 49:
+				set {_dare} to "Who is your celebrity crush?"
+			else if {_i} is 50:
+				set {_dare} to "How many kids do you want to have in the future?"
+			else if {_i} is 51:
+				set {_dare} to "Who do you hate the most?"
+			else if {_i} is 52:
+				set {_dare} to "You are going to be stuck on a dessert island and you can only bring five things. List them."
+			else if {_i} is 53:
+				set {_dare} to "How long have you gone without a shower?"
+			else if {_i} is 54:
+				set {_dare} to "How long have you gone without brushing your teeth?"
+			else if {_i} is 55:
+				set {_dare} to "What have you seen that you wish you could unsee?"
+			else if {_i} is 56:
+				set {_dare} to "What's the most useless piece of knowledge you know?"
+			else if {_i} is 57:
+				set {_dare} to "What did you learn in school that you wish you could forget?"
+			else if {_i} is 58:
+				set {_dare} to "If you had nine lives, what would you do that you wouldn't do now?"
+			else if {_i} is 59:
+				set {_dare} to "If you could play a prank on anyone without getting caught, who would you play it on?"
+			else if {_i} is 60:
+				set {_dare} to "Would you let a friend cheat on a test?"
+			else if {_i} is 61:
+				set {_dare} to "You win a trip and are allowed to bring two people. Who do you pick?"
+			else if {_i} is 62:
+				set {_dare} to "Is there anything about your life you would change?"
+			else if {_i} is 63:
+				set {_dare} to "Describe your perfect date."
+			else if {_i} is 64:
+				set {_dare} to "You have to delete every app on your except for five. Name the five you would keep."
+			else if {_i} is 65:
+				set {_dare} to "Who are you jealous of?"
+			else if {_i} is 66:
+				set {_dare} to "What is your wildest fantasy?"
+			else if {_i} is 67:
+				set {_dare} to "What is your wildest dream?"
+			broadcast "&8[&eTruth&7Or&6Dare&8] &b&l%{tod.from::%player%}% &fasks &d&l%player%&f:"
+			broadcast "  &e%{_dare}%"
+			delete {tod.from::%player%}
+			delete {tod.time::%player%}
+			stop
+		set {_found} to false
+		if "%arg-1%" = "%player%":
+			message "&8[&eTruth&7or&6Dare&8] &fType &b/tod <player> &fto challenge someone!"
+			stop
+		if {tod.from::%arg-1%} is "%player%":
+			message "&8[&eTruth&7or&6Dare&8] &fThat player already has a challenge from you!"
+			stop 
+		if {tod.lastused} was less than 10 seconds ago:
+			message "&8[&eT&7o&6D&8] &cSomeone just used that please wait"
+			stop
+		set {tod.lastused} to now
+		loop all players:
+			if "%loop-player%" = "%arg-1%":
+				broadcast "&8[&eT&7o&6D&8] &b&l%player% &fhas challenged &d&l%loop-player% &fto a game of &e&lTruth &for &6&lDare&f!"
+				send "&8[&eT&7O&6D&8] &fType &b/tod dare &ffor a dare, or &b/tod truth &ffor truth." to loop-player
+				set {tod.from::%loop-player%} to "%player%"
+				set {tod.time::%loop-player%} to now
+				set {_found} to true
+				stop
+		message "&8[&eTruth&7or&6Dare&8] &fType &b/tod <player> &fto challenge someone!"
+
+		

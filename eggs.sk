@@ -1,0 +1,25 @@
+command /seteggshop <text> <int>:
+	permission: is.op
+	trigger:
+		set {_egg} to 1 of player's tool
+		set {shop.eggs::%arg-1%} to {_egg}
+		set {shop.eggs.price::%arg-1%} to arg-2
+		message "&aSet %arg-1% to %arg-2%"
+		
+	
+command /buyegg <text>:
+	trigger:
+		if {shop.eggs::%arg-1%} is not set:
+			message "&8[&bSnap&8] &7Unknown egg type"
+			stop
+		set {_bal} to player's balance
+		set {_price} to {shop.eggs.price::%arg-1%}
+		if {_bal} < {_price}:
+			message "&8[&bSnap&8] &7You need at least &a$%{_price}%"
+			stop
+		subtract {_price} from player's balance
+		wait 1 ticks
+		give player {shop.eggs::%arg-1%}
+		message "&8[&bSnap&8] &7Purchased 1 &e%arg-1% egg &7for &a$%{_price}%"
+			
+	

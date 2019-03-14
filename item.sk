@@ -1,0 +1,46 @@
+command /itemi:
+	trigger:
+		message "%player's tool%"
+
+on chat:
+	if "%message%" = "[item]" or "[i]":
+		cancel event
+		set {_item} to "%player's tool%"
+		set {_item::*} to {_item} split at " of "
+		if {_item::2} is set:	
+			set {_itemname} to {_item::1}
+			set {_enchants} to {_item::2}
+			set {_enchants::*} to {_enchants} split at " and "
+			
+		else:
+			set {_itemname} to {_item::1}
+		
+		
+		set {_item::*} to {_item} split at " named "
+		if {_item::2} is set:	
+			set {_customname} to {_item::2}
+		else:
+			if {_itemname} is not set:
+				set {_itemname} to {_item::1}
+		
+		if {_itemname} is not set:
+			set {_itemname} to {_item}
+		replace all "_" with " " in {_itemname}
+		message "  &b&lSnap"
+		message "  &6&lYou are holding&7:"
+		message ""
+		message "  &b&lItem:  &e%{_itemname}%"
+		if {_enchants} is set:
+			set {_i} to 0
+			message ""
+			loop {_enchants::*}:
+				add 1 to {_i}
+				set {_nextEnchant} to "%loop-value%"
+				replace all "named %{_customname}%" with "" in {_nextEnchant}
+				message "  &b&lEnchant &b&l%{_i}%&7: &d%{_nextEnchant}%"
+				
+		if {_customname} is set:
+			message ""
+			replace all """" with "" in {_customname}
+			message "  &b&lNamed&f: &f%{_customname}%"
+		message ""

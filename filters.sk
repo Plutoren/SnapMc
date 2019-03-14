@@ -1,0 +1,109 @@
+command /filter [<text>]:
+	aliases: filters
+	trigger:
+		if arg-1 is not set:
+			message ""
+			message "&6&lCurrent Filters: "
+			message ""
+			message "   &d1.12.2 &7(default)"
+			message "   &cAutumn &bFusion &dModern &6Roman &aDaff"
+			message "   &6Bold &bSimple &aEquanimity &3Faithful"
+			message "   &eJoli &6Enhanced &7Gloomy &aClean &fMellow"
+			message "   &2Elements &9Kalos &dC&fa&dn&fd&dy &3Fantasy"
+			message "   &7Ech&6elon &fWinter &d&l1.14 &3Lab &cLove"
+			message ""
+			message "  &7Use &b/filter (name) &7to select one"
+			message ""
+			
+			
+		if arg-1 is "autumn" or "summer" or "oak" or "bold" or "1.12.2" or "none" or "off" or "default" or "fusion" or "modern" or "winter" or "echelon" or "fantasy" or "candy" or "kalos" or "elements" or "mellow" or "clean" or "gloomy" or "enhanced" or "joli" or "daff" or "roman" or "faithful" or "simple" or "1.14":
+			message ""
+			message "&8[&bSnap&8] &bYour client will freeze for a bit"
+			message "&8[&bSnap&8] &7If your game crashes... get a better computer!"
+			message "&8[&bSnap&8] &eDownload will start in &a3 Seconds..."
+			wait 1 second
+			message "&8[&bSnap&8] &eDownload will start in &a2 Seconds..."
+			wait 1 second
+			message "&8[&bSnap&8] &eDownload will start in &a1 Second..."
+			wait 1 second
+			message "&8[&bSnap&8] &eDownload &aStarting"
+			message ""
+			wait 1 tick
+		
+		if arg-1 is "autumn":
+			send resource pack from "https://www.dropbox.com/s/tqll8kxkty3x4ta/Autumn%%20Season%%20Pack.zip?dl=1" to player
+		
+		else if arg-1 is "bold":
+			send resource pack from "https://www.dropbox.com/s/b6pinnrh36b5z3u/X11Pack_1.11.zip?dl=1" to player
+			
+		else if arg-1 is "Equanimity":
+			send resource pack from "https://www.dropbox.com/s/jd69xdr5gn0ee75/Equanimity%%201.12.zip?dl=1" to player
+			
+		else if arg-1 is "1.12.2" or "none" or "off" or "default":
+			send resource pack from "https://www.dropbox.com/s/1e363oc2tk4g164/1_12_2.zip?dl=1" to player
+		
+		else if arg-1 is "fusion":
+			send resource pack from "https://www.dropbox.com/s/ali864hs1fmqi6a/Fusion.zip?dl=1" to player
+			
+		else if arg-1 is "modern":
+			send resource pack from "https://www.dropbox.com/s/ymtgg88iltw32r7/Modern.zip?dl=1" to player
+	
+		else if arg-1 is "winter":
+			send resource pack from "https://www.dropbox.com/s/wf11wpyp6on01za/Winter%%20Season%%20Pack.zip?dl=1" to player
+			
+		else if arg-1 is "echelon":
+			send resource pack from "https://www.dropbox.com/s/06jptvwzcytwoeq/Echelon.zip?dl=1" to player
+			
+		else if arg-1 is "fantasy":		
+			send resource pack from "https://www.dropbox.com/s/j9l214f827jih56/Fantasy.zip?dl=1" to player
+			
+		else if arg-1 is "candy":		
+			send resource pack from "https://www.dropbox.com/s/k9ondry73xe27kh/Candy.zip?dl=1" to player
+			
+		else if arg-1 is "kalos":		
+			send resource pack from "https://www.dropbox.com/s/zo6utcr1k1q0npy/Kalos.zip?dl=1" to player
+			
+		else if arg-1 is "elements":		
+			send resource pack from "https://www.dropbox.com/s/yz3vr4ltauqrg9a/Elements.zip?dl=1" to player
+		
+		else if arg-1 is "mellow":		
+			send resource pack from "https://www.dropbox.com/s/43gmn7y34swqkhi/Mellow.zip?dl=1" to player
+				
+		else if arg-1 is "clean":		
+			send resource pack from "https://www.dropbox.com/s/g8w976arf3ays0r/Clean.zip?dl=1" to player
+				
+		else if arg-1 is "gloomy":		
+			send resource pack from "https://www.dropbox.com/s/xlpjcl2hjubohdz/Gloomy.zip?dl=1" to player
+		
+		else if arg-1 is "enhanced":		
+			send resource pack from "https://www.dropbox.com/s/u1a57ay0gn79hnn/Enhanced.zip?dl=1" to player
+							
+		else if arg-1 is "joli":		
+			send resource pack from "https://www.dropbox.com/s/2y5desu7tc9i8dh/Joli.zip?dl=1" to player
+		
+		else if arg-1 is "daff":		
+			send resource pack from "https://www.dropbox.com/s/cojna6e0b5ux3ca/Daff.zip?dl=1" to player
+								
+		else if arg-1 is "roman":		
+			send resource pack from "https://www.dropbox.com/s/cqmq96ajis13zi6/Roman.zip?dl=1" to player
+		
+		else if arg-1 is "faithful":		
+			send resource pack from "https://www.dropbox.com/s/qjo6l1ea8d94pdc/Faithful.zip?dl=1" to player				
+		
+		else if arg-1 is "simple":		
+			send resource pack from "https://www.dropbox.com/s/bo31zwftiq7eoyt/Simple.zip?dl=1" to player
+			
+		else if arg-1 is "1.14":
+			send resource pack from "https://www.dropbox.com/s/seaz0jsvuouqlwg/1_14.zip?dl=1" to player
+		
+		else if arg-1 is "lab":
+			send resource pack from "https://www.dropbox.com/s/gu1fngd4k6cw4vq/thelab.zip?dl=1" to player
+		else if arg-1 is "senpai":
+			send resource pack from "https://www.dropbox.com/s/b22iexo5ck37rja/Senpai_Pack.rar?dl=1" to player
+		else if arg-1 is "love":
+			send resource pack from "https://www.dropbox.com/s/5bz445x9gfsetzj/Love.zip?dl=1" to player
+		
+		
+		
+			
+			

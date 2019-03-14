@@ -1,0 +1,149 @@
+on place hopper:
+	set {_chunkX} to rounded up x coordinate of event-block / 16
+	set {_chunkZ} to rounded up z coordinate of event-block / 16
+	if {hoppers.chunk.count::%{_chunkX}%::%{_chunkZ}%} is set:
+		if {hoppers.chunk.count::%{_chunkX}%::%{_chunkZ}%} > 40:
+			cancel event
+			message "&8[&bSnap&8] &7You can only place 40 hoppers per chunk!"
+			message "&8[&bSnap&8] &7Help Fight Lag!"
+			stop
+	wait 1 tick
+	if block at event-block is hopper:
+		if {hoppers.chunk.count::%{_chunkX}%::%{_chunkZ}%} is not set:
+			set {hoppers.chunk.count::%{_chunkX}%::%{_chunkZ}%} to 1
+			stop
+		else:
+			add 1 to {hoppers.chunk.count::%{_chunkX}%::%{_chunkZ}%}
+			
+command /hoppercount:
+	trigger:
+		set {_chunkX} to rounded up x coordinate of player / 16
+		set {_chunkZ} to rounded up z coordinate of player / 16
+		if {hoppers.chunk.count::%{_chunkX}%::%{_chunkZ}%} is set:
+			message "&eHopperCount: &f%{hoppers.chunk.count::%{_chunkX}%::%{_chunkZ}%}%"
+		else:
+			message "&eHopperCount: &f0"
+on load:
+	delete {hoppercount::*}
+command /recounthoppers:
+	trigger:
+		if {hoppercount::%uuid of player%} is not set:
+			set {hoppercount::%uuid of player%} to now
+		else if {hoppercount::%uuid of player%} was less than 10 seconds ago:
+			message "&8[&bSnap&8] &ePlease wait between using this command"
+			stop
+		set {hoppercount::%uuid of player%} to now
+		set {_chunkX} to rounded up x coordinate of player / 16
+		set {_chunkZ} to rounded up z coordinate of player / 16
+		set {_x} to {_chunkX} * 16
+		set {_world} to player's world
+		set {_z} to {_chunkZ} * 16
+		set {_ox} to {_x}
+		set {_hoppers} to 0
+		loop 16 times:
+			set {_x} to {_ox}
+			loop 16 times:
+				set {_y} to 0
+				loop 256 times:
+					set {_loc} to location({_x}, {_y}, {_z}, {_world})
+					if block at {_loc} is a hopper:
+						add 1 to {_hoppers}
+					add 1 to {_y}
+				subtract 1 from {_x}
+			subtract 1 from {_z}
+			wait 1 tick
+		message "&8[&bSnap&8] &eChunk hopper count set to&7: &f%{_hoppers}%"
+		message "&8[&bSnap&8] &eIt was previously at&7: &f%{hoppers.chunk.count::%{_chunkX}%::%{_chunkZ}%}%"
+		set {hoppers.chunk.count::%{_chunkX}%::%{_chunkZ}%} to {_hoppers}
+		
+					
+		
+		
+on break hopper:
+	wait 1 tick
+	if event-block is air:
+		set {_chunkX} to rounded up x coordinate of event-block / 16
+		set {_chunkZ} to rounded up z coordinate of event-block / 16
+		if {hoppers.chunk.count::%{_chunkX}%::%{_chunkZ}%} is set:
+			subtract 1 from {hoppers.chunk.count::%{_chunkX}%::%{_chunkZ}%}
+			if {hoppers.chunk.count::%{_chunkX}%::%{_chunkZ}%} <= 0:
+				delete {hoppers.chunk.count::%{_chunkX}%::%{_chunkZ}%}
+				
+				
+command /shiny:
+	permission: is.op
+	trigger:
+		give player 1 of shiny player's tool
+
+on craft hopper minecart:
+	cancel event
+	message "&c&lNot allowed on this server"
+command /resethoppers:
+	permission: is.op
+	trigger:
+		delete {hoppers.chunk.count::*}
+		
+		
+		
+on place monster spawner:
+	set {_chunkX} to rounded up x coordinate of event-block / 16
+	set {_chunkZ} to rounded up z coordinate of event-block / 16
+	if {spawners.chunk.count::%{_chunkX}%::%{_chunkZ}%} is set:
+		if player has permission "is.vortex.max":
+			if {spawners.chunk.count::%{_chunkX}%::%{_chunkZ}%} > 45:
+				cancel event
+				message "&8[&bSnap&8] &7You can only place 45 spawners per chunk!"
+				message "&8[&bSnap&8] &7Help Fight Lag!"
+		else if player has permission "is.vortex":
+			if {spawners.chunk.count::%{_chunkX}%::%{_chunkZ}%} > 40:
+				cancel event
+				message "&8[&bSnap&8] &7You can only place 40 spawners per chunk!"
+				message "&8[&bSnap&8] &7Help Fight Lag!"
+		else if player has permission "is.ultimate":
+			if {spawners.chunk.count::%{_chunkX}%::%{_chunkZ}%} > 32:
+				cancel event
+				message "&8[&bSnap&8] &7You can only place 32 spawners per chunk!"
+				message "&8[&bSnap&8] &7Help Fight Lag!"
+		else if player has permission "is.legend":
+			if {spawners.chunk.count::%{_chunkX}%::%{_chunkZ}%} > 20:
+				cancel event
+				message "&8[&bSnap&8] &7You can only place 20 spawners per chunk!"
+				message "&8[&bSnap&8] &7Higher Ranks can place more spawners!"
+				message "&8[&bSnap&8] &7Help Fight Lag!"
+		else if player has permission "is.hero":
+			if {spawners.chunk.count::%{_chunkX}%::%{_chunkZ}%} > 15:
+				cancel event
+				message "&8[&bSnap&8] &7You can only place 15 spawners per chunk!"
+				message "&8[&bSnap&8] &7Higher Ranks can place more spawners!"
+				message "&8[&bSnap&8] &7Help Fight Lag!"
+		else if player has permission "is.pro":
+			if {spawners.chunk.count::%{_chunkX}%::%{_chunkZ}%} > 12:
+				cancel event
+				message "&8[&bSnap&8] &7You can only place 12 spawners per chunk!"
+				message "&8[&bSnap&8] &7Higher Ranks can place more spawners!"
+				message "&8[&bSnap&8] &7Help Fight Lag!"
+		else if {spawners.chunk.count::%{_chunkX}%::%{_chunkZ}%} > 10:
+			cancel event
+			message "&8[&bSnap&8] &7You can only place 10 spawners per chunk!"
+			message "&8[&bSnap&8] &7Higher Ranks can place more spawners!"
+			message "&8[&bSnap&8] &7Help Fight Lag!"
+	wait 1 tick
+	if block at event-block is monster spawner:
+		if {spawners.chunk.count::%{_chunkX}%::%{_chunkZ}%} is not set:
+			set {spawners.chunk.count::%{_chunkX}%::%{_chunkZ}%} to 1
+			stop
+		else:
+			add 1 to {spawners.chunk.count::%{_chunkX}%::%{_chunkZ}%}
+			
+		
+on break monster spawner:
+	wait 1 tick
+	if event-block is air:
+		set {_chunkX} to rounded up x coordinate of event-block / 16
+		set {_chunkZ} to rounded up z coordinate of event-block / 16
+		if {spawners.chunk.count::%{_chunkX}%::%{_chunkZ}%} is set:
+			subtract 1 from {spawners.chunk.count::%{_chunkX}%::%{_chunkZ}%}
+			if {spawners.chunk.count::%{_chunkX}%::%{_chunkZ}%} <= 0:
+				delete {spawners.chunk.count::%{_chunkX}%::%{_chunkZ}%}
+				
+				

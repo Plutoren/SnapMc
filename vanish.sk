@@ -1,0 +1,109 @@
+command /v:
+	aliases: vanish
+	permission: is.staff
+	trigger:
+		if gamemode of player is not spectator:
+			message "&8[&bSnap&8] &aVanish activated"
+			set {vanish::%player%} to true
+			set gamemode of player to spectator
+		else:
+			if "%regions at player%" contains "hub_pvp_1" or "hub_pvp_2" or "hub_pvp_3" or "hub_pvp_4" or "hub_pvp_5":
+				teleport player to {pos::pvp}
+			delete {vanish::%player%}
+			message "&8[&bSnap&8] &cVanish deactivated"
+			if player is in world "Creative":
+				set gamemode of player to creative
+			else:
+				set gamemode of player to survival
+			
+on join:
+	if {vanish::%player%} is set:
+		set gamemode of player to spectator
+
+on skellett world change:
+	if {vanish::%player%} is set:
+		set gamemode of player to spectator
+		wait 1 tick
+		set gamemode of player to spectator
+		wait 1 tick
+		set gamemode of player to spectator
+		wait 1 tick
+		set gamemode of player to spectator
+		wait 1 tick
+		set gamemode of player to spectator
+		
+command /packets [<text>]:
+	permission: is.op
+	trigger:
+		if arg-1 is not set:
+		
+			message "%packettypes%"
+			stop
+		else:
+			loop packettypes:
+				if "%loop-value%" contains "%arg-1%":
+					message "%loop-value%"
+		
+		
+#on join:
+#
+ # if gamemode is spectator:
+#
+ #   hide tab of player for all players
+  #  create simple tab "%player%-tab" for all players with name player's display name head player's displayed skin
+
+
+  
+ 
+
+
+
+		
+#on quit:
+  
+ # if (player's tab is visible for all players) is false:
+
+  #  show tab of player for all players #Just in-case the effect persists after logging out
+   # delete simple tab "%player%-tab" for all players
+
+
+#on gamemode change:
+	# if player has permission "is.op":
+	#	if "%gamemode of player%" is "spectator":
+	#		send "1" to player
+	#		loop all players:
+	#			hide tab of player for loop-player
+	#		send "2" to player
+	#		create simple tab "%player%-tab" for all players with name player's display name head player's displayed skin
+	#		send "3" to player
+	#	else:
+	#		if (player's tab is visible for all players) is false:
+	#			show tab of player for all players
+
+# on packet event play_server_player_info:
+#  set {_action} to "PlayerInfoAction" penum 0 of event-packet
+#  if "%{_action}%" = "UPDATE_GAME_MODE":
+#    put json (first element out of ("PlayerInfoData" array pjson 0 of event-packet)) in listvar {_a::*}
+#    if {_a::gamemode} is spectator:
+#      "%{_a::gameprofile::uuid}%" is not uuid of player
+#      set {_a::gamemode} to survival
+#      set {_a::gameprofile::uuid} to "%{_a::gameprofile::uuid}%"
+#      set "PlayerInfoData" array pjson 0 of event-packet to json of listvar {_a::*}
+	  
+	  
+#	set {_i} to 0
+#	loop all players:
+#		add 1 to {_i}
+#	if {_i} < 8:
+#		set {_i} to 8
+#	set {_l::players::online} to (rounded up {_i} * 3.1) 
+#	chance of 30%:
+#		add 1 to {_l::players::online}
+#	chance of 30%:
+#		subtract 1 from {_l::players::online}
+#	chance of 30%:
+#		add 1 to {_l::players::online}
+#	chance of 30%:
+#		subtract 1 from {_l::players::online}
+#	set "serverping" pjson 0 of event-packet to json of listvar {_l::*}
+		

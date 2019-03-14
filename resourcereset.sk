@@ -1,0 +1,18 @@
+command /resourcereset:
+	permission: is.op
+	trigger:
+		loop all players in world "resource":
+			teleport loop-player to {pos::spawn}
+			send "&8[&bSnap&8] &7The resource world is resetting!" to loop-player
+		wait 1 second
+		execute console command "/mv delete resource"
+		wait 5 ticks
+		execute console command "/mvconfirm"
+		wait 5 seconds
+		execute console command "/mv create resource normal -g CityWorld"
+		wait 5 seconds
+		execute console command "/mv gamerule keepInventory true resource"
+		wait 1 second
+		execute console command "/skript reload resources"
+		execute console command "/skript reload notnt"
+		execute console command "/wb resource set 2000"

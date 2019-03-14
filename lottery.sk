@@ -1,0 +1,129 @@
+
+
+function formatMoney(int: number) :: string:
+	while {_int} >= 1000000000000:
+		add 1 to {_val}
+		subtract 1000000000000 from {_int}
+	if {_val} is set:
+		return "%{_val}%T"
+	while {_int} >= 1000000000:
+		add 1 to {_val}
+		subtract 1000000000 from {_int}
+	if {_val} is set:
+		return "%{_val}%B"
+	while {_int} >= 1000000:
+		add 1 to {_val}
+		subtract 1000000 from {_int}
+	if {_val} is set:
+		return "%{_val}%M"
+	while {_int} >= 1000:
+		add 1 to {_val}
+		subtract 1000 from {_int}
+	if {_val} is set:
+		return "%{_val}%K"
+	if {_int} is not set:
+		return "0"
+	return "%{_int}%"
+		
+
+command /lottery [<int>]:
+	aliases: lotto, lotery, lotorie
+	trigger:
+		if arg-1 is not set:
+			if {lottery.total} is not set:
+				set {lottery.total} to 0
+			set {_total} to formatMoney({lottery.total})
+			message "&8[&bLottery&8] &eCurrently the lottery is at &a$%{_total}%"
+			if {lottery.player.amount::%uuid of player%} is not set:
+				message "        &eYou have a total of &a0 tickets&e. 1 Ticket = 1$"
+			else:
+				message "        &eYou have a total of &a%{lottery.player.amount::%uuid of player%}% tickets&e. 1 Ticket = 1$"
+			message "        &eType &b/lottery (amount) &eto buy lottery tickets"
+			message "        &eNext draw in &d%{lottery.minutes}% minutes&a."
+			
+			set {_total} to formatMoney({lotery.last.prize})
+			message "        &a%{lottery.last.name}% &ewon &a%{_total}% &efrom the last lottery."
+			stop
+	
+		set {_amount} to arg-1
+		set {_uuid} to uuid of player
+		if {_amount} > player's balance:
+			message "&8[&bLottery&8] &7You only have &a%player's balance%"
+			stop
+		if {_amount} > 3000000:
+			message "&8[&bLottery&8] &7The Maximum Lottery Tickets is 3m"
+			stop
+		if {_amount} <= 0:
+			message "&8[&bLottery&8] &7The minimum is 0"
+			stop
+		if {lottery.player.amount::%{_uuid}%} + {_amount} > 3000000:
+			message "&8[&bLottery&8] &7You already have &a$%{lottery.player.amount::%{_uuid}%}% &7tickets and the most tickets you can buy is 3m, so the most you can buy is &a%3000000 - {lottery.player.amount::%{_uuid}%}%"
+			stop
+			
+		if {lottery.just.set} is not set:
+			set {lottery.just.set} to now
+		if {lottery.just.set} was less than 10 seconds ago:
+			message "&8[&bLottery&8&8] &eSomeone just bought tickets please wait to reduce spam."
+			stop
+		remove arg-1 from player's balance
+		set {lottery.just.set} to now
+		add {_amount} to {lottery.player.amount::%uuid of player%} 
+		
+		add {_amount} to {lottery.total} 
+		set {_amount} to formatMoney({_amount})
+		set {_total} to formatMoney({lottery.total})
+		broadcast "&8[&bLottery&8] &a%player% &ejust bought &a%{_amount}% lottery tickets&e."
+		broadcast "&8[&bLottery&8] &eThe lottery is currently worth &a$%{_total}%&e. &b/lottery"
+command /fakedraw:
+	permission: is.op
+	trigger:
+		set {_total} to formatMoney({lottery.total})
+		loop 700 times:
+			loop {lottery.player.amount::*}:
+				set {_count} to loop-value-2
+				set {_chance} to {_count} / {lottery.total}
+				set {_uuid} to loop-index
+				chance of {_chance}%:
+					message "&8[&bLottery&8] &e&l%{uuidName::%{_uuid}%}% &dhas won the lottery!!!!"
+					message "&8[&bLottery&8] &d&lThey won &a&l$%{_total}%"
+					stop
+		message "Failed"
+		
+every minute:
+	if {lottery.minutes} is not set:
+		set {lottery.minutes} to 6
+	subtract 1 from {lottery.minutes}
+	
+	if {lottery.total} is not set:
+		set {lottery.total} to 0
+	set {_total} to formatMoney({lottery.total})
+	if {lottery.minutes} < 60:
+		if {lottery.minutes} >= 1:
+			set {_barFill} to rounded up ({lottery.minutes} * 5)
+			create bossbar titled "&2Lottery &a$%{_total}% &3%{lottery.minutes}% Minutes &d/lottery" and id "lottery" for all players with value {_barFill} with colors GREEN with style solid
+	if {lottery.minutes} = 5:
+		broadcast "&8[&bLottery&8] &eDrawing lottery in &d&n5 minutes&e! Currently worth &a$%{_total}%&e."
+		stop
+	if {lottery.minutes} = 1:
+		broadcast "&8[&bLottery&8] &eDrawing lottery in &d&n1 minute&e! Currently worth &a$%{_total}%&e."
+		stop
+	if {lottery.minutes} <= 0:
+		loop 700 times:
+			loop {lottery.player.amount::*}:
+				set {_count} to loop-value-2
+				set {_chance} to {_count} / {lottery.total}
+				set {_uuid} to loop-index
+				chance of {_chance}%:
+					broadcast "&8[&bLottery&8] &e&l%{uuidName::%{_uuid}%}% &dhas won the lottery!!!!"
+					broadcast "&8[&bLottery&8] &d&lThey won &a&l$%{_total}%"
+					execute console command "eco give %{uuidName::%{_uuid}%}% %{lottery.total}%"
+					set {lottery.last.name} to "%{uuidName::%{_uuid}%}%"
+					set {lotery.last.prize} to {lottery.total}
+					delete {lottery.total}
+					delete {lottery.player.amount::*}
+					remove bossbar "lottery"
+					set {lottery.minutes} to 1240
+					stop
+		
+		
+		

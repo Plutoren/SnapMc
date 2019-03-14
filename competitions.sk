@@ -1,0 +1,6 @@
+command /competition:
+	aliases: competitions
+	trigger:
+		message ""
+		message "&aFebruary Competitions&7:&e snapmc.com/threads/february-competitions.202/"
+		message ""

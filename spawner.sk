@@ -1,0 +1,120 @@
+on right click:
+	targeted block is a monster spawner
+	if "%player's tool%" contains "egg":
+		cancel event
+on place of monster spawner:
+	wait 1 tick
+	if block at location of event-block is monster spawner:
+		message ""
+		message " &c&lMobs will automatically die from this spawner"
+		message " &c&lThe loot will be placed in any chest nearby"
+		message ""
+
+		
+command /safespawners [<text>]:
+	permission: is.op
+	trigger:
+		if arg-1 is not set:
+			message ""
+			message "&6&lSafeSpawners Help"
+			message ""
+			message " &e/safespawners unlock"
+			message "        &7Unlock a spawner that you placed"
+			message " &e/safespawners search"
+			message "        &7Find your spawners (10 blocks)"
+			message ""
+			stop 
+		if arg-1 is "unlock":
+			if target block is not monster spawner:
+				message "&6&lSafeSpawners &cLook at a spawner first"
+				stop
+			if {safespawners.locations::%location of target block%} is ip of player:
+				message "&6&lSafeSpawners: &eUnlocked &7(Now anyone can break it)"
+				delete {safespawners.locations::%location of target block%}
+				stop
+			else:
+				message "&6&lSafeSpawners: &cIt doesn't look like that is yours"
+				stop
+				
+		if arg-1 is "search":
+			message "&6&lSafeSpawners &eSearching...."
+			set {_i} to 0
+			loop blocks in radius 11 around player:
+				if {safespawners.locations::%location of loop-block%} is set:
+					add 1 to {_i}
+					message "&e%{_i}%. &7%location of loop-block% &7: %{safespawners.locations::%location of loop-block%}%"
+			message "&6&lSafeSpawners &eSearch finished"
+
+command /autofill:
+	permission: is.op
+	trigger:
+		if target block is not a monster spawner:
+			message "&cPlease look at a mob spawner to do use that"
+			stop
+		if {safespawners.locations::%location of target block%} is ip of player:
+			if {allowlife.locations::%location of target block%} is set:
+				delete {allowlife.locations::%location of target block%}
+				message "&aMobs will now appear from this spawner"
+				stop
+			else:
+				set {allowlife.locations::%location of target block%} to true
+				message "&cMobs will die instantly from this spawner now"
+				stop
+		else if {safespawners.playername::%location of target block%} is "%player%":
+			if {allowlife.locations::%location of target block%} is set:
+				delete {allowlife.locations::%location of target block%}
+				message "&aMobs will now appear from this spawner"
+				stop
+			else:
+				set {allowlife.locations::%location of target block%} to true
+				message "&cMobs will die instantly from this spawner now"
+				stop
+		else:
+			message "&6&lSafeSpawners: &cIt doesn't look like that is yours"
+			stop
+spawner spawn:
+	if entity is in world "Prison" or "Wilderness" or "RPG":
+		stop
+	chance of 40%:
+		cancel event
+		stop
+	if entity is an iron golem:
+		chance of 15%:
+			cancel event
+			stop
+	else if entity is a zombie pigman:
+		chance of 25%:
+			cancel event
+			stop
+	set name of entity to "&c&lDead"
+	set health of entity to -50
+		
+
+
+		
+
+on death:
+	if victim is not a player:
+		if name of victim is "&c&lDead":
+			remove all poppy from drops
+			remove all rotten flesh from drops
+			loop blocks in radius 2 of victim:
+				if loop-block is a chest or trapped chest or hopper:
+					if next empty slot of loop-block's inventory is not -1:
+						if victim is a blaze:
+							chance of 30%:
+								add 1 blaze rod to loop-block's inventory
+							clear drops
+							stop
+						if victim is a spider:
+							chance of 30%:
+								add 1 spider eye to loop-block's inventory
+							clear drops
+							stop
+						add drops to loop-block's inventory
+						clear drops
+						stop
+			clear drops
+
+
+			

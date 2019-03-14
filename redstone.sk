@@ -1,0 +1,19 @@
+command /searchredstone:
+	permission: is.op
+	trigger:
+		message " &bSearch Starting"
+		loop all players in world "world":
+			wait 4 seconds
+			set {_found} to false
+			set {_total} to 0
+			loop blocks in radius 40 of loop-player:
+				if "%loop-block%" contains "wire" or "redstone" or "93":
+					if "%loop-block%" does not contain "block" or "lamp" or "tripwire" or "ore":
+
+						add 1 to {_total}
+						set {_found} to true
+						set {_location} to location of loop-block
+			if {_found} is true:
+				message " &b%{_total}%&7. &a%loop-player% &7at &6%{_location}%"
+		message " &bDone Searching"
+					

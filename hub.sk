@@ -1,0 +1,138 @@
+every 2 seconds:
+	loop all players in world "spawn":
+		set {_resource} to "%regions at loop-player%"
+		if "%{_resource}%" contains "hub_portal_hogwarts":
+			teleport loop-player to {pos::hogwarts}
+		else if "%{_resource}%" contains "hub_portal_nether":
+			execute loop-player command "/nether"
+		else if "%{_resource}%" contains "hub_portal_end":
+			execute loop-player command "/end"
+		else if "%{_resource}%" contains "hub_portal_wild":
+			if "%name of current inventory of loop-player%" does not contain "biome":
+				execute loop-player command "/wild"
+		else if "%{_resource}%" contains "hub_portal_halcyon":
+			teleport loop-player to {pos::halcyon}
+		else if "%{_resource}%" contains "hub_mar_luckyblock":
+			if "%name of current inventory of loop-player%" does not contain "biome":
+				execute loop-player command "/resource"
+		else if "%{_resource}%" contains "hub_portal_prison":
+			execute loop-player command "/prison"
+		else if "%{_resource}%" contains "hub_portal_pvp":
+			execute loop-player command "/warp pvp"
+		else if "%{_resource}%" contains "hub_portal_shop":
+			execute loop-player command "/warp shop"
+		else if "%{_resource}%" contains "survival_hub":
+			execute loop-player command "/hub"
+	loop all players in world "SkyBlock":
+		set {_resource} to "%regions at loop-player%"
+		if "%{_resource}%" contains "sb_spawn_portal":
+			execute loop-player command "/sb"
+		if gamemode of loop-player is spectator:
+			if loop-player does not have permission "is.staff":
+				if "%{_resource}%" does not contain "sb_maps":
+					execute loop-player command "/sb new"
+	loop all players in world "Hub":
+		set {_regions} to "%regions at loop-player%"
+		if {_regions} contains "hub_pvp":
+			execute console command "/warp pvp %loop-player%"
+		else if {_regions} contains "hub_creative":
+			execute loop-player command "/creative"
+		else if {_regions} contains "hub_prison":
+			execute loop-player command "/prison"
+		else if {_regions} contains "hub_survival":
+			execute loop-player command "/survival"
+		else if {_regions} contains "hub_bedwars":
+			execute loop-player command "/bw"
+		else if {_regions} contains "hub_pve":
+			execute loop-player command "/mamenu"
+		else if {_regions} contains "hub_skyblock":
+			execute loop-player command "/sb spawn"
+		else if {_regions} contains "hub_lab":
+			execute loop-player command "/elytra"
+			
+			
+on region enter:
+	if player is not in world "Hub":
+		stop
+	if "%event-region%" contains "portal_survival":
+		execute player command "/survival"
+	else if "%event-region%" contains "portal_creative":
+		execute player command "/creative"
+	else if "%event-region%" contains "portal_elytra":
+		execute player command "/elytra"
+	else if "%event-region%" contains "portal_pve":
+		execute player command "/pve"
+	else if "%event-region%" contains "portal_wilderness":
+		execute player command "/wilderness"
+	else if "%event-region%" contains "portal_prison":
+		execute player command "/prison"
+	else if "%event-region%" contains "portal_bedwars":
+		execute player command "/bw"
+	else if "%event-region%" contains "portal_skyblock":
+		execute player command "/skyblock"
+	else if "%event-region%" contains "portal_hub":
+		execute player command "/hub"
+		
+		
+# every 15 seconds:
+#	loop {hub.starwars.barrierblocks::*}:
+#		loop {hub.starwars.barrierblocks::%loop-index%::*}:
+#			make loop-index parsed as player see loop-value as air
+#		delete {hub.starwars.barrierblocks::%loop-index%::*}:
+
+command /survival:
+	trigger:
+		teleport player to {pos::survival}
+		message "&8[&bSnap&8] &fWelcome to the survival spawn."
+		message "        &fImportant commands: &b/wild /warp crates &b/pvp"
+		message "        &b/warp shop /ah /sethome /claim /menu"
+on command:
+	if player is in world "Hub":
+		if "%command%" = "fly" or "kit" or "buyegg" or "sethome" or "auction" or "setwarp" or "ah" or "auctionhouse" or "shop" or "pack" or "packs" or "ec" or "enderchest" or "randomitem" or "ender" or "see": 
+			cancel event
+			message "&8[&bHub&8] &7You can't use that command here!"
+		
+command /hub:
+	aliases: lobby
+	trigger:
+		
+		if player is not in world "Hub":
+			teleport player to {pos::hub}
+			send player title "&aWelcome to the Hub" with subtitle "&7Pick any gamemode" for 3 seconds
+		else:
+			teleport player to {pos::hub}
+on right click with compass:
+	if player is in world "Hub":
+		execute player command "/servers"
+		cancel event
+		
+command /servers:
+	aliases: lobbies
+	trigger:
+
+		open chest with 6 row named "     -=[ &1Server Selector &8]=-" to player
+		wait 1 tick
+		if "%name of current inventory of player%" != "     -=[ &1Server Selector &8]=-":
+			close inventory of player
+			stop
+			
+		set {_i} to 0
+		loop 10 times:
+			format slot {_i} of player with blue stained glass pane named "&b&lSnapMC Servers" to run [make player execute command "/servers"]
+			add 1 to {_i}				
+		format slot 17 of player with blue stained glass pane named "&b&lSnapMC Servers" to run [make player execute command "/servers"]
+		format slot 36 of player with blue stained glass pane named "&c&lSnapMC Servers" to run [make player execute command "/servers"]
+		set {_i} to 44
+		loop 10 times:
+			format slot {_i} of player with blue stained glass pane named "&c&lSnapMC Servers" to run [make player execute command "/servers"]
+			add 1 to {_i}
+		format slot 20 of player with oak wood log named "&d&lSurvival" with lore "", "  &eNo damage, casual", "  &esurvival, get  ", "  &eblocks from &b/warp shop.", "  &eClaim land &b/menu", "", "  &f&lFun Survival", " &e" to run [make player execute command "/survival"]
+		format slot 30 of player with grass block named "&b&lSky&a&lBlock" with lore "", "  &eSelect any of 38 free", "  &eislands and build with  ", "  &eminimal resources.", "", "  &f&lClassic SkyBlock &7(&bCustom&7)", " &e" to run [make player execute command "/skyblock spawn"]
+		format slot 40 of player with diamond ore named "&2&lWilderness" with lore "", "  &eLegit Survival", "  &ewith a few twists.  ", "", "  &f&lClassic Survival &7(&bCustom&7)", " &e" to run [make player execute command "/wilderness"]
+		
+		format slot 22 of player with iron bars named "&6&lPrison" with lore "", "  &eMine and complete", "  &equests to climb to", "  &ethe top.", "", "  &f&lNon-OP Prison &7(&bCustom&7)", " &e" to run [make player execute command "/prison"]
+		format slot 32 of player with diamond block named "&3&lCreative" with lore "", "  &eClassic Plots Creative", "  &eBuild whatever you want  ", "  &emonthly build", "  &ecompetitons.", "", "  &f&lCreative", " &e" to run [make player execute command "/creative"]
+		format slot 24 of player with 1 of {item::bluebed} named "&9&lBedWars" with lore "", "  &eFight to be the last", "  &eteam with a bed  ", "", "  &f&lBedWars &7(&bCustom&7) ", " &e" to run [make player execute command "/bw"]
+		format slot 14 of player with elytra item named "&d&lElytra" with lore "", "  &eElytra Free Fall", "  &eNever ending tunnels", "  &eand fun challenges.", "", "  &f&lElytra Free Fall &7(&bCustom&7)", " &e" to run [make player execute command "/elytra"]
+		format slot 12 of player with zombie skull named "&d&lMob Arena" with lore "", "  &eNever ending Mob", "  &eArena. Earn rewards", "  &efor survival.", "", "  &f&lMob Arena &7(&bCustom&7)", " &e" to run [make player execute command "/pve"]
+				

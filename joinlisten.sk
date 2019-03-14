@@ -1,0 +1,31 @@
+command /joinmessages:
+	aliases: joinlisten, jointoggle, togglejoin
+	trigger:
+		if {joinlisten::%player%} is set:
+			delete {joinlisten::%player%}
+			message "&aJoin messages enabled"
+		else:
+			set {joinlisten::%player%} to true
+			message "&cJoin messages disabled"
+			
+on join:
+	if {firstjoin::%player%} is set:
+		wait 3 ticks
+		if player is online:
+			loop all players:
+				if {joinlisten::%loop-player%} is not set:
+					if player has permission "is.staff":
+						send "&3&lStaff %player% &bjoined the game." to loop-player
+						
+					else if player has permission "is.vortex.max":
+						send "" to loop-player
+						send "   &5✦ &d&l%player% &djoined the game. &5✦" to loop-player
+						send "" to loop-player
+					else if player has permission "is.vortex":
+						send " &3✢ &b&l%player% &bjoined the game. &3✢" to loop-player
+					else if player has permission "is.cosmic":
+						send "&4✵ &a%player% &ajoined the game. &4✵" to loop-player
+					else if player has permission "is.ultimate":
+						send "&b%player% joined the game." to loop-player
+					else:
+						send "&e%player% joined the game." to loop-player

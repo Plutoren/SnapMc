@@ -1,0 +1,111 @@
+command /rooms:
+	trigger:
+		message "&7Welcome to &eRoom to Room"
+		if {rooms.checkpoint::%uuid of player%} is set:
+			teleport player to {rooms.checkpoint::%uuid of player%}
+			stop
+		teleport player to {pos::rooms}
+		
+command /rooms2:
+	trigger:
+		message "&7Welcome to &eRoom 2 Room"
+		if {rooms2.checkpoint::%uuid of player%} is set:
+			teleport player to {rooms2.checkpoint::%uuid of player%}
+			stop
+		teleport player to {pos::rooms2}	
+on command:
+	if player is in world "Rooms":
+		if player does not have permission "is.Pluto":
+			if command contains "auc" or "echest" or "eechest" or "fish" or "mf" or "eec" or "kit" or "fly" or "ender" or "auction" or "setwarp" or "ah" or "auctionhouse" or "shop" or "pack" or "packs" or "ec" or "enderchest" or "heal" or "feed" or "tp" or "setwarp" or "sethome":
+				cancel event
+				message "&8[&eRooms&8] &7You can't use that command here!"
+				
+	
+
+on right click on stone button:
+	if player is in world "Rooms":
+		if {rooms.button::%location of clicked block%} is set:
+			if {rooms.button::%location of clicked block%} is -8:
+				set {_loc} to location of player
+				add 46 to x coordinate of {_loc}
+				teleport player to {_loc}
+				stop
+			else if {rooms.button::%location of clicked block%} is -9:
+				set {_loc} to location of player
+				add 51 to x coordinate of {_loc}
+				teleport player to {_loc}
+				stop
+			else if {rooms.button::%location of clicked block%} is -10:
+				give player 1 of wheat seeds
+				stop
+			else if {rooms.button::%location of clicked block%} is -11:
+				add 1 sponge to inventory of block at {pos::rooms_11_dispenser}
+				stop
+			else if {rooms.button::%location of clicked block%} is -15:
+				remove all effects from player
+				apply jump 4 to player for 27 seconds
+				stop
+			else if {rooms.button::%location of clicked block%} is -16:
+				remove all effects from player
+				apply fire resistance to player for 27 seconds
+				stop
+			else if {rooms.button::%location of clicked block%} is -17:
+				add 1 of {item::chicken_egg} to inventory of block at {pos::rooms_17_dispenser}
+				set {_i} to 0
+				loop all chickens in radius 80 of {pos::rooms_17_dispenser}:
+					if loop-entity is a chicken:
+						add 1 to {_i}
+						if {_i} > 7:
+							set health of loop-entity to 0
+				stop
+			else if {rooms.button::%location of clicked block%} is -18:
+				apply speed 4 to player for 27 seconds
+				stop
+			else if {rooms.button::%location of clicked block%} is -23:
+				if player does not have 1 of {item::magic_golden_apple}:
+					give player 1 of {item::magic_golden_apple}
+				stop
+			else if {rooms.button::%location of clicked block%} is -241:
+				teleport player to {pos::rooms_24_portal1}
+				stop
+			else if {rooms.button::%location of clicked block%} is -242:
+				teleport player to {pos::rooms_24_portal2}
+				stop
+			else if {rooms.button::%location of clicked block%} is -243:
+				teleport player to {pos::rooms_24_portal3}
+				stop
+			else if {rooms.button::%location of clicked block%} is -244:
+				teleport player to {pos::rooms_24_portal4}
+				stop
+			
+			clear inventory of player
+			remove all effects from player
+			teleport player to {rooms.spawnpoint::%{rooms.button::%location of clicked block%}%}
+			set {rooms.checkpoint::%uuid of player%} to {rooms.spawnpoint::%{rooms.button::%location of clicked block%}%}
+			
+			
+command /roomsaddbutton <int>:
+	permission: is.op
+	trigger:
+		if target block of player is stone button:
+			set {rooms.button::%location of target block of player%} to arg-1
+			message "set portal to room %arg-1%"
+			
+command /roomsaddspawn <int>:
+	permission: is.op
+	trigger:
+		set {rooms.spawnpoint::%arg-1%} to location of player
+		message "set start of room %arg-1%"
+		
+		
+on respawn:
+	if player is in world "Rooms":
+		if "%regions at player%" contains "rooms2_entire":
+			if {rooms.checkpoint::%uuid of player%} is set:
+				wait 1 tick
+				teleport player to {rooms2.checkpoint::%uuid of player%}
+			stop
+			
+		if {rooms.checkpoint::%uuid of player%} is set:
+			wait 1 tick
+			teleport player to {rooms.checkpoint::%uuid of player%}

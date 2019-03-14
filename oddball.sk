@@ -1,0 +1,195 @@
+on load:
+	endGame()
+
+
+function endGame():
+	delete {oddball.isrunning} 
+	delete {oddball.carrier}
+	delete {oddball.health}
+	delete {oddball.timer::*}
+	removeLazers()
+	set block north of block at {pos::oddball_skullspawn} to air
+
+
+function announceToGame(Message: text):
+	loop all players in world "spawn":
+		if "%regions at loop-player%" contains "hub_pvp_nokeepinv":
+			send "" to loop-player
+			send "&8&8[&fOdd&7Ball&8] %{_Message}%" to loop-player
+			send "" to loop-player
+
+function checkVictor():
+	if {oddball.timer::%{oddball.carrier}%} > 100:
+		execute console command "kp key Legendary regular %{oddball.carrier}% 2"
+		announceToGame("&a&l%{oddball.carrier}% &fhas won the game!")
+		endGame()
+
+function removeLazers():
+	set {_session} to new edit session in world "spawn" with limit -1 
+	paste schematic "plugins/WorldEdit/schematics/oddball_lazer1_removed" at {pos::oddball_skullspawn} using editsession {_session}
+	paste schematic "plugins/WorldEdit/schematics/oddball_lazer2_removed" at {pos::oddball_skullspawn} using editsession {_session}
+	paste schematic "plugins/WorldEdit/schematics/oddball_lazer3_removed" at {pos::oddball_skullspawn} using editsession {_session}
+	paste schematic "plugins/WorldEdit/schematics/oddball_lazer4_removed" at {pos::oddball_skullspawn} using editsession {_session}
+	paste schematic "plugins/WorldEdit/schematics/oddball_lazer5_removed" at {pos::oddball_skullspawn} using editsession {_session}
+	paste schematic "plugins/WorldEdit/schematics/oddball_lazer6_removed" at {pos::oddball_skullspawn} using editsession {_session}
+	   
+function refreshLazers():
+	set {_session} to new edit session in world "spawn" with limit -1 
+	if {oddball.timer::%{oddball.carrier}%} > 85:
+		paste schematic "plugins/WorldEdit/schematics/oddball_lazer6" at {pos::oddball_skullspawn} using editsession {_session}
+	if {oddball.timer::%{oddball.carrier}%} > 75:
+		paste schematic "plugins/WorldEdit/schematics/oddball_lazer5" at {pos::oddball_skullspawn} using editsession {_session}
+	if {oddball.timer::%{oddball.carrier}%} > 65:
+		paste schematic "plugins/WorldEdit/schematics/oddball_lazer4" at {pos::oddball_skullspawn} using editsession {_session}
+	if {oddball.timer::%{oddball.carrier}%} > 40:
+		paste schematic "plugins/WorldEdit/schematics/oddball_lazer3" at {pos::oddball_skullspawn} using editsession {_session}
+	if {oddball.timer::%{oddball.carrier}%} > 30:
+		paste schematic "plugins/WorldEdit/schematics/oddball_lazer2" at {pos::oddball_skullspawn} using editsession {_session}
+	if {oddball.timer::%{oddball.carrier}%} > 20:
+		paste schematic "plugins/WorldEdit/schematics/oddball_lazer1" at {pos::oddball_skullspawn} using editsession {_session}
+	
+
+
+
+function healthCarrierHolo():
+	set {_player} to {oddball.carrier}
+	if {_player} parsed as player is online:
+		bind hologram "&e&lCarrier;&c&lHealth&f: &a&l%{oddball.health}%;&e&lPoints: &f&l%{oddball.timer::%{oddball.carrier}%}%&8/&a&l100;ItemStack:wool:0;" to {_player} for 3.1 seconds offset by 0, 3.4, 0
+function damageCarrierHolo():
+	set {_player} to {oddball.carrier}
+	if {_player} parsed as player is online:
+		bind hologram "&c&l-1" to {_player} for 1.1 seconds offset by 0, 5.4, 0
+
+function carrierStats():   
+	add 1 to {oddball.timer::%{oddball.carrier}%}
+	checkVictor()
+	wait 1 second
+	if {oddball.carrier} is set:
+		add 1 to {oddball.timer::%{oddball.carrier}%}
+	checkVictor()
+	wait 1 second
+	if {oddball.carrier} is set:
+		add 1 to {oddball.timer::%{oddball.carrier}%}
+	checkVictor()
+
+command /oddball:
+	trigger:
+		if {pvp.oddball.lastevent} was less than 120 minutes ago:				
+			set {_startDate} to {pvp.oddball.lastevent}
+			set {_duration} to 120 minutes
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "&8[&fOdd&7Ball&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+			stop
+		if {pvp.lastevent} was less than 20 minutes ago:				
+			set {_startDate} to {pvp.lastevent}
+			set {_duration}  to 20 minutes
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "&8[&c&lPvP&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+			stop
+		set {pvp.lastevent} to now
+		set {pvp.oddball.lastevent} to now
+		broadcast "&8&8[&fOdd&7Ball&8] &eA game of OddBall has started in PvP!"
+		
+		set block at {pos::oddball_skullspawn} to beacon
+		# set {_session} to new edit session in world "spawn" with limit -1 
+		# paste schematic "plugins/WorldEdit/schematics/oddball_skull" at {pos::oddball_skullspawn} using editsession {_session}
+		set {oddball.isrunning} to true	
+		delete {oddball.carrier}
+		delete {oddball.health}
+		delete {oddball.timer::*}
+		removeLazers()
+		loop 400 times:
+			if {oddball.isrunning} is not set:
+				stop
+			if {oddball.carrier} is set:
+				healthCarrierHolo()
+				carrierStats()
+				refreshLazers()
+				set {_inGame} to false
+				loop all players in world "spawn":
+					if "%regions at loop-player%" contains "hub_pvp_nokeepinv":
+						if {oddball.carrier} is loop-player:
+							set {_inGame} to true
+				if {_inGame} is false:
+
+					if {oddball.isrunning} is not set:
+						stop
+					removeLazers()
+					delete {oddball.carrier}
+					delete {oddball.health}
+					paste schematic "plugins/WorldEdit/schematics/oddball_skull" at {pos::oddball_skullspawn} using editsession {_session}
+					announceToGame("&eThe oddball is in the center of the map")
+				
+
+			else:
+				if {oddball.isrunning} is not set:
+					stop
+				paste schematic "plugins/WorldEdit/schematics/oddball_skull" at {pos::oddball_skullspawn} using editsession {_session}
+				announceToGame("&eThe oddball is in the center of the map")
+			wait 3 seconds 
+		endGame()
+			
+on death of player:
+	if {oddball.carrier} = player:
+		delete {oddball.carrier}
+		delete {oddball.health}
+		removeLazers()
+		announceToGame("&e&l%player% &flost the oddball!")
+
+on quit:
+	if {oddball.carrier} = player:
+		delete {oddball.carrier}
+		delete {oddball.health}
+		removeLazers()
+		announceToGame("&e&l%player% &flost the oddball!")
+
+on right click on beacon:
+	if "%regions at player%" contains "hub_pvp_nokeepinv":
+		if {oddball.isrunning} is set:
+			set block north of block at {pos::oddball_skullspawn} to air
+			message "&8[&fOdd&7Ball&8] &eYou picked up the oddball!"
+			set {oddball.carrier} to player
+			set {oddball.health} to 20
+			if {oddball.timer::%player%} is not set:
+				set {oddball.timer::%player%} to 0
+			apply speed 2 to player for 3.1 seconds
+			announceToGame("&e&l%player% &fis the new Carrier!")
+			healthCarrierHolo()
+			removeLazers()
+
+on left click on beacon:
+	if "%regions at player%" contains "hub_pvp_nokeepinv":
+		if {oddball.isrunning} is set:
+			set block north of block at {pos::oddball_skullspawn} to air
+			message "&8[&fOdd&7Ball&8] &eYou picked up the oddball!"
+			set {oddball.carrier} to player
+			set {oddball.health} to 20
+			set {oddball.timer::%player%} to 0
+			apply speed 2 to player for 3.1 seconds
+			healthCarrierHolo()
+			removeLazers()
+
+on damage of player:
+	if "%regions at victim%" contains "hub_pvp_nokeepinv":
+		if {oddball.isrunning} is set:
+			if {oddball.health} > 1:
+				set {oddball.health} to {oddball.health} - 1
+				damageCarrierHolo()
+				send "&8&8[&fOdd&7Ball&8] &eCarrier Health &c%{oddball.health}%&8/&a20" to victim
+ 
+			else:
+				delete {oddball.health}
+				delete {oddball.carrier}
+				removeLazers()
+
+on shoot:
+	if "%regions at shooter%" contains "hub_pvp_nokeepinv":
+		if {oddball.isrunning} is set:
+			cancel event
+			send "&8&8[&fOdd&7Ball&8] &cBows are disabled during OddBall" to shooter

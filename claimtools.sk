@@ -1,0 +1,8 @@
+command /claimtools:
+	trigger:
+		if player is not in world "world" or "world_the_end" or "world_nether" or "Avalon" or "Elytra Fall" or "resource" or "spawn":
+			message "&8[&bSnap&8] &cPlease visit &e/survival &cto use this"
+			stop
+		give player 1 golden shovel named "&eClaim Tool" with lore "&7Right Click to select", "&72 opposite corners of ", "&7what you want to claim" 
+		give player 1 stick named "&bClaim Inspection Tool" with lore "&7Right click to see", "&7who has claimed a", "&7block"
+		message "&8[&bSnap&8] &aClaim tools have been added to your inventory"

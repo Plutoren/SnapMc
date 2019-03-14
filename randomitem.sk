@@ -1,0 +1,23 @@
+command /randomitem:
+	trigger:
+		if player has permission "is.ultimate":
+			if {lastused.randomitem::%player%} is not set:
+				set {lastused.randomitem::%player%} to now
+			else if {lastused.randomitem::%player%} was less than 2 minutes ago:
+				message "&8[&bSnap&8] &7Please wait at least 2 minutes."
+				stop
+		else if {lastused.randomitem::%player%} is not set:
+			set {lastused.randomitem::%player%} to now
+		else if {lastused.randomitem::%player%} was less than 3 minutes ago:
+			message "&8[&bSnap&8] &7Please wait at least 3 minutes."
+			stop
+		set {lastused.randomitem::%player%} to now
+		set {_item} to random item of all items
+		while "%{_item}%" contains "command" or "fire" or "bedrock" or "barrier" or "portal" or "frame" or "head" or "book":
+			set {_item} to random item of all items
+		give player {_item}
+		message "&8[&bSnap&8] &7You got a &6%{_item}%"
+		
+		
+on load:
+	delete {lastused.randomitem::*}

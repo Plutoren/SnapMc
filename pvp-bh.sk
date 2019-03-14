@@ -1,0 +1,70 @@
+command /bountyhunter:
+	trigger:
+		if {pvp.bountyhunter.lastevent} was less than 100 minutes ago:				
+			set {_startDate} to {pvp.bountyhunter.lastevent}
+			set {_duration}  to 100 minutes
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "&8[&6&lBH&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+			stop
+		if {pvp.lastevent} was less than 20 minutes ago:				
+			set {_startDate} to {pvp.lastevent}
+			set {_duration}  to 20 minutes
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "&8[&c&lPvP&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+			stop
+		set {pvp.lastevent} to now
+		set {pvp.bountyhunter.lastevent} to now
+		broadcast "&8[&6BH&8] &eA game of &6&lBounty Hunter &ehas Started."
+		loop 60 times:
+			loop all players in world "spawn":
+				if "%regions at loop-player%" contains "hub_pvp_keepinv":
+					if {pvp.bountyhunter::%loop-player%} is not set:
+						loop all players in world "spawn":
+							if "%regions at loop-player-2%" contains "hub_pvp_keepinv":
+								if loop-player-2 != loop-player-1:
+									add loop-player-2 to {targets::*}
+						set {pvp.bountyhunter::%loop-player%} to a random element of {targets::*}
+						delete {targets::*}
+						if {pvp.bountyhunter::%loop-player%} is set:
+							send "&8[&6BH&8] &6Your new target is &a%{pvp.bountyhunter::%loop-player%}%" to loop-player
+					if {pvp.bountyhunter::%loop-player%} is set:
+						send actionbar with "&eTarget&7: &a%{pvp.bountyhunter::%loop-player%}%" to loop-player
+			wait 1 second
+		set {_max} to 0
+		set {_winner} to "&c&lNo Winner"
+		loop {pvp.bountyhunter.score::*}:
+			if loop-value > {_max}:
+				set {_winner} to loop-index
+				set {_max} to loop-value
+		loop all players in world "spawn":
+			if loop-player = {_winner}:
+				set {_winner} to loop-player
+		loop all players in world "spawn":
+			if "%regions at loop-player%" contains "hub_pvp_keepinv":
+				send "" to loop-player
+				send "&8[&6BH&8] &a&lThe Bounty Hunter Game Has Ended!" to loop-player
+				send "&8[&6BH&8] &e&l%{_winner}% won the game with a score of %{_max}%" to loop-player
+				if {pvp.bountyhunter.score::%loop-player%} is not set:
+					set {pvp.bountyhunter.score::%loop-player%} to 0
+				send "&8[&6BH&8] &fYou had &a%{pvp.bountyhunter.score::%loop-player%}% points&f!" to loop-player
+				send "" to loop-player
+		
+		delete {pvp.bountyhunter::*}
+		delete {pvp.bountyhunter.score::*}
+		broadcast "&8[&6BH&8] &eBounty Hunter's has ended."
+
+on damage of player:
+	if {pvp.bountyhunter::%attacker%} = victim:
+		delete {pvp.bountyhunter::%attacker%}
+		add 1 to {pvp.bountyhunter.score::%attacker%}
+		send "&8[&6BH&8] &eYou hit your Bounty! Searching for new target..." to attacker
+		send "&8[&6BH&8] &eCurrent Score&7: &a%{pvp.bountyhunter.score::%attacker%}%" to attacker
+
+
+						

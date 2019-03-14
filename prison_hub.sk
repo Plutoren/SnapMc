@@ -1,0 +1,784 @@
+
+function menuAnimation(player: player, title: text):
+	set {_i} to 1
+	set {_max} to 0
+	while name of current inventory of {_player} = "%{_title}%":
+		if {_max} > 3:
+			stop
+		if {_i} = 1:
+			format slot 0 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 9 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 36 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 45 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+		
+		else if {_i} = 2:
+			format slot 0 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 9 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 36 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 45 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 1 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 46 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+		
+		else if {_i} = 3:
+			format slot 0 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 9 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 36 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 45 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 1 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 46 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 2 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 47 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+		
+		else if {_i} = 4:
+			format slot 0 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 9 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 36 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 45 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 1 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 46 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 2 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 47 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 3 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 48 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+		
+		else if {_i} = 5:
+			format slot 0 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 9 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 36 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 45 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 1 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 46 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 2 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 47 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 3 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 48 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 4 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 49 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+		
+		else if {_i} = 6:
+			format slot 0 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 9 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 36 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 45 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 1 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 46 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 2 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 47 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 3 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 48 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 4 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 49 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 5 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 50 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+		
+		else if {_i} = 7:
+			format slot 0 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 9 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 36 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 45 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 1 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 46 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 2 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 47 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 3 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 48 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 4 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 49 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 5 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 50 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 6 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 51 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+		
+		else if {_i} = 8:
+			format slot 0 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 9 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 36 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 45 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 1 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 46 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 2 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 47 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 3 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 48 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 4 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 49 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 5 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 50 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 6 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 51 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 7 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 52 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+		
+		else if {_i} = 9:
+			format slot 0 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 9 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 36 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 45 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 1 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 46 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 2 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 47 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 3 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 48 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 4 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 49 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 5 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 50 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 6 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 51 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 7 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 52 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 8 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 53 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 17 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 44 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+				
+		else if {_i} = 10:
+			format slot 8 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 17 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 44 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 53 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+		
+		else if {_i} = 11:
+			format slot 8 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 17 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 44 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 53 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 7 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 52 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+		
+		else if {_i} = 12:
+			format slot 8 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 17 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 44 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 53 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 7 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 52 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 6 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 51 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+		
+		else if {_i} = 13:
+			format slot 8 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 17 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 44 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 53 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 7 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 52 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 6 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 51 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 5 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 50 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+		
+		else if {_i} = 14:
+			format slot 8 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 17 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 44 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 53 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 7 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 52 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 6 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 51 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 5 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 50 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 4 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 49 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+		
+		else if {_i} = 15:
+			format slot 8 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 17 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 44 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 53 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 7 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 52 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 6 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 51 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 5 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 50 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 4 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 49 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 3 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 48 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+		
+		else if {_i} = 16:
+			format slot 8 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 17 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 44 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 53 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 7 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 52 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 6 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 51 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 5 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 50 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 4 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 49 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 3 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 48 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 2 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 47 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+		
+		else if {_i} = 17:
+			format slot 8 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 17 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 44 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 53 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 7 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 52 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 6 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 51 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 5 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 50 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 4 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 49 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 3 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 48 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 2 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 47 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 1 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 46 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+		
+		else if {_i} = 18:
+			format slot 8 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 17 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 44 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 53 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 7 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 52 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 6 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 51 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 5 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 50 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 4 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 49 of {_player} with light blue stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 3 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 48 of {_player} with light green stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 2 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 47 of {_player} with yellow stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 1 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 46 of {_player} with orange stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 0 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 45 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 9 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			format slot 36 of {_player} with red stained glass pane named "&f&l*" to run [make {_player} execute command "/prisonhub mine"]
+			
+		add 1 to {_i}
+		if {_i} = 19:
+			set {_i} to 1
+			add 1 to {_max}
+			wait 2 ticks
+		else if {_i} = 10:
+			set {_suP} to 0
+			wait 2 ticks
+		else:
+			wait 7 ticks
+
+on command "/warp":
+	if player is in world "Prison":
+		if arguments = "crates" or "crate" or "keys" or "vote" or "party":
+			cancel event
+			teleport player to {pos::prison_crates}
+			
+		else if arguments = "a" or "b" or "c" or "d" or "mine" or "mines":
+			cancel event
+			teleport player to {pos::phub2}
+			
+on right click with pickaxe:
+	if player is in world "Prison":
+		execute player command "prison"
+command /prisonhub [<text>] [<text>]:
+	trigger:
+		if player is not in world "Prison":
+			message "&8[&bSnap&8] &cYou must be in Prison to use that!"
+			stop
+		if arg-1 is "mines" or "ores" or "ore" or "mine":
+			open chest with 6 row named "        -=[ &1Prison Mines &8]=-" to player
+			wait 1 tick
+			if name of current inventory of player != "        -=[ &1Prison Mines &8]=-":
+				close inventory of player
+				stop
+				
+			set {_i} to 0
+			loop 10 times:
+				format slot {_i} of player with gray stained glass pane named "&e&l*" to run [make player execute command "/prisonhub mine"]
+				add 1 to {_i}				
+			format slot 17 of player with gray stained glass pane named "&e&l*" to run [make player execute command "/prisonhub mine"]
+			format slot 36 of player with gray stained glass pane named "&e&l*" to run [make player execute command "/prisonhub mine"]
+			set {_i} to 44
+			loop 10 times:
+				format slot {_i} of player with gray stained glass pane named "&e&l*" to run [make player execute command "/prisonhub mine"]
+				add 1 to {_i}
+				
+			set {_level} to {prison.level::%uuid of player%}
+			format slot 19 of player with cobblestone named "&6Ore Mine 0" with lore "", " &7- &eStone", " &7- &eCoal Ore", "", "&eClick to Teleport" to run "sendplayerto %player% prison_mine0"
+			if {_level} >= 1:
+				format slot 20 of player with stone named "&6Ore Mine 1" with lore "", " &7- &eStone", " &7- &eCoal Ore", " &7- &eIron Ore", "", "&eClick to Teleport" to run "sendplayerto %player% prison_mine1"
+			if {_level} >= 2:
+				format slot 21 of player with gold ore named "&6Ore Mine 2" with lore "", " &7- &eStone", " &7- &eCoal Ore", " &7- &eIron Ore", " &7- &eGold Ore", "", "&eClick to Teleport" to run "sendplayerto %player% prison_mine2"
+			if {_level} >= 3:
+				format slot 22 of player with iron ore named "&6Ore Mine 3" with lore "", " &7- &eStone", " &7- &eCoal Ore", " &7- &eIron Ore", "", "&eClick to Teleport" to run "sendplayerto %player% prison_mine3"
+			if {_level} >= 4:
+				format slot 23 of player with iron block named "&6Ore Mine 4" with lore "", " &7- &eStone", " &7- &eCoal Ore", " &7- &eIron Ore", " &7- &eIron Block", "", "&eClick to Teleport" to run "sendplayerto %player% prison_mine4"
+			if {_level} >= 5:
+				format slot 24 of player with redstone ore named "&6Ore Mine 5" with lore "", " &7- &eStone", " &7- &eCoal Ore", " &7- &eIron Ore", " &7- &eIron Blocks", " &7- &eLapis Lazuli Ore", " &7- &eRedstone Ore", "", "&eClick to Teleport" to run "sendplayerto %player% prison_mine5"
+			if {_level} >= 6:
+				format slot 25 of player with lapis lazuli ore named "&6Ore Mine 6" with lore "", " &7- &eStone", " &7- &eIron Ore", " &7- &eIron Blocks", " &7- &eLapis Lazuli Ore", " &7- &eRedstone Ore", " &7- &eGold Ore", " &7- &eCoal Blocks", "", "&eClick to Teleport" to run "sendplayerto %player% prison_mine6"
+			if {_level} >= 7:
+				format slot 28 of player with coal block named "&6Ore Mine 7" with lore "", " &7- &eStone", " &7- &eIron Ore", " &7- &eIron Blocks", " &7- &eLapis Lazuli Block", "", "&eClick to Teleport" to run "sendplayerto %player% prison_mine7"
+			if {_level} >= 8:
+				format slot 29 of player with redstone block named "&6Ore Mine 8" with lore "", " &7- &eStone", " &7- &eCoal Blocks", " &7- &eIron Ore", " &7- &eIron Blocks", " &7- &eRedstone Block", "", "&eClick to Teleport" to run "sendplayerto %player% prison_mine8"
+			if {_level} >= 9:
+				format slot 30 of player with gold block named "&6Ore Mine 9" with lore "", " &7- &eStone", " &7- &eRedstone Ore", " &7- &eGold Ore", " &7- &eGold Block", " &7- &eIron Block", "", "&eClick to Teleport" to run "sendplayerto %player% prison_mine9"
+			if {_level} >= 10:
+				format slot 31 of player with diamond ore named "&6Ore Mine 10" with lore "", " &7- &eStone", " &7- &eRedstone Block", " &7- &eGold Block", " &7- &eIron Block", " &7- &eDiamond Ore", "", "&eClick to Teleport" to run "sendplayerto %player% prison_mine10"
+			if {_level} >= 11:
+				format slot 32 of player with emerald ore named "&6Ore Mine 11" with lore "", " &7- &eStone", " &7- &eEmerald Ore", " &7- &eDiamond Ore", "", "&eClick to Teleport" to run "sendplayerto %player% prison_mine11"
+			if {_level} >= 12:
+				format slot 33 of player with diamond block named "&6Ore Mine 12" with lore "", " &7- &eEnd Stone", " &7- &eDiamond Blocks", " &7- &eEmerald Blocks", "", "&eClick to Teleport" to run "sendplayerto %player% prison_mine12"
+			
+			menuAnimation(player, "        -=[ &1Prison Mines &8]=-")
+	
+		else if arg-1 is "wood" or "lumber" or "axe" or "logs" or "planks":
+			open chest with 6 row named "       -=[ &1Prison Lumber &8]=-" to player
+			wait 1 tick
+			if name of current inventory of player != "       -=[ &1Prison Lumber &8]=-":
+				close inventory of player
+				stop
+				
+			set {_i} to 0
+			loop 10 times:
+				format slot {_i} of player with gray stained glass pane named "&e&l*" to run [make player execute command "/prisonhub mine"]
+				add 1 to {_i}				
+			format slot 17 of player with gray stained glass pane named "&e&l*" to run [make player execute command "/prisonhub mine"]
+			format slot 36 of player with gray stained glass pane named "&e&l*" to run [make player execute command "/prisonhub mine"]
+			set {_i} to 44
+			loop 10 times:
+				format slot {_i} of player with gray stained glass pane named "&e&l*" to run [make player execute command "/prisonhub mine"]
+				add 1 to {_i}
+				
+			set {_level} to {prison.level::%uuid of player%}
+			# set {_level} to 12
+			if {_level} >= 4:
+				format slot 19 of player with oak wood log named "&6Lumber Camp 4" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_wood4"
+			if {_level} >= 5:
+				format slot 20 of player with spruce wood log named "&6Lumber Camp 5" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_wood5"
+			if {_level} >= 6:
+				format slot 21 of player with jungle wood log named "&6Lumber Camp 6" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_wood6"
+			if {_level} >= 7:
+				format slot 22 of player with acacia wood log named "&6Lumber Camp 7" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_wood7"
+			if {_level} >= 8:
+				format slot 23 of player with birch wood log named "&6Lumber Camp 8" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_wood8"
+			if {_level} >= 9:
+				format slot 24 of player with dark oak wood log named "&6Lumber Camp 9" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_wood9"
+			if {_level} >= 10:
+				format slot 25 of player with spruce wood plank named "&6Lumber Camp 10" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_wood10"
+			if {_level} >= 11:
+				format slot 28 of player with jungle wood plank named "&6Lumber Camp 11" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_wood11"
+			if {_level} >= 12:
+				format slot 29 of player with acacia wood plank named "&6Lumber Camp 12" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_wood12"
+			
+			menuAnimation(player, "       -=[ &1Prison Lumber &8]=-")
+
+		else if arg-1 is "cell" or "cells" or "home":
+			open chest with 6 row named "        -=[ &1Prison Cells &8]=-" to player
+			wait 1 tick
+			if name of current inventory of player != "        -=[ &1Prison Cells &8]=-":
+				close inventory of player
+				stop
+				
+			set {_i} to 0
+			loop 10 times:
+				format slot {_i} of player with gray stained glass pane named "&e&l*" to run [make player execute command "/prisonhub mine"]
+				add 1 to {_i}				
+			format slot 17 of player with gray stained glass pane named "&e&l*" to run [make player execute command "/prisonhub mine"]
+			format slot 36 of player with gray stained glass pane named "&e&l*" to run [make player execute command "/prisonhub mine"]
+			set {_i} to 44
+			loop 10 times:
+				format slot {_i} of player with gray stained glass pane named "&e&l*" to run [make player execute command "/prisonhub mine"]
+				add 1 to {_i}
+				
+			set {_level} to {prison.level::%uuid of player%}
+			# set {_level} to 12
+			if {_level} >= 1:
+				format slot 19 of player with green wool named "&6Cell Block 1" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_cells1"
+			if {_level} >= 2:
+				format slot 20 of player with lime wool named "&6Cell Block 2" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_cells2"
+			if {_level} >= 3:
+				format slot 21 of player with yellow wool named "&6Cell Block 3" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_cells3"
+			if {_level} >= 4:
+				format slot 22 of player with orange wool named "&6Cell Block 4" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_cells4"
+			if {_level} >= 5:
+				format slot 23 of player with red wool named "&6Cell Block 5" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_cells5"
+			if {_level} >= 6:
+				format slot 24 of player with brown wool named "&6Cell Block 6" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_cells6"
+			if {_level} >= 7:
+				format slot 25 of player with white wool named "&6Cell Block 7" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_cells7"
+			if {_level} >= 8:
+				format slot 29 of player with purple wool named "&6Cell Block 8" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_cells8"
+			if {_level} >= 9:
+				format slot 30 of player with magenta wool named "&6Cell Block 9" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_cells9"
+			if {_level} >= 10:
+				format slot 31 of player with pink wool named "&6Cell Block 10" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_cells10"
+			if {_level} >= 11:
+				format slot 32 of player with light blue wool named "&6Cell Block 11" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_cells11"
+			if {_level} >= 12:
+				format slot 33 of player with cyan wool named "&6Cell Block 12" with lore "", "&eClick to Teleport" to run "sendplayerto %player% prison_cells12"
+			
+			menuAnimation(player, "        -=[ &1Prison Cells &8]=-")
+
+			
+		else if arg-1 is "quests" or "quest" or "questmanager" or "samequest":
+			if arg-2 is not set:
+				open chest with 6 row named "       -=[ &1Prison Quests &8]=-" to player
+				wait 1 tick
+			if name of current inventory of player != "       -=[ &1Prison Quests &8]=-":
+				close inventory of player
+				stop
+			if arg-2 is set:
+				format slot 19 of player with air to run "sudo %player% prisonhub quest 4"
+				format slot 20 of player with air to run "sudo %player% prisonhub quest 4"
+				format slot 21 of player with air to run "sudo %player% prisonhub quest 4"
+				format slot 22 of player with air to run "sudo %player% prisonhub quest 4"
+				format slot 23 of player with air to run "sudo %player% prisonhub quest 4"
+				format slot 24 of player with air to run "sudo %player% prisonhub quest 4"
+				format slot 25 of player with air to run "sudo %player% prisonhub quest 4"
+				format slot 28 of player with air to run "sudo %player% prisonhub quest 4"
+				format slot 29 of player with air to run "sudo %player% prisonhub quest 4"
+				format slot 37 of player with {item::backarrow} named "&eBack To All Quests" to run "sudo %player% prisonhub samequest"
+			
+				if arg-2 is "4":
+									
+					add "ironingot4" to {_quest::*}
+					add 200 to {_amount::*}
+					add "Iron Ingot" to {_item::*}
+					add 2304 to {_max::*}
+				
+					add "coal4" to {_quest::*}
+					add 250 to {_amount::*}
+					add "Coal" to {_item::*}
+					add 2304 to {_max::*}
+				
+					add "stone4" to {_quest::*}
+					add 350 to {_amount::*}
+					add "Cobblestone" to {_item::*}
+					add 2304 to {_max::*}
+					
+				else if arg-2 is "5":
+					
+					add "stone5" to {_quest::*}
+					add 200 to {_amount::*}
+					add "Stone" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "wood5" to {_quest::*}
+					add 300 to {_amount::*}
+					add "Oak Wood Log" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "stonepickaxe5" to {_quest::*}
+					add 15 to {_amount::*}
+					add "Stone Pickaxe" to {_item::*}
+					add 36 to {_max::*}
+					
+					add "lapis5" to {_quest::*}
+					add 350 to {_amount::*}
+					add "Lapis" to {_item::*}
+					add 2304 to {_max::*}
+					
+					
+					add "redstone5" to {_quest::*}
+					add 100 to {_amount::*}
+					add "Redstone" to {_item::*}
+					add 2304 to {_max::*}
+					
+				else if arg-2 is "6":
+					
+					
+					add "redstone6" to {_quest::*}
+					add 400 to {_amount::*}
+					add "Redstone" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "ironhelmet6" to {_quest::*}
+					add 8 to {_amount::*}
+					add "Iron Helmet" to {_item::*}
+					add 36 to {_max::*}
+					
+					
+					add "ironbars6" to {_quest::*}
+					add 300 to {_amount::*}
+					add "Iron Bars" to {_item::*}
+					add 2304 to {_max::*}
+					
+				else if arg-2 is "7":
+					
+					add "goldingots7" to {_quest::*}
+					add 200 to {_amount::*}
+					add "Gold Ingot" to {_item::*}
+					add 2304 to {_max::*}
+					
+					
+					add "ironswords7" to {_quest::*}
+					add 25 to {_amount::*}
+					add "Iron Sword" to {_item::*}
+					add 36 to {_max::*}
+					
+					
+					add "stonebricks7" to {_quest::*}
+					add 100 to {_amount::*}
+					add "Stone Brick" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "gyarspickaxes7" to {_quest::*}
+					add 25 to {_amount::*}
+					add "Iron Pickaxe" to {_item::*}
+					add 36 to {_max::*}
+					
+					add "charscoal7" to {_quest::*}
+					add 100 to {_amount::*}
+					add "Coal" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "wardenscarpet7" to {_quest::*}
+					add 15 to {_amount::*}
+					add "White Wool" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "scientists7" to {_quest::*}
+					add 40 to {_amount::*}
+					add "Gunpowder" to {_item::*}
+					add 2304 to {_max::*}
+					
+					
+					add "cellblock7" to {_quest::*}
+					add 100 to {_amount::*}
+					add "Stone Brick" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "worldedit7" to {_quest::*}
+					add 400 to {_amount::*}
+					add "Oak Plank" to {_item::*}
+					add 2304 to {_max::*}
+					
+					
+					add "plutosmine7" to {_quest::*}
+					add 200 to {_amount::*}
+					add "Stone" to {_item::*}
+					add 2304 to {_max::*}
+				
+				
+				else if arg-2 is "8":
+					
+					add "cafeteria8" to {_quest::*}
+					add 200 to {_amount::*}
+					add "Cooked Porkchop" to {_item::*}
+					add 2304 to {_max::*}
+					
+					
+					add "owlsfeathers8" to {_quest::*}
+					add 75 to {_amount::*}
+					add "Feather" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "guardsarmor8" to {_quest::*}
+					add 10 to {_amount::*}
+					add "Iron Boots" to {_item::*}
+					add 36 to {_max::*}
+					
+					add "guardsarrows8" to {_quest::*}
+					add 80 to {_amount::*}
+					add "Arrow" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "boneblocks7" to {_quest::*}
+					add 15 to {_amount::*}
+					add "Bone Block" to {_item::*}
+					add 2304 to {_max::*}
+					
+					
+					add "sticks8" to {_quest::*}
+					add 250 to {_amount::*}
+					add "Stick" to {_item::*}
+					add 2304 to {_max::*}
+					
+				else if arg-2 is "9":
+					add "nightrobber9" to {_quest::*}
+					add 200 to {_amount::*}
+					add "Chest" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "signpainter9" to {_quest::*}
+					add 45 to {_amount::*}
+					add "Wall Sign" to {_item::*}
+					add 576 to {_max::*}
+					
+					add "queenwolfiesbones9" to {_quest::*}
+					add 50 to {_amount::*}
+					add "Bone" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "blazerods9" to {_quest::*}
+					add 50 to {_amount::*}
+					add "Blaze Rod" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "string9" to {_quest::*}
+					add 20 to {_amount::*}
+					add "String" to {_item::*}
+					add 2304 to {_max::*}
+					
+					
+					add "wool9" to {_quest::*}
+					add 15 to {_amount::*}
+					add "Wool" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "flesh9" to {_quest::*}
+					add 25 to {_amount::*}
+					add "Rotten Flesh" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "beds9" to {_quest::*}
+					add 10 to {_amount::*}
+					add "Bed" to {_item::*}
+					add 2304 to {_max::*}
+					
+				else if arg-2 is "10":
+					add "effysdiamonds10" to {_quest::*}
+					add 30 to {_amount::*}
+					add "Wooden Shovel" to {_item::*}
+					add 36 to {_max::*}
+					
+					add "blazepowder10" to {_quest::*}
+					add 36 to {_amount::*}
+					add "Blaze Powder" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "coalblocks10" to {_quest::*}
+					add 25 to {_amount::*}
+					add "Block of Coal" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "goldnuggets10" to {_quest::*}
+					add 300 to {_amount::*}
+					add "Gold Nugget" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "torches10" to {_quest::*}
+					add 150 to {_amount::*}
+					add "Torch" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "bows10" to {_quest::*}
+					add 10 to {_amount::*}
+					add "Bow" to {_item::*}
+					add 36 to {_max::*}
+					
+					
+					add "cookedchicken10" to {_quest::*}
+					add 45 to {_amount::*}
+					add "Cooked Chicken" to {_item::*}
+					add 2304 to {_max::*}
+					
+					
+					add "cobblestone11" to {_quest::*}
+					add 300 to {_amount::*}
+					add "Cobblestone" to {_item::*}
+					add 2304 to {_max::*}
+					
+					
+					add "redstone11" to {_quest::*}
+					add 150 to {_amount::*}
+					add "Redstone" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "gold11" to {_quest::*}
+					add 180 to {_amount::*}
+					add "Gold Ingot" to {_item::*}
+					add 2304 to {_max::*}
+					
+					add "string11" to {_quest::*}
+					add 64 to {_amount::*}
+					add "String" to {_item::*}
+					add 2304 to {_max::*}
+					
+				else:
+					message "bro wtf"
+					
+				set {_slot} to 19
+				loop {_quest::*}:
+					set {_quest} to {_quest::%loop-index%}
+					set {_item} to {_item::%loop-index%}
+					set {_amount} to {_amount::%loop-index%}
+					delete {_completed}
+					set {_completed} to {prison.quest.player.stats::%uuid of player%::%{_quest}%} 
+					if {_completed} is not set:
+						set {_completed} to 1
+					set {_amount} to {_amount} * {_completed}
+					subtract 1 from {_completed}
+					set {_itemType} to {_item} parsed as item
+					if {_itemType} is not set:
+						message "Item Error: %{_item}%"
+						add 1 to {_slot}
+						if {_slot} = 26:
+							set {_slot} to 28
+						continue
+					set {_has} to amount of {_itemType} in player's inventory
+					set {_max} to {_max::%loop-index%}
+					if {_amount} >= {_max}:
+						format slot {_slot} of player with 1 of {_itemType} named "&f&n%{_item}%" with lore "", " &eQuest&7:", "  &aQuest Completed", "  &7Times Completed &a%{_completed}%", "" to run "sendplayerto %player% prison_quests_%arg-2%"
+					else if {_has} = 0:
+						format slot {_slot} of player with 1 of {_itemType} named "&f&n%{_item}%" with lore "", " &eQuest&7:", "  &7Items Needed&f: &6%{_amount}%", "  &7Times Completed &6%{_completed}%", "", "&eClick To Teleport", "" to run "sendplayerto %player% prison_quests_%arg-2%"
+					else if {_has} < {_amount}:
+						format slot {_slot} of player with 1 of {_itemType} named "&f&n%{_item}%" with lore "", " &eQuest&7:", "  &7Items Needed&f: &c%{_has}%&8/&6%{_amount}%", "  &7Times Completed &6%{_completed}%", "", "&eClick To Teleport", "" to run "sendplayerto %player% prison_quests_%arg-2%"
+					else:
+						format slot {_slot} of player with 1 of {_itemType} named "&f&n%{_item}%" with lore "", " &eQuest&7:", "  &7Items Needed&f: &a%{_has}%&8/&6%{_amount}%", "  &7Times Completed &6%{_completed}%", "", "&eClick To Teleport", "" to run "sendplayerto %player% prison_quests_%arg-2%"
+					add 1 to {_slot}
+					if {_slot} = 26:
+						set {_slot} to 28
+				stop	
+					
+			# ################################
+			# ######################################################
+					
+					
+					
+					
+					
+
+			set {_level} to {prison.level::%uuid of player%}
+			if {_level} <= 3:
+				message "&8[&ePrison&8] &fReach Level 4 to Unlock Quests!"
+				stop
+			set {_i} to 0
+			if arg-1 is not "samequest":
+				loop 10 times:
+					format slot {_i} of player with gray stained glass pane named "&e&l*" to run [make player execute command "/prisonhub mine"]
+					add 1 to {_i}				
+				format slot 17 of player with gray stained glass pane named "&e&l*" to run [make player execute command "/prisonhub mine"]
+				format slot 36 of player with gray stained glass pane named "&e&l*" to run [make player execute command "/prisonhub mine"]
+				set {_i} to 44
+				loop 10 times:
+					format slot {_i} of player with gray stained glass pane named "&e&l*" to run [make player execute command "/prisonhub mine"]
+					add 1 to {_i}
+			format slot 37 of player with air to run "sudo %player% prisonhub samequest"
+			# set {_level} to 12
+			if {_level} >= 4:
+				format slot 19 of player with red wool named "&6Quest List 4" with lore "", "&eClick to View" to run "sudo %player% prisonhub quest 4"
+			if {_level} >= 5:
+				format slot 20 of player with orange wool named "&6Quest List 5" with lore "", "&eClick to View" to run "sudo %player% prisonhub quest 5"
+			if {_level} >= 6:
+				format slot 21 of player with yellow wool named "&6Quest List 6" with lore "", "&eClick to View" to run "sudo %player% prisonhub quest 6"
+			if {_level} >= 7:
+				format slot 22 of player with lime wool named "&6Quest List 7" with lore "", "&eClick to View" to run "sudo %player% prisonhub quest 7"
+			if {_level} >= 8:
+				format slot 23 of player with purple wool named "&6Quest List 8" with lore "", "&eClick to View" to run "sudo %player% prisonhub quest 8"
+			if {_level} >= 9:
+				format slot 24 of player with magenta wool named "&6Quest List 9" with lore "", "&eClick to View" to run "sudo %player% prisonhub quest 9"
+			if {_level} >= 10:
+				format slot 25 of player with pink wool named "&6Quest List 10" with lore "", "&eClick to View" to run "sudo %player% prisonhub quest 10"
+			# if {_level} >= 11:
+			#	format slot 28 of player with light blue wool named "&6Quest List 11" with lore "", "&eClick to View" to run "sudo %player% prisonhub quest 11"
+			# if {_level} >= 12:
+			#	format slot 29 of player with cyan wool named "&6Quest List 12" with lore "", "&eClick to View" to run "sudo %player% prisonhub quest 12"
+			if arg-1 is not "samequest":
+				menuAnimation(player, "       -=[ &1Prison Quests &8]=-")

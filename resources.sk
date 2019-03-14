@@ -1,0 +1,401 @@
+command /resource:
+	aliases: /resources
+	trigger:
+		if {lastwarpwild} was less than 1 seconds ago:
+			message "&8[&bSnap&8&8] &7Someone just used that, please wait"
+			stop
+		set {lastwarpwild} to now
+		set {_x} to random integer from -399 to 399
+		set {_z} to random integer from -399 to 399
+		set {_y} to 60
+		set {_loc} to location({_x}, {_y}, {_z}, world "resource")
+		add .5 to x coordinate of {_loc}
+		add .5 to z coordinate of {_loc}
+		if block at {_loc} = air:
+			if block above {_loc} = air:
+				teleport player to {_loc}
+			else:
+				add 1 to {_y}
+				set {_loc} to location({_x}, {_y}, {_z}, world "resource")
+		while block at {_loc} != air:
+			add 1 to {_y}
+			set {_loc} to location({_x}, {_y}, {_z}, world "resource")
+			if block above block at {_loc} = air:
+				teleport player to {_loc}
+		message "&8[&bSnap&8] &7Teleported to random location in the resource world"
+		wait 1 seconds
+		message "&8[&bSnap&8] &7Mine anything to start making money"
+		wait 1 second
+		message "&8[&bSnap&8] &7Anything you do here will be lost!"
+		wait 1 second
+		message "&8[&bSnap&8] &7Mine Ores to Find Lucky Blocks (Sponges)"
+		wait 1 second
+		message "&8[&bSnap&8] &7Return to the spawn area with &b/spawn"
+		
+command /resourcespam:
+	permission: is.op
+	trigger:
+		loop 10 times:
+			set {_x} to random integer from -999 to 999
+			set {_z} to random integer from -999 to 999
+			set {_y} to 60
+			set {_loc} to location({_x}, {_y}, {_z}, world "resource")
+			add .5 to x coordinate of {_loc}
+			add .5 to z coordinate of {_loc}
+			if block at {_loc} = air:
+				if block above {_loc} = air:
+					teleport player to {_loc}
+				else:
+					add 1 to {_y}
+					set {_loc} to location({_x}, {_y}, {_z}, world "resource")
+			while block at {_loc} != air:
+				add 1 to {_y}
+				set {_loc} to location({_x}, {_y}, {_z}, world "resource")
+				if block above block at {_loc} = air:
+					teleport player to {_loc}
+			wait 5 seconds
+on break:
+	event-block is a sponge
+	if player is in world "resource":
+		message "&8[&bSnap&8] &eYou opened a lucky block!"
+		
+		set {_i} to random integer from 1 to 55
+		if {_i} is 1:
+			set event-block to a chest
+			wait 1 tick
+			add 1 stone block named "&c&lL&e&lO&c&lL" to inventory of event-block
+		else if {_i} is 2:
+			set event-block to a chest
+			wait 1 tick
+			add 1 diamond named "&bShiny" to inventory of event-block
+		else if {_i} is 3:
+			set block above block above player to obsidian
+			set block below player to obsidian
+			set block north of player to obsidian
+			set block east of player to obsidian
+			set block west of player to obsidian
+			set block south of player to obsidian
+		else if {_i} is 4:
+			spawn 4 ocelot at location of player
+			spawn 4 chicken at location above location of player
+		else if {_i} is 5:
+			set block north of player to cactus
+			set block east of player to cactus
+			set block west of player to cactus
+			set block south of player to cactus
+		else if {_i} is 6:
+			set block above block above player to water
+			set block above player to water
+			set block below player to water
+			set block north of player to water
+			set block east of player to water
+			set block west of player to water
+			set block south of player to water
+		else if {_i} is 7:
+			spawn zombie behind player 
+			set helmet of last spawned entity to {item::gyarhead}
+			set name of last spawned entity to "&b&lGyarbear"
+		else if {_i} is 8:
+			spawn primed tnt at event-block
+		else if {_i} is 9:
+			spawn llama at event-block
+			set age of last spawned entity to 1
+		else if {_i} is 9:
+			spawn llama at event-block
+			set age of last spawned entity to 1
+		else if {_i} is 10:
+			set event-block to a chest
+			wait 1 tick
+			add 5 diamonds to inventory of event-block
+		else if {_i} is 11:
+			strike lightning at location of player
+		else if {_i} is 12:
+			spawn creeper at location of event-block
+			strike lightning at location of event-block
+		else if {_i} is 13:
+			set event-block to a beacon
+		else if {_i} is 14:
+			set event-block to lava
+		else if {_i} is 15:
+			set event-block to water
+		else if {_i} is 16:
+			set block 2 above location of block above player to anvil
+			set block 1 above location of block above player to air
+			set block above location of block above player to air
+			set block at location of player to air
+		else if {_i} is 17:
+			set event-block to cactus
+		else if {_i} is 18:
+			set event-block to bedrock
+		else if {_i} is 19:
+			set event-block to diamond ore
+		else if {_i} is 20:
+			set event-block to emerald ore
+		else if {_i} is 21:
+			spawn 10 zombies at event-block
+		else if {_i} is 22:
+			spawn 1 chicken at event-block
+			apply potion of levitation to last spawned entity for 30 seconds
+		else if {_i} is 23:
+			loop 6 times:
+				spawn 1 chicken at event-block
+				apply potion of levitation to last spawned entity for 30 seconds
+		else if {_i} is 24:
+			spawn 1 slime at event-block
+			apply potion of levitation to last spawned entity for 5 seconds
+		else if {_i} is 25:
+			set event-block to gold block
+		else if {_i} is 26:
+			apply potion of levitation to player for 10 seconds
+		else if {_i} is 27:
+			apply potion of blindness to player for 10 seconds
+		else if {_i} is 28:
+			set block above block above player to obsidian
+			set block below player to bedrock
+			set block north of player to bedrock
+			set block east of player to bedrock
+			set block west of player to bedrock
+			set block south of player to bedrock
+		else if {_i} is 29:
+			set block below player to cobweb
+		else if {_i} is 30:
+			set block below player to lava
+		else if {_i} is 31:
+			set block below player to sponge
+		else if {_i} is 32:
+			spawn 4 zombie pigman at event-block
+		else if {_i} is 33:
+			spawn 2 blaze at event-block
+		else if {_i} is 34:
+			spawn 2 endermite at event-block
+		else if {_i} is 35:
+			spawn 10 silverfish at event-block
+		else if {_i} is 36:
+			spawn 1 enderman at event-block
+		else if {_i} is 37:
+			spawn 10 pigs at event-block
+		else if {_i} is 37:
+			spawn 10 pigs at event-block
+		else if {_i} is 38:
+			message "&8[&bSnap&eLucky&6Blocks&8] &7You got &a$60k"
+			add 60000 to player's balance
+		else if {_i} is 39:
+			message "&8[&bSnap&eLucky&6Blocks&8] &7You got &a$40k"
+			add 40000 to player's balance
+		else if {_i} is 40:
+			message "&8[&bSnap&eLucky&6Blocks&8] &7You got &a$50k"
+			add 50000 to player's balance
+		else if {_i} is 41:
+			message "&8[&bSnap&eLucky&6Blocks&8] &7You got &a$20k"
+			add 20000 to player's balance
+		else if {_i} is 42:
+			message "&8[&bSnap&eLucky&6Blocks&8] &7You got &a$10k"
+			add 10000 to player's balance
+		else if {_i} is 43:
+			message "&8[&bSnap&eLucky&6Blocks&8] &7You got &a$70k"
+			add 70000 to player's balance
+		else if {_i} is 44:
+			message "&8[&bSnap&eLucky&6Blocks&8] &7You got &a$6k"
+			add 6000 to player's balance
+		else if {_i} is 45:
+			set event-block to a chest
+			wait 1 tick
+			add 1 diamond block to inventory of event-block
+		else if {_i} is 46:
+			set event-block to a chest
+			wait 1 tick
+			add 1 of {item::lb.proleg} to inventory of event-block
+		else if {_i} is 47:
+			set event-block to a chest
+			wait 1 tick
+			add 1 of {item::lb.claimblock75} to inventory of event-block
+		else if {_i} is 48:
+			set event-block to a chest
+			wait 1 tick
+			add 1 of {item::lb.heroboot} to inventory of event-block
+		else if {_i} is 49:
+			set event-block to a chest
+			wait 1 tick
+			add 1 of {item::lb.proaxe} to inventory of event-block
+		else if {_i} is 50 or 55:
+			wait 1 tick
+			
+			if {lb.maxkeys.ip::%ip of player%} is not set:
+				set {lb.maxkeys.ip::%ip of player%} to 1
+				
+			if {lb.maxkeys.player::%player%} is not set:
+				set {lb.maxkeys.player::%player%} to 1
+				
+			if {lb.maxkeys.player::%player%} <= 1:
+			
+				if {lb.maxkeys.ip::%ip of player%} <= 1:
+					execute console command "/kp key Shamrock regular %player% 1"
+					message "&8[&bSnap&eLucky&6Blocks&8] &7You got a Shamrock crate key! &c%{lb.maxkeys.player::%player%}%&7/&a1 for today"
+					add 1 to {september.totalkeys}
+				else:
+					execute console command "/kp key Party regular %player% 1"
+					message "&8[&bSnap&eLucky&6Blocks&8] &7You would have gotten a Shamrock key but you already got 1 today"
+			else:
+				execute console command "/kp key Party regular %player% 1"
+				message "&8[&bSnap&eLucky&6Blocks&8] &7You would have gotten a Shamrock key but you already got 1 today"
+			add 1 to {lb.maxkeys.ip::%ip of player%}
+			add 1 to {lb.maxkeys.player::%player%}	
+		else if {_i} is 51:
+			set event-block to a chest
+			wait 1 tick
+			add 1 diamond block to inventory of event-block
+		else if {_i} is 52:
+			spawn 5 cave spiders at location of event-block
+		else if {_i} is 53:
+			spawn 3 spiders at location of event-block
+		else if {_i} is 54:
+			spawn 1 zombie at location of event-block
+			set name of last spawned entity to "&cBob"
+			set helmet of last spawned entity to diamond helmet of protection 5
+			set chestplate of last spawned entity to diamond chestplate of protection 5
+			set leggings of last spawned entity to diamond leggings of protection 5
+			set boots of last spawned entity to diamond boots of protection 5
+			set tool of last spawned entity to diamond sword of sharpness 10
+			
+			
+on break:	
+	if player is in world "resource":
+		if event-block is any ore:
+			chance of 10%:
+				wait 1 tick
+				set block at event-location to a sponge
+				stop
+		set {_block} to "%event-block%"
+		if {pickupmoney.blocks.high::%{_block}%} is not set:
+			stop
+		set {_high} to {pickupmoney.blocks.high::%{_block}%} parsed as number
+		set {_low} to {pickupmoney.blocks.low::%{_block}%} parsed as number
+		set {_value} to random number from {_low} to {_high}
+		if {pickup.multiplier.time::%player%} is set:
+			if {pickup.multiplier.start::%player%} was less than {pickup.multiplier.time::%player%} ago:
+				if {pickup.multiplier.value::%player%} is set:
+					set {_value} to {_value} * {pickup.multiplier.value::%player%}
+		if player has permission "is.vortex.max":
+			set {_value} to {_value} * 4
+		else if player has permission "is.vortex":
+			set {_value} to {_value} * 3
+		else if player has permission "is.cosmic":
+			set {_value} to {_value} * 2
+		add {_value} to player's balance
+		if {pickupmoney.currentHold::%event-player%} is not set:
+			set {pickupmoney.currentHold::%player%} to {_value} parsed as number
+		else:
+			add {_value} parsed as number to {pickupmoney.currentHold::%event-player%}
+		send action bar from "&3&l&8[&bSnap&8] &ePicked up &a$%{_value}%" to event-player	
+on drop:
+	if player is in world "resource":
+		cancel event
+		message "&8[&bSnap&8] &7You can't drop items here" 
+on load:
+	delete {pickupmoney.currentHold::*}
+on item spawn:
+	if event-entity is in world "resource":
+		cancel event
+		
+		
+command /resourceprices:
+	permission: is.op
+	trigger:
+		loop {pickupmoney.blocks.low::*}:
+			message "&e%loop-index% &f: &a%loop-value% &7- &a%{pickupmoney.blocks.high::%loop-index%}%"
+on break:
+	if player has permission "is.op":
+		if {pickupmoney.delete::%player%} is set:
+			cancel event
+		if {pickupmoney.setitem::%player%} is set:
+			if {pickupmoney.set.low::%player%} is set:
+				if {pickupmoney.set.high::%player%} is set:
+					message "&8[&bPickUp&8] &7Set &e%event-block% &7to &a$%{pickupmoney.set.low::%player%}%&7-&a$%{pickupmoney.set.high::%player%}%"
+					set {_block} to "%event-block%"
+					set {pickupmoney.blocks.low::%{_block}%} to {pickupmoney.set.low::%player%}
+					set {pickupmoney.blocks.high::%{_block}%} to {pickupmoney.set.high::%player%}
+					cancel event
+					wait 1 tick
+					delete {pickupmoney.set.low::%player%}
+					delete {pickupmoney.set.high::%player%}
+					delete {pickupmoney.setitem::%player%}
+	
+command /pu [<text>] [<text>]:
+	permission: is.Pluto
+	trigger:
+		if arg-1 is not set:
+			message "&8[&bPickUp&8] &d/pickupmoney (minvalue) (maxvalue)"
+			message "&8[&bPickUp&8] &d/pickupmoney delete"
+			message "&8[&bPickUp&8] &eThen break the block you want set/remove"
+			stop
+		else if arg-1 is "delete":
+			message "&8[&bPickUp&8] &7Break a block to remove it's value"
+			set {pickupmoney.delete::%player%} to true
+			stop
+		if arg-2 is not set:
+			message "&8[&bPickUp&8] &d/pickupmoney (minvalue) (maxvalue)"
+			message "&8[&bPickUp&8] &d/pickupmoney delete"
+			message "&8[&bPickUp&8] &eThen break the block you want set/remove"
+			stop
+		else:
+			message "&8[&bPickUp&8] &7Break a block to set values from %arg-1% to %arg-2%"
+			set {pickupmoney.setitem::%player%} to true
+			set {pickupmoney.set.low::%player%} to arg-1
+			set {pickupmoney.set.high::%player%} to arg-2
+
+
+command /pickupmultiplier [<player>] [<number>] [<timespan>]:
+	permission: is.op
+	trigger:
+		if arg-2 is 0:
+			delete {pickup.multiplier.time::%arg-1%}
+			delete {pickup.multiplier.value::%arg-1%}
+			delete {pickup.multiplier.start::%arg-1%}
+			message "&8[&bPickUp&8] &7Removed multiplier for %arg-1%"
+			stop
+		if arg-3 is not set:
+			message "&8[&bPickUp&8] &d/pickupmultiplier (player) (multiplier) (timespan)"
+			message "&8[&bPickUp&8] &7Example: &f/pickupmultiplier Plutoren 2 30 minutes"
+			stop
+		send "&3&8[&bSnap&8] &7You recieved a resource multiplier of &dx%arg-2%" to arg-1
+		send "         &7Duration: &c%arg-3%" to arg-1
+		set {pickup.multiplier.time::%arg-1%} to arg-3
+		set {pickup.multiplier.value::%arg-1%} to arg-2
+		set {pickup.multiplier.start::%arg-1%} to now
+		message "&8[&bPickUp&8] &7Set mutiplier of &dx%arg-2% &7for &a%arg-1% &7for &c%arg-3%"
+every 4 hours:
+	loop all players:
+		set {_i} to a random integer from 2 to 4
+		set {_j} to a random integer from 2 to 6
+		execute console command "/pickupmultiplier %loop-player% %{_i}% %{_j}% minutes"
+command /nextlb:
+	trigger:
+		message "&dHours left&7: %{luckyblockreset}%"
+		
+every hour:
+	if {luckyblockreset} < 1:	
+		delete {lb.maxkeys.ip::*}
+		delete {lb.maxkeys.player::*}
+		set {luckyblockreset} to 23
+	subtract 1 from {luckyblockreset}
+on quit:
+	delete {pickupmoney.currentHold::%player%}
+command /totallb:
+	aliases: keysleft
+	trigger:
+		if {lb.maxkeys.ip::%ip of player%} is not set:
+			message "&8[&eLucky&6Blocks&8] &7You have collected &c0&7/&a1 &7keys today."
+		else:
+			message "&8[&eLucky&6Blocks&8] &7You have collected &b%{lb.maxkeys.ip::%ip of player%} - 1%&7/&a1 &7keys today."
+
+every 4 minutes:
+	loop all players in world "resource":
+		if {pickupmoney.currentHold::%loop-player%} is set:
+			send "&3&l&8[&bSnap&8] &7You collected &a$%{pickupmoney.currentHold::%loop-player%}% &7in the last 4 minutes" to loop-player
+	delete {pickupmoney.currentHold::*}
+			
+on place:
+	if player is in world "resource":
+		if event-block is not dirt or cobblestone or torch or sand:
+			cancel event
+			message "&8[&bSnap&8] &7You can only place dirt, sand, cobble, and torches here"

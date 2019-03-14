@@ -1,0 +1,291 @@
+on death of player:
+	if victim is in world "FortCraft":
+		heal victim
+		set {_items::*} to drops
+		clear drops
+		if block at victim is air:
+			set {_location} to victim's location
+		else if block above victim's location is air:
+			set {_location} to block above victim's location
+		teleport victim to {pos::kitpvp_spawn}
+		add 3 to {kitpvp.points::%uuid of attacker%}
+		add 1 to {kitpvp.event.kills::%uuid of attacker%}
+		play "ENTITY_EXPERIENCE_ORB_PICKUP"  to attacker 
+		set {_distance} to distance between attacker and victim
+		
+		
+		set metadata "kitpvp.killstreak" of victim to 0
+		set {_kitpvp.killstreak} to metadata "kitpvp.killstreak" of attacker
+		if {_kitpvp.killstreak} is not set:
+			set metadata "kitpvp.killstreak" of attacker to 1
+		else:
+			set metadata "kitpvp.killstreak" of attacker to {_kitpvp.killstreak} + 1
+		set {_kitpvp.killstreak} to metadata "kitpvp.killstreak" of attacker
+			
+		
+		if attacker is set:
+			loop all players in world "FortCraft":
+				if loop-player != victim or attacker:
+					send "&8[&6KitPvP&8] &6&l%attacker% &7killed &e%victim% &7(&e%{_kitpvp.killstreak}%&7) &5%{_distance}%m" to loop-player
+				else if loop-player = victim:
+					send "&8[&6KitPvP&8] &d&l%attacker% &7killed &fyou &7(&a%{_kitpvp.killstreak}%&7) &5%{_distance}%m" to loop-player
+				else if loop-player = attacker:
+					send "&8[&6KitPvP&8] &fYou &7killed &c%victim% &7(&e%{_kitpvp.killstreak}%&7) &5%{_distance}%m" to loop-player
+		if {kitpvp.points::%uuid of victim%} is set:
+			send "&8[&6KitPvP&8] &eYou have %{kitpvp.points::%uuid of victim%}% points" to victim
+		if {_location} is set:
+			if {_items::1} is set:
+				set block at {_location} to chest
+				loop {_items::*}:
+					add loop-value to inventory of block at {_location}
+				
+				wait 30 seconds
+				clear inventory of block at {_location}
+				set block at {_location} to air
+every 3 seconds:
+	if {fortnite.storm.width} is set:
+		if {fortnite.storm.width} <= 0:
+			stopEffect "fortnite.storm"
+			delete {fortnite.storm.width}
+			stop
+		chance of 20%:
+			subtract 1 from {fortnite.storm.width} 
+		stopEffect "fortnite.storm"
+		if {fortnite.storm.width} < 30:
+			drawCylinder particle "redstone", RGB 255, 0, 0, center {pos::fortnite_center}, id "fortnite.storm", randomRotation false, isSolid false, radius {fortnite.storm.width}, density 600, height 130, sideRatio 1, visibleRange 10
+		else:
+			drawCylinder particle "redstone", RGB 255, 0, 0, center {pos::fortnite_center}, id "fortnite.storm", randomRotation false, isSolid false, radius {fortnite.storm.width}, density 2200, height 130, sideRatio 1, visibleRange 18
+		loop players in world "FortCraft":
+			set {_loc} to location of loop-player
+			set y coordinate of {_loc} to y coordinate of {pos::fortnite_center}
+			if "%regions at loop-player%" does not contain "fortnite_lobby":
+				if distance between {pos::fortnite_center} and {_loc} > {fortnite.storm.width}:
+					damage loop-player by 2
+					send "&8[&6KitPvP&8] &bYou are in the Storm! Head to the middle!" to loop-player
+	else:
+		set {fortnite.storm.width} to 100
+command /kitpvp:
+	trigger:
+		teleport player to {pos::kitpvp}
+on damage of player:
+	if attacker is in world "FortCraft":
+		if victim != attacker:
+			wait 1 tick
+			set {_basehealth} to victim's health
+			set {_absorption} to absorption hearts of victim
+			set {_string} to "&a%victim% "
+			set {_length} to 0
+			loop 12 times:
+				if {_basehealth} > 0:
+					add 1 to {_length}
+					subtract 1 from {_basehealth}
+					set {_string} to "%{_string}%&4❤"
+				else if {_absorption} > 0:
+					add 1 to {_length}
+					subtract 2 from {_absorption}
+					set {_string} to "%{_string}%&e❤"
+			loop 10 times:
+				if {_length} < 10:
+					add 1 to {_length}
+					set {_string} to "%{_string}%&7❤"
+
+			show actionbar with "%{_string}%" to attacker
+on command:
+	if player is in world "FortCraft":
+		if player does not have permission "is.Pluto":
+			if command contains "auc" or "echest" or "eechest" or "fish" or "mf" or "eec" or "kit" or "fix" or "hat" or "fly" or "ender" or "auction" or "setwarp" or "ah" or "auctionhouse" or "shop" or "pack" or "packs" or "ec" or "enderchest" or "heal" or "feed" or "tp" or "setwarp" or "sethome":
+				cancel event
+				message "&8[&fOITC&8] &7You can't use that command here!"				
+on drop:
+	if player is in world "FortCraft":
+		if "%regions at player%" contains "fortnite_lobby":
+			message "&8[&bSnap&8] &cNo sharing in the lobby!"
+			cancel event
+on right click on wall sign:
+	if player is in world "FortCraft":
+		if first line of event-block contains "KitPvP":
+			cancel event
+			if second line of event-block contains "Gray":
+				grayWeapon(player)
+			else if second line of event-block contains "Elytra":
+				set player's chestplate to an Elytra
+				message "&8[&6KitPvP&8] &eElytra Equipped"
+			if second line of event-block contains "Green":
+				greenWeapon(player)
+			if second line of event-block contains "Blue":
+				blueWeapon(player)
+			if second line of event-block contains "Purple":
+				purpleWeapon(player)
+			if second line of event-block contains "Gold":
+				goldWeapon(player)
+			if second line of event-block contains "Boots":
+				boots(player)
+			if second line of event-block contains "Helmet":
+				helmet(player)
+				
+
+function grayWeapon(player: player):
+	set {_uuid} to uuid of {_player}
+	if {kitpvp.points::%{_uuid}%} is set:
+		send "&8[&6KitPvP&8] &eFree Gray Weapon Equipped" to {_player}
+	set {_i} to random integer from 1 to 2
+	if {_i} is 1:
+		execute console command "shot give %{_player}% assaultriflegray"
+		execute console command "shot give %{_player}% mediumbullets 64"
+	else if {_i} is 2:
+		execute console command "shot give %{_player}% pistolgray"
+		execute console command "shot give %{_player}% mediumbullets 64"
+		
+		
+		
+function greenWeapon(player: player):
+	set {_uuid} to uuid of {_player}
+	if {kitpvp.points::%{_uuid}%} is set:
+		if {kitpvp.points::%{_uuid}%} >= 1:
+			subtract 1 from {kitpvp.points::%{_uuid}%}
+		else:	
+			send "&8[&6KitPvP&8] &eYou don't have enough points! Select a lower weapon." to {_player}
+			stop
+	else:
+		send "&8[&6KitPvP&8] &eYou have no points! Select the Gray Weapon." to {_player}
+		stop
+	set {_i} to random integer from 1 to 3
+	if {_i} is 1:
+		execute console command "shot give %{_player}% assaultriflegreen"
+		execute console command "shot give %{_player}% mediumbullets 64"
+		execute console command "shot give %{_player}% mediumbullets 64"
+	else if {_i} is 2:
+		execute console command "shot give %{_player}% pistolgreen"
+		execute console command "shot give %{_player}% mediumbullets 64"
+		execute console command "shot give %{_player}% mediumbullets 64"
+	else if {_i} is 3:
+		execute console command "shot give %{_player}% pumpshotgungreen"
+		execute console command "shot give %{_player}% shotgunbullets 20"
+		
+		
+		
+function blueWeapon(player: player):
+	set {_uuid} to uuid of {_player}
+	if {kitpvp.points::%{_uuid}%} is set:
+		if {kitpvp.points::%{_uuid}%} >= 2:
+			subtract 2 from {kitpvp.points::%{_uuid}%}
+		else:	
+			send "&8[&6KitPvP&8] &eYou don't have enough points! Select a lower weapon." to {_player}
+			stop
+	else:
+		send "&8[&6KitPvP&8] &eYou have no points! Select the Gray Weapon." to {_player}
+		stop
+	set {_i} to random integer from 1 to 4
+	if {_i} is 1:
+		execute console command "shot give %{_player}% assaultrifleblue"
+		execute console command "shot give %{_player}% mediumbullets 64"
+		execute console command "shot give %{_player}% mediumbullets 64"
+	else if {_i} is 2:
+		execute console command "shot give %{_player}% pistolblue"
+		execute console command "shot give %{_player}% mediumbullets 64"
+		execute console command "shot give %{_player}% mediumbullets 64"
+	else if {_i} is 3:
+		execute console command "shot give %{_player}% dualpistolsblue"
+		execute console command "shot give %{_player}% mediumbullets 64"
+		execute console command "shot give %{_player}% mediumbullets 64"
+	else if {_i} is 4:
+		execute console command "shot give %{_player}% pumpshotgunblue"
+		execute console command "shot give %{_player}% shotgunbullets 30"
+		
+		
+		
+function purpleWeapon(player: player):
+	set {_uuid} to uuid of {_player}
+	if {kitpvp.points::%{_uuid}%} is set:
+		if {kitpvp.points::%{_uuid}%} >= 3:
+			subtract 3 from {kitpvp.points::%{_uuid}%}
+		else:	
+			send "&8[&6KitPvP&8] &eYou don't have enough points! Select a lower weapon." to {_player}
+			stop
+	else:
+		send "&8[&6KitPvP&8] &eYou have no points! Select the Gray Weapon." to {_player}
+		stop
+	set {_i} to random integer from 1 to 4
+	if {_i} is 1:
+		execute console command "shot give %{_player}% assaultriflepurple"
+		execute console command "shot give %{_player}% mediumbullets 64"
+		execute console command "shot give %{_player}% mediumbullets 64"
+		execute console command "shot give %{_player}% mediumbullets 64"
+	else if {_i} is 2:
+		execute console command "shot give %{_player}% handcannonpurple"
+		execute console command "shot give %{_player}% heavybullets 64"
+	else if {_i} is 3:
+		execute console command "shot give %{_player}% dualpistolspurple"
+		execute console command "shot give %{_player}% mediumbullets 64"
+		execute console command "shot give %{_player}% mediumbullets 64"
+		execute console command "shot give %{_player}% mediumbullets 64"
+	else if {_i} is 4:
+		execute console command "shot give %{_player}% rocketlauncherpurple"
+		execute console command "shot give %{_player}% rockets 12"
+		
+		
+		
+function goldWeapon(player: player):
+	set {_uuid} to uuid of {_player}
+	if {kitpvp.points::%{_uuid}%} is set:
+		if {kitpvp.points::%{_uuid}%} >= 4:
+			subtract 4 from {kitpvp.points::%{_uuid}%}
+		else:	
+			send "&8[&6KitPvP&8] &eYou don't have enough points! Select a lower weapon." to {_player}
+			stop
+	else:
+		send "&8[&6KitPvP&8] &eYou have no points! Select the Gray Weapon." to {_player}
+		stop
+	set {_i} to random integer from 1 to 3
+	if {_i} is 1:
+		execute console command "shot give %{_player}% assaultriflegold"
+		execute console command "shot give %{_player}% mediumbullets 64"
+		execute console command "shot give %{_player}% mediumbullets 64"
+		execute console command "shot give %{_player}% mediumbullets 64"
+	else if {_i} is 2:
+		execute console command "shot give %{_player}% handcannongold"
+		execute console command "shot give %{_player}% heavybullets 64"
+	else if {_i} is 3:
+		execute console command "shot give %{_player}% rocketlaunchergold"
+		execute console command "shot give %{_player}% rockets 12"
+		
+		
+		
+function boots(player: player):
+	set {_uuid} to uuid of {_player}
+	if {_player}'s boots are not air:
+		send "&8[&6KitPvP&8] &eYou already have diamond boots" to {_player}
+		stop
+	if {kitpvp.points::%{_uuid}%} is set:
+		if {kitpvp.points::%{_uuid}%} >= 2:
+			subtract 2 from {kitpvp.points::%{_uuid}%}
+		else:	
+			send "&8[&6KitPvP&8] &eYou don't have enough points! Select something else." to {_player}
+			stop
+	else:
+		send "&8[&6KitPvP&8] &eYou have no points! Select the Gray Weapon." to {_player}
+		stop
+	set {_player}'s boots to diamond boots
+	
+	send "&8[&6KitPvP&8] &eDiamond Boots equipped." to {_player}
+	
+	
+function helmet(player: player):
+	set {_uuid} to uuid of {_player}
+	if {_player}'s helmet is not air:
+		send "&8[&6KitPvP&8] &eYou already have a diamond helmet" to {_player}
+		stop
+	if {kitpvp.points::%{_uuid}%} is set:
+		if {kitpvp.points::%{_uuid}%} >= 2:
+			subtract 2 from {kitpvp.points::%{_uuid}%}
+		else:	
+			send "&8[&6KitPvP&8] &eYou don't have enough points! Select something else." to {_player}
+			stop
+	else:
+		send "&8[&6KitPvP&8] &eYou have no points! Select the Gray Weapon." to {_player}
+		stop
+	set {_player}'s helmet to diamond helmet
+	
+	send "&8[&6KitPvP&8] &eDiamond Helmet equipped." to {_player}
+
+			

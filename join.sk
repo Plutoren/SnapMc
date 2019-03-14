@@ -1,0 +1,92 @@
+command /f <text>:
+	permission: is.staff
+	trigger:
+		message ""
+		if length of arg-1 < 5:
+			message "Must be at least 5 letters! You could crash the server!"
+			stop
+		if {firstjoin::%arg-1%} is set:
+			message "   &bFirst Join&7: &e%{firstjoin::%arg-1%}%"
+			if {firstjoin::%arg-1%} was less than 1 day ago:
+				message "   &a&lThis player joined less than a day ago&7."
+			else:
+				message "   &cJoined more than a day ago"
+				message ""
+		else:
+			set {_max} to 0
+			loop {firstjoin::*}:
+				if "%loop-index%" contains "%arg-1%":
+					if {_max} > 30:
+						message "Maximum of 30 results Reached"
+						stop
+					message ""
+					message "   &eName Corrected to&7: &a%loop-index%"
+					message "   &bFirst Join&7: &e%{firstjoin::%loop-index%}%"
+					if {firstjoin::%loop-index%} was less than 1 day ago:
+						message "   &a&lThis player joined less than a day ago&7."
+					else:
+						message "   &cJoined more than a day ago"
+						message ""
+					add 1 to {_max}
+					
+command /firstjoinrename <text> <text>:
+	permission: is.staff
+	trigger:
+		set {firstjoin::%arg-2%} to {firstjoin::%arg-1%}
+on join:
+	if {firstjoin::%player%} is not set:
+		wait 1 tick
+		set {firstjoin::%player%} to now
+	else:
+		if {firstjoin::%player%} was more than 5 seconds ago:
+			if {tutorial.start.location::%player%} is set:
+				stop
+			send player title "&c&lS&6&ln&e&la&b&lp&a&lMc" with subtitle "" for 2 seconds with 10 tick fade in and 0 tick fade out
+			wait 30 ticks
+			send player title "&c&lS&6&ln&e&la&b&lp&a&lM&b&l&kc" with subtitle "" for 7 ticks with 0 tick fade in and 0 tick fade out
+			wait 5 ticks
+			send player title "&c&lS&6&ln&e&la&b&lp&a&l&kMc" with subtitle "" for 7 ticks with 0 tick fade in and 0 tick fade out
+			wait 5 ticks
+			send player title "&c&lS&6&ln&e&la&e&l&kp&a&l&kMc" with subtitle "&7&kWelcome &a&k%player's name%" for 7 ticks with 0 tick fade in and 0 tick fade out
+			wait 5 ticks
+			send player title "&c&lS&6&ln&e&l&ka&b&l&kp&a&l&kMc" with subtitle "&7Wel&f&kc&7ome &a&k%player's name%" for 7 ticks with 0 tick fade in and 0 tick fade out
+			wait 5 ticks
+			send player title "&c&lS&6&l&kn&e&l&ka&b&l&kp&a&l&kMc" with subtitle "&7Welcome &a%player's name%" for 7 ticks with 0 tick fade in and 0 tick fade out
+			wait 5 ticks
+			send player title "&c&l&kS&6&l&kn&e&l&ka&b&l&kp&a&l&kMc" with subtitle "&7Welcome &a%player's name%" for 1 second with 0 tick fade in and 0 tick fade out
+			wait 12 ticks
+			send player title "" with subtitle "&7Welcome &a%player's name%" for 15 ticks with 0 tick fade in and 30 tick fade out
+	wait 1 tick
+	execute player command "/motd"
+		
+on join:
+	loop all players:
+		add 1 to {_i}
+	if {_i} > 50:
+		if player does not have permission "is.donator":
+			kick player due to "&cServer Limit Capped Temporarily Try Later"
+		
+		
+command /uuidoffline <text>:
+	permission: is.op
+	trigger:
+		message "%{uuid::%arg-1%}%"
+	
+command /motd:
+	trigger:
+		message "&7&m----------------------------------------------"
+		message "              &b&lWelcome to SnapMC"
+		message ""
+		message "                     &f- &6&lNEWS &f-"
+		message "    &dUse Your &b/balance &don the store &a/buy"
+		message "        &aNew Discord Bot! &b/link"
+		message ""
+		message "              &f&lForums &7- &asnapmc.com"
+		message "                &9&lStore &7- &b/buy"
+		message "             &c&l&nDiscord&r &7- &d/discord"
+		message "&7&m----------------------------------------------"
+		
+		
+		
+		
+		

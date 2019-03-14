@@ -1,0 +1,419 @@
+options:
+	prefix: &8[&bFamily&8]		
+				
+			
+command /fc [<text>]:
+	trigger:
+
+		if arg-1 is not set:
+			if {familychat.active::%player%} is not set:
+				if {familychat.player.family::%player%} is not set:
+					message "{@prefix} &cYou must join a family first!"
+					stop
+				message "{@prefix} &aFamily Chat activated"
+				set {familychat.active::%player%} to true
+			else:
+				message "{@prefix} &cFamily Chat deactivated"
+				delete {familychat.active::%player%}
+			stop
+		if {familychat.player.family::%player%} is not set:
+			message "{@prefix} &cYou must join a family first!"
+			stop
+		set {_message} to "&8[&a%{familychat.settings::%{familychat.player.family::%player%}%::ranks::%player%}%&8] &f%player's display name%&7:&b %arg-1%"
+		replace all "&" with "" in {_message}
+		set {_familyName} to {familychat.player.family::%player%}
+		loop all players:
+			if {familychat.settings::%{_familyName}%::ranks::%loop-player%} is set:
+				send "&8[&a%{_familyName}%&8] %{_message}%" to loop-player
+			else if {familychat.spy::%loop-player%} is set:
+				if loop-player has permission "is.staff":
+					send "&8[&aGSpy&8] &8[&a%{_familyName}%&8] &a%player%&f:&7 %arg-1%" to loop-player		
+		loop {discord.active.chat.family::%{_familyName}%::*}:
+			send "**Family** [%{familychat.settings::%{familychat.player.family::%player%}%::ranks::%player%}%] %uncolored player's display name%: %arg-1%" to user with id "%loop-value%" with "SnapBot2"
+		
+						
+			
+on chat:
+	if {familychat.active::%player%} is set:
+		if {familychat.player.family::%player%} is not set:
+			message "{@prefix} &cYou must join a family first!"
+			stop
+		cancel event
+		set {_message} to "&8[&a%{familychat.settings::%{familychat.player.family::%player%}%::ranks::%player%}%&8] &f%player's display name%&7:&b %message%"
+		replace all "&" with "" in {_message}
+		if {familychat.player.family::%player%} is not set:
+			message "{@prefix} &cYou must join a family first!"
+			delete {familychat.active::%player%}
+			stop
+		set {_familyName} to {familychat.player.family::%player%}
+		
+		loop all players:
+			if {familychat.settings::%{_familyName}%::ranks::%loop-player%} is set:
+				send "&8[&a%{_familyName}%&8] &b%{_message}%" to loop-player
+			else if {familychat.spy::%loop-player%} is set:
+				send "&8[&aGSpy&8] &8[&a%{_familyName}%&8] &a%player%&f:&7 %message%" to loop-player		
+		loop {discord.active.chat.family::%{_familyName}%::*}:
+			send "**Family** [%{familychat.settings::%{familychat.player.family::%player%}%::ranks::%player%}%] %uncolored player's display name%: %message%" to user with id "%loop-value%" with "SnapBot2"
+			
+		
+		
+command /familyrename <text> <text>:
+	permission: is.staff
+	trigger: 
+		set {_familyName} to {familychat.player.family::%arg-1%}
+		if {_familyName} is not set:
+			message "{@prefix} &cNo family found for %arg-1%"
+			stop
+		set {familychat.player.family::%arg-2%} to {familychat.player.family::%arg-1%}
+		delete {familychat.player.family::%arg-1%}
+		set {familychat.settings::%{_familyName}%::members::%arg-2%} to {familychat.settings::%{_familyName}%::members::%arg-1%}
+		delete {familychat.settings::%{_familyName}%::members::%arg-1%}
+		set {familychat.settings::%{_familyName}%::ranks::%arg-2%} to {familychat.settings::%{_familyName}%::ranks::%arg-1%}
+		delete {familychat.settings::%{_familyName}%::ranks::%arg-1%}
+		set {familychat.settings::%{_familyName}%::homes::%arg-2%} to {familychat.settings::%{_familyName}%::homes::%arg-1%} 
+		delete {familychat.settings::%{_familyName}%::homes::%arg-1%} 
+		set {familychat.settings::%{_familyName}%::points::%arg-2%} to {familychat.settings::%{_familyName}%::points::%arg-1%}
+		delete {familychat.settings::%{_familyName}%::points::%arg-1%}
+		
+		if {familychat.names::%{_familyName}%} = "%arg-1%":
+			set {familychat.names::%{_familyName}%} to "%arg-2%"
+		message "{@prefix} &aDone"
+		
+		
+			
+command /family [<text>] [<text>] [<text>]:
+	aliases: familychat, group, party
+	trigger:
+		if {familychat.player.family::%player%} is set:
+			set {_familyName} to {familychat.player.family::%player%}
+	
+		if arg-1 is not set:
+			message ""
+			message "    &7&m---&r &6&lFamily Chat &7&m---"
+			message ""
+			message "  &b/family create (name)"
+			message "  &b/family ranks"
+			message "  &b/family rank (player) (name)"
+			message "  &b/family kick (player)"
+			message "  &b/family invite (player)"
+			message "  &b/family join (name)"
+			message "  &b/family leave"
+			message "  &b/family info"
+			message "  &b/family info (name)"
+			message "  &b/family sethome"
+			message "  &b/family home (player)"
+			message "  &b/fc &7toggle"
+			message "  &b/fc (msg)"
+			if player has permission "is.staff":
+				message "  &b/family spy"
+			message ""
+			stop
+		else if arg-1 is "spy":
+			if player does not have permission "is.staff":
+				message "{@prefix} &cYou dont have permission to do that!"
+				stop
+			
+			if {familychat.spy::%player%} is set:
+				delete {familychat.spy::%player%}
+				message "{@prefix} &cfamily chat spy deactivated"
+				stop
+			message "{@prefix} &afamily chat spy activated"
+			set {familychat.spy::%player%} to true
+			stop
+		else if arg-1 is "ranks":
+			message ""
+			message "    &7&m---&r &6&lfamily Chat &7&m---"
+			message ""
+			message "     &7The following ranks have certain permissions"
+			message "&7You can make your own ranks, but only these have permissions"
+			message ""
+			message " &eKick&f: &7Owner, Dad, Mom, Grandma, Grandpa"
+			message " &eInvite&f: &7Owner, Dad, Mom, Grandma, Grandpa, Stepmom, Stepdad, Son, Daughther"
+			message " &ePromote&f: &7Owner, Dad, Mom"
+			message " &eOther Ideas: &7BabyBoy, Cousin, ExGirlfriend, StepSon, GreatGrandpa" 
+			message ""
+			
+			
+			
+			stop
+			
+			
+			
+		else if arg-1 is "info" or "i":
+			
+				
+			message ""
+			message "    &7&m---&r &6&lfamily Chat &7&m---"
+			message ""
+			if arg-2 is set:
+			
+				if {familychat.names::%arg-2%} is not set:
+					message "  &7Couldn't find a family called: &b%arg-2%"
+					message ""
+					stop
+				set {_familyName} to arg-2
+				message "  &3family Name&f: &b%{_familyName}%"
+				if {familychat.settings::%{_familyName}%::members::%player%} is "allowed":
+					message "  &3My status in this family: &aWhitelisted"
+					message "       &7Use &b/family join %{_familyName}% &7to join"
+				message "  &3My status in this family: &cNot Invited" 
+				message ""
+				message "  &3Members&f:"
+				set {_i} to 0
+				loop {familychat.settings::%{_familyName}%::ranks::*}:
+					add 1 to {_i}
+					message "&f%{_i}%. &b%loop-index%  &8(&7%loop-value%&8)"
+				message ""
+				stop
+				
+			if {familychat.player.family::%player%} is not set:
+				message "  &7You are not in a family chat!"
+				message ""
+				stop
+		
+			set {_familyName} to {familychat.player.family::%player%}
+			
+			
+			
+			message "  &3Family Name&f: &b%{_familyName}%"
+			message "  &3Family Rank&f: &b%{familychat.settings::%{_familyName}%::ranks::%player%}%"
+			message ""
+			message "  &3Members&f:"
+			set {_i} to 0
+			loop {familychat.settings::%{_familyName}%::ranks::*}:
+				add 1 to {_i}
+				message "&f%{_i}%. &b%loop-index%  &8(&7%loop-value%&8)"
+				
+			
+			message ""
+			stop
+		else if arg-1 is "create" or "new" or "start":
+		
+			
+			if arg-2 is not set:
+				message "{@prefix} &7Try: &b/family create (name)"
+				stop
+			if length of arg-2 > 15:
+				message "{@prefix} &7Name must be less than 15 characters"
+				stop				
+			if arg-3 is set:
+				message "{@prefix} &7Try: &b/family create (name) &7without any spaces"
+				stop	
+			set {_familyName} to arg-2
+		
+			if {familychat.player.family::%player%} is set:
+				message "{@prefix} &7You are already in a family! Try &b/family leave"
+				stop
+				
+			if  {familychat.names::%{_familyName}%} is set:
+				message "{@prefix} &7family &b%arg-2% &7already exists."
+				stop
+				
+			set {familychat.player.family::%player%} to {_familyName}
+			
+			set {familychat.settings::%{_familyName}%::members::%player%} to "allowed"
+			
+			set {familychat.settings::%{_familyName}%::ranks::%player%} to "Owner"
+			
+			set {familychat.settings::%{_familyName}%::points::%player%} to 0
+			
+			set {familychat.names::%{_familyName}%} to "%player%"
+			
+			broadcast "{@prefix} &7%player% created a new family named &b%{_familyName}%"
+			stop
+			
+		
+		else if arg-1 is "promote" or "rank" or "rankup":
+			
+			if {_familyName} is not set:
+				message "{@prefix} &7You're not in a family"
+				stop
+			set {_player} to player
+			if "%{familychat.settings::%{_familyName}%::ranks::%{_player}%}%" is not "Owner" or "Dad" or "Mom":
+				message "{@prefix} &7You dont have permission to do that!"
+				stop
+				
+			if arg-2 is not set:
+				message "{@prefix} &7Try: &b/family rank (name) (rank)"
+				stop
+				
+			if arg-3 is not set:
+				message "{@prefix} &7Try: &b/family rank (name) (rank)"
+				stop
+			
+			if arg-3 is "Owner":
+				message "{@prefix} &7You can't set someone as the owner"
+				stop
+				
+			if {familychat.settings::%{_familyName}%::members::%arg-2%} is not set:
+				message "{@prefix} &7That person is not in your family. Try &b/family add (name)"
+				stop
+			if {familychat.settings::%{_familyName}%::ranks::%arg-2%} is not set:
+				message "{@prefix} &7That person has not accepted your invite yet"
+				stop	
+			if {familychat.settings::%{_familyName}%::ranks::%arg-2%} is "Owner":
+				message "{@prefix} &7You can't change the Owner's rank"
+				stop
+			
+			message "{@prefix} &eSet &b%arg-2% &eto the rank: &f%arg-3%"
+			set {familychat.settings::%{_familyName}%::ranks::%arg-2%} to "%arg-3%"
+			stop 
+			
+		else if arg-1 is "sethome" or "shome":
+			
+			if {_familyName} is not set:
+				message "{@prefix} &7You're not in a family"
+				stop
+			set {_loc} to location of player
+			set {familychat.settings::%{_familyName}%::homes::%player%} to {_loc}
+			message "{@prefix} &7Set your family home to &6{_loc}"
+			message "{@prefix} &7Others can visit with &b/family home %player%"
+			stop
+			
+		else if arg-1 is "home" or "h":
+			
+			if {_familyName} is not set:
+				message "{@prefix} &7You're not in a family"
+				stop
+			if arg-2 is not set:
+				if {familychat.settings::%{_familyName}%::homes::%player%} is not set:
+					message "{@prefix} &7You don't have a home set. Try &b/family sethome"
+					stop
+				message "{@prefix} &7Teleported to your family home"
+				teleport player to {familychat.settings::%{_familyName}%::homes::%player%}
+				stop
+			if {familychat.settings::%{_familyName}%::homes::%arg-2%} is not set:
+				message "{@prefix} &7No home found for &b%arg-2%"
+				stop
+			message "{@prefix} &7Teleported to the family home of &b%arg-2%"
+			teleport player to {familychat.settings::%{_familyName}%::homes::%arg-2%}
+			stop
+			
+
+			
+		else if arg-1 is "leave" or "exit" or "quit" or "abandon":
+			
+			if {_familyName} is not set:
+				message "{@prefix} &7You're not in a family"
+				stop
+				
+			if "%{familychat.settings::%{_familyName}%::ranks::%player%}%" is "Owner":
+				message ""
+				message "{@prefix} &7You deleted your family: &e%{_familyName}%"
+				message ""
+				
+				loop {familychat.settings::%{_familyName}%::ranks::*}:
+					delete {familychat.player.family::%loop-index%}
+					
+				delete {familychat.settings::%{_familyName}%::members::*}
+				delete {familychat.settings::%{_familyName}%::ranks::*}
+				delete {familychat.settings::%{_familyName}%::homes::*}
+				delete {familychat.settings::%{_familyName}%::*}
+			
+				delete {familychat.names::%{_familyName}%}
+			delete {discord.active.chat.family::%{_familyName}%::*}
+			delete {familychat.settings::%{_familyName}%::ranks::%player%}
+			delete {familychat.settings::%{_familyName}%::homes::%player%}
+			delete {familychat.player.family::%player%}
+			message "{@prefix} &7You left %{_familyName}%"
+			stop
+			
+
+		else if arg-1 is "remove" or "kick" or "blacklist":
+		
+			if {_familyName} is not set:
+				message "{@prefix} &7You're not in a family"
+				stop			
+		
+			if arg-2 is not set:
+				message "{@prefix} &7Try: &b/family kick (name)"
+				stop
+			set {_targetPlayer} to arg-2	
+			set {_player} to player
+			if "%{familychat.settings::%{_familyName}%::ranks::%{_player}%}%" is not "Owner" or "Dad" or "Mom" or "Grandma" or "Grandpa":
+				message "{@prefix} &7You don't have permission!"
+				stop	
+			
+			if "%{familychat.settings::%{_familyName}%::members::%{_targetPlayer}%}%" != "allowed":
+				message "{@prefix} &b%{_targetPlayer}% &7is not part of your family"
+				stop
+				
+			if "%{familychat.settings::%{_familyName}%::ranks::%{_targetPlayer}%}%" == "Owner":
+				message "{@prefix} &b%{_targetPlayer}% &cis the owner and can't be kicked"
+				stop
+			message "{@prefix} &7Removed &d%{_targetPlayer}% &7from the family"
+			delete {discord.active.chat.family::%{_familyName}%::*}
+			delete {familychat.settings::%{_familyName}%::members::%{_targetPlayer}%}
+			delete {familychat.settings::%{_familyName}%::ranks::%{_targetPlayer}%}
+			delete {familychat.settings::%{_familyName}%::homes::%{_targetPlayer}%}
+			
+		else if arg-1 is "add" or "invite" or "allow" or "whitelist":
+			
+			if {_familyName} is not set:
+				message "{@prefix} &7You're not in a family"
+				stop			
+			set {_player} to player
+			if arg-2 is not set:
+				message "{@prefix} &7Try: &b/family invite (name)"
+				stop
+				
+			if "%{familychat.settings::%{_familyName}%::ranks::%{_player}%}%" is not "Owner" or "Dad" or "Mom" or "Grandma" or "Grandpa" or  "Stepmom" or "Stepdad" or "Son" or "Daughter":
+				message "{@prefix} &7You don't have enough permission"
+				stop			
+			set {_isOnline} to false
+			loop all players:
+				if "%arg-2%" = "%loop-player%":
+					set {_isOnline} to true
+					set {_targetPlayer} to loop-player
+					stop loop
+					
+			if {_isOnline} is false:
+				message "{@prefix} &b%arg-2% &7is not online"
+				stop
+			
+			
+			if "%{familychat.settings::%{_familyName}%::members::%{_targetPlayer}%}%" = "allowed":
+				message "{@prefix} &b%{_targetPlayer}% &7is already on your whitelist"
+				message "{@prefix} &7That player needs to run &b/family join %{_familyName}%"
+				stop
+				
+			set {familychat.settings::%{_familyName}%::members::%{_targetPlayer}%} to "allowed"
+			message "{@prefix} &eAdded %{_targetPlayer}% to the allowed members list"
+			message "{@prefix} &7That player needs to run &b/family join %{_familyName}%"
+			
+			send "{@prefix} %player% invited you to their family chat: &9/family join %{_familyName}%" to {_targetPlayer}
+			stop
+			
+		else if arg-1 is "join" or "enter":
+			
+			
+			if arg-2 is not set:
+				message "{@prefix} &cUsage &7>> &6/family join (family name)"
+				stop
+			set {_targetPlayer} to player
+			if {familychat.names::%arg-2%} is not set:
+				message "{@prefix} &7No family found with the name: &b%arg-2%"
+				stop
+			
+	
+			if "%{familychat.settings::%arg-2%::members::%{_targetPlayer}%}%" = "allowed":
+				set {familychat.settings::%arg-2%::ranks::%{_targetPlayer}%} to "Member"
+				set {familychat.player.family::%player%} to arg-2
+				message "{@prefix} &7Joined the family chat: &b%arg-2%"
+				loop all players:
+					if {familychat.settings::%arg-2%::ranks::%loop-player%} is set:
+						send "{@prefix} &8[&b%arg-2%&8] &b%player% &7just joined the chat" to loop-player
+					else if {familychat.spy::%loop-player%} is set:
+						send "{@prefix} &8[&b%arg-2%&8] &b%player% &7just joined the chat" to loop-player			
+				stop
+			
+				
+			message "{@prefix} &6You are not whitelisted in that family!"
+			message "{@prefix} &6Ask the leader to add you!"
+			stop
+			
+			
+
+			
+			
+			

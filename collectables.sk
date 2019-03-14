@@ -1,0 +1,209 @@
+command /collect [<text>]:
+	aliases: collectable, collectible
+	trigger:
+		if arg-1 is "top":
+			loop {collectables.stats::*}:
+				if loop-value > 5:
+					add 1 to {_size}
+					if {_low.to.high.list::%loop-value%} is not set:
+						set {_low.to.high.list::%loop-value%} to loop-index
+					else:
+						set {_n} to 0
+						loop {_size} times:
+							set {_n} to {_n}+1
+							{_low.to.high.list::%loop-value-1%.%{_n}%} is not set
+							set {_low.to.high.list::%loop-value-1%.%{_n}%} to loop-index
+							
+							stop loop
+			wait 1 tick
+			set {_n} to size of {_low.to.high.list::*}
+			loop {_low.to.high.list::*}:
+				set {_high.to.low.list::%{_n}%} to loop-value
+				set {_n} to {_n}-1
+			
+			open chest with 6 row named "    -=[ &1Top Collectables &8]=-" to player
+			wait 1 tick
+			if name of current inventory of player != "    -=[ &1Top Collectables &8]=-":
+				close inventory of player
+				stop
+				
+			set {_i} to 0
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/collect top"]
+				add 1 to {_i}				
+			format slot 17 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/collect top"]
+			format slot 36 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/collect top"]
+			set {_i} to 44
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/collect top"]
+				add 1 to {_i}
+		
+			set {_slot} to 19
+			set {_i} to 0
+			loop {_high.to.low.list::*}:
+				
+				add 1 to {_slot}
+				add 1 to {_i}
+				format slot {_slot} of player with {item::head_number%{_i}%} named "&6&n%{uuidName::%loop-value%}%&r &7(##%{_i}%)" with lore "", " &6* &e&lCollected &7%{collectables.stats::%loop-value%}% ", "", " &6* &e&lPlace &7##%{_i}%", "&e" to close
+		
+				
+				if {_slot} is 24:
+					set {_slot} to 28 
+				if {_slot} is 33:
+					stop
+		if player is not in world "spawn" or "world" or "world_nether" or "world_the_end" or "Avalon" or "Prison" or "SkyBlock":
+			message "&8[&bSnap&8] &eThis only works in survival"
+			stop
+		set {_red} to amount of {item::collectable_red} in player's inventory
+		set {_orange} to amount of {item::collectable_orange} in player's inventory
+		set {_yellow} to amount of {item::collectable_yellow} in player's inventory
+		set {_green} to amount of {item::collectable_green} in player's inventory
+		set {_blue} to amount of {item::collectable_blue} in player's inventory
+		set {_min} to 1000
+		if {_red} > 0:
+			if {_red} < {_min}:
+				set {_min} to {_red}
+			if {_orange} > 0:
+				if {_orange} < {_min}:
+					set {_min} to {_orange}
+				if {_yellow} > 0:
+					if {_yellow} < {_min}:
+						set {_min} to {_yellow}
+					if {_green} > 0:
+						if {_green} < {_min}:
+							set {_min} to {_green}
+						if {_blue} > 0:
+							if {_blue} < {_min}:
+								set {_min} to {_blue}
+							remove {_min} of {item::collectable_red} from player's inventory
+							remove {_min} of {item::collectable_orange} from player's inventory
+							remove {_min} of {item::collectable_yellow} from player's inventory
+							remove {_min} of {item::collectable_green} from player's inventory
+							remove {_min} of {item::collectable_blue} from player's inventory
+							set {_pay} to {_min} * 8000000
+							add {_pay} to player's balance
+							add {_min} to {collectables.stats::%uuid of player%}
+							message "&8[&bSnap&8] &eYou redeemed &d%{_min}% collectables &eand got &a$%{_pay}%"
+							stop
+							
+
+		open chest with 6 row named "        -=[ &1Collectables &8]=-" to player
+		wait 1 tick
+		if name of current inventory of player != "        -=[ &1Collectables &8]=-":
+			close inventory of player
+			stop
+						
+		# Line 1
+		set {_i} to 0
+		loop 3 times:
+			format slot {_i} of player with red stained glass pane named "&c&l*" to run [make player execute command "/collect"]
+			add 1 to {_i}	
+		loop 3 times:
+			format slot {_i} of player with glass pane named "&f&l*" to run [make player execute command "/collect"]
+			add 1 to {_i}	
+		loop 3 times:
+			format slot {_i} of player with light blue stained glass pane named "&b&l*" to run [make player execute command "/collect"]
+			add 1 to {_i}
+	
+		# Line 2
+		# Red (Top left)
+		format slot {_i} of player with red stained glass pane named "&c&l*" to run [make player execute command "/collect"]
+		add 1 to {_i}
+		if {_red} > 0:
+			format slot {_i} of player with {_red} of red wool named "&f&l*" to run [make player execute command "/collect"]
+		else:
+			format slot {_i} of player with black stained glass pane named "&cYou have no Red Collectables" with lore "", " &6You can find Red Collectables&7:", " &f- &eIn the Party Crate", " &f- &eIn the Voting Crate", "" to run [make player execute command "/collect"]
+		add 1 to {_i}
+		format slot {_i} of player with red stained glass pane named "&c&l*" to run [make player execute command "/collect"]
+		add 1 to {_i}
+		
+		# Middle Top
+		
+		format slot {_i} of player with glass pane named "&f&l*" to run [make player execute command "/collect"]
+		add 1 to {_i}
+		format slot {_i} of player with book named "&6Find All of the Collectables" with lore "", " &eThere are 5 different Collectables", "  &c* Red", "  &6* Orange", "  &e* Yellow", "  &a* Green", "  &b* Blue", "", " &eCollect them all to get", " &a$1.00 &eof Store Credit &7(&d8m&7)", "" to run [make player execute command "/collect"]
+		add 1 to {_i}
+		format slot {_i} of player with glass pane named "&f&l*" to run [make player execute command "/collect"]
+		add 1 to {_i}
+		
+		
+		# light blue (Top right)
+		format slot {_i} of player with light blue stained glass pane named "&b&l*" to run [make player execute command "/collect"]
+		add 1 to {_i}
+		if {_blue} > 0:
+			format slot {_i} of player with {_blue} of light blue wool named "&f&l*" to run [make player execute command "/collect"]
+		else:
+			format slot {_i} of player with black stained glass pane named "&cYou have no Red Collectables" with lore "", " &6You can find Blue Collectables&7:", " &f- &eIn the Party Crate", " &f- &eIn the Voting Crate", "" to run [make player execute command "/collect"]
+		add 1 to {_i}
+		format slot {_i} of player with light blue stained glass pane named "&b&l*" to run [make player execute command "/collect"]
+		add 1 to {_i}
+		
+		# Line 3
+		loop 3 times:
+			format slot {_i} of player with red stained glass pane named "&c&l*" to run [make player execute command "/collect"]
+			add 1 to {_i}	
+		loop 3 times:
+			format slot {_i} of player with glass pane named "&f&l*" to run [make player execute command "/collect"]
+			add 1 to {_i}	
+		loop 3 times:
+			format slot {_i} of player with light blue stained glass pane named "&b&l*" to run [make player execute command "/collect"]
+			add 1 to {_i}
+			
+		# Line 4
+		loop 3 times:
+			format slot {_i} of player with orange stained glass pane named "&6&l*" to run [make player execute command "/collect"]
+			add 1 to {_i}	
+		loop 3 times:
+			format slot {_i} of player with yellow stained glass pane named "&e&l*" to run [make player execute command "/collect"]
+			add 1 to {_i}	
+		loop 3 times:
+			format slot {_i} of player with lime stained glass pane named "&e&l*" to run [make player execute command "/collect"]
+			add 1 to {_i}
+			
+			
+		# Line 5
+		# Orange (Bottom Right)
+		format slot {_i} of player with orange stained glass pane named "&6&l*" to run [make player execute command "/collect"]
+		add 1 to {_i}
+		if {_orange} > 0:
+			format slot {_i} of player with {_orange} of orange wool named "&f&l*" to run [make player execute command "/collect"]
+		else:
+			format slot {_i} of player with black stained glass pane named "&6You have no Orange Collectables" with lore "", " &6You can find Orange Collectables&7:", " &f- &eIn the Party Crate", " &f- &eIn the Voting Crate", "" to run [make player execute command "/collect"]
+		add 1 to {_i}
+		format slot {_i} of player with orange stained glass pane named "&6&l*" to run [make player execute command "/collect"]
+		add 1 to {_i}
+		
+		# Yellow (middle bottom)
+		format slot {_i} of player with yellow stained glass pane named "&e&l*" to run [make player execute command "/collect"]
+		add 1 to {_i}
+		if {_yellow} > 0:
+			format slot {_i} of player with {_yellow} of yellow wool named "&f&l*" to run [make player execute command "/collect"]
+		else:
+			format slot {_i} of player with black stained glass pane named "&eYou have no Yellow Collectables" with lore "", " &6You can find Yellow Collectables&7:", " &f- &eIn the Party Crate", " &f- &eIn the Voting Crate", "" to run [make player execute command "/collect"]
+		add 1 to {_i}
+		format slot {_i} of player with yellow stained glass pane named "&e&l*" to run [make player execute command "/collect"]
+		add 1 to {_i}
+		
+		
+		# green (Bottom right)
+		format slot {_i} of player with lime stained glass pane named "&a&l*" to run [make player execute command "/collect"]
+		add 1 to {_i}
+		if {_green} > 0:
+			format slot {_i} of player with {_green} of light green wool named "&f&l*" to run [make player execute command "/collect"]
+		else:
+			format slot {_i} of player with black stained glass pane named "&aYou have no Green Collectables" with lore "", " &6You can find Green Collectables&7:", " &f- &eIn the Party Crate", " &f- &eIn the Voting Crate", " &f- &eIn the &aShamrock Crate", "" to run [make player execute command "/collect"]
+		add 1 to {_i}
+		format slot {_i} of player with lime stained glass pane named "&a&l*" to run [make player execute command "/collect"]
+		add 1 to {_i}
+		
+		# Line 6
+		loop 3 times:
+			format slot {_i} of player with orange stained glass pane named "&6&l*" to run [make player execute command "/collect"]
+			add 1 to {_i}	
+		loop 3 times:
+			format slot {_i} of player with yellow stained glass pane named "&e&l*" to run [make player execute command "/collect"]
+			add 1 to {_i}	
+		loop 3 times:
+			format slot {_i} of player with lime stained glass pane named "&e&l*" to run [make player execute command "/collect"]
+			add 1 to {_i}
+		

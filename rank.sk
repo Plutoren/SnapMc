@@ -1,0 +1,6 @@
+command /rank [<player>]:
+	trigger:
+		if arg-1 is not set:
+			message "&8[&bSnap&8] &7Type &b/rank (player) &7to see their rank"
+			stop
+		message "&8[&bSnap&8] &e%arg-1%'s Rank&7: &f%arg-1's group%"

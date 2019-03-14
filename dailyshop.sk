@@ -1,0 +1,248 @@
+command /dailyshop [<text>] [<int>]:
+	permission: is.Pluto
+	aliases: daily
+	trigger:
+		if player is not in world "spawn" or "world" or "world_nether" or "world_the_end" or "Avalon" or "Creative":
+			message "&8[&bSnap&8] &eThis only works in survival"
+			stop
+		if arg-1 is "next":
+			if player does not have permission "is.char":
+				stop
+			open chest with 6 row named "       -=[ &1Daily Shop &8]=-" to player
+			wait 1 tick
+			if name of current inventory of player != "       -=[ &1Daily Shop &8]=-":
+				close inventory of player
+				stop
+				
+			set {_i} to 0
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/dailyshop"]
+				add 1 to {_i}				
+			format slot 17 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/dailyshop"]
+			format slot 36 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/dailyshop"]
+			set {_i} to 44
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/dailyshop"]
+				add 1 to {_i}
+			
+			if {dailyshop.clock.hour} is not set:
+				set {dailyshop.clock.hour} to 24
+				set {dailyshop.clock.day} to 0
+			format slot 4 of player with {dailyshop.clock.hour} of grass block named "&b&lWelcome to the dailyshop" with lore "", " &7These items change every day", " &7Check back in &e%{dailyshop.clock.hour}% hours &7for new items", "", " &eYou have&7: &a%balance of player% snapbucks", "", " &eGet more money from&f:   ", " &7- &6/buy ", " &7- &6/vote ", " &7- &6/resource", " &7- &6/keys ", " &7- &6/elytra", " &7- &6/ah", " &7- &6/fishing", " &7- &6/pvp", " &7- &6/event", " &7- &6Level up in Skyblock", " &7- &6Break blocks in prison", " &e" to run [make player execute command "/dailyshop shop"]
+			
+			set {_day} to {dailyshop.clock.day} 
+			if arg-2 is set:
+				add arg-2 to {_day}
+			set {_rangeStart} to {_day} * 10
+			while {_rangeStart} >= 100:
+				subtract 100 from {_rangeStart}
+			
+			set {_i} to {_rangeStart}
+			set {_slot} to 20
+			wait 1 tick
+			loop 10 times:
+				
+				set {_cost} to formatMoney({dailyshop.shop.id::%{_i}%})
+				if balance of player >= {dailyshop.shop.id::%{_i}%}:
+					set {_item} to {dailyshop.shop.items::%{_i}%}
+					set {_lore} to lore of {_item}
+					set {_lore::*} to {_lore} split at "||"
+					set {_size} to size of {_lore::*}
+					set line {_size} + 1 of lore of {_item} to ""
+					set line {_size} + 2 of lore of {_item} to ""
+					set line {_size} + 3 of lore of {_item} to " &aCosts: &a%{_cost}% snapbucks "
+					set line {_size} + 4 of lore of {_item} to ""
+					set line {_size} + 5 of lore of {_item} to " &eClick To Purchase "
+					set line {_size} + 6 of lore of {_item} to ""
+					set line {_size} + 7 of lore of {_item} to " &7Check Back Tomorrow for New Items "
+					set line {_size} + 8 of lore of {_item} to " &e"
+					format slot {_slot} of player with {_item} to run "sudo %player% dailyshop %{_i}%"
+				else:
+					set {_item} to {dailyshop.shop.items::%{_i}%}
+					set {_lore} to lore of {_item}
+					set {_lore::*} to {_lore} split at "||"
+					set {_size} to size of {_lore::*}
+					set line {_size} + 1 of lore of {_item} to ""
+					set line {_size} + 2 of lore of {_item} to ""
+					set line {_size} + 3 of lore of {_item} to " &aCosts: &a%{_cost}% snapbucks "
+					set line {_size} + 6 of lore of {_item} to ""
+					set line {_size} + 7 of lore of {_item} to " &7Check Back Tomorrow for New Items "
+					set line {_size} + 8 of lore of {_item} to " &e"
+					format slot {_slot} of player with {_item} to run "sudo %player% dailyshop %{_i}%"
+				
+				add 1 to {_slot}
+			
+				add 1 to {_i}
+				if {_i} = {_rangeStart} + 5:
+					set {_slot} to 29
+			stop
+		if arg-1 is not set:
+			open chest with 6 row named "       -=[ &1Daily Shop &8]=-" to player
+			wait 1 tick
+			if name of current inventory of player != "       -=[ &1Daily Shop &8]=-":
+				close inventory of player
+				stop
+				
+			set {_i} to 0
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/dailyshop"]
+				add 1 to {_i}				
+			format slot 17 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/dailyshop"]
+			format slot 36 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/dailyshop"]
+			set {_i} to 44
+			loop 10 times:
+				format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/dailyshop"]
+				add 1 to {_i}
+			
+			if {dailyshop.clock.hour} is not set:
+				set {dailyshop.clock.hour} to 24
+				set {dailyshop.clock.day} to 0
+			format slot 4 of player with {dailyshop.clock.hour} of grass block named "&b&lWelcome to the dailyshop" with lore "", " &7These items change every day", " &7Check back in &e%{dailyshop.clock.hour}% hours &7for new items", "", " &eYou have&7: &a%balance of player% snapbucks", "", " &eGet more money from&f:   ", " &7- &6/buy ", " &7- &6/vote ", " &7- &6/resource", " &7- &6/keys ", " &7- &6/elytra", " &7- &6/ah", " &7- &6/fishing", " &7- &6/pvp", " &7- &6/event", " &7- &6Level up in Skyblock", " &7- &6Break blocks in prison", " &e" to run [make player execute command "/dailyshop shop"]
+			
+			set {_day} to {dailyshop.clock.day} 
+			if arg-2 is set:
+				add arg-2 to {_day}
+			set {_rangeStart} to {_day} * 10
+			while {_rangeStart} >= 100:
+				subtract 100 from {_rangeStart}
+			
+			set {_i} to {_rangeStart}
+			set {_slot} to 20
+			wait 1 tick
+			loop 10 times:
+				
+				set {_cost} to formatMoney({dailyshop.shop.id::%{_i}%})
+				if balance of player >= {dailyshop.shop.id::%{_i}%}:
+					set {_item} to {dailyshop.shop.items::%{_i}%}
+					set {_lore} to lore of {_item}
+					set {_lore::*} to {_lore} split at "||"
+					set {_size} to size of {_lore::*}
+					set line {_size} + 1 of lore of {_item} to ""
+					set line {_size} + 2 of lore of {_item} to ""
+					set line {_size} + 3 of lore of {_item} to " &aCosts: &a%{_cost}% snapbucks "
+					set line {_size} + 4 of lore of {_item} to ""
+					set line {_size} + 5 of lore of {_item} to " &eClick To Purchase "
+					set line {_size} + 6 of lore of {_item} to ""
+					set line {_size} + 7 of lore of {_item} to " &7Check Back Tomorrow for New Items "
+					set line {_size} + 8 of lore of {_item} to " &e"
+					format slot {_slot} of player with {_item} to run "sudo %player% dailyshop %{_i}%"
+				else:
+					set {_item} to {dailyshop.shop.items::%{_i}%}
+					set {_lore} to lore of {_item}
+					set {_lore::*} to {_lore} split at "||"
+					set {_size} to size of {_lore::*}
+					set line {_size} + 1 of lore of {_item} to ""
+					set line {_size} + 2 of lore of {_item} to ""
+					set line {_size} + 3 of lore of {_item} to " &aCosts: &a%{_cost}% snapbucks "
+					set line {_size} + 6 of lore of {_item} to ""
+					set line {_size} + 7 of lore of {_item} to " &7Check Back Tomorrow for New Items "
+					set line {_size} + 8 of lore of {_item} to " &e"
+					format slot {_slot} of player with {_item} to run "sudo %player% dailyshop %{_i}%"
+				
+				add 1 to {_slot}
+			
+				add 1 to {_i}
+				if {_i} = {_rangeStart} + 5:
+					set {_slot} to 29
+			stop
+			
+		else:
+			if {dailyshop.clock.hour} is not set:
+				set {dailyshop.clock.hour} to 24
+				set {dailyshop.clock.day} to 0
+			set {_day} to {dailyshop.clock.day}
+			if arg-2 is set:
+				set {_rangeStart} to ({_day} + arg-2) * 10
+			else:
+				set {_rangeStart} to {_day} * 10
+				
+			while {_rangeStart} >= 100:
+				subtract 100 from {_rangeStart}
+			set {_i} to {_rangeStart}
+			set {_valid} to false
+			loop 10 times:
+				if arg-1 = "%{_i}%":
+					set {_valid} to true
+				add 1 to {_i}
+			if {_valid} is false:
+				message "item %arg-1% not valid"
+				stop
+			if {dailyshop.shop.items::%arg-1%} is not set:
+				message "item %arg-1% not set"
+				stop
+			if {dailyshop.shop.id::%arg-1%} is not set:
+				message "id %arg-1% not set"
+				stop
+			
+			if balance of player < {dailyshop.shop.id::%arg-1%}:
+				set {_cost} to formatMoney({dailyshop.shop.id::%arg-1%})
+				message "&8[&bSnap&8] &7That item costs&8: &c%{_cost}% snapbucks&7. You only have &a%balance of player% snapbucks&7."
+				stop
+				
+			# give player {dailyshop.shop.items::%arg-1%}
+			# subtract {dailyshop.shop.id::%arg-1%} from balance of player
+			set {_cost} to formatMoney({dailyshop.shop.id::%arg-1%})
+			message "&8[&bSnap&8] &7Item Purchased for %{_cost}%. You now have &a%balance of player% snapbucks&7."
+			
+command /dailyitem [<int>]:	
+	permission: is.op
+	trigger:
+		if arg-1 is set:
+			
+			open chest with 6 row named "         -=[ &1Shop &8]=-" to player
+			wait 1 tick
+			if name of current inventory of player != "         -=[ &1Shop &8]=-":
+				close inventory of player
+				stop				
+		
+			format slot 4 of player with {skyblock.shop.items::%arg-1%} named "hi" to close
+		else:	
+			loop {skyblock.shop.items::*}:
+				message "%loop-index%. %loop-value% - $%{skyblock.shop.id::%loop-index%}%"
+command /setdaily <int> <int>:
+	permission: is.char
+	trigger:
+		set {dailyshop.shop.items::%arg-1%} to player's tool
+		set {dailyshop.shop.id::%arg-1%} to arg-2
+		set {_cost} to formatMoney({dailyshop.shop.id::%arg-1%})
+		message "&eDailyShop&7: &fSet &d%arg-1% &fto &f%{dailyshop.shop.items::%arg-1%}% &ffor &a$%{_cost}%"
+		
+command /listvar <text>:
+	permission: is.Pluto
+	trigger:
+		message "%{%arg-1%}%"
+		
+
+function formatMoney(int: number) :: string:
+	while {_int} >= 1000000000000:
+		add 1 to {_val}
+		subtract 1000000000000 from {_int}
+	if {_val} is set:
+		return "%{_val}%T"
+	while {_int} >= 1000000000:
+		add 1 to {_val}
+		subtract 1000000000 from {_int}
+	if {_val} is set:
+		return "%{_val}%B"
+	while {_int} >= 1000000:
+		add 1 to {_val}
+		subtract 1000000 from {_int}
+	if {_val} is set:
+		return "%{_val}%M"
+	while {_int} >= 1000:
+		add 1 to {_val}
+		subtract 1000 from {_int}
+	if {_val} is set:
+		return "%{_val}%K"
+	if {_int} is not set:
+		return "0"
+	return "%{_int}%"
+	
+every hour:
+	if {dailyshop.clock.hour} is not set:
+		set {dailyshop.clock.hour} to 24
+		set {dailyshop.clock.day} to 0
+	subtract 1 from {dailyshop.clock.hour}
+	if {dailyshop.clock.hour} <= 0:
+		set {dailyshop.clock.hour} to 24
+		add 1 to {dailyshop.clock.day}

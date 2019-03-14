@@ -1,0 +1,1671 @@
+#play ENTITY_EXPERIENCE_ORB_PICKUP to player at volume 1 and pitch 3
+#https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
+
+
+on load:
+	delete {justfell::*}
+#	delete {bw.players.id::*}
+#	delete {bw.players.list::*}
+#	delete {bw.locations.bed::*}
+#	delete {bw.locations.spawn::*}
+#	delete {bw.gameid::*}
+#	delete {bw.locations.spawnWait::*} 
+#	delete {bw.teams.size::*}
+#	delete {bw.alreadyFinished::*}
+#	delete {bw.spectate::*}
+#	delete {bw.teams.size::*}
+#	delete {bw.numberOfTeamsAlive::*}
+#	delete {bw_nojoin}
+	delete {bw_nojoin}
+	wait 5 seconds
+	execute console command "/wea"
+
+
+	
+	
+on spawn:
+	if event-entity is in world "BedWars":
+		if event.getSpawnReason().toString() is not "CUSTOM":
+			cancel the event	
+	
+	
+on hunger meter change:
+	if player is in world "BedWars":
+		set player's hunger to 20
+		
+		
+function setColour(blocks: blocks, colour: color):
+  set {_colour} to try {_colour}.getWoolColor()
+  loop {_blocks::*}:
+    set {_blockState} to try loop-value.getState()
+    {_blockState}.setColor({_colour});
+    {_blockState}.update();
+	
+on damage of a villager:
+	if victim is in world "BedWars":
+		if victim is a villager:
+			cancel event
+  
+command /bw:
+	aliases: bedwars, bedwar
+	trigger:
+		if {bw_nojoin} is set:
+			message "&8[&bSnap&8] &7Please wait while the current player's join their game"
+			stop
+	
+		if "%block at player%" contains "stair":
+			message "&8[&bSnap&8] &cYou can't do that from a chair!"
+			stop
+		set {_i} to 0
+		loop all players in world "BedWars":
+			if "%regions at loop-player%" contains "bw_pickteam":
+				add 1 to {_i}
+		execute console command "/ud %player%"
+		execute console command "/effect %player% clear"
+		execute console command "/v %player% off"
+		if {_i} > 0:
+			teleport player to {pos::bw_pickteams}
+			stop
+		broadcast ""
+		broadcast "&8[&bSnap&8] &7A round of &eBed Wars&7 is starting join with &b/bw"
+		broadcast ""
+		teleport player to {pos::bw_pickteams}
+		
+		set {_i} to 61
+		loop 60 times:
+			set {_players} to 0
+			subtract 1 from {_i}
+			loop all players in world "BedWars":
+				if "%regions at loop-player%" contains "bw_pickteam":
+					add 1 to {_players}
+					if block below loop-player = blue wool block:
+						send loop-player title "&9Blue Team" with subtitle "&b%{_i}% seconds" for 2 seconds 
+					if block below loop-player = red wool block:
+						send loop-player title "&4Red Team" with subtitle "&c%{_i}% seconds" for 2 seconds 
+					if block below loop-player = yellow wool block:
+						send loop-player title "&eYellow Team" with subtitle "&6%{_i}% seconds" for 2 seconds
+					if block below loop-player = light green wool block:
+						send loop-player title "&aGreen Team" with subtitle "&2%{_i}% seconds" for 2 seconds
+			if {_players} = 0:
+				stop
+			wait 1 second
+	
+		
+		set {_i} to 0
+		loop 200 times:
+			add 1 to {_i}
+			if {bw.gameid::%{_i}%} is not set:
+				set {bw.gameid::%{_i}%} to now
+				set {_id} to {_i}
+				stop loop
+		if {_id} is not set:
+			message "No ID set"
+			teleport all players in radius 50 of player to {pos::spawn}
+			stop
+		
+		set {bw_nojoin} to true
+		wait 1 tick
+		send "&8[&bSnap&8] &fCreating game..." to all players in radius 50 of player
+		broadcast "&8[&bSnap&8] &7The &eBed Wars &7game has started"
+		
+		loop all players in world "BedWars":
+			if "%regions at loop-player%" contains "bw_pickteam":
+				if block below loop-player = blue wool block:
+					set {bw.players.list::%{_id}%::%loop-player%} to "blue"
+					send loop-player title "&b&lBlue Team" with subtitle "&bLoading map..." for 5 seconds 
+					if {bw.teams.size::%{_id}%::blue} is not set:
+						set {bw.teams.size::%{_id}%::blue} to 1
+						if {bw.numberOfTeamsAlive::%{_id}%} is not set:
+							set {bw.numberOfTeamsAlive::%{_id}%} to 1
+						else:
+							add 1 to {bw.numberOfTeamsAlive::%{_id}%}
+					else:
+						add 1 to {bw.teams.size::%{_id}%::blue}
+					send "" to loop-player
+					send "    &7Joined the &b&lBlue team" to loop-player
+					send "" to loop-player
+				if block below loop-player = red wool block:
+					set {bw.players.list::%{_id}%::%loop-player%} to "red"
+					send loop-player title "&c&lRed Team" with subtitle "&cLoading map..." for 5 seconds
+					if {bw.teams.size::%{_id}%::red} is not set:
+						set {bw.teams.size::%{_id}%::red} to 1
+						if {bw.numberOfTeamsAlive::%{_id}%} is not set:
+							set {bw.numberOfTeamsAlive::%{_id}%} to 1
+						else:
+							add 1 to {bw.numberOfTeamsAlive::%{_id}%}
+					else:
+						add 1 to {bw.teams.size::%{_id}%::red}
+					send "" to loop-player
+					send "    &7Joined the &c&lRed team" to loop-player
+					send "" to loop-player
+				if block below loop-player = yellow wool block:
+					set {bw.players.list::%{_id}%::%loop-player%} to "yellow"
+					send loop-player title "&e&lYellow Team" with subtitle "&6Loading map..." for 5 seconds
+					if {bw.teams.size::%{_id}%::yellow} is not set:
+						set {bw.teams.size::%{_id}%::yellow} to 1
+						if {bw.numberOfTeamsAlive::%{_id}%} is not set:
+							set {bw.numberOfTeamsAlive::%{_id}%} to 1
+						else:
+							add 1 to {bw.numberOfTeamsAlive::%{_id}%}
+					else:
+						add 1 to {bw.teams.size::%{_id}%::yellow}
+					send "" to loop-player
+					send "    &7Joined the &e&lYellow team" to loop-player
+					send "" to loop-player
+				if block below loop-player = light green wool block:
+					set {bw.players.list::%{_id}%::%loop-player%} to "green"
+					send loop-player title "&a&lGreen Team" with subtitle "&2Loading map..." for 5 seconds
+					if {bw.teams.size::%{_id}%::green} is not set:
+						set {bw.teams.size::%{_id}%::green} to 1
+						if {bw.numberOfTeamsAlive::%{_id}%} is not set:
+							set {bw.numberOfTeamsAlive::%{_id}%} to 1
+						else:
+							add 1 to {bw.numberOfTeamsAlive::%{_id}%}
+					else:
+						add 1 to {bw.teams.size::%{_id}%::green}
+					send "" to loop-player
+					send "    &7Joined the &a&lGreen team" to loop-player
+					send "" to loop-player
+		
+		
+		
+		
+		
+		set {_x} to 1000 * {_id}
+		set {_z} to 0
+		set {_y} to 70
+		set {_loc} to location({_x}, {_y}, {_z}, world "BedWars")
+		add .5 to x coordinate of {_loc}
+		add .5 to z coordinate of {_loc}	
+		
+		set {_session} to new edit session in world "BedWars" with limit -1 
+		paste schematic "plugins/WorldEdit/schematics/bw_air" at {_loc} using editsession {_session}
+		wait 2 seconds
+		
+		set {_session2} to new edit session in world "BedWars" with limit -1 
+		set {_i} to random integer from 1 to 2
+		if {_i} is 1:
+			paste schematic "plugins/WorldEdit/schematics/bw_test3" at {_loc} using editsession {_session2} without air
+		else if {_i} is 2:
+			paste schematic "plugins/WorldEdit/schematics/BowserCastle" at {_loc} using editsession {_session2} without air
+		
+		wait 4 ticks
+		set {bw.locations.spawnWait::%{_id}%} to location of block 40 above {_loc}
+		set block north of {bw.locations.spawnWait::%{_id}%} to barrier
+		set block east of {bw.locations.spawnWait::%{_id}%} to barrier
+		set block west of {bw.locations.spawnWait::%{_id}%} to barrier
+		set block south of {bw.locations.spawnWait::%{_id}%} to barrier
+		set block below {bw.locations.spawnWait::%{_id}%} to barrier
+		set block 2 above {bw.locations.spawnWait::%{_id}%} to barrier
+		loop blocks in radius 57 of {_loc}:
+			chance of .0003%:
+				wait 1 second
+			
+					
+			# Red bed
+			if block at loop-block is red wool block:
+				if block above loop-block is nether brick block:
+					set {bw.locations.bed::%{_id}%::red} to location of block above loop-block
+					set block above loop-block to bed_block:0
+					set block above loop-block to bed_block:1
+					set block above loop-block to bed_block:2
+					set block above loop-block to bed_block:3
+					send players in radius 75 of player title "" with subtitle "&cRed Bed &7Generated" for 1 second with 0 second fade in and 0 second fade out
+					
+			
+					
+			#Blue Bed
+			else if block at loop-block is blue wool block:
+				if block above loop-block is nether brick block:
+					set {bw.locations.bed::%{_id}%::blue} to location of block above loop-block
+					set block above loop-block to bed_block:0
+					set block above loop-block to bed_block:1
+					set block above loop-block to bed_block:2
+					set block above loop-block to bed_block:3
+					setColour(blocks in radius 1 of block above loop-block, blue)
+					send players in radius 75 of player title "" with subtitle "&bBlue Bed &7Generated" for 1 second with 0 second fade in and 0 second fade out
+			
+			# Yellow Bed
+			else if block at loop-block is yellow wool block:
+				if block above loop-block is nether brick block:
+					set {bw.locations.bed::%{_id}%::yellow} to location of block above loop-block
+					set block above loop-block to bed_block:0
+					set block above loop-block to bed_block:1
+					set block above loop-block to bed_block:2
+					set block above loop-block to bed_block:3
+					setColour(blocks in radius 1 of block above loop-block, yellow)
+					send players in radius 75 of player title "" with subtitle "&eYellow Bed &7Generated" for 1 second with 0 second fade in and 0 second fade out
+			
+			
+			
+			
+			# Green Bed
+			else if block at loop-block is light green wool block:
+				if block above loop-block is nether brick block:
+					set {bw.locations.bed::%{_id}%::green} to location of block above loop-block
+					set block above loop-block to bed_block:0
+					set block above loop-block to bed_block:1
+					set block above loop-block to bed_block:2
+					set block above loop-block to bed_block:3
+					setColour(blocks in radius 1 of block above loop-block, light green)
+					send players in radius 75 of player title "" with subtitle "&aGreen Bed &7Generated" for 1 second with 0 second fade in and 0 second fade out
+			
+					
+					
+			
+			# Red spawn
+			if block at loop-block is red wool block:
+				if block above loop-block is gravel:
+					set {bw.locations.spawn::%{_id}%::red} to location of block above loop-block
+					set block above loop-block to air	
+					loop blocks in radius 7 of loop-block:
+						set {bw.nobuild::%{_id}%::%location of loop-block-2%} to location of loop-block-2
+					send players in radius 75 of player title "" with subtitle "&cRed Spawn &7Generated" for 1 second with 0 second fade in and 0 second fade out
+					
+			# blue spawn
+			else if block at loop-block is blue wool block:
+				if block above loop-block is gravel:
+					set {bw.locations.spawn::%{_id}%::blue} to location of block above loop-block
+					set block above loop-block to air
+					loop blocks in radius 5 of loop-block:
+						set {bw.nobuild::%{_id}%::%location of loop-block-2%} to location of loop-block-2
+					send players in radius 75 of player title "" with subtitle "&bBlue Spawn &7Generated" for 1 second with 0 second fade in and 0 second fade out
+			
+			# Yellow spawn
+			else if block at loop-block is yellow wool block:
+				if block above loop-block is gravel:
+					set {bw.locations.spawn::%{_id}%::yellow} to location of block above loop-block
+					set block above loop-block to air
+					loop blocks in radius 7 of loop-block:
+						set {bw.nobuild::%{_id}%::%location of loop-block-2%} to location of loop-block-2
+					send players in radius 75 of player title "" with subtitle "&eYellow Spawn &7Generated" for 1 second with 0 second fade in and 0 second fade out
+			
+			# Green spawn
+			else if block at loop-block is light green wool block:
+				if block above loop-block is gravel:
+					set {bw.locations.spawn::%{_id}%::green} to location of block above loop-block
+					set block above loop-block to air
+					loop blocks in radius 7 of loop-block:
+						set {bw.nobuild::%{_id}%::%location of loop-block-2%} to location of loop-block-2
+					send players in radius 75 of player title "" with subtitle "&aGreen Spawn &7Generated" for 1 second with 0 second fade in and 0 second fade out
+			# Stores			
+			if block at loop-block is white wool block:
+				#Main shop
+				if block above loop-block is gravel:
+					set {bw.locations.bed::%{_id}%::green} to location of block above loop-block
+					set block above loop-block to air
+					spawn Villager at block above loop-block 
+					set name of last spawned entity to "&e&lShop"
+					apply potion of slowness 50 to last spawned entity for 100 minutes
+					send players in radius 75 of player title "" with subtitle "&fShop &7Generated" for 1 second with 0 second fade in and 0 second fade out
+					
+					
+				# Upgrade
+				if block above loop-block is white wool block:
+					set block above loop-block to air
+			# Diamond Generator
+			if block at loop-block is diamond block:
+				if block above loop-block is nether brick block:
+					set {bw.locations.diamondGenerator::%{_id}%::%location of loop-block%} to location of loop-block 
+					set block above loop-block to air
+					send players in radius 75 of player title "" with subtitle "&bDiamond Pump &7Generated" for 1 second with 0 second fade in and 0 second fade out
+						
+						
+			# Emerald Generator
+			if block at loop-block is emerald block:
+				if block above loop-block is nether brick block:
+					set {bw.locations.emeraldGenerator::%{_id}%::%location of loop-block%} to location of loop-block 
+					set block above loop-block to air	
+					send players in radius 75 of player title "" with subtitle "&AEmerald pump &7Generated" for 1 second with 0 second fade in and 0 second fade out
+					
+						
+	
+		wait 4 ticks		
+		
+		
+		loop {bw.players.list::%{_id}%::*}:
+			set {_color} to {bw.players.list::%{_id}%::%loop-index%}
+			teleport loop-index parsed as player to block above {bw.locations.spawn::%{_id}%::%{_color}%}
+			set {bw.players.id::%loop-index%} to {_id}
+			set {_player} to loop-index parsed as player
+			set loop-index parsed as player's helmet to {item::bw_helm_%{_color}%}
+			set loop-index parsed as player's chestplate to {item::bw_chest_%{_color}%}
+			set loop-index parsed as player's leggings to {item::bw_leggings_%{_color}%}
+			set loop-index parsed as player's boots to {item::bw_boots_%{_color}%}
+			
+			give (loop-index parsed as player) 1 wooden sword
+			set gamemode of loop-index parsed as player to survival
+			set fly mode of loop-index parsed as player to false
+			set hunger of loop-index parsed as player to 20
+			execute console command "/effect %{_player}% clear"
+			heal {_player}
+			set loop-index parsed as player's hunger to 20
+		
+		delete {bw_nojoin}
+		
+		loop 15 times:	
+			wait 1 minute
+			if {bw.alreadyFinished::%{_id}%} is set:
+				loop {bw.players.list::%{_id}%::*}:
+					if {bw.players.id::%loop-index%} = {_id}:
+						delete {bw.players.id::%loop-index%}
+						delete {bw.players.items::%loop-index%::*}
+				loop {_diamondGenerators::*}:
+					remove loop-value-2 from {bw.locations.diamondGenerator::*}
+					
+				delete {bw.players.list::%{_id}%::*}
+				delete {bw.locations.bed::%{_id}%::*}
+				delete {bw.locations.spawn::%{_id}%::*}
+				delete {bw.gameid::%{_id}%}
+				delete {bw.locations.spawnWait::%{_id}%} 
+				delete {bw.teams.size::%{_id}%}
+				delete {bw.alreadyFinished::%{_id}%}
+				delete {bw.spectate::%{_id}%::*}
+				delete {bw.teams.size::%{_id}%::*}
+				delete {bw.numberOfTeamsAlive::%{_id}%}
+				delete {bw.locations.diamondGenerator::%{_id}%::*}
+				delete {bw.nobuild::%{_id}%::*}
+				delete {bw.upgrades.sharpness::%{_id}%::*}
+				loop entities in radius 300 of {_loc}:
+					delete loop-entity
+				paste schematic "plugins/WorldEdit/schematics/bw_air" at {_loc} using editsession {_session}
+				stop
+		
+		loop {bw.players.list::%{_id}%::*}:
+			if {bw.players.id::%loop-index%} = {_id}:
+				send loop-index parsed as player title "&e5 Minutes Left" for 3 seconds with 2 second fade in and 2 second fade out
+				
+		loop 2 times:	
+			wait 1 minute
+			if {bw.alreadyFinished::%{_id}%} is set:
+				loop {bw.players.list::%{_id}%::*}:
+					if {bw.players.id::%loop-index%} = {_id}:
+						delete {bw.players.id::%loop-index%}
+						delete {bw.players.items::%loop-index%::*}
+				loop {_diamondGenerators::*}:
+					remove loop-value-2 from {bw.locations.diamondGenerator::*}
+						
+				delete {bw.players.list::%{_id}%::*}
+				delete {bw.locations.bed::%{_id}%::*}
+				delete {bw.locations.spawn::%{_id}%::*}
+				delete {bw.gameid::%{_id}%}
+				delete {bw.locations.spawnWait::%{_id}%} 
+				delete {bw.teams.size::%{_id}%}
+				delete {bw.alreadyFinished::%{_id}%}
+				delete {bw.spectate::%{_id}%::*}
+				delete {bw.teams.size::%{_id}%::*}
+				delete {bw.numberOfTeamsAlive::%{_id}%}
+				delete {bw.locations.diamondGenerator::%{_id}%::*}
+				delete {bw.nobuild::%{_id}%::*}
+				delete {bw.upgrades.sharpness::%{_id}%::*}
+				loop entities in radius 300 of {_loc}:
+					delete loop-entity
+				paste schematic "plugins/WorldEdit/schematics/bw_air" at {_loc} using editsession {_session}
+				stop
+				
+		loop {bw.players.list::%{_id}%::*}:
+			if {bw.players.id::%loop-index%} = {_id}:
+				send loop-index parsed as player title "&e3 Minutes Left" for 3 seconds with 2 second fade in and 2 second fade out
+			
+	
+		wait 1 minute
+		if {bw.alreadyFinished::%{_id}%} is set:
+			loop {bw.players.list::%{_id}%::*}:
+				if {bw.players.id::%loop-index%} = {_id}:
+					delete {bw.players.id::%loop-index%}
+					delete {bw.players.items::%loop-index%::*}
+			delete {bw.players.list::%{_id}%::*}
+			delete {bw.locations.bed::%{_id}%::*}
+			delete {bw.locations.spawn::%{_id}%::*}
+			delete {bw.gameid::%{_id}%}
+			delete {bw.locations.spawnWait::%{_id}%} 
+			delete {bw.teams.size::%{_id}%}
+			delete {bw.alreadyFinished::%{_id}%}
+			delete {bw.spectate::%{_id}%::*}
+			delete {bw.teams.size::%{_id}%::*}
+			delete {bw.numberOfTeamsAlive::%{_id}%}
+			delete {bw.locations.diamondGenerator::%{_id}%::*}
+			delete {bw.nobuild::%{_id}%::*}
+			delete {bw.upgrades.sharpness::%{_id}%::*}
+			loop entities in radius 300 of {_loc}:
+				delete loop-entity
+			paste schematic "plugins/WorldEdit/schematics/bw_air" at {_loc} using editsession {_session}
+			stop
+
+
+		loop {bw.players.list::%{_id}%::*}:
+			if {bw.players.id::%loop-index%} = {_id}:
+				send loop-index parsed as player title "&e2 Minutes Left" for 3 seconds with 2 second fade in and 2 second fade out
+		
+		wait 1 minute
+		if {bw.alreadyFinished::%{_id}%} is set:
+			loop {bw.players.list::%{_id}%::*}:
+				if {bw.players.id::%loop-index%} = {_id}:
+					delete {bw.players.id::%loop-index%}
+					delete {bw.players.items::%loop-index%::*}
+			loop {_diamondGenerators::*}:
+				remove loop-value from {bw.locations.diamondGenerator::*}
+				
+			delete {bw.players.list::%{_id}%::*}
+			delete {bw.locations.bed::%{_id}%::*}
+			delete {bw.locations.spawn::%{_id}%::*}
+			delete {bw.gameid::%{_id}%}
+			delete {bw.locations.spawnWait::%{_id}%} 
+			delete {bw.teams.size::%{_id}%}
+			delete {bw.alreadyFinished::%{_id}%}
+			delete {bw.spectate::%{_id}%::*}
+			delete {bw.teams.size::%{_id}%::*}
+			delete {bw.numberOfTeamsAlive::%{_id}%}
+			delete {bw.locations.diamondGenerator::%{_id}%::*}
+			delete {bw.nobuild::%{_id}%::*}
+			delete {bw.upgrades.sharpness::%{_id}%::*}
+			loop entities in radius 300 of {_loc}:
+				delete loop-entity
+			paste schematic "plugins/WorldEdit/schematics/bw_air" at {_loc} using editsession {_session}
+			stop
+
+
+			
+		loop {bw.players.list::%{_id}%::*}:
+			if {bw.players.id::%loop-index%} = {_id}:
+				send loop-index parsed as player title "&e1 Minute Left" for 3 seconds with 2 second fade in and 2 second fade out
+		
+		wait 30 seconds
+		if {bw.alreadyFinished::%{_id}%} is set:
+			loop {bw.players.list::%{_id}%::*}:
+				if {bw.players.id::%loop-index%} = {_id}:
+					delete {bw.players.id::%loop-index%}
+					delete {bw.players.items::%loop-index%::*}
+			loop {_diamondGenerators::*}:
+				remove loop-value from {bw.locations.diamondGenerator::*}
+				
+			delete {bw.players.list::%{_id}%::*}
+			delete {bw.locations.bed::%{_id}%::*}
+			delete {bw.locations.spawn::%{_id}%::*}
+			delete {bw.gameid::%{_id}%}
+			delete {bw.locations.spawnWait::%{_id}%} 
+			delete {bw.teams.size::%{_id}%}
+			delete {bw.alreadyFinished::%{_id}%}
+			delete {bw.spectate::%{_id}%::*}
+			delete {bw.teams.size::%{_id}%::*}
+			delete {bw.numberOfTeamsAlive::%{_id}%}
+			delete {bw.locations.diamondGenerator::%{_id}%::*}
+			delete {bw.nobuild::%{_id}%::*}
+			delete {bw.upgrades.sharpness::%{_id}%::*}
+			loop entities in radius 300 of {_loc}:
+				delete loop-entity
+			paste schematic "plugins/WorldEdit/schematics/bw_air" at {_loc} using editsession {_session}
+			stop
+			
+	
+		loop {bw.players.list::%{_id}%::*}:
+			if {bw.players.id::%loop-index%} = {_id}:
+				send loop-index parsed as player title "&e30 Seconds Left" for 3 seconds with 2 second fade in and 2 second fade out
+		
+		wait 20 seconds
+		if {bw.alreadyFinished::%{_id}%} is set:
+			loop {bw.players.list::%{_id}%::*}:
+				if {bw.players.id::%loop-index%} = {_id}:
+					delete {bw.players.id::%loop-index%}
+					delete {bw.players.items::%loop-index%::*}
+			loop {_diamondGenerators::*}:
+				remove loop-value from {bw.locations.diamondGenerator::*}
+				
+			delete {bw.players.list::%{_id}%::*}
+			delete {bw.locations.bed::%{_id}%::*}
+			delete {bw.locations.spawn::%{_id}%::*}
+			delete {bw.gameid::%{_id}%}
+			delete {bw.locations.spawnWait::%{_id}%} 
+			delete {bw.teams.size::%{_id}%}
+			delete {bw.alreadyFinished::%{_id}%}
+			delete {bw.spectate::%{_id}%::*}
+			delete {bw.teams.size::%{_id}%::*}
+			delete {bw.numberOfTeamsAlive::%{_id}%}
+			delete {bw.locations.diamondGenerator::%{_id}%::*}
+			delete {bw.nobuild::%{_id}%::*}
+			delete {bw.upgrades.sharpness::%{_id}%::*}
+			loop entities in radius 300 of {_loc}:
+				delete loop-entity
+			paste schematic "plugins/WorldEdit/schematics/bw_air" at {_loc} using editsession {_session}
+			stop
+			
+	
+		loop {bw.players.list::%{_id}%::*}:
+			if {bw.players.id::%loop-index%} = {_id}:
+				send loop-index parsed as player title "&e10 Seconds Left" for 2 seconds with 1 second fade in and 1 second fade out
+		wait 5 seconds
+		if {bw.alreadyFinished::%{_id}%} is set:
+			loop {bw.players.list::%{_id}%::*}:
+				if {bw.players.id::%loop-index%} = {_id}:
+					delete {bw.players.id::%loop-index%}
+					delete {bw.players.items::%loop-index%::*}
+			loop {_diamondGenerators::*}:
+				remove loop-value from {bw.locations.diamondGenerator::*}
+				
+			delete {bw.players.list::%{_id}%::*}
+			delete {bw.locations.bed::%{_id}%::*}
+			delete {bw.locations.spawn::%{_id}%::*}
+			delete {bw.gameid::%{_id}%}
+			delete {bw.locations.spawnWait::%{_id}%} 
+			delete {bw.teams.size::%{_id}%}
+			delete {bw.alreadyFinished::%{_id}%}
+			delete {bw.spectate::%{_id}%::*}
+			delete {bw.teams.size::%{_id}%::*}
+			delete {bw.numberOfTeamsAlive::%{_id}%}
+			delete {bw.locations.diamondGenerator::%{_id}%::*}
+			delete {bw.nobuild::%{_id}%::*}
+			delete {bw.upgrades.sharpness::%{_id}%::*}
+			loop entities in radius 300 of {_loc}:
+				delete loop-entity
+			paste schematic "plugins/WorldEdit/schematics/bw_air" at {_loc} using editsession {_session}
+			stop
+			
+	
+		loop {bw.players.list::%{_id}%::*}:
+			if {bw.players.id::%loop-index%} = {_id}:
+				send loop-index parsed as player title "&e5 Seconds Left" for 1 seconds with 0 second fade in and 1 second fade out
+		wait 2 seconds
+		if {bw.alreadyFinished::%{_id}%} is set:
+			loop {bw.players.list::%{_id}%::*}:
+				if {bw.players.id::%loop-index%} = {_id}:
+					delete {bw.players.id::%loop-index%}
+					delete {bw.players.items::%loop-index%::*}
+			loop {_diamondGenerators::*}:
+				remove loop-value from {bw.locations.diamondGenerator::*}
+				
+			delete {bw.players.list::%{_id}%::*}
+			delete {bw.locations.bed::%{_id}%::*}
+			delete {bw.locations.spawn::%{_id}%::*}
+			delete {bw.gameid::%{_id}%}
+			delete {bw.locations.spawnWait::%{_id}%} 
+			delete {bw.teams.size::%{_id}%}
+			delete {bw.alreadyFinished::%{_id}%}
+			delete {bw.spectate::%{_id}%::*}
+			delete {bw.teams.size::%{_id}%::*}
+			delete {bw.numberOfTeamsAlive::%{_id}%}
+			delete {bw.locations.diamondGenerator::%{_id}%::*}
+			delete {bw.nobuild::%{_id}%::*}
+			delete {bw.upgrades.sharpness::%{_id}%::*}
+			loop entities in radius 300 of {_loc}:
+				delete loop-entity
+			paste schematic "plugins/WorldEdit/schematics/bw_air" at {_loc} using editsession {_session}
+			stop
+			
+	
+		loop {bw.players.list::%{_id}%::*}:
+			if {bw.players.id::%loop-index%} = {_id}:
+				send loop-index parsed as player title "&e3 Seconds Left" for 2 seconds with 0 second fade in and 0 second fade out
+		
+		wait 1 seconds
+		if {bw.alreadyFinished::%{_id}%} is set:
+			loop {bw.players.list::%{_id}%::*}:
+				if {bw.players.id::%loop-index%} = {_id}:
+					delete {bw.players.id::%loop-index%}
+					delete {bw.players.items::%loop-index%::*}
+			loop {_diamondGenerators::*}:
+				remove loop-value from {bw.locations.diamondGenerator::*}
+				
+			delete {bw.players.list::%{_id}%::*}
+			delete {bw.locations.bed::%{_id}%::*}
+			delete {bw.locations.spawn::%{_id}%::*}
+			delete {bw.gameid::%{_id}%}
+			delete {bw.locations.spawnWait::%{_id}%} 
+			delete {bw.teams.size::%{_id}%}
+			delete {bw.alreadyFinished::%{_id}%}
+			delete {bw.spectate::%{_id}%::*}
+			delete {bw.teams.size::%{_id}%::*}
+			delete {bw.numberOfTeamsAlive::%{_id}%}
+			delete {bw.locations.diamondGenerator::%{_id}%::*}
+			delete {bw.nobuild::%{_id}%::*}
+			delete {bw.upgrades.sharpness::%{_id}%::*}
+			loop entities in radius 300 of {_loc}:
+				delete loop-entity
+			paste schematic "plugins/WorldEdit/schematics/bw_air" at {_loc} using editsession {_session}
+			stop
+			
+	
+		loop {bw.players.list::%{_id}%::*}:
+			if {bw.players.id::%loop-index%} = {_id}:
+				send loop-index parsed as player title "&e2 Seconds Left" for 2 seconds with 0 second fade in and 0 second fade out
+		
+		wait 1 seconds
+		if {bw.alreadyFinished::%{_id}%} is set:
+			loop {bw.players.list::%{_id}%::*}:
+				if {bw.players.id::%loop-index%} = {_id}:
+					delete {bw.players.id::%loop-index%}
+					delete {bw.players.items::%loop-index%::*}
+			loop {_diamondGenerators::*}:
+				remove loop-value from {bw.locations.diamondGenerator::*}
+				
+			delete {bw.players.list::%{_id}%::*}
+			delete {bw.locations.bed::%{_id}%::*}
+			delete {bw.locations.spawn::%{_id}%::*}
+			delete {bw.gameid::%{_id}%}
+			delete {bw.locations.spawnWait::%{_id}%} 
+			delete {bw.teams.size::%{_id}%}
+			delete {bw.alreadyFinished::%{_id}%}
+			delete {bw.spectate::%{_id}%::*}
+			delete {bw.teams.size::%{_id}%::*}
+			delete {bw.numberOfTeamsAlive::%{_id}%}
+			delete {bw.locations.diamondGenerator::%{_id}%::*}
+			delete {bw.nobuild::%{_id}%::*}
+			delete {bw.upgrades.sharpness::%{_id}%::*}
+			loop entities in radius 300 of {_loc}:
+				delete loop-entity
+			paste schematic "plugins/WorldEdit/schematics/bw_air" at {_loc} using editsession {_session}
+			stop
+			
+	
+		loop {bw.players.list::%{_id}%::*}:
+			if {bw.players.id::%loop-index%} = {_id}:
+				send loop-index parsed as player title "&e1 Second Left" for 2 seconds with 0 second fade in and 0 second fade out
+
+		loop {bw.players.list::%{_id}%::*}:
+		
+			if {bw.players.id::%loop-index%} = {_id}:
+				set {_player} to loop-index parsed as player 
+				teleport {_player} to {pos::spawn}
+				
+				send "&8[&bSnap&8] Game Over (Time ran out)" to loop-index parsed as player
+				delete {bw.players.id::%loop-index%}
+				delete {bw.players.items::%loop-index%::*}
+			
+		loop {_diamondGenerators::*}:
+			remove loop-value from {bw.locations.diamondGenerator::*}
+		delete {bw.players.list::%{_id}%::*}
+		delete {bw.locations.bed::%{_id}%::*}
+		delete {bw.locations.spawn::%{_id}%::*}
+		delete {bw.gameid::%{_id}%}
+		delete {bw.locations.spawnWait::%{_id}%} 
+		delete {bw.teams.size::%{_id}%}
+		delete {bw.alreadyFinished::%{_id}%}
+		delete {bw.spectate::%{_id}%::*}
+		delete {bw.teams.size::%{_id}%::*}
+		delete {bw.numberOfTeamsAlive::%{_id}%}
+		delete {bw.locations.diamondGenerator::%{_id}%::*}
+		delete {bw.nobuild::%{_id}%::*}
+		delete {bw.upgrades.sharpness::%{_id}%::*}
+		loop entities in radius 300 of {_loc}:
+			delete loop-entity
+	
+		paste schematic "plugins/WorldEdit/schematics/bw_air" at {_loc} using editsession {_session}
+
+on build:
+	if player is in world "BedWars":
+		if player does not have permission "is.op":
+			if y coordinate of event-block > 100:
+				cancel event 
+				message "&8[&bSnap&8] &7You can't build that high in bedwars"
+			else if y coordinate of event-block < 60:
+				cancel event 
+				message "&8[&bSnap&8] &7You can't build that high in bedwars"
+on break:
+	if player is in world "BedWars":
+		if player does not have permission "is.op":
+			if y coordinate of event-block > 100:
+				cancel event 
+				message "&8[&bSnap&8] &7You can't mine that high"
+			else if y coordinate of event-block < 60:
+				cancel event 
+				message "&8[&bSnap&8] &7You can't mine that low"
+			
+
+				
+		
+#Death by void
+on damage of player:
+	if y coordinate of victim > 0:
+		stop
+	if victim is not in world "BedWars":
+		stop
+	
+	if {justfell::%victim%} is set:
+		stop
+	if {bw.spectator::%victim%} is set:
+		execute victim command "/quit"
+		stop
+	set {justfell::%victim%} to true
+	clear victim's inventory
+	set victim's helmet to air
+	set victim's chestplate to air
+	set victim's leggings to air
+	set victim's boots to air
+	set victim's offhand to air
+	
+	set {_id} to {bw.players.id::%victim%}
+	if {_id} is not set:
+		stop
+	if {bw.spectate::%victim%} is set:
+		stop
+	set {_color} to {bw.players.list::%{_id}%::%victim%}
+	set {_attackerColor} to {bw.players.list::%{_id}%::%{lastattacker::%victim%}%}
+	if {_color} = {_attackerColor}:
+	
+	if {_color} is "blue":
+		set {_color2} to "light blue"
+		set {_team} to "Blue"
+	else if {_color} is "green":
+		set {_color2} to "light green"
+		set {_team} to "Green"
+	else if {_color} is "yellow":
+		set {_team} to "Yellow"
+		set {_color2} to "yellow"
+	else if {_color} is "red":
+		set {_team} to "Red"
+		set {_color2} to "light red"
+		
+	if {_attackerColor} is "blue":
+		set {_attackerColor} to "light blue"
+	else if {_attackerColor} is "green":
+		set {_attackerColor} to "light green"
+		
+	if {bw.locations.spawn::%{_id}%::%{bw.players.list::%{_id}%::%victim%}%} is set:
+		
+		if {_attackerColor} is not set:
+			send "    <%{_color2}%>&l%victim% &7fell into the void" to all players in radius 300 of victim
+		else:
+			send "    <%{_color2}%>&l%victim% &7was pushed into the void by <%{_attackerColor}%>&l%{lastattacker::%victim%}%" to all players in radius 300 of victim
+		
+
+	if {bw.locations.spawn::%{_id}%::%{bw.players.list::%{_id}%::%victim%}%} is not set:
+		teleport victim to block 3 above {bw.locations.spawnWait::%{_id}%} 
+		delete {justfell::%victim%}
+		clear victim's inventory
+		set victim's helmet to air
+		set victim's chestplate to air
+		set victim's leggings to air
+		set victim's boots to air
+		set victim's offhand to air
+		send victim title "&cYou Died" with subtitle "&b/quit" for 6 seconds with 1 second fade in and 1 second fade out
+	
+		set fly mode of victim to true
+		set gamemode of victim to spectator
+		set {bw.spectate::%{_id}%::%victim%} to true
+		
+		
+			
+		if {lastattacker::%victim%} is set:
+			send "" to all players in radius 300 of victim
+			send "    <%{_color2}%>&lPlayer Eliminated&7: <%{_color2}%>%victim%" to all players in radius 300 of victim
+			send "    &7Pushed off by <%{_attackerColor}%>&l%{lastattacker::%victim%}%" to all players in radius 300 of victim
+			send "" to all players in radius 300 of victim
+			
+			
+		else:
+			send "" to all players in radius 300 of victim
+			send "    <%{_color2}%>&lPlayer Eliminated&7: <%{_color2}%>%victim%" to all players in radius 300 of victim
+			send "    &7By jumping off the edge" to all players in radius 300 of victim
+			send "" to all players in radius 300 of victim
+		
+		
+	
+		set {bw.teams.size::%{_id}%::%{_color}%} to {bw.teams.size::%{_id}%::%{_color}%} - 1
+		if {bw.teams.size::%{_id}%::%{_color}%} <= 0:
+			set {bw.numberOfTeamsAlive::%{_id}%}  to {bw.numberOfTeamsAlive::%{_id}%} - 1
+			send "" to all players in radius 300 of victim
+			send "    <%{_color2}%>&l%{_team}% Team Eliminated" to all players in radius 300 of victim
+			if {bw.numberOfTeamsAlive::%{_id}%} > 1:
+				send "    &f&lTeams Left&7: &f%{bw.numberOfTeamsAlive::%{_id}%}%" to all players in radius 300 of victim
+			send "" to all players in radius 300 of victim 
+			
+			
+	
+		if {bw.numberOfTeamsAlive::%{_id}%}  <= 1:
+			loop {bw.teams.size::%{_id}%::*}:
+				if loop-value-2 > 0:
+					set {_color} to loop-index
+					if {_color} is "green":
+						set {_color} to "light green"
+						set {_team} to "Green"
+					else if {_color} is "blue":
+						set {_color} to "light blue"
+						set {_team} to "Blue"
+					else if {_color} = "red":
+						set {_team} to "Red"
+					else if {_color}  = "yellow":
+						set {_team} to "Yellow"
+					send "" to all players in radius 300 of victim
+					send "&8[&bSnap&8] <%{_color}%>%{_team}% Team &7won with &f%loop-value-2% players &7remaining!" to all players in radius 300 of victim
+					send "" to all players in radius 300 of victim
+					stop loop
+			loop {bw.players.list::%{_id}%::*}:
+				if {bw.players.id::%loop-index%} = {_id}:
+					send loop-index parsed as player title "<%{_color}%>%{_team}% Team &7Won" for 5 seconds with 1 second fade in and 4 second fade out
+					
+			wait 3 seconds
+			# Game OVER
+			loop {bw.players.list::%{_id}%::*}:
+				if {bw.players.id::%loop-index%} = {_id}:
+					set {_player} to loop-index parsed as player 
+					teleport loop-index parsed as player to {pos::spawn}
+					send "&8[&bSnap&8] Game Over (Fall)" to {_player}
+					clear inventory of {_player}
+					set loop-index parsed as player's helmet to air
+					set loop-index parsed as player's chestplate to air
+					set loop-index parsed as player's leggings to air
+					set loop-index parsed as player's boots to air
+					set loop-index parsed as player's offhand to air
+					heal loop-index parsed as player
+					set loop-index parsed as player's hunger to 20
+					delete {bw.players.id::%loop-index%}
+					delete {bw.players.items::%loop-index%::*}
+							
+			set {bw.alreadyFinished::%{_id}%} to true
+			stop
+	
+		teleport victim to block 3 above {bw.locations.spawnWait::%{_id}%} 
+		set {bw.spectate::%{_id}%::%victim%} to true
+		send victim title "&cYou Died" with subtitle "&7Good Game." for 1 seconds with 1 second fade in and 1 second fade out
+		wait 3 seconds
+		send victim title "&cExit with" with subtitle "&b/quit" for 4 seconds with 1 second fade in and 3 second fade out
+		set fly mode of victim to true
+		set victim's hunger to 20
+		stop
+	
+		
+		 
+		
+	if {bw.alreadyFinished::%{_id}%} is set:
+		stop
+		
+	heal victim
+	wait 1 tick
+	
+	delete {lastattacker::%victim%}
+	
+	teleport victim to {bw.locations.spawnWait::%{_id}%} 
+	delete {justfell::%victim%}
+	send red tint to victim with fadeTime 3, intensity 20 and damageMode true
+		
+		
+	send victim title "&eRespawning in &c5..." with subtitle "" for 2 seconds
+	wait 1 second
+	send victim title "&eRespawning in &c4..." with subtitle "" for 2 seconds
+	wait 1 second
+	send victim title "&eRespawning in &c3..." with subtitle "" for 2 seconds
+	wait 1 second
+	send victim title "&eRespawning in &c2..." with subtitle "" for 2 seconds
+	wait 1 second
+	send victim title "&eRespawning in &c1..." with subtitle "" for 1 second with 0 second fade in and 1 second fade out
+	wait 1 second
+	
+	
+	if {bw.locations.spawn::%{_id}%::%{bw.players.list::%{_id}%::%victim%}%} is not set:
+		teleport victim to block 3 above {bw.locations.spawnWait::%{_id}%} 
+		clear victim's inventory
+		delete {justfell::%victim%}
+		set victim's helmet to air
+		set victim's chestplate to air
+		set victim's leggings to air
+		set victim's boots to air
+		set victim's offhand to air
+		send victim title "&cYou Died" with subtitle "&b/quit" for 6 seconds with 1 second fade in and 1 second fade out
+	
+		set fly mode of victim to true
+		set gamemode of victim to spectator
+		set {bw.spectate::%{_id}%::%victim%} to true
+		
+		
+			
+		if {lastattacker::%victim%} is set:
+			send "" to all players in radius 300 of victim
+			send "    <%{_color2}%>&lPlayer Eliminated&7: <%{_color2}%>%victim%" to all players in radius 300 of victim
+			send "    &7Killed by <%{_attackerColor}%>&l%{lastattacker::%victim%}%" to all players in radius 300 of victim
+			send "" to all players in radius 300 of victim
+			
+			
+		else:
+			send "" to all players in radius 300 of victim
+			send "    <%{_color2}%>&lPlayer Eliminated&7: <%{_color}%>%victim%" to all players in radius 300 of victim
+			send "" to all players in radius 300 of victim
+		
+		
+	
+		set {bw.teams.size::%{_id}%::%{_color}%} to {bw.teams.size::%{_id}%::%{_color}%} - 1
+		if {bw.teams.size::%{_id}%::%{_color}%} <= 0:
+			send "" to all players in radius 300 of victim
+			send "    <%{_color2}%>&l%{_team}% Team Eliminated" to all players in radius 300 of victim
+			if {bw.numberOfTeamsAlive::%{_id}%} > 1:
+				send "    &f&lTeams Left&7: &f%{bw.numberOfTeamsAlive::%{_id}%}%" to all players in radius 300 of victim
+			send "" to all players in radius 300 of victim 
+			set {bw.numberOfTeamsAlive::%{_id}%}  to {bw.numberOfTeamsAlive::%{_id}%} - 1
+			
+			
+	
+		if {bw.numberOfTeamsAlive::%{_id}%}  <= 1:
+			loop {bw.teams.size::%{_id}%::*}:
+				if loop-value-2 > 0:
+					set {_color} to loop-index
+					if {_color} is "green":
+						set {_color} to "light green"
+						set {_team} to "Green"
+					else if {_color} is "blue":
+						set {_color} to "light blue"
+						set {_team} to "Blue"
+					else if {_color} = "red":
+						set {_color} to "light red"
+						set {_team} to "Red"
+					else if {_color}  = "yellow":
+						set {_team} to "Yellow"
+					send "" to all players in radius 300 of victim
+					send "&8[&bSnap&8] <%{_color}%>%{_team}% Team &7won with &f%loop-value-2% players &7remaining!" to all players in radius 300 of victim
+					send "" to all players in radius 300 of victim
+					stop loop
+			loop {bw.players.list::%{_id}%::*}:
+				if {bw.players.id::%loop-index%} = {_id}:
+					send loop-index parsed as player title "<%{_color}%>%{_team}% Team &7Won" for 5 seconds with 1 second fade in and 4 second fade out
+					
+			wait 3 seconds
+			# Game OVER
+			loop {bw.players.list::%{_id}%::*}:
+				if {bw.players.id::%loop-index%} = {_id}:
+					set {_player} to loop-index parsed as player 
+					teleport {_player} to {pos::spawn}
+					send "&8[&bSnap&8] Game Over (After Fall Respawn)" to {_player}
+					clear inventory of {_player}
+					set {_player}'s helmet to air
+					set {_player}'s chestplate to air
+					set {_player}'s leggings to air
+					set {_player}'s boots to air
+					set {_player}'s offhand to air
+					delete {bw.players.id::%loop-index%}
+					delete {bw.players.items::%loop-index%::*}
+					heal {_player}
+					set {_player}'s hunger to 20
+							
+			set {bw.alreadyFinished::%{_id}%} to true
+			stop 
+			
+			
+	if {bw.alreadyFinished::%{_id}%} is not set:
+		teleport victim to {bw.locations.spawn::%{_id}%::%{bw.players.list::%{_id}%::%victim%}%}
+		
+		# Set Team Color Helm/Chest
+		set victim's helmet to {item::bw_helm_%{_color}%}
+		set victim's chestplate to {item::bw_chest_%{_color}%}
+		
+		# Give Sword
+		if {bw.players.items::%victim%::sword} is not set:
+			give victim 1 wooden sword
+		else:
+			give victim {bw.players.items::%victim%::sword}
+			
+			
+		if {bw.players.items::%victim%::bow} is set:
+			give victim {bw.players.items::%victim%::bow}
+		
+		if {bw.players.items::%victim%::shears} is set:
+			give victim {bw.players.items::%victim%::shears}
+		if {bw.players.items::%victim%::pickaxe} is set:
+			give victim {bw.players.items::%victim%::pickaxe}
+		if {bw.players.items::%victim%::axe} is set:
+			give victim {bw.players.items::%victim%::axe}
+		
+		
+		if {bw.players.items::%victim%::leggings} is set:
+			set victim's leggings to {bw.players.items::%victim%::leggings}
+		else:
+			set victim's leggings to {item::bw_boots_%{_color}%}
+		
+		if {bw.players.items::%victim%::boots} is set:
+			set victim's boots to {bw.players.items::%victim%::boots}
+		else:
+			set victim's boots to {item::bw_boots_%{_color}%}
+			
+		set victim's hunger to 20
+		heal victim
+		set gamemode of victim to survival
+		set fly mode of victim to false
+		send victim title "&aRespawned" with subtitle "" for 1 second with 0 second fade in and 1 second fade out
+		
+
+#Spectators			
+# on damage:
+#	if victim is in world "BedWars":
+#		set {_id} to {bw.players.id::%victim%}
+#		set {_color} to {bw.players.list::%{_id}%::%victim%}
+#		set {_color2} to {bw.players.list::%{_id}%::%attacker%}
+#		if {_color2} = {_color}:
+#			cancel event
+#		if {bw.spectate::%{_id}%::%victim%} is set:
+#			cancel event
+#		if {bw.spectate::%{_id}%::%attacker%} is set:
+#			cancel event
+			
+
+	
+every 10 seconds:
+	delete {justfell::*}
+	
+#Death by sword
+on death of a player:
+	if victim is in world "BedWars":
+		heal victim
+		clear drops
+		if {justfell::%player%} is set:
+			stop
+		if {bw.spectator::%player%} is set:
+			execute player command "/quit"
+			stop
+		set player's gamemode to spectator
+		set {_id} to {bw.players.id::%victim%}
+		set {_color} to {bw.players.list::%{_id}%::%victim%}
+		if {_color} is not set:
+			stop
+		if {lastattacker::%victim%} is set:
+			set {_attackerColor} to {bw.players.list::%{_id}%::%{lastattacker::%victim%}%}
+		
+		if {_color} is "blue":
+			set {_color2} to "light blue"
+			set {_team} to "Blue"
+		else if {_color} is "green":
+			set {_color2} to "light green"
+			set {_team} to "Green"
+		else if {_color} is "yellow":
+			set {_team} to "Yellow"
+			set {_color2} to "yellow"
+		else if {_color} is "red":
+			set {_team} to "Red"
+			set {_color2} to "light red"
+		
+		if {_attackerColor} is "green":
+			set {_attackerColor} to "light green"
+		else if {_attackerColor} is "blue":
+			set {_attackerColor} to "light blue"
+		if {bw.locations.spawn::%{_id}%::%{bw.players.list::%{_id}%::%victim%}%} is set:
+			
+		
+			if {lastattacker::%victim%} is set:
+				send "   <%{_color2}%>&l%victim% &7was killed by <%{_attackerColor}%>%{lastattacker::%victim%}%" to all players in radius 300 of victim
+			else:
+				send "   <%{_color2}%>&l%victim% &7died" to all players in radius 300 of victim
+			
+				
+		
+		if {bw.locations.spawn::%{_id}%::%{bw.players.list::%{_id}%::%victim%}%} is not set:
+			
+		
+			
+				
+			if {lastattacker::%victim%} is set:
+				send "" to all players in radius 300 of victim
+				send "    <%{_color2}%>&lPlayer Eliminated&7: <%{_color2}%>%victim%" to all players in radius 300 of victim
+				send "    &7Killed by <%{_attackerColor}%>&l%{lastattacker::%victim%}%" to all players in radius 300 of victim
+				send "" to all players in radius 300 of victim
+				
+				
+			else:
+				send "" to all players in radius 300 of victim
+				send "    <%{_color2}%>&lPlayer Eliminated&7: <%{_color2}%>%victim%" to all players in radius 300 of victim
+				send "" to all players in radius 300 of victim
+			
+			
+		
+			set {bw.teams.size::%{_id}%::%{_color}%} to {bw.teams.size::%{_id}%::%{_color}%} - 1
+			if {bw.teams.size::%{_id}%::%{_color}%} <= 0:
+				send "" to all players in radius 300 of victim
+				send "    <%{_color2}%>&l%{_team}% Team Eliminated" to all players in radius 300 of victim
+				
+				set {bw.numberOfTeamsAlive::%{_id}%}  to {bw.numberOfTeamsAlive::%{_id}%} - 1
+				if {bw.numberOfTeamsAlive::%{_id}%} > 1:
+					send "    &f&lTeams Left&7: &f%{bw.numberOfTeamsAlive::%{_id}%}%"
+				send "" to all players in radius 300 of victim 
+				
+				
+		
+			if {bw.numberOfTeamsAlive::%{_id}%}  <= 1:
+				loop {bw.teams.size::%{_id}%::*}:
+					if loop-value > 0:
+						set {_color} to loop-index
+						if {_color} is "green":
+							set {_color} to "light green"
+							set {_team} to "Green"
+						else if {_color} is "blue":
+							set {_color} to "light blue"
+							set {_team} to "Blue"
+						else if {_color} = "red":
+							set {_team} to "Red"
+						else if {_color}  = "yellow":
+							set {_team} to "Yellow"
+						send "" to all players in radius 300 of victim
+						if loop-value = 1:
+							send "    <%{_color}%>&l%{_team}% Team &7Won with Only &f1 &7Player Left!" to all players in radius 300 of victim
+						else:
+							send "    <%{_color}%>&l%{_team}% Team &7Won with &f%loop-value% &7Players Left!" to all players in radius 300 of victim
+						
+						send "" to all players in radius 300 of victim
+						stop loop
+				loop {bw.players.list::%{_id}%::*}:
+					if {bw.players.id::%loop-index%} = {_id}:
+						send loop-index parsed as player title "<%{_color}%>%{_team}% Team &7Won" for 5 seconds with 1 second fade in and 4 second fade out
+						
+				wait 3 seconds
+				# Game OVER
+				loop {bw.players.list::%{_id}%::*}:
+					if {bw.players.id::%loop-index%} = {_id}:
+						set {_player} to loop-index parsed as player 
+						teleport {_player} to {pos::spawn}
+						clear inventory of {_player}
+						set loop-index parsed as player's helmet to air
+						set loop-index parsed as player's chestplate to air
+						set loop-index parsed as player's leggings to air
+						set loop-index parsed as player's boots to air
+						set loop-index parsed as player's offhand to air
+						set loop-index parsed as player's hunger to 20
+						heal loop-index parsed as player
+						delete {bw.players.id::%loop-index%}
+						delete {bw.players.items::%loop-index%::*}
+								
+				set {bw.alreadyFinished::%{_id}%} to true
+				stop
+			
+		
+		
+		
+		
+		
+			teleport victim to block 3 above {bw.locations.spawnWait::%{_id}%} 
+			clear inventory of victim
+			set victim's helmet to air
+			set victim's chestplate to air
+			set victim's leggings to air
+			set victim's boots to air
+			set victim's offhand to air
+			set fly mode of victim to true
+			set gamemode of victim to spectator
+			set {bw.spectate::%{_id}%::%victim%} to true
+			send victim title "&cYou Died" with subtitle "&7Good Game." for 1 seconds with 1 second fade in and 1 second fade out
+			wait 3 seconds
+			if {bw.alreadyFinished::%{_id}%} is set:
+				stop
+			send victim title "&cExit with" with subtitle "&b/quit" for 4 seconds with 1 second fade in and 3 second fade out
+
+			stop
+		
+		
+		if {bw.alreadyFinished::%{_id}%} is set:
+			stop
+			
+			
+		heal victim
+		wait 1 tick
+		set {_color} to {bw.players.list::%{_id}%::%victim%}
+		
+		delete {lastattacker::%victim%}
+		
+		teleport victim to {bw.locations.spawnWait::%{_id}%} 
+		send red tint to victim with fadeTime 3, intensity 20 and damageMode true
+		
+		send victim title "&eRespawning in &c5.." with subtitle "" for 2 seconds
+		wait 1 second
+		send victim title "&eRespawning in &c4.." with subtitle "" for 2 seconds
+		wait 1 second
+		send victim title "&eRespawning in &c3.." with subtitle "" for 2 seconds
+		wait 1 second
+		send victim title "&eRespawning in &c2.." with subtitle "" for 2 seconds
+		wait 1 second
+		send victim title "&eRespawning in &c1.." with subtitle "" for 1 second with 0 second fade in and 1 second fade out
+		wait 1 second
+		
+		if {bw.locations.spawn::%{_id}%::%{bw.players.list::%{_id}%::%victim%}%} is not set:
+		
+			
+			send "" to all players in radius 300 of victim
+			send "    <%{_color2}%>&lPlayer Eliminated&7: <%{_color2}%>%victim%" to all players in radius 300 of victim
+			send "" to all players in radius 300 of victim
+				
+			
+			set {bw.teams.size::%{_id}%::%{_color}%} to {bw.teams.size::%{_id}%::%{_color}%} - 1
+			if {bw.teams.size::%{_id}%::%{_color}%} <= 0:
+				send "" to all players in radius 300 of victim
+				send "    <%{_color}%>&l%{_team}% Team Eliminated" to all players in radius 300 of victim
+				if {bw.numberOfTeamsAlive::%{_id}%} > 1:
+					send "    &f&lTeams Left&7: &f%{bw.numberOfTeamsAlive::%{_id}%}%"
+				send "" to all players in radius 300 of victim 
+				set {bw.numberOfTeamsAlive::%{_id}%}  to {bw.numberOfTeamsAlive::%{_id}%} - 1
+				
+				
+		
+			if {bw.numberOfTeamsAlive::%{_id}%}  <= 1:
+				loop {bw.teams.size::%{_id}%::*}:
+					if loop-value > 0:
+						set {_color} to loop-index
+						if {_color} is "green":
+							set {_color} to "light green"
+							set {_team} to "Green"
+						else if {_color} is "blue":
+							set {_color2} to "light blue"
+							set {_team} to "Blue"
+						else if {_color} = "red":
+							set {_team} to "Red"
+							
+						else if {_color}  = "yellow":
+							set {_team} to "Yellow"
+						send "" to all players in radius 300 of victim
+						send "&8[&bSnap&8] <%{_color}%>%{_team}% Team &7won with &f%loop-value% players &7remaining!" to all players in radius 300 of victim
+						send "" to all players in radius 300 of victim
+						stop loop
+				loop {bw.players.list::%{_id}%::*}:
+					if {bw.players.id::%loop-index%} = {_id}:
+						send loop-index parsed as player title "<%{_color}%>%{_team}% Team &7Won" for 5 seconds with 1 second fade in and 4 second fade out
+						
+				wait 3 seconds
+				# Game OVER
+				loop {bw.players.list::%{_id}%::*}:
+					if {bw.players.id::%loop-index%} = {_id}:
+						set {_player} to loop-index parsed as player 
+						teleport {_player} to {pos::spawn}
+						send "&8[&bSnap&8] Game Over (after respawn death)" to {_player}
+						clear loop-index parsed as player's inventory
+						set loop-index parsed as player's helmet to air
+						set loop-index parsed as player's chestplate to air
+						set loop-index parsed as player's leggings to air
+						set loop-index parsed as player's boots to air
+						set loop-index parsed as player's offhand to air
+						delete {bw.players.id::%loop-index%}
+						delete {bw.players.items::%loop-index%::*}
+						set loop-index parsed as player's hunger to 20
+						heal loop-index parsed as player
+								
+				set {bw.alreadyFinished::%{_id}%} to true
+				stop
+			
+		
+		
+		
+		
+		
+			teleport victim to block 3 above {bw.locations.spawnWait::%{_id}%} 
+			clear inventory of victim
+			set victim's helmet to air
+			set victim's chestplate to air
+			set victim's leggings to air
+			set victim's boots to air
+			set victim's offhand to air
+			set fly mode of victim to true
+			set gamemode of victim to spectator
+			set {bw.spectate::%{_id}%::%victim%} to true
+			send victim title "&cYou Died" with subtitle "&7Good Game." for 1 seconds with 1 second fade in and 1 second fade out
+			wait 3 seconds
+			if {bw.alreadyFinished::%{_id}%} is set:
+				stop
+			send victim title "&cExit with" with subtitle "&b/quit" for 4 seconds with 1 second fade in and 3 second fade out
+
+			stop
+			
+		if {bw.alreadyFinished::%{_id}%} is not set:
+			teleport victim to {bw.locations.spawn::%{_id}%::%{bw.players.list::%{_id}%::%victim%}%}
+			set victim's helmet to {item::bw_helm_%{_color}%}
+			set victim's chestplate to {item::bw_chest_%{_color}%}
+			
+			if {bw.players.items::%victim%::sword} is not set:
+				give victim 1 wooden sword
+			else:
+				give victim {bw.players.items::%victim%::sword}
+			
+			if {bw.players.items::%victim%::bow} is set:
+				give victim {bw.players.items::%victim%::bow}
+			
+			if {bw.players.items::%victim%::shears} is set:
+				give victim {bw.players.items::%victim%::shears}
+				
+				
+			if {bw.players.items::%victim%::pickaxe} is set:
+				give victim {bw.players.items::%victim%::pickaxe}
+				
+				
+			if {bw.players.items::%victim%::axe} is set:
+				give victim {bw.players.items::%victim%::axe}
+				
+			if {bw.players.items::%victim%::leggings} is set:
+				set victim's leggings to {bw.players.items::%victim%::leggings}
+			else:
+				set victim's leggings to {item::bw_leggings_%{_color}%}
+			
+			if {bw.players.items::%victim%::boots} is set:
+				set victim's boots to {bw.players.items::%victim%::boots}
+			else:
+				set victim's boots to {item::bw_boots_%{_color}%}
+			heal victim
+			set victim's hunger to 20
+			set gamemode of victim to survival
+			set fly mode of victim to false
+			
+			send victim title "&aRespawed" with subtitle "" for 1 second with 1 tick fade in and 1 second fade out
+			
+			
+on join:			
+	if player is in world "BedWars":
+		teleport player to {pos::spawn}
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to air
+		set player's offhand to air
+		set gamemode of player to survival
+		delete {bw.players.id::%player%}
+			
+on quit:
+	if player is in world "BedWars":
+		set {_id} to {bw.players.id::%player%}
+		set {_color} to {bw.players.list::%{_id}%::%player%}
+		
+		if {_id} is set:
+			delete {bw.players.id::%player%}
+		if {bw.spectate::%{_id}%::%player%} is set:
+			delete {bw.spectate::%{_id}%::%player%}
+			send "&8[&bSnap&8] Game Over" to player
+			clear player's inventory
+			set player's helmet to air
+			set player's chestplate to air
+			set player's leggings to air
+			set player's boots to air
+			set player's offhand to air
+			stop
+		if {_color} = "red":
+			set {_color2} to "light red"
+			set {_team} to "Red"
+		else if {_color} = "blue":
+			set {_color2} to "light blue"
+			set {_team} to "Blue"
+		else if {_color} = "yellow":
+			set {_color2} to "yellow"
+			set {_team} to "Yellow"
+		else if {_color} = "green":
+			set {_color2} to "light green"
+			set {_team} to "Green"
+		
+		
+			
+		send "" to all players in radius 300 of player
+		send "    <%{_color2}%>&l%player% &7disconnected" to all players in radius 300 of player
+		
+		set {bw.teams.size::%{_id}%::%{_color}%} to {bw.teams.size::%{_id}%::%{_color}%} - 1
+		if {bw.teams.size::%{_id}%::%{_color}%} <= 0:
+			send "    <%{_color2}%>&l%{_team}% Team Eliminated" to all players in radius 300 of player
+			set {bw.numberOfTeamsAlive::%{_id}%}  to {bw.numberOfTeamsAlive::%{_id}%} - 1
+				
+		else:
+			if {bw.teams.size::%{_id}%::%{_color}%} = 1:
+				send "    <%{_color2}%>&l%{_team}% Team &7has <%{_color2}%>&l%{bw.teams.size::%{_id}%::%{_color}%}% Player Now" to all players in radius 300 of player
+			else:	
+				send "    <%{_color2}%>&l%{_team}% Team &7has <%{_color2}%>&l%{bw.teams.size::%{_id}%::%{_color}%}% Players Now" to all players in radius 300 of player
+			
+		send "" to all players in radius 300 of player
+			
+		if {bw.numberOfTeamsAlive::%{_id}%}  <= 1:
+			loop {bw.teams.size::%{_id}%::*}:
+				if loop-value > 0:
+					set {_color} to loop-index
+					if {_color} is "green":
+						set {_color} to "light green"
+					else if {_color} is "blue":
+						set {_color} to "light blue"
+					else if {_color} is "red":
+						set {_color} to "light red"
+					if loop-value = 1:
+						send "    <%{_color}%>%{_team}% Team &7Won with &f%loop-value% Player &7Remaining!" to all players in radius 300 of player
+					else:
+						send "    <%{_color}%>%{_team}% Team &7Won with &f%loop-value% Players &7Remaining!" to all players in radius 300 of player
+					stop loop
+			loop {bw.players.list::%{_id}%::*}:
+				if {bw.players.id::%loop-index%} = {_id}:
+					send loop-index parsed as player title "<%{_color}%>%{_color}% team &7won" for 5 seconds with 1 second fade in and 4 second fade out
+					
+	
+			# Game OVER
+			loop {bw.players.list::%{_id}%::*}:
+				if {bw.players.id::%loop-index%} = {_id}:
+					set {_player} to loop-index parsed as player 
+					teleport {_player} to {pos::spawn}
+					send "&8[&bSnap&8] Game Over (disconnect)" to loop-index parsed as player
+					clear loop-index parsed as player's inventory
+					set loop-index parsed as player's helmet to air
+					set loop-index parsed as player's chestplate to air
+					set loop-index parsed as player's leggings to air
+					set loop-index parsed as player's boots to air
+					set loop-index parsed as player's offhand to air
+					delete {bw.players.id::%loop-index%}
+					delete {bw.players.items::%loop-index%::*}
+						
+							
+			set {bw.alreadyFinished::%{_id}%} to true
+	
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player 's leggings to air
+		set player's boots to air
+		set player's offhand to air
+			
+
+command /quit:
+	trigger:
+
+		
+		if player is not in world "BedWars":
+			message "&8[&bSnap&8] &7You can only use that command in the BedWars game!"
+			stop
+		clear player's inventory
+		set player's helmet to air
+		set player's chestplate to air
+		set player's leggings to air
+		set player's boots to air
+		set player's offhand to air
+		
+		
+		set {_id} to {bw.players.id::%player%}
+		set {_color} to {bw.players.list::%{_id}%::%player%}
+		
+		if "%{_color}%" = "red":
+			set {_color2} to "light red"
+			set {_team} to "Red"
+		else if "%{_color}%" = "blue":
+			set {_color2} to "light blue"
+			set {_team} to "Blue"
+		else if "%{_color}%" = "yellow":
+			set {_color2} to "yellow"
+			set {_team} to "Yellow"
+		else if "%{_color}%" = "green":
+			set {_color2} to "light green"
+			set {_team} to "Green"
+		
+		
+		if {_id} is set:
+			delete {bw.players.id::%player%}
+		if {bw.spectate::%{_id}%::%player%} is set:
+			delete {bw.spectate::%{_id}%::%player%}
+			teleport player to {pos::spawn}
+			send "&8[&bSnap&8] Game Over" to player
+			clear player's inventory
+			set player's helmet to air
+			set player's chestplate to air
+			set player 's leggings to air
+			set player's boots to air
+			set player's offhand to air
+
+			stop
+			
+		send "" to all players in radius 300 of player
+		send "    <%{_color2}%>&l%player% &7quit" to all players in radius 300 of player
+		
+		set {bw.teams.size::%{_id}%::%{_color}%} to {bw.teams.size::%{_id}%::%{_color}%} - 1
+		if {bw.teams.size::%{_id}%::%{_color}%} <= 0:
+			send "    <%{_color2}%>&l%{_team}% Team Eliminated" to all players in radius 300 of player
+			set {bw.numberOfTeamsAlive::%{_id}%}  to {bw.numberOfTeamsAlive::%{_id}%} - 1
+				
+		else:
+			if {bw.teams.size::%{_id}%::%{_color}%} = 1:
+				send "    <%{_color2}%>&l{_team} Team &7has <%{_color2}%>&l%{bw.teams.size::%{_id}%::%{_color}%}% Player Left" to all players in radius 300 of player
+			else:	
+				send "    <%{_color2}%>&l{_team} Team &7has <%{_color2}%>&l%{bw.teams.size::%{_id}%::%{_color}%}% Players Left" to all players in radius 300 of player
+			
+		send "" to all players in radius 300 of player
+			
+		if {bw.numberOfTeamsAlive::%{_id}%}  <= 1:
+			set {bw.alreadyFinished::%{_id}%} to true
+			loop {bw.teams.size::%{_id}%::*}:
+				if loop-value > 0:
+					set {_color} to loop-index
+					if {_color} is "green":
+						set {_color} to "light green"
+					else if {_color} is "blue":
+						set {_color} to "light blue"
+					if loop-value = 1:
+						send "    <%{_color2}%>&l%{_Team}% Team &7Won with <%{_color2}%>&l%loop-value% Player &7Remaining!" to all players in radius 300 of player
+					else:
+						send "    <%{_color2}%>&l%{_Team}% Team &7Won with <%{_color2}%>&l%loop-value% Players &7Remaining!" to all players in radius 300 of player
+					 
+					stop loop
+					
+			# Game OVER
+			loop {bw.players.list::%{_id}%::*}:
+				if {bw.players.id::%loop-index%} = {_id}:
+					teleport loop-index parsed as player to {pos::spawn}
+					clear loop-index parsed as player's inventory
+					set loop-index parsed as player's helmet to air
+					set loop-index parsed as player's chestplate to air
+					set loop-index parsed as player's leggings to air
+					set loop-index parsed as player's boots to air
+					set loop-index parsed as player's offhand to air
+					delete {bw.players.id::%loop-index%}
+					delete {bw.players.items::%loop-index%::*}
+					
+					
+		teleport player to {pos::spawn}
+						
+					
+
+
+
+
+
+
+					
+#No breaking blocks under beds			
+on break of red wool block:
+	if player is in world "BedWars":
+		if block above event-block is bed block:
+			cancel event
+on break of yellow wool block:
+	if player is in world "BedWars":
+		if block above event-block is bed block:
+			cancel event
+on break of blue wool block:
+	if player is in world "BedWars":
+		if block above event-block is bed block:
+			cancel event
+on break of green wool block:
+	if player is in world "BedWars":
+		if block above event-block is bed block:
+			cancel event
+
+
+# Destroying another teams bed	
+on break of bed block:
+	if player is in world "BedWars":
+	
+		set {_id} to {bw.players.id::%player%}
+		set {_color} to {bw.players.list::%{_id}%::%player%}
+			
+		if {_color} is not set:
+			stop
+		if block below event-block is red wool block:
+			if {_color} = "red":
+				cancel event
+				stop
+			delete {bw.locations.spawn::%{_id}%::red}
+				
+			if {_color} = "blue":
+				set {_color} to "light blue"
+			if {_color} = "green":
+				set {_color} to "light green"
+			loop blocks in radius 2 of event-block:
+				if loop-block is bed block:
+					set loop-block to air
+			send "" to all players in radius 300 of player
+			send "      &4&lRed Bed Broken" to all players in radius 300 of player
+			send "      &7Broken by <%{_color}%>%player%" to all players in radius 300 of player
+			send "" to all players in radius 300 of player
+			
+			
+			
+		
+			
+		if block below event-block is blue wool block:
+			if {_color} = "blue":
+				cancel event
+				stop
+			delete {bw.locations.spawn::%{_id}%::blue}
+			if {_color} = "green":
+				set {_color} to "light green"
+			if {_color} = "blue":
+				set {_color} to "light blue"
+			if {_color} = "green":
+				set {_color} to "light green"
+			loop blocks in radius 2 of event-block:
+				if loop-block is bed block:
+					set loop-block to air
+			send "" to all players in radius 300 of player
+			send "      &b&lBlue Bed Broken" to all players in radius 300 of player
+			send "      &7Broken by <%{_color}%>%player%" to all players in radius 300 of player
+			send "" to all players in radius 300 of player
+			
+			
+		if block below event-block is yellow wool block:
+			if {_color} = "yellow":
+				cancel event
+				stop
+			delete {bw.locations.spawn::%{_id}%::yellow}
+			if {_color} = "blue":
+				set {_color} to "light blue"
+			if {_color} = "green":
+				set {_color} to "light green"
+			loop blocks in radius 2 of event-block:
+				if loop-block is bed block:
+					set loop-block to air
+			send "" to all players in radius 300 of player
+			send "      &e&lYellow Bed Broken" to all players in radius 300 of player
+			send "      &7Broken by <%{_color}%>%player%" to all players in radius 300 of player
+			send "" to all players in radius 300 of player
+			
+			
+		if block below event-block is light green wool block:
+			if {_color} = "green":
+				cancel event
+				stop
+			delete {bw.locations.spawn::%{_id}%::green}
+			if {_color} = "blue":
+				set {_color} to "light blue"
+			if {_color} = "green":
+				set {_color} to "light green"
+			loop blocks in radius 2 of event-block:
+				if loop-block is bed block:
+					set loop-block to air
+			send "" to all players in radius 300 of player
+			send "      &a&lGreen Bed Broken" to all players in radius 300 of player
+			send "      &7Broken by <%{_color}%>%player%" to all players in radius 300 of player
+			send "" to all players in radius 300 of player
+				
+
+			
+every second:
+	loop all players in world "BedWars":
+		if block below loop-player is iron block:
+			chance of 99%:
+				give loop-player 1 iron ingot
+				chance of 13%:
+					drop 3 iron ingot at location of loop-player
+				chance of 12%:
+					drop 2 iron ingot at location of block above loop-player
+				chance of 10%:
+					drop 1 iron ingot at location of loop-player
+				chance of 23%:
+					drop 1 iron ingot at location of block above loop-player
+				chance of 16%:
+					drop gold ingot at location of loop-player
+				chance of 20%:
+					give loop-player 1 gold ingot 
+				
+				

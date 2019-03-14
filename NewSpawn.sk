@@ -1,0 +1,43 @@
+on pressure plate:
+	if player is in world "spawn":
+		if tps > 15:
+			remove speed from player
+			apply speed 5 to player for 4 seconds
+	if player is in world "Hub":
+		if tps > 15:
+			remove speed from player
+			apply speed 8 to player for 4 seconds
+command /rainbow:
+	permission: is.op
+	trigger:
+		if {lastrainbow} was less than 20 seconds ago:
+			message "please wait"
+			stop
+		set {lastrainbow} to now
+		loop 200 times:
+			spawn undroppable falling block of red wool block at {pos::rainbowredspawn}
+			push last spawned entity up
+			push last spawned entity up
+			push last spawned entity south
+			spawn undroppable falling block of orange wool block at {pos::rainboworangespawn}
+			push last spawned entity up
+			push last spawned entity up
+			push last spawned entity south
+			spawn undroppable falling block of yellow wool block at {pos::rainbowoyellowspawn}
+			push last spawned entity up
+			push last spawned entity up
+			push last spawned entity south
+			spawn undroppable falling block of light green wool block at {pos::rainbowolimespawn}
+			push last spawned entity up
+			push last spawned entity up
+			push last spawned entity south
+			spawn undroppable falling block of light blue wool block at {pos::rainbowobluespawn}
+			push last spawned entity up
+			push last spawned entity up
+			push last spawned entity south
+			spawn undroppable falling block of purple wool block at {pos::rainbowopurplespawn}
+			push last spawned entity up
+			push last spawned entity up
+			push last spawned entity south
+			wait 1 ticks
+	

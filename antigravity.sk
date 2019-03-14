@@ -1,0 +1,31 @@
+command /space:
+	trigger:
+		
+		if {lastantigravity} was less than 120 minutes:
+		
+							
+			set {_startDate} to {lastantigravity}
+			set {_duration}  to 120 minutes
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "&8[&6Snap&9Anti&dGravity&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+			stop
+		set {lastantigravity} to now
+		broadcast "&8[&cPvP&8] &9Anti&7-&dGravity &ehas been &aactivated &ein pvp for 5 minutes."
+		execute console command "rg flag hub_pvp_may -w spawn glide allow"
+		execute console command "rg flag hub_pvp_may -w spawn fall-damage deny"
+		wait 5 minutes
+		execute console command "rg flag hub_pvp_may -w spawn glide"
+		execute console command "rg flag hub_pvp_may -w spawn fall-damage allow"
+		broadcast "&8[&cPvP&8] &fAnti-Gravity has ended"
+		
+on load:
+	execute console command "rg flag hub_pvp_may -w spawn glide"
+	execute console command "rg flag hub_pvp_may -w spawn fall-damage allow"
+
+		
+		
+		
+		

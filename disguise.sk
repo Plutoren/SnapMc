@@ -1,0 +1,7 @@
+command /dmenu:
+	trigger:
+		execute player command "idg"
+on command "disguise":
+	if arguments are not set:
+		execute player command "idg"
+		cancel event

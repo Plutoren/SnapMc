@@ -1,0 +1,2 @@
+on load:
+	execute console command "/co purge t:20d"

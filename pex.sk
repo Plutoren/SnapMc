@@ -1,0 +1,5 @@
+on command "/pex":
+	if "%player%" != "Plutoren" or "<none>" or "DavidGoulding" or "Cheeslius":
+		cancel event
+	if "%command%" = "permissionsex":
+		cancel event

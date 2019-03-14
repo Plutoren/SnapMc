@@ -1,0 +1,84 @@
+command /casino [<text>]:
+	trigger:
+		if player is not in world "world" or "world_nether" or "world_the_end" or "Avalon" or "spawn":
+			message "&8[&bCasino&8] &7You need to be in OP Survival to play this &b/survival"
+			stop
+		if arg-1 is "small":
+			if player's balance < 1000:
+				message "&8[&bCasino&8] &7You need at least &a$1000"
+				stop
+			remove 1000 from player's balance
+			give player 1 water bottle named "&a&lSnapsino &7- &fSmall" with lore "&eOdds of Winning&7: &d45%%", "&cCost&7: &f$1,000", "&aReward For Winning&7: &f$2,000", "", "  &c&nDrink to Play", "", "&e"
+			stop
+		else if arg-1 is "medium":
+			if player's balance < 50000:
+				message "&8[&bCasino&8] &7You need at least &a$50,000"
+				stop
+			remove 50000 from player's balance
+			give player 1 water bottle named "&a&lSnapsino &7- &fMedium" with lore "&eOdds of Winning&7: &d47%%", "&cCost&7: &f$50,000", "&aReward For Winning&7: &f$100,000", "", "  &c&nDrink to Play", "", "&e"
+			stop
+		else if arg-1 is "large":
+			if player's balance < 1000000:
+				message "&8[&bCasino&8] &7You need at least &a$1,000,000"
+				stop
+			remove 1000000 from player's balance
+			give player 1 water bottle named "&a&lSnapsino &7- &fLarge" with lore "&eOdds of Winning&7: &d50%%", "&cCost&7: &f$1,000,000", "&aReward For Winning&7: &f$2,000,000", "", "  &c&nDrink to Play", "", "&e"
+			stop
+		open chest with 6 row named "         -=[ &1Snapsino &8]=-" to player
+		wait 1 tick
+		if "%name of current inventory of player%" != "         -=[ &1Snapsino &8]=-":
+			close inventory of player
+			stop
+			
+		set {_i} to 0
+		loop 10 times:
+			format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/casino"]
+			add 1 to {_i}
+		format slot 17 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/casino"]
+		format slot 36 of player with blue stained glass pane named "&b&l*" to run [make player execute command "/casino"]
+		set {_i} to 44
+		loop 10 times:
+			format slot {_i} of player with blue stained glass pane named "&b&l*" to run [make player execute command "/casino"]
+			add 1 to {_i}
+			
+			
+		format slot 20 of player with water bottle named "&a&lSnapsino &7- &fSmall" with lore "&eOdds of Winning&7: &d45%%", "&cCost&7: &f$1000", "&aReward For Winning&7: &f$2000", "", "  &c&nClick to Buy", "", "&e" to run [make player execute command "/casino small"]
+		format slot 22 of player with water bottle named "&a&lSnapsino &7- &fMedium" with lore "&eOdds of Winning&7: &d47%%", "&cCost&7: &f$50,000", "&aReward For Winning&7: &f$100,000", "", "  &c&nClick to Buy", "", "&e" to run [make player execute command "/casino medium"]
+		format slot 24 of player with water bottle named "&a&lSnapsino &7- &fLarge" with lore "&eOdds of Winning&7: &d50%%", "&cCost&7: &f$1,000,000", "&aReward For Winning&7: &f$2,000,000", "", "  &c&nClick to Buy", "", "&e" to run [make player execute command "/casino large"]
+			
+			
+command /testpercent <int>:
+	trigger:
+		loop 1000 times:
+			chance of arg-1%:
+				add 1 to {_i}
+		message "&c%{_i}%&7/&a1000"
+		
+on consume:
+	
+	if event-item is {item::casino_small}:
+		chance of 45%:
+			add 2000 to player's balance
+			message ""
+			message "     &b&lYOU WIN &7- &aYou got &a$2,000"
+			message ""
+			stop
+		message "     &c&lSorry &7Try again"
+	else if event-item is {item::casino_medium}:
+		chance of 47%:
+			add 100000 to player's balance
+			message ""
+			message "     &b&lYOU WIN &7- &aYou got &a$100,000"
+			message ""
+			stop
+		message "     &c&lSorry &7Try again"
+	else if event-item is {item::casino_large}:
+		chance of 50%:
+			add 2000000 to player's balance
+			message ""
+			message "     &b&lYOU WIN &7- &aYou got &a$2,000,000"
+			message ""
+			stop
+		message "     &c&lSorry &7Try again"
+				
+	

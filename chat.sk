@@ -1,0 +1,54 @@
+command /simplechat:
+	trigger:
+		if {simplechat::%player%} is not set:
+			set {simplechat::%player%} to true
+			message "&8[&bSnap&8] &7Activated Clean Chat"
+		else:
+			delete {simplechat::%player%}
+			message "&8[&bSnap&8] &7Deactivated Clean Chat"
+on chat:
+	if {familychat.active::%player%} is not set:
+		if {punish.mute::%uuid of player%} is not set:
+			if {staffchat::%player%} is not set:
+				loop chat recipients:
+					if {simplechat::%loop-player%} is set:
+						remove loop-player from chat recipients
+						send "%prefix of player% &f%player's name% &8» &f%message%" to loop-player
+					
+			
+			
+#on command:
+#	if command is equal to "msg" or "message" or "tell" or "m" or "t" or "m":
+#	
+#		set {_args::*} to arguments split at " "
+#		if {_args::2} is not set:
+#			stop
+#		set {_message} to ""
+#		set {_i} to 0
+#		loop {_args::*}:
+#			add 1 to {_i}
+#			if {_i} > 1:
+#				set {_message} to "%{_message}% %{_args::%loop-index%}%"
+#			
+#		
+#		
+#		set {_target} to {_args::1}
+#		set {replier::%player%} to {_target}
+#		set {replier::%{_target}%} to player
+		
+		#loop all players:
+		#	if loop-player has permission "is.staff":
+		#		if "%loop-player%" is not "%player%" or "%{_target}%":
+		#			send "&8[&a&lSpy&8] &8[&a%player% &7&m-&r&7>  &a%{_target}%&8]&7%{_message}%" to loop-player
+		
+		
+#on command:
+#	if command is equal to "r" or "reply":
+#		cancel event
+#		if {replier::%player%} is not set:
+#			stop
+#		set {replier::%{replier::%player%}%} to player
+#		cancel event
+#		execute player command "/tell %{replier::%player%}% %arguments%"
+		
+	

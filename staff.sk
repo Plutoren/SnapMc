@@ -1,0 +1,16 @@
+command /force:
+	permission: is.Pluto
+	trigger:	
+		loop players in radius 10 of player:
+			if loop-player is not player:
+				push loop-player up
+				add loop-player to {_players::*}
+		wait 10 ticks second
+		loop  5 times:
+			loop {_players::*}:
+				push loop-value-2 up
+			wait 5 ticks
+		loop  5 times:
+			loop {_players::*}:
+				push loop-value-2 up
+			wait 10 ticks

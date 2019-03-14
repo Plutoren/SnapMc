@@ -1,0 +1,101 @@
+on consume cooked pork:
+	if player is in world "Fortcraft":
+		set {_health} to health of player
+		if {_health} >= 7.5:
+			cancel event
+			message "&8[&bSnap&8] &eBandages only heal up to 75%%"
+			stop
+		add 1.5 to health of player
+		if {_health} >= 7.5:
+			set health of player to 7.5
+on consume pumpkin pie:
+	if player is in world "Fortcraft":
+		set {_health} to health of player
+		if {_health} >= 10:
+			cancel event
+			message "&8[&bSnap&8] &eAlready at full health"
+			stop
+		set health of player to 10
+on right click on cake:
+	if player is in world "Fortcraft":
+		set {_health} to health of player
+		if {_health} >= 10:
+			cancel event
+			message "&8[&bSnap&8] &eAlready at full health"
+			stop
+		add 1 to health of player
+		
+on pressure plate:
+	if player is in world "Fortcraft":
+		push player upwards
+		push player upwards
+		wait 1 second
+		loop 1000 times:
+			set glide state of player to true
+			if pitch of player > 30:
+				set player's pitch to 30
+			if pitch of player < -30:
+				set player's pitch to -30
+			wait 1 tick
+			if block below player is not air:
+				loop 30 times:
+					set glide state of player to true
+				stop
+				
+on damage of player:
+	if victim is in  world "Fortcraft":
+		if glide state of victim is true:
+			cancel event
+on place inactive golden pressure plate:
+	if player is in world "Fortcraft":
+		display hologram "&e^;&e|;&e|;&dJump Pad" at block above event-block to player for 30 seconds
+# on left click:
+#	if player is in world "Fortcraft":
+#		loop entities in radius 5 of player:
+#			message "%loop-entity.getItemStack()%"
+#			set {_loc} to location of loop-entity
+#			add 1 to y coordinate of {_loc}
+#			if "%loop-entity.getItemStack()%" = "cooked_porkchop":
+#				
+#				display hologram "&fBandages" at {_loc} to player for 3 seconds
+				
+command /fortnite:
+	permission: is.op
+	trigger:
+		
+		if player is in world "Fortcraft":
+			
+			set {_center} to location(0, 70, 0, world "Fortcraft")
+			drawCylinder particle "dragonbreath", RGB 0, 204, 255, center {_center}, id "%player%", randomRotation false, isSolid false, radius 100, density 9000, height 250, sideRatio 0, visibleRange 20
+			wait 10 seconds
+			stopEffect "%player%"
+			set {_i} to 100
+			set {_density} to 9000
+			loop 10 times:
+				subtract 35 from {_density}
+				subtract 1 from {_i}
+				drawCylinder particle "redstone", RGB 0, 204, 255, center {_center}, id "%player%", randomRotation false, isSolid false, radius {_i}, density {_density}, height 250, sideRatio 0, visibleRange 20
+				wait 15 ticks
+				stopEffect "%player%"
+on right click on ender chest:
+	if player is in world "Fortcraft":
+		cancel event
+		display hologram "&e➂" at block above event-block to player for 1 second
+		wait 1 second
+		display hologram "&e➁" at block above event-block to player for 1 second
+		wait 1 second
+		display hologram "&e➀" at block above event-block to player for 1 second
+		wait 1 second
+		set event-block to chest
+		add {item::fn.grenade} to inventory of event-block
+		display hologram "&f1x &7Grenade" at block above event-block to player for 6 second
+	
+		
+	
+				
+				
+				
+				
+				
+				
+				

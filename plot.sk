@@ -1,0 +1,344 @@
+options:
+	prefix: &8[&bTowny&8]
+	
+function checkClaim(location: location, player: player) :: boolean:
+	set {_uuid} to uuid of {_player}
+	if {townychat.player.towny::%{_uuid}%} is set:
+		set {_townyName} to {townychat.player.towny::%{_uuid}%}
+	set {_chunkX} to rounded up x coordinate of {_location} / 16
+	set {_chunkZ} to rounded up z coordinate of {_location} / 16
+	if {towny.claims::%{_chunkX}%/%{_chunkZ}%} is set:
+		if {_townyName} != {towny.claims::%{_chunkX}%/%{_chunkZ}%}:
+			if {towny.plot.trusted::%{_chunkX}%/%{_chunkZ}%::*} does not contain {_uuid}:
+				return false
+		if "%{townychat.settings::%{_townyName}%::ranks::%{_uuid}%}%" is not "Owner" or "Assistant" or "Helper" or "Builder":
+			if {towny.plot.trusted::%{_chunkX}%/%{_chunkZ}%::*} does not contain {_uuid}:
+				if {towny.plot.owner::%{_chunkX}%/%{_chunkZ}%} != "%{_uuid}%":
+					return false
+	return true
+				
+	
+function isClaimed(location: location) :: boolean:
+	set {_chunkX} to rounded up x coordinate of {_location} / 16
+	set {_chunkZ} to rounded up z coordinate of {_location} / 16
+	if {towny.claims::%{_chunkX}%/%{_chunkZ}%} is set:
+		return true
+	return false
+
+function formatMoney(int: number) :: string:
+	while {_int} >= 1000000000000:
+		add 1 to {_val}
+		subtract 1000000000000 from {_int}
+	if {_val} is set:
+		return "%{_val}%T"
+	while {_int} >= 1000000000:
+		add 1 to {_val}
+		subtract 1000000000 from {_int}
+	if {_val} is set:
+		return "%{_val}%B"
+	while {_int} >= 1000000:
+		add 1 to {_val}
+		subtract 1000000 from {_int}
+	if {_val} is set:
+		return "%{_val}%M"
+	while {_int} >= 1000:
+		add 1 to {_val}
+		subtract 1000 from {_int}
+	if {_val} is set:
+		return "%{_val}%K"
+	if {_int} is not set:
+		return "0"
+	return "%{_int}%"	
+	
+on load:
+	delete {plot.see.last::*}
+	
+on command "/plot":
+	if player is in world "Towny":
+		cancel event
+		if arguments is set:
+			execute player command "/tplot %arguments%"
+		else:
+			execute player command "/tplot"
+on command "/p":
+	if player is in world "Towny":
+		cancel event
+		if arguments is set:
+			execute player command "/tplot %arguments%"
+		else:
+			execute player command "/tplot"
+command /tplot [<text>] [<text>]:
+	permission: towny.tester
+	trigger:
+		if arg-1 is not set:
+			message ""
+			message "  &bTowny Plot Commands"
+			message ""
+			message "  &b/plot sell (price)"
+			message "  &b/plot notforsale"
+			message "  &b/plot buy"
+			message "  &b/plot unclaim"
+			message "  &b/plot add (name)"
+			message "  &b/plot remove (name)"
+			message "  &b/plot info"
+			message "  &b/plot permissions"
+			message "  &b/plot see"
+			message ""
+			stop
+		
+		set {_uuid} to uuid of player
+		if {townychat.player.towny::%{_uuid}%} is set:
+			set {_townyName} to {townychat.player.towny::%{_uuid}%}
+		set {_location} to location of player
+		set {_chunkX} to rounded up x coordinate of {_location} / 16
+		set {_chunkZ} to rounded up z coordinate of {_location} / 16
+		
+		if arg-1 is "visualize" or "see":
+			if {plot.see.last::%uuid of player%} is not set:
+				set {plot.see.last::%uuid of player%} to now
+			else if {plot.see.last::%uuid of player%} was less than 3 seconds ago:
+				message "{@prefix} &cPlease wait between commands"
+				stop
+			set {plot.see.last::%uuid of player%} to now
+			set {_cornerX} to {_chunkX} * 16
+			set {_cornerZ} to {_chunkZ} * 16
+			set {_corner} to location({_cornerX}-1, 1, {_cornerZ}-1, world "Towny")
+			set {_block} to {_corner}
+			loop 15 times:
+				set {_top} to location of highest block at {_block}
+				subtract 1 from y coordinate of {_top}
+				make player see block at {_top} as glowstone
+				add {_top} to {_changed::*}
+				subtract 1 from x coordinate of {_block}
+			loop 15 times:
+				set {_top} to location of highest block at {_block}
+				subtract 1 from y coordinate of {_top}
+				make player see block at {_top} as glowstone
+				add {_top} to {_changed::*}
+				subtract 1 from z coordinate of {_block}
+			loop 15 times:
+				set {_top} to location of highest block at {_block}
+				subtract 1 from y coordinate of {_top}
+				make player see block at {_top} as glowstone
+				add {_top} to {_changed::*}
+				add 1 to x coordinate of {_block}
+			loop 15 times:
+				set {_top} to location of highest block at {_block}
+				subtract 1 from y coordinate of {_top}
+				make player see block at {_top} as glowstone
+				add {_top} to {_changed::*}
+				add 1 to z coordinate of {_block}
+			wait 10 seconds
+			loop {_changed::*}:
+				wait 1 tick
+				make player see block at loop-value as block at loop-value
+			stop
+		if isClaimed(location of player) is false:
+			message "{@prefix} &7This plot is not claimed by any town"
+			stop
+		set {_townAtPlot} to {towny.claims::%{_chunkX}%/%{_chunkZ}%}
+		if arg-1 is "sell":
+			if {_townAtPlot} != {_townyName}:
+				message "{@prefix} &7You are not part of this town"
+				stop
+			if {townychat.settings::%{_townAtPlot}%::ranks::%{_uuid}%} != "Owner" or "Assistant":
+				if {towny.plot.owner::%{_chunkX}%/%{_chunkZ}%} != uuid of player:
+					message "{@prefix} &cYou don't have permission to sell this plot."
+					stop
+			if arg-2 is not set:
+				message "{@prefix} &cUsage &e/plot sell (price)"
+				stop
+
+			set {_price} to arg-2 parsed as number
+			if {_price} is not set:
+				message "{@prefix} &dUsage &e/plot sell (price)"
+				stop
+			if {_price} < 0:
+				message "{@prefix} &7Price must be positive"
+				stop
+			if {_price} = 0:
+				execute player command "/plot notforsale"
+				stop
+			set {_formatPrice} to formatMoney({_price})
+			set {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::price} to {_price}
+			message "{@prefix} &fYou put the plot up for sale. &aCosts&7: &2$%{_formatPrice}%"
+		else if arg-1 is "buy":
+		
+			if {_townAtPlot} != {_townyName}:
+				if {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::embassy} != true:
+					message "{@prefix} &7You are not part of this town"
+					stop
+			
+			if {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::price} is not set:
+				message "{@prefix} &7That plot is not for sale"
+				stop
+				
+			if {townychat.settings::%{_townAtPlot}%::ranks::%{_uuid}%} = "Owner":
+				message "{@prefix} &cYou own this town you can't buy plots here!"
+				stop
+			else if {towny.plot.owner::%{_chunkX}%/%{_chunkZ}%} = uuid of player:
+				message "{@prefix} &cYou already own this plot!"
+				stop
+				
+			set {_price} to {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::price}
+			set {_formatBalance} to formatMoney(player's balance)
+			set {_formatPrice} to formatMoney({_price})
+			if player's balance < {_price}:
+				message "{@prefix} &cYou only have&7: &2$&a%{_formatBalance}%&c. That plot costs&7: &2$&a%{_formatPrice}%"
+				stop
+			remove {_price} from player's balance
+			set {_fromTown} to false
+			if {towny.plot.owner::%{_chunkX}%/%{_chunkZ}%} is not set:
+				set {_fromTown} to true
+			if {townychat.settings::%{_townAtPlot}%::ranks::%{towny.plot.owner::%{_chunkX}%/%{_chunkZ}%}%} = "Owner":
+				set {_fromTown} to true
+					
+			if {_fromTown} is true:
+				set {_townPayOut} to {_price}
+				add {_townPayOut} to {townychat.settings::%{_townAtPlot}%::bank}
+				
+			else:
+				set {_originalOwnerUUID} to {towny.plot.owner::%{_chunkX}%/%{_chunkZ}%}
+				set {_originalOwner} to {uuidName::%{_originalOwnerUUID}%}
+				set {_ownerPayOut} to {_price} * 0.7
+				set {_townPayOut} to {_price} * 0.3
+				add {_townPayOut} to {townychat.settings::%{_townAtPlot}%::bank}
+				execute console command "eco give %{_originalOwner}% %{_ownerPayOut}%"
+				
+			delete {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::price}
+			delete {towny.plot.trusted::%{_chunkX}%/%{_chunkZ}%::*}
+			add uuid of player to {towny.plot.trusted::%{_chunkX}%/%{_chunkZ}%::*}
+			set {towny.plot.owner::%{_chunkX}%/%{_chunkZ}%} to uuid of player
+			message "{@prefix} &fYou purchased the plot for &2$&a%{_formatPrice}%&f."
+		else if arg-1 is "tax":
+			if {_townAtPlot} != {_townyName}:
+				message "{@prefix} &7You are not part of this town"
+				stop
+			if {towny.plot.owner::%{_chunkX}%/%{_chunkZ}%} is set:
+				message "{@prefix} &cYou can't change the tax on a plot with an owner"
+				stop
+			if {townychat.settings::%{_townAtPlot}%::ranks::%{_uuid}%} != "Owner" or "Assistant":
+				message "{@prefix} &cYou don't have permission to set tax on this plot."
+				stop
+			if arg-2 is not set:
+				message "{@prefix} &cUsage &e/plot tax (price)"
+				stop
+
+			set {_price} to arg-2 parsed as number
+			if {_price} is not set:
+				message "{@prefix} &dUsage &e/plot tax (price)"
+				stop
+			if {_price} < 0:
+				message "{@prefix} &7Price must be positive"
+				stop
+			if {_price} = 0:
+				delete {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::tax}
+				message "{@prefix} &fYou removed the daily tax on this plot"
+				stop
+			set {_formatPrice} to formatMoney({_price})
+			set {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::tax} to {_price}
+			message "{@prefix} &fYou set the daily tax on this plot to&7: &2$%{_formatPrice}%"
+			
+		else if arg-1 is "unclaim":
+			
+			if {_townAtPlot} != {_townyName}:
+				if {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::embassy} != true:
+					message "{@prefix} &7You are not part of this town"
+					stop
+			
+			if {townychat.settings::%{_townAtPlot}%::ranks::%{_uuid}%} != "Owner" or "Assistant":
+				if {towny.plot.owner::%{_chunkX}%/%{_chunkZ}%} != uuid of player:
+					message "{@prefix} &cYou don't own this plot!"
+					stop
+			if {towny.plot.owner::%{_chunkX}%/%{_chunkZ}%} is not set:
+				message "{@prefix} &cNo one owns that plot"
+				stop
+			delete {towny.plot.trusted::%{_chunkX}%/%{_chunkZ}%::*}
+			delete {towny.plot.owner::%{_chunkX}%/%{_chunkZ}%}
+			delete {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::price}
+			message "{@prefix} &fYou unclaimed this plot."
+			
+		else if arg-1 is "notforsale" or "nfs":
+		
+			if {_townAtPlot} != {_townyName}:
+				if {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::embassy} != true:
+					message "{@prefix} &7You are not part of this town"
+					stop
+			
+			if {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::price} is not set:
+				message "{@prefix} &7That plot is not for sale"
+				stop
+			
+			if {townychat.settings::%{_townAtPlot}%::ranks::%{_uuid}%} != "Owner" or "Assistant":
+				if {towny.plot.owner::%{_chunkX}%/%{_chunkZ}%} != uuid of player:
+					message "{@prefix} &cYou don't own this plot!"
+					stop
+			delete {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::price}
+			message "{@prefix} &fYou set this plot as not for sale."
+		else if arg-1 is "add" or "trust":
+			if {_townAtPlot} != {_townyName}:
+				if {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::embassy} != true:
+					message "{@prefix} &7You are not part of this town"
+					stop
+			
+			if {townychat.settings::%{_townAtPlot}%::ranks::%{_uuid}%} != "Owner" or "Assistant":
+				if {towny.plot.owner::%{_chunkX}%/%{_chunkZ}%} != uuid of player:
+					message "{@prefix} &cYou don't own this plot!"
+					stop
+			if arg-2 is not set:
+				message "{@prefix} &cUsage &e/plot add (name)"
+				stop
+			set {_targetUUID} to {uuid::%arg-2%}
+			if {_targetUUID} is not set:
+				message "{@prefix} &eThat player has never joined the server"
+				stop
+			add {_targetUUID} to {towny.plot.trusted::%{_chunkX}%/%{_chunkZ}%::*}
+			message "{@prefix} &fYou added &a%arg-2% &fto this plot."
+			
+		else if arg-1 is "remove" or "kick" or "untrust":
+			if {_townAtPlot} != {_townyName}:
+				if {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::embassy} != true:
+					message "{@prefix} &7You are not part of this town"
+					stop
+			
+			if {townychat.settings::%{_townAtPlot}%::ranks::%{_uuid}%} != "Owner" or "Assistant":
+				if {towny.plot.owner::%{_chunkX}%/%{_chunkZ}%} != uuid of player:
+					message "{@prefix} &cYou don't own this plot!"
+					stop
+			if arg-2 is not set:
+				message "{@prefix} &cUsage &e/plot remove (name)"
+				stop
+			set {_targetUUID} to {uuid::%arg-2%}
+			if {_targetUUID} is not set:
+				message "{@prefix} &eThat player has never joined the server"
+				stop
+			remove {_targetUUID} from {towny.plot.trusted::%{_chunkX}%/%{_chunkZ}%::*}
+			message "{@prefix} &fYou removed &e%arg-2% &ffrom this plot."
+		else if arg-1 is "embassy":
+			if {_townAtPlot} != {_townyName}:
+				message "{@prefix} &7You are not part of this town"
+				stop
+			
+			if {townychat.settings::%{_townAtPlot}%::ranks::%{_uuid}%} != "Owner" or "Assistant":
+				message "{@prefix} &cYou must be an Owner or Assistant to do that!"
+				stop
+			if {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::embassy} = true:
+				delete {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::embassy}
+				message "{@prefix} &fYou removed the embassy flag from this plot."
+				stop
+			set {towny.plot.settings::%{_chunkX}%/%{_chunkZ}%::embassy} to true
+			message "{@prefix} &fYou set this plot to be an embassy."
+			
+		else if arg-1 is "info":
+			message "&eTrusted&7: &f%{towny.plot.trusted::%{_chunkX}%/%{_chunkZ}%::*}%"
+			
+		
+			
+			
+				
+				
+			
+			
+			
+# {towny.plot.trusted::%{_chunkX}%/%{_chunkZ}%::*}
+# {towny.plot.owner::%{_chunkX}%/%{_chunkZ}%}

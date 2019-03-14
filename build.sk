@@ -1,0 +1,8 @@
+on command:
+	if player is in world "Build":
+		if "%command%" = "tell" or "t" or "msg" or "message" or "soft" or "ipban" or "ipmute" or "mute" or "ipmute" or "kick" or "ban" or "reply" or "r" or "st" or "fc":
+			cancel event
+			message "&8[&bBuild&8] &7You can't use that hear"
+command /build:
+	trigger:
+		execute player command "bg join Solo"

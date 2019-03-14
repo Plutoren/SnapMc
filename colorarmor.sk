@@ -1,0 +1,24 @@
+command /colorarmor <text>:
+	permission: is.ultimate
+	trigger:
+		if arg-1 is "Rainbow":
+			loop 1000 times:
+				set {_color} to random element out of all enum values of color
+				dye player's helmet {_color} parsed as color
+				set {_color} to random element out of all enum values of color
+				dye player's chestplate {_color} parsed as color
+				set {_color} to random element out of all enum values of color
+				dye player's leggings {_color} parsed as color
+				set {_color} to random element out of all enum values of color
+				dye player's boots {_color} parsed as color
+				wait 1 tick
+			stop
+		set {_color} to arg-1 parsed as a color
+		if {_color} is not set:
+			message "&8[&bSnap&8] &cUnknown color."
+			stop
+		message "&8[&bSnap&8] <%{_color}%> Set all leather armor to %{_color}%"
+		dye player's helmet arg-1 parsed as a color
+		dye player's chestplate arg-1 parsed as a color
+		dye player's boots arg-1 parsed as a color
+		dye player's leggings arg-1 parsed as a color

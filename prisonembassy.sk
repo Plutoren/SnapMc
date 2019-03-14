@@ -1,0 +1,161 @@
+command /psetembassy <int> <int>:
+	permission: is.op
+	trigger:
+		if target block of player is not a chest:
+			message "not a chest"
+			stop
+		set {pembassy.location.%arg-1%::%arg-2%} to location of target block of player
+		message "set %arg-1%.%arg-2%"
+	
+
+command /psetembassyloc <text>:
+	permission: is.op
+	trigger:
+		set {prison.embassy.%arg-1%} to location of player
+		message "set %arg-1%"
+command /pembassy:
+	trigger:
+		if {plastembassy} was less than 60 minutes:
+		
+							
+			set {_startDate} to {plastembassy}
+			set {_duration}  to 60 minutes
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "&8[&6Prison&eEmbassy&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+			stop
+		set {plastembassy} to now
+		set {_emb} to random integer from 1 to 1
+		broadcast " "
+		broadcast "&8[&6Prison&eEmbassy&8] &f3 Loot Crates have spawned in &c/prison embassy%{_emb}%!"
+		broadcast " "
+		set {_i1} to random integer from 1 to 16
+		set block at {pembassy.location.%{_emb}%::%{_i1}%} to a chest
+		set {_j} to random integer from 1 to 50
+		add {item::pembassy.item.%{_j}%} to inventory of block at {pembassy.location.%{_emb}%::%{_i1}%}
+		chance of 50%:
+			set {_j} to random integer from 1 to 50
+			add {item::pembassy.item.%{_j}%} to inventory of block at {pembassy.location.%{_emb}%::%{_i1}%}
+		chance of 10%:
+			set {_j} to random integer from 1 to 50
+			add {item::pembassy.item.%{_j}%} to inventory of block at {pembassy.location.%{_emb}%::%{_i1}%}
+		chance of 5%:
+			set {_j} to random integer from 1 to 50
+			add {item::pembassy.item.%{_j}%} to inventory of block at {pembassy.location.%{_emb}%::%{_i1}%}
+		
+		
+		set {_i2} to random integer from 1 to 16
+		while {_i2} = {_i1}:
+			set {_i2} to random integer from 1 to 16
+		
+		set block at {pembassy.location.%{_emb}%::%{_i2}%} to a chest
+		set {_j2} to random integer from 1 to 5
+		add {item::pembassy.item.%{_j2}%} to inventory of block at {pembassy.location.%{_emb}%::%{_i2}%}
+		chance of 40%:
+			set {_j} to random integer from 1 to 50
+			add {item::pembassy.item.%{_j}%} to inventory of block at {pembassy.location.%{_emb}%::%{_i2}%}
+		chance of 10%:
+			set {_j} to random integer from 1 to 50
+			add {item::pembassy.item.%{_j}%} to inventory of block at {pembassy.location.%{_emb}%::%{_i2}%}
+		chance of 5%:
+			set {_j} to random integer from 1 to 50
+			add {item::pembassy.item.%{_j}%} to inventory of block at {pembassy.location.%{_emb}%::%{_i2}%}
+		set {_bool} to true
+		while {_bool} is true:
+			set {_bool} to false
+			set {_i3} to random integer from 1 to 16
+			if {_i3} =  {_i2}:
+				set {_i3} to random integer from 1 to 16
+			if {_i3} =  {_i1}:
+				set {_i3} to random integer from 1 to 16
+			if {_i3} =  {_i2}:
+				set {_bool} to true
+			if {_i3} =  {_i1}:
+				set {_bool} to true
+		
+		set block at {pembassy.location.%{_emb}%::%{_i3}%} to a chest
+		set {_j3} to random integer from 1 to 5
+		add {item::pembassy.item.%{_j3}%} to inventory of block at {pembassy.location.%{_emb}%::%{_i3}%}
+		chance of 50%:
+			set {_j} to random integer from 1 to 50
+			add {item::pembassy.item.%{_j}%} to inventory of block at {pembassy.location.%{_emb}%::%{_i3}%}
+		chance of 10%:
+			set {_j} to random integer from 1 to 50
+			add {item::pembassy.item.%{_j}%} to inventory of block at {pembassy.location.%{_emb}%::%{_i3}%}
+		chance of 5%:
+			set {_j} to random integer from 1 to 50
+			add {item::pembassy.item.%{_j}%} to inventory of block at {pembassy.location.%{_emb}%::%{_i3}%}
+		chance of 5%:
+			set {_j} to random integer from 1 to 50
+			add {item::pembassy.item.%{_j}%} to inventory of block at {pembassy.location.%{_emb}%::%{_i3}%}
+		chance of 5%:
+			set {_j} to random integer from 1 to 50
+			add {item::pembassy.item.%{_j}%} to inventory of block at {pembassy.location.%{_emb}%::%{_i3}%}
+		chance of 5%:
+			set {_j} to random integer from 1 to 50
+			add {item::pembassy.item.%{_j}%} to inventory of block at {pembassy.location.%{_emb}%::%{_i3}%}
+		loop 300 times:
+			if {pembassy.clicked::%{_i1}%} is set:
+				if {pembassy.clicked::%{_i2}%} is set:
+					if {pembassy.clicked::%{_i3}%} is set:
+						wait 1 second
+						broadcast "&8[&6Prisosn&eEmbassy&8] &7All chests have been found!"
+						wait 10 seconds
+						set block at {pembassy.location.%{_emb}%::%{_i1}%} to air
+						set block at {pembassy.location.%{_emb}%::%{_i2}%} to air
+						set block at {pembassy.location.%{_emb}%::%{_i3}%} to air
+						delete {embassy.clicked::*}
+						stop
+			loop all players in world "Prison":
+				if "%regions at loop-player%" contains "prison_embassy":
+					if {pembassy.clicked::%{_i1}%} is not set:
+						if {pembassy.clicked::%{_i2}%} is not set:
+							if {pembassy.clicked::%{_i3}%} is not set:
+								send action bar with "&a%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i1}%}% &7| &a%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i2}%}% &7| &a%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i3}%}%" to loop-player
+							else:
+								send action bar with "&a%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i1}%}% &7| &a%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i2}%}% &7| &c%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i3}%}%" to loop-player
+						else:
+							if {pembassy.clicked::%{_i3}%} is not set:
+								send action bar with "&a%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i1}%}% &7| &c%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i2}%}% &7| &a%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i3}%}%" to loop-player
+							else:
+								send action bar with "&a%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i1}%}% &7| &c%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i2}%}% &7| &c%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i3}%}%" to loop-player
+					else:
+						if {pembassy.clicked::%{_i2}%} is not set:
+							if {pembassy.clicked::%{_i3}%} is not set:
+								send action bar with "&c%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i1}%}% &7| &a%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i2}%}% &7| &a%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i3}%}%" to loop-player
+							else:
+								send action bar with "&c%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i1}%}% &7| &a%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i2}%}% &7| &c%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i3}%}%" to loop-player
+						else:
+							if {pembassy.clicked::%{_i3}%} is not set:
+								send action bar with "&c%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i1}%}% &7| &c%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i2}%}% &7| &a%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i3}%}%" to loop-player
+							else:
+								send action bar with "&c%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i1}%}% &7| &c%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i2}%}% &7| &c%distance between location of block at loop-player and location of block at {pembassy.location.%{_emb}%::%{_i3}%}%" to loop-player
+							
+			
+			wait 1 second
+		set block at {pembassy.location.%{_emb}%::%{_i1}%} to air
+		set block at {pembassy.location.%{_emb}%::%{_i2}%} to air
+		set block at {pembassy.location.%{_emb}%::%{_i3}%} to air
+		delete {pembassy.clicked::*}
+on load:
+	delete {embassy.clicked::*}
+on right click on chest:
+	if "%regions at clicked block%" contains "prison_embassy":
+		set {_i} to 0
+		set {_emb} to 0
+		loop 3 times:
+			add 1 to {_emb}
+			loop 16 times:
+				add 1 to {_i}
+				if "%{pembassy.location.%{_emb}%::%{_i}%}%" = "%location of clicked block%":
+					
+					if {pembassy.clicked::%{_i}%} is not set:
+						broadcast "&8[&6Prison&eEmbassy&8] &a&l%player% &7has found a chest in prison embassy!"
+						set {pembassy.clicked::%{_i}%} to true
+						stop
+					else:
+						stop
+
+	

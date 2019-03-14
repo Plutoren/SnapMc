@@ -1,0 +1,526 @@
+#save inventory
+#select kits in menu
+
+command /duelselectinv <player>:
+	trigger:
+		wait 1 ticks									
+		open chest with 6 row named "         &8-=[ &1Duel Menu &8]=-" to player
+		set {_j} to 0
+		wait 1 ticks
+		loop 54 times:									
+			format slot {_j} of player with gray stained glass pane named "&7" to close then run "sudo %player% duel menu"
+			add 1 to {_j}
+		set {_i} to 10
+	#	if {duelkits.custom::%uuid of player%::1} is set:
+	#		format slot {_i} of player with {duelkits.custom::%uuid of player%::1} named "&e&lCustom" with lore "", "  &7Click to Select", " " to close then run "sudo %player% duel %arg-1% Custom"
+	#		add 1 to {_i}
+		loop {duelkits.names::*}:
+			format slot {_i} of player with {duelkits::%loop-index%::weapon} named "&e&l%loop-index%" with lore "", "  &7Click to Select", " " to close then run "sudo %player% duel %arg-1% %loop-index%"
+			add 1 to {_i}
+			
+
+command /dueltoggle:
+	trigger:
+		if {duel.toggle::%uuid of player%} is not set:
+			set {duel.toggle::%uuid of player%} to false
+			message "&8[&6Duel&8] &eNow blocking duel notifications"
+			stop
+		else:
+			delete {duel.toggle::%uuid of player%}
+			message "&8[&6Duel&8] &aNow allowing duel notifications"
+			stop
+			
+command /checkduel:
+	trigger:
+		message "%{duelkits.custom::%uuid of player%::helmet}%"
+command /blockat:
+	trigger:
+		message "%block at player%"
+		if "%block at player%" contains "stair":
+			message "&cOn a stair!"
+command /duel [<text>] [<text>]:
+	trigger:
+		if player is not in world "Spawn":
+			stop
+	
+		if arg-1 is set:
+			if arg-1 is "leave" or "exit" or "quit" or "l":
+				if {isdueling::%player%} is true:
+					send {duel::%player%} title "&aYou win" for 3 seconds
+					send player title "&cYou Quit" for 3 seconds
+					clear player's inventory
+					clear {duel::%player%}'s inventory
+					set {_targetPlayer} to {duel::%player%}	
+					
+					teleport player to {pos::pvp}
+					teleport {duel::%player%} to {pos::pvp}
+					
+					heal {duel::%player%} 
+					heal player
+							
+					execute console command "feed %player%"
+					execute console command "feed %{duel::%player%}%"
+					
+
+					wait 1 tick
+					delete {duelsent::%player%}
+					delete {duelsent::%{duel::%player%}%}
+					delete {isdueling::%player%} 
+					delete {isdueling::%{duel::%player%}%}
+					delete {duel::%{duel::%player%}%}
+					delete {duel::%player%}
+				
+					
+					
+					
+					
+					
+				else:
+					message "&c&lError &7>> &cYou're not in a duel"
+				stop
+			if arg-1 is "list" or "kits":
+				if arg-2 is not set:
+					message "&6&lDuel: &b/duel (name) (kit)"
+					message "&6&lKits: &7iron, bow, diamond"
+					stop
+					
+			if arg-2 is set:
+				if {duelkits.names::%arg-2%} is set:
+					set {duelkit::%player%} to arg-2
+					
+#				else if arg-2 is "Custom":
+#					
+#					if {duelkits.custom::%uuid of player%::1} is not set:
+#						message "&8[&6Duels&8] &7You must set a custom kit first &b/duel set"
+#						stop
+#					set {duelkit::%player%} to "Custom"
+				else:
+					message "&6&lDuel: &b/duel (name) (kit)"
+					message "&6&lKits: &7iron, bow, diamond, custom"
+					stop
+			
+		
+		if arg-1 is set:
+#			if arg-1 is "custom" or "setcustom" or "set":
+#				if player is not in world "spawn" or "world" or "world_nether" or "world_the_end" or "Avalon":
+#					message "&8[&6Duels&8] &7You can't set a custom kit in this world"
+#					stop
+#				set {_i} to 1
+#				delete {duelkits.custom::%uuid of player%::*}
+#				loop items in player's inventory:
+#					if "%loop-slot%" does not contain "36" or "37" or "38" or "39":
+#						set {duelkits.custom::%uuid of player%::%{_i}%} to loop-value
+#						add 1 to {_i}
+#				if {duelkits.custom::%uuid of player%::1} is not set:
+#					message "&8[&6Duel&8] &7You must have at least 1 item in your inventory"
+#					stop
+#				set {duelkits.custom::%uuid of player%::helmet} to player's helmet
+#				set {duelkits.custom::%uuid of player%::chestplate} to player's chestplate
+#				set {duelkits.custom::%uuid of player%::leggings} to player's leggings
+#				set {duelkits.custom::%uuid of player%::boots} to player's boots
+#				message "&8[&6Duels&8] &7Set your Custom Duel kit. &b/duel (name) Custom"
+#				stop
+			set {_tmp} to 0
+			loop all items in player's inventory:
+				add 1 to {_tmp}
+			if player's boots is not air:
+				add 1 to {_tmp}
+			if player's leggings is not air:
+				add 1 to {_tmp}
+			if player's chestplate is not air:
+				add 1 to {_tmp}
+			if player's helmet is not air:
+				add 1 to {_tmp}
+			if {_tmp} > 0:
+
+				message "&c&lError &7>> &cYour inventory is not clear!"
+				stop
+		
+			if "%block at player%" contains "stair":
+				message "&c&lError &7>> &cYou can't do that from a chair!"
+				stop	
+			if arg-1 is "menu":
+			
+				if {duel::%player%} is set:
+					
+					if arg-2 is not set:	
+						if {duelsent::%player%} is set:
+							message "&c&lError &7>> &cYou must wait &e%{dueltimeout::%player%}% seconds"
+							stop
+						wait 1 ticks
+						open chest with 3 row named "         &8-=[ &1Duel Menu &8]=-" to player								
+						set {_j} to 0
+						wait 1 tick
+						loop 27 times:									
+							format slot {_j} of player with green stained glass pane named "&7" to close then run "sudo %player% duel menu"
+							add 1 to {_j}	 														
+						format slot 26 of player with book named "&e&lDuel Menu" with lore "", "  &7Select a different player to duel" to close then run "sudo %player% duel menu -m"
+						format slot 13 of player with skull of {duel::%player%} named "&e%{duel::%player%}%" with lore " ", "  &bClick to accept" to close then run "sudo %player% duel %{duel::%player%}%"
+						
+						stop
+			
+			
+				set {_i} to 0
+				loop all players in world "spawn":
+					if "%regions at loop-player%" contains "hub_jan_no_fly" or "hub_feb_no_fly" or "hub_mar_pvp_no_fly" or "hub_may_no_fly":
+						if "%loop-player%" != "%player%":
+							add 1 to {_i} 
+							set {_possibleDuel::%{_i}%} to "%loop-player%"
+				if {_i} = 0:
+					message "&8[&bSnap&8] &7No other players in pvp!"
+					stop
+					
+				wait 1 ticks
+				open chest with 6 row named "         &8-=[ &1Duel Menu &8]=-" to player								
+				set {_j} to 0	
+				wait 1 tick
+				loop 54 times:									
+					format slot {_j} of player with gray stained glass pane named "&7" to close then run "sudo %player% duel menu"
+					add 1 to {_j}	 														
+				format slot 53 of player with grass block named "&e&lDUEL" with lore "", "  &7Select a player to duel" to close then run "sudo %player% duel menu"
+				set {_k} to 0
+				loop all players in world "spawn":
+					if "%regions at loop-player%" contains "hub_jan_no_fly"  or "hub_feb_no_fly" or "hub_mar_pvp_no_fly" or "hub_may_no_fly":
+						if "%loop-player%" != "%player%":
+							format slot {_k} of player with skull of loop-player named "&e%loop-player%" to close then run "sudo %player% duelselectinv %loop-player%"
+							add 1 to {_k}
+				stop
+				
+			set {_targetPlayer} to arg-1
+		
+			set {_isOnline} to false
+			
+			loop all players:
+				if "%{_targetPlayer}%" = "%loop-player%":
+					set {_targetPlayer} to loop-player
+					set {_isOnline} to true
+					
+					
+			if {_isOnline} is false:
+				message "&c&lError &7>> &c%{_targetPlayer}% is not online"
+				stop
+			
+			if "%{_targetPlayer}%" = "%player%":
+				message "&c&lError &7>> &cYou can't duel yourself."
+				stop
+				
+		
+			if {duel::%player%} = arg-1:
+				if {duelsent::%player%} is set:
+					message "&c&lError &7>> &cYou must wait &e%{dueltimeout::%player%}% seconds"
+					stop
+				else:
+					
+					if {duelkit::%{duel::%player%}%} = "Custom":
+						message "Please have that player change kits"
+						stop
+					set {_tmp} to 0
+					loop all items in {_targetPlayer}'s inventory:
+						add 1 to {_tmp}
+					if {_targetPlayer}'s boots is not air:
+						add 1 to {_tmp}
+					if {_targetPlayer}'s leggings is not air:
+						add 1 to {_tmp}
+					if {_targetPlayer}'s chestplate is not air:
+						add 1 to {_tmp}
+					if {_targetPlayer}'s helmet is not air:
+						add 1 to {_tmp}
+					if {_tmp} > 0:
+		
+						message "&c&lError &7>> &cOpponents inventory not clear!"
+						send "&6&lDuel: &a%player% &ctried to accept your duel" to {_targetPlayer}
+						send "          &cbut your inventory was not empty!" to {_targetPlayer}
+						stop
+					
+									
+					if "%block at {_targetPlayer}%" contains "stair":
+						message "&c&lError &7>> &cOpponents on a chair!"
+						send "&6&lDuel: &a%player% &ctried to accept your duel" to {_targetPlayer}
+						send "          &cbut you were on a chair!" to {_targetPlayer}
+						stop
+				
+				
+				
+				
+				
+					set {isdueling::%player%} to true
+					set {isdueling::%{duel::%player%}%} to true
+					
+					
+					
+					
+					execute console command "heal %player%"
+					execute console command "heal %{duel::%player%}%"
+				
+					
+					execute console command "feed %player%"
+					execute console command "feed %{duel::%player%}%"
+					
+					execute console command "sendplayerto %player% duel1"
+					execute console command "sendplayerto %{duel::%player%}% duel2"
+					
+					
+					execute console command "fly %player% off"
+					execute console command "fly %{duel::%player%}% off"
+					
+					execute console command "effect %player% clear"
+					execute console command "effect %{duel::%player%}% clear"
+					
+					
+					execute console command "gm 0 %player%"
+					execute console command "gm 0 %{duel::%player%}%"
+					
+					
+					
+					
+					wait 2 ticks
+					give player {duelkits::%{duelkit::%{duel::%player%}%}%::weapon}
+					give {_targetPlayer} {duelkits::%{duelkit::%{duel::%player%}%}%::weapon}
+			
+			#		if {duelkit::%{duel::%player%}%} = "Custom":
+			#			set {_id} to uuid of {duel::%player%}
+			#			loop {duelkits.custom::%{_id}%::*}:
+			#				if "%loop-index%" = "helmet":
+			#					set player's helmet to 1 of loop-value
+			#					set {_targetPlayer}'s helmet to 1 of loop-value
+			#				else if "%loop-index%" = "chestplate":	
+			#					set player's chestplate to 1 of loop-value
+			#					set {_targetPlayer}'s chestplate to 1 of loop-value
+			#				else if "%loop-index%" = "leggings":	
+			#					set player's leggings to 1 of loop-value
+			#					set {_targetPlayer}'s leggings to 1 of loop-value
+			#				else if "%loop-index%" = "boots":	
+			#					set player's boots to 1 of loop-value
+			#					set {_targetPlayer}'s boots to 1 of loop-value 
+			#				else if "%loop-index%" = "weapon":	
+			#					# Do nothing
+			#					give player 1 air
+			#				else:
+			#					give player loop-value
+			#					give {_targetPlayer} loop-value
+			#		else:
+			
+					loop {duelkits::%{duelkit::%{duel::%player%}%}%::*}:
+
+						if "%loop-index%" = "helmet":
+							set player's helmet to loop-value
+							set {_targetPlayer}'s helmet to loop-value
+						else if "%loop-index%" = "chestplate":	
+							set player's chestplate to loop-value
+							set {_targetPlayer}'s chestplate to loop-value
+						else if "%loop-index%" = "leggings":	
+							set player's leggings to loop-value
+							set {_targetPlayer}'s leggings to loop-value
+						else if "%loop-index%" = "boots":	
+							set player's boots to loop-value
+							set {_targetPlayer}'s boots to loop-value 
+						else if "%loop-index%" = "weapon":	
+							# Do nothing
+							give player 1 air
+						else:
+							give player loop-value
+							give {_targetPlayer} loop-value
+							
+					
+					send player title "&4&lFight" with subtitle "&cUse &c&l/duel quit &cto quit" for 3 seconds
+					send {duel::%player%} title "&4&lFight" with subtitle "&cUse &c&l/duel quit &cto quit" for 3 seconds
+					
+					stop
+					
+		
+				
+				
+			if {dueltimeout::%player%} is set:
+				message "&c&lError &7> &cYou must wait &e%{dueltimeout::%player%}% &cseconds"
+				stop
+				
+				
+			if {duelkit::%player%} is not set:
+				set {duelkit::%player%} to "iron"
+				message "&6&lDuel: &eYou did not use /duel (name) (kit)"
+				message "&6&lDuel: &eIron kit selected by default"
+				
+				
+			if 	{isdueling::%{_targetPlayer}%} is set:
+				message "&c&lError &7>> &cThat player is already in a duel!"
+				stop
+			
+			if {duel::%{_targetPlayer}%} is set:
+				message "&c&lError &7>> &cThat player already has a duel request"
+				stop
+			
+			set {dueltimeout::%player%} to 20
+			set {duel::%player%} to {_targetPlayer}
+			set {duel::%{_targetPlayer}%} to player
+			set {duelsent::%player%} to true
+			execute console command  "messagePlayer %{_targetPlayer}% %player%"
+			
+			send "&6Duel request from &a&l%player% &e/duel %player% &bUsing Kit %{duelkit::%player%}%" to {_targetPlayer}
+			
+			send player title "&6Sent to &a%{_targetPlayer}%" with subtitle "&b%{duelkit::%player%}% kit" for 3 seconds
+		else:
+			message "&6&lDuel: &b/duel (name) (kit)"
+			message "&6&lKits: &7iron, bow, diamond"
+		
+		
+every 10 seconds:
+	loop {dueltimeout::*}:
+		set {dueltimeout::%loop-index%} to {dueltimeout::%loop-index%} - 10
+		if {dueltimeout::%loop-index%} <= 0:
+			if {isdueling::%loop-index%} is not set:
+				set {_targetPlayer} to loop-index
+				loop all players:
+					if "%{_targetPlayer}%" = "%loop-player%":
+						send "&6&lDuel: &cYour duel invitation to &e%{duel::%loop-index%}% &ctimed out." to loop-player
+					
+				delete {duelsent::%loop-index%}
+				if {duel::%{duel::%loop-index%}%} = loop-index:
+					delete {duel::%{duel::%loop-index%}%}
+				delete {duel::%loop-index%}
+			delete {dueltimeout::%loop-index%}
+		
+			
+
+command /messagePlayer <player> <player>:
+	permission: is.op
+	trigger:
+		send "&6&lDuel: &a%arg-2% &echallenged you! Play with &b/duel %arg-2%" to arg-1
+	
+
+command /clearinve <player>:
+	permission: is.op
+	trigger:
+		message "&cClearing inventory of %arg-1%"
+		clear inventory of arg-1
+
+		
+command /setpvpentrance:
+	permission: is.op
+	trigger:
+		loop blocks in radius 8 of player:
+			if "%regions at loop-block%" contains "pvp_entrance":
+				set {duel_entrance::%location of loop-block%} to location of loop-block
+			
+			
+	
+on death of player:
+
+	if "%regions at victim%" contains "hub_pvp":
+		add 1 paper named "&7[&fCard&7] &b%name of victim%" with lore "&bType: &fvictim", "&eInfo:", " &7- &fJoined %{firstjoin::%victim%}%", "&aSeries: &f2018", "&b&lvictim" to drops
+	if {duel::%victim%} is set:
+		if {isdueling::%victim%} is true:
+			clear drops
+			send {duel::%victim%} title "&aYou win" for 3 seconds
+			send victim title "&cYou lose" for 3 seconds
+			clear victim's inventory
+			clear {duel::%victim%}'s inventory
+			set {_targetvictim} to {duel::%victim%}	
+			
+			heal {duel::%victim%} 
+			heal victim
+			
+			teleport victim to {pos::pvp}
+			teleport {duel::%victim%} to {pos::pvp}
+			
+					
+			execute console command "feed %victim%"
+			execute console command "feed %{duel::%victim%}%"
+			
+
+			wait 1 tick
+			delete {duelsent::%victim%}
+			delete {duelsent::%{duel::%victim%}%}
+			delete {isdueling::%victim%} 
+			delete {isdueling::%{duel::%victim%}%}
+			delete {duel::%{duel::%victim%}%}
+			delete {duel::%victim%}
+		
+	
+
+on quit:
+	if {duel::%player%} is set:
+		if {isdueling::%player%} is true:
+			set {_targetPlayer} to {duel::%player%}
+			clear {duel::%player%}'s inventory
+			send {_targetPlayer} title "&c&lOther Player Quit!" for 4 seconds
+			execute console command "heal %{_targetPlayer}%"
+			execute console command "feed %{_targetPlayer}%"
+			teleport {duel::%player%} to {pos::pvp}
+			delete {isdueling::%{duel::%player%}%}
+			delete {duel::%{duel::%player%}%}
+			
+		
+on join:
+	if {duel::%player%} is set:
+		delete {duel::%player%}
+	if {isdueling::%player%} is set:
+		clear player's inventory
+		execute console command "heal %player%"
+		execute console command "feed %player%"
+		loop {duel_entrance::*}:
+			make player see block at loop-value as air
+		loop {duel.blocks::*}:
+			set block at loop-value to air
+			delete {duel.blocks::%loop-index%}
+		message "&cYou were sent to pvp after you logged out of a duel!"
+		teleport player to {pos::pvp}
+		delete {isdueling::%player%}
+		
+on drop:
+	if {isdueling::%player%} is set:
+		cancel event
+		message "&c&lError &7>> &cYou can't drop items while dueling"
+on pick up:
+	if {isdueling::%player%} is set:
+		cancel event
+
+		
+		
+command /duelkit <text> <text>:	
+	permission: is.op
+	trigger:
+		message "&6Duel Kit Item &b%arg-2% &6set for kit named: &a%arg-1%"
+		set {duelkits::%arg-1%::%arg-2%} to player's tool
+		if {duelkits.names::%arg-1%} is not set:
+			set {duelkits.names::%arg-1%} to true
+		
+command /delduelkit <text> <text>:	
+	permission: is.op
+	trigger:
+		message "&cRemoved Item: &b%arg-2% &cfrom kit named: &a%arg-1%"
+		delete {duelkits::%arg-1%::%arg-2%}
+				
+command /duellist <text>:
+	permission: is.op
+	trigger:
+		
+		loop {duelkits::%arg-1%::*}:
+			message "&f%loop-index%&7. &6%loop-value%"
+			
+command /duelkits:
+	permission: is.op
+	trigger:
+		loop {duelkits.names::*}:
+			message "&f%loop-index%&7. &6%loop-value%"
+				
+on command:
+	if command contains "tp":
+		if {isdueling::%player%} is set:
+			message "&c&lError &7>> &cYou cannot do this while about to duel!"
+			cancel event
+		if {duel::%player%} is set:
+			message "&c&lError &7>> &cYou cannot do this while about to duel!"
+			cancel event	
+			stop
+	if command does not contain "duel":
+		if {isdueling::%player%} is set:
+			message "&c&lError &7>> &cTry /duel quit!"
+			cancel event
+
+		
+command /sendplayerto <player> <text>:
+	permission: is.op
+	trigger:
+		teleport arg-1 to {pos::%arg-2%}
+		remove all potion effects from arg-1
+

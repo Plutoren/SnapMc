@@ -1,0 +1,166 @@
+command /setembassy <int>:
+	permission: is.staff
+	trigger:
+		set {embassy.location::%arg-1%} to location of target block of player
+		message "set %arg-1%"
+	
+
+command /listemb:
+	permission: is.Pluto
+	trigger:
+		loop {item::*}:
+			
+			if "%loop-index%" contains "embassy.item.":
+				message "   &e%loop-index% &c%loop-value%"
+				give player {item::%loop-index%}
+				wait 1 second
+command /embassy:
+	trigger:
+		if {lastembassy} was less than 60 minutes ago:
+		
+							
+			set {_startDate} to {lastembassy}
+			set {_duration}  to 60 minutes
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "&8[&6Snap&eEmbassy&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+			stop
+		if {pvp.lastevent} was less than 20 minutes ago:				
+			set {_startDate} to {pvp.lastevent}
+			set {_duration}  to 20 minutes
+			set {_now} to now
+			set {_endDate} to {_startDate}
+			add {_duration} to {_endDate}
+			set {_timeUntilExpiration} to difference between {_endDate} and {_now}
+			message "&8[&c&lPvP&8] &cPlease Wait&7: &e%{_timeUntilExpiration}%"
+			stop
+		set {pvp.lastevent} to now
+		set {lastembassy} to now
+		broadcast "&8[&cPvP&8] &f3 Loot Crates have spawned in &cWarp PvP!"
+		set {_i1} to random integer from 1 to 33
+		set block at {embassy.location::%{_i1}%} to a chest
+		set {_j} to random integer from 1 to 50
+		add {item::embassy.item.%{_j}%} to inventory of block at {embassy.location::%{_i1}%}
+		chance of 50%:
+			set {_j} to random integer from 1 to 50
+			add {item::embassy.item.%{_j}%} to inventory of block at {embassy.location::%{_i1}%}
+		chance of 10%:
+			set {_j} to random integer from 1 to 50
+			add {item::embassy.item.%{_j}%} to inventory of block at {embassy.location::%{_i1}%}
+		chance of 5%:
+			set {_j} to random integer from 1 to 50
+			add {item::embassy.item.%{_j}%} to inventory of block at {embassy.location::%{_i1}%}
+		
+		
+		set {_i2} to random integer from 1 to 33
+		while {_i2} = {_i1}:
+			set {_i2} to random integer from 1 to 33
+		
+		set block at {embassy.location::%{_i2}%} to a chest
+		set {_j2} to random integer from 1 to 5
+		add {item::embassy.item.%{_j2}%} to inventory of block at {embassy.location::%{_i2}%}
+		chance of 40%:
+			set {_j} to random integer from 1 to 50
+			add {item::embassy.item.%{_j}%} to inventory of block at {embassy.location::%{_i2}%}
+		chance of 10%:
+			set {_j} to random integer from 1 to 50
+			add {item::embassy.item.%{_j}%} to inventory of block at {embassy.location::%{_i2}%}
+		chance of 5%:
+			set {_j} to random integer from 1 to 50
+			add {item::embassy.item.%{_j}%} to inventory of block at {embassy.location::%{_i2}%}
+		set {_bool} to true
+		while {_bool} is true:
+			set {_bool} to false
+			set {_i3} to random integer from 1 to 33
+			if {_i3} =  {_i2}:
+				set {_i3} to random integer from 1 to 33
+			if {_i3} =  {_i1}:
+				set {_i3} to random integer from 1 to 33
+			if {_i3} =  {_i2}:
+				set {_bool} to true
+			if {_i3} =  {_i1}:
+				set {_bool} to true
+		
+		set block at {embassy.location::%{_i3}%} to a chest
+		set {_j3} to random integer from 1 to 5
+		add {item::embassy.item.%{_j3}%} to inventory of block at {embassy.location::%{_i3}%}
+		chance of 50%:
+			set {_j} to random integer from 1 to 50
+			add {item::embassy.item.%{_j}%} to inventory of block at {embassy.location::%{_i3}%}
+		chance of 10%:
+			set {_j} to random integer from 1 to 50
+			add {item::embassy.item.%{_j}%} to inventory of block at {embassy.location::%{_i3}%}
+		chance of 5%:
+			set {_j} to random integer from 1 to 50
+			add {item::embassy.item.%{_j}%} to inventory of block at {embassy.location::%{_i3}%}
+		chance of 5%:
+			set {_j} to random integer from 1 to 50
+			add {item::embassy.item.%{_j}%} to inventory of block at {embassy.location::%{_i3}%}
+		chance of 5%:
+			set {_j} to random integer from 1 to 50
+			add {item::embassy.item.%{_j}%} to inventory of block at {embassy.location::%{_i3}%}
+		chance of 5%:
+			set {_j} to random integer from 1 to 50
+			add {item::embassy.item.%{_j}%} to inventory of block at {embassy.location::%{_i3}%}
+		loop 200 times:
+			if {embassy.clicked::%{_i1}%} is set:
+				if {embassy.clicked::%{_i2}%} is set:
+					if {embassy.clicked::%{_i3}%} is set:
+						wait 1 second
+						broadcast "&8[&cPvP&8] &7All chests have been found!"
+						wait 10 seconds
+						set block at {embassy.location::%{_i1}%} to air
+						set block at {embassy.location::%{_i2}%} to air
+						set block at {embassy.location::%{_i3}%} to air
+						delete {embassy.clicked::*}
+						stop
+			loop all players in world "Spawn":
+				if "%regions at loop-player%" contains "hub_pvp":
+					if {embassy.clicked::%{_i1}%} is not set:
+						if {embassy.clicked::%{_i2}%} is not set:
+							if {embassy.clicked::%{_i3}%} is not set:
+								send action bar with "&a%distance between location of block at loop-player and location of block at {embassy.location::%{_i1}%}% &7| &a%distance between location of block at loop-player and location of block at {embassy.location::%{_i2}%}% &7| &a%distance between location of block at loop-player and location of block at {embassy.location::%{_i3}%}%" to loop-player
+							else:
+								send action bar with "&a%distance between location of block at loop-player and location of block at {embassy.location::%{_i1}%}% &7| &a%distance between location of block at loop-player and location of block at {embassy.location::%{_i2}%}% &7| &c%distance between location of block at loop-player and location of block at {embassy.location::%{_i3}%}%" to loop-player
+						else:
+							if {embassy.clicked::%{_i3}%} is not set:
+								send action bar with "&a%distance between location of block at loop-player and location of block at {embassy.location::%{_i1}%}% &7| &c%distance between location of block at loop-player and location of block at {embassy.location::%{_i2}%}% &7| &a%distance between location of block at loop-player and location of block at {embassy.location::%{_i3}%}%" to loop-player
+							else:
+								send action bar with "&a%distance between location of block at loop-player and location of block at {embassy.location::%{_i1}%}% &7| &c%distance between location of block at loop-player and location of block at {embassy.location::%{_i2}%}% &7| &c%distance between location of block at loop-player and location of block at {embassy.location::%{_i3}%}%" to loop-player
+					else:
+						if {embassy.clicked::%{_i2}%} is not set:
+							if {embassy.clicked::%{_i3}%} is not set:
+								send action bar with "&c%distance between location of block at loop-player and location of block at {embassy.location::%{_i1}%}% &7| &a%distance between location of block at loop-player and location of block at {embassy.location::%{_i2}%}% &7| &a%distance between location of block at loop-player and location of block at {embassy.location::%{_i3}%}%" to loop-player
+							else:
+								send action bar with "&c%distance between location of block at loop-player and location of block at {embassy.location::%{_i1}%}% &7| &a%distance between location of block at loop-player and location of block at {embassy.location::%{_i2}%}% &7| &c%distance between location of block at loop-player and location of block at {embassy.location::%{_i3}%}%" to loop-player
+						else:
+							if {embassy.clicked::%{_i3}%} is not set:
+								send action bar with "&c%distance between location of block at loop-player and location of block at {embassy.location::%{_i1}%}% &7| &c%distance between location of block at loop-player and location of block at {embassy.location::%{_i2}%}% &7| &a%distance between location of block at loop-player and location of block at {embassy.location::%{_i3}%}%" to loop-player
+							else:
+								send action bar with "&c%distance between location of block at loop-player and location of block at {embassy.location::%{_i1}%}% &7| &c%distance between location of block at loop-player and location of block at {embassy.location::%{_i2}%}% &7| &c%distance between location of block at loop-player and location of block at {embassy.location::%{_i3}%}%" to loop-player
+							
+			
+			wait 1 second
+		set block at {embassy.location::%{_i1}%} to air
+		set block at {embassy.location::%{_i2}%} to air
+		set block at {embassy.location::%{_i3}%} to air
+		delete {embassy.clicked::*}
+on load:
+	delete {embassy.clicked::*}
+on right click on chest:
+	if "%regions at clicked block%" contains "hub_pvp":
+		set {_i} to 0
+		loop 33 times:
+			add 1 to {_i}
+			if "%{embassy.location::%{_i}%}%" = "%location of clicked block%":
+				
+				if {embassy.clicked::%{_i}%} is not set:
+					broadcast "&8[&cPvP&8] &a&l%player% &7has found a chest in pvp!"
+					set {embassy.clicked::%{_i}%} to true
+					stop
+				else:
+					stop
+
+	

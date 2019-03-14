@@ -1,0 +1,43 @@
+
+
+command /rpgpack:
+	trigger:
+		if player is in world "RPG":
+			send resource pack from "https://www.dropbox.com/s/3eridklbbmmt4bt/snap_rpg_texture_pack.zip?dl=1" to player
+		
+command /rpgsetlevel <player> <int>:
+	permission: is.Pluto
+	trigger:
+		set {rpg.player.level::%uuid of arg-1%} to arg-2
+		message "updated"
+		
+on drop:
+	if type of event-item is a nether star:
+		if name of event-item contains "mana":
+			cancel event
+			stop
+	if event-item is a book:
+		if name of event-item contains "stats":
+			cancel event
+			stop
+	if event-item is a compass:
+		if name of event-item contains "character":
+			cancel event
+			stop
+			
+command /query:
+	permission: is.op
+	trigger:
+		# db7dbe80-6f0d-4bbf-8e42-477f9a60cb90
+		message "%uuid of player%"
+		send a request to "https://www.destiny.gg/auth/minecraft?privatekey=eyuQsV9FifEAMoNCSqB0&uuid=%uuid of player%"
+		set {_resp} to the last http response
+		# message "&7%{_resp}%"
+		set {_body} to {_resp}'s body
+		message "%{_body}%"
+		if "%{_body}%" contains "userNotFound":
+			message "Kick"
+		else:
+			message "Valid"
+		# set {_parsed::*} to {_body} parsed as "%text%end%text%"
+		# message "&d%{_parsed::2}%"		

@@ -1,0 +1,84 @@
+command /oic:
+	aliases: chris
+	trigger:
+		loop 50 times:
+			set {_i} to random integer from 1 to 32
+			set {_spacetimes} to random integer from 1 to 30
+			set {_color} to random color
+			replace all "8" with "a" in {_color}
+			replace all "1" with "e" in {_color}
+			replace all "0" with "f" in {_color}
+			replace all "5" with "d" in {_color}
+			replace all "4" with "e" in {_color}
+			set {_space} to " "
+			loop {_spacetimes} times:
+				set {_space} to "%{_space}% "
+			
+				
+			message ""
+			wait 2 ticks
+			if {_i} is 1:
+				message "%{_space}%%{_color}%oic"
+			if {_i} is 2:
+				message "%{_space}%%{_color}%oic"
+			if {_i} is 3:
+				message "%{_space}%%{_color}%oic"
+			if {_i} is 4:
+				message "%{_space}%%{_color}%That's just lost"
+			if {_i} is 5:
+				message "%{_space}%%{_color}%That's very special ed"
+			if {_i} is 6:
+				message "%{_space}%%{_color}%I guess you could say that "
+			if {_i} is 7:
+				message "%{_space}%%{_color}%oic"
+			if {_i} is 8:
+				message "%{_space}%%{_color}%good?"
+			if {_i} is 9:
+				message "%{_space}%%{_color}%Very good"
+			if {_i} is 10:
+				message "%{_space}%%{_color}%oic"
+			if {_i} is 11:
+				message "%{_space}%%{_color}%good?"
+			if {_i} is 12:
+				message "%{_space}%%{_color}%That's lost ^^"
+			if {_i} is 13:
+				message "%{_space}%%{_color}%o you mean /lost"
+			if {_i} is 14:
+				message "%{_space}%%{_color}%o you mean /chris"
+			if {_i} is 15:
+				message "%{_space}%%{_color}%o ok ic"
+			if {_i} is 16:
+				message "%{_space}%%{_color}%O"
+			if {_i} is 17:
+				message "%{_space}%%{_color}%spec ed means special ed"
+			if {_i} is 18:
+				message "%{_space}%%{_color}%o what no"
+			if {_i} is 19:
+				message "%{_space}%%{_color}%thats lost"
+			if {_i} is 20:
+				message "%{_space}%%{_color}%o i think so"
+			if {_i} is 21:
+				message "%{_space}%%{_color}%gooooood?"
+			if {_i} is 22:
+				message "%{_space}%%{_color}%gooooooood"
+			if {_i} is 23:
+				message "%{_space}%%{_color}%o hi"
+			if {_i} is 24:
+				message "%{_space}%%{_color}%o ok"
+			if {_i} is 25:
+				message "%{_space}%%{_color}%o"
+			if {_i} is 26:
+				message "%{_space}%%{_color}%o ic"
+			if {_i} is 27:
+				message "%{_space}%%{_color}%o o ic"
+			if {_i} is 28:
+				message "%{_space}%%{_color}%o o"
+			if {_i} is 29:
+				message "%{_space}%%{_color}%o ok ^^^"
+			if {_i} is 30:
+				message "%{_space}%%{_color}%o ^^"
+			if {_i} is 31:
+				message "%{_space}%%{_color}%is that good?"
+			if {_i} is 32:
+				message "%{_space}%%{_color}%o o"
+			wait 3 tick

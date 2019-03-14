@@ -1,0 +1,18 @@
+command /ipsearch <text>:
+	trigger:
+		loop {ip::*}:
+			if loop-value contains arg-1:
+				message "%loop-index% &e%loop-value%"
+		message "Done"
+		
+command /tinynames [<int>]:
+	trigger:
+		if arg-1 >= 5:
+			message "too big" 
+			stop
+		else if arg-1 <= 0:
+			message "too small"
+			stop
+		loop {uuidName::*}:
+			if length of loop-value <= arg-1:
+				message "%loop-value%"

@@ -1,0 +1,33 @@
+on damage of a player:
+	if victim is a player:
+		if y coordinate of victim < -20:
+			if victim is not in world "BedWars" or "SkyBlock" or "Rooms" or "OITC" or "FortCraft":
+				teleport victim to {pos::spawn}
+				set victim's yaw to {yaw::spawn}
+				set victim's pitch to {pitch::spawn}
+				send victim title "&cYou fell out of the world" with subtitle "&7Sent to spawn" for 3 second with 1 second fade in and 1 second fade out
+			else if victim is in world "FortCraft":
+				teleport victim to block above block at {pos::kitpvp}
+				clear inventory of victim
+				heal victim
+		if victim is in world "spawn" or "world" or "world_the_end" or "world_nether" or "Avalon" or "Towny":
+			if {takedamage::%victim%} is not set:
+				if "%regions at victim%" contains "hub_pvp":
+					stop
+				else:
+					cancel event
+					
+on damage of a wolf:
+	if victim is a wolf:
+		if victim is in world "world" or "world_the_end" or "world_nether" or "Avalon" or "Towny":
+			cancel event
+			
+
+command /toggledamage:
+	trigger:
+		if {takedamage::%player%} is set:
+			delete {takedamage::%player%}
+			message "&8[&bSnap&8] &aYou will no longer take damage in the build worlds"
+		else:
+			set {takedamage::%player%} to true
+			message "&8[&bSnap&8] &cYou will now take damage in the build worlds"

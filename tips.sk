@@ -1,0 +1,123 @@
+every 60 seconds:
+	set {_i} to random integer from 1 to 45
+	broadcast "&c&m--&6&m--&e&m--&a&m--&b&m--&c&m--&6&m--&e&m--&a&m--&b&m--&c&m--&6&m--&e&m--&a&m--&b&m--&c&m--&6&m--&e&m--&a&m--&b&m--"
+	if {_i} = 1:
+		broadcast "      &b&lTip &7Scroll over a player's name"
+		broadcast "             &7to learn more about them"
+	else if {_i} = 2:
+		broadcast "      &b&lTip &7Make money by destroying &7the resource world"
+		broadcast "             &7Use &b/resource"
+	else if {_i} = 3:
+		broadcast "      &b&lTip &7Buy and sell materials at the shop"
+		broadcast "             &7Visit &b/warp shop"
+	else if {_i} = 4:
+		broadcast "      &b&lTip &7Redeem your keys at the crate area"
+		broadcast "             &7Use &b/warp crates"
+	else if {_i} = 5:
+		broadcast "      &b&lTip &7Learn more about claiming"
+		broadcast "             &7Use &b/menu"
+	else if {_i} = 6:
+		broadcast "      &b&lTip &fCan you get 3 discord invites? Earn 50m!"
+		broadcast "            &e ##invite-rewards &fon &b/discord"
+	else if {_i} = 7:
+		broadcast "      &b&lTip &7Share your emotions"
+		broadcast "             &7Use &b/emotes"
+	else if {_i} = 8:
+		broadcast "      &b&lTip &7Change your title"
+		broadcast "             &7Use &b/prefix"
+	else if {_i} = 9:
+		broadcast "      &b&lTip &7Change your suffix"
+		broadcast "             &7Use &b/suffix"
+	else if {_i} = 10:
+		broadcast "      &b&lTip &7Enjoy free fly"
+		broadcast "             &7Use &b/fly"
+	else if {_i} = 11:
+		broadcast "      &b&lTip &7Check out our online store in game"
+		broadcast "             &7Use &d/buy"
+	else if {_i} = 15:
+		broadcast "      &b&lTip &7Vote for awesome rewards"
+		broadcast "             &7Use &b/vote"
+	else if {_i} = 17:
+		broadcast "      &b&lTip &7Donators can set warps"
+		broadcast "             &7Use &b/setwarp"
+	else if {_i} = 18:
+		broadcast "      &b&lTip &7Donators can diguise as items and mobs"
+		broadcast "             &7Use &b/dmenu"
+	else if {_i} = 19:
+		broadcast "      &b&lTip &7Donators can fix items"
+		broadcast "             &7Use &b/fix"
+	else if {_i} = 22:
+		broadcast "      &b&lTip &7Link Your Discord"
+		broadcast "             &7Use &b/discord link"
+	else if {_i} = 23:
+		broadcast "      &b&lTip &7Ultimate has access to 9500+ heads"
+		broadcast "             &7Use &b/heads search (whatever)"
+	else if {_i} = 24:
+		broadcast "      &b&lTip &7Join the forums at"
+		broadcast "             &bsnapmc.com"
+	else if {_i} = 25:
+		broadcast "      &b&lTip &7Join the server discord"
+		broadcast "             &7Use &b/discord"
+	else if {_i} = 26:
+		broadcast "      &b&lTip &7Change your world"
+		broadcast "             &7Use &b/filter"
+	else if {_i} = 27:
+		broadcast "      &b&lTip &7Try out the Prison mode"
+		broadcast "             &7Use &b/prison"
+	else if {_i} = 28:
+		broadcast "      &b&lTip &7Check out Creative mode"
+		broadcast "             &7Use &b/creative"
+	else if {_i} = 29:
+		broadcast "      &b&lTip &7Visit SkyBlock"
+		broadcast "             &7Use &b/skyblock"
+	else if {_i} = 30:
+		broadcast "      &b&lTip &7Like us on namemc"
+		broadcast "            &e namemc.com/server/snapmc.com"
+	else if {_i} = 31:
+		broadcast "      &b&lTip &7Vote Link 1"
+		broadcast "            &e goo.gl/cEKGzr"
+	else if {_i} = 32:
+		broadcast "      &b&lTip &7Vote Link 2"
+		broadcast "            &e goo.gl/CyJN3w"
+	else if {_i} = 33:
+		broadcast "      &b&lTip &7Vote Link 3"
+		broadcast "            &e goo.gl/u4qSDU"
+	else if {_i} = 34:
+		broadcast "      &b&lTip &7Vote Link 4"
+		broadcast "            &e goo.gl/JpLCiW"
+	else if {_i} = 35:
+		broadcast "      &b&lTip &7Vote Link 5"
+		broadcast "            &e goo.gl/YFTRa1"
+	else if {_i} = 36:
+		broadcast "      &b&lTip &7Vote Link 6"
+		broadcast "            &e goo.gl/XqCCCw"
+	else if {_i} = 37:
+		broadcast "      &b&lTip &7Become the Top Voter this month"
+		broadcast "            &d Get Tons of Free Money"
+	else if {_i} = 38:
+		broadcast "      &b&lTip &7Check out the store at"
+		broadcast "            &e store.snapmc.com"
+	else if {_i} = 39:
+		broadcast "      &b&lTip &7Check out the store at"
+		broadcast "            &e store.snapmc.com"
+	else if {_i} = 40:
+		broadcast "      &b&lTip &fGet over 300m easily with a few invites"
+		broadcast "            &e ##invite-rewards &fon &b/discord"
+	else if {_i} = 41:
+		broadcast "      &b&lTip &7Learn about World Edit"
+		broadcast "            &7Use &b/worldedit"
+	else:
+		broadcast "      &b&lTip &aGet over 300m easily with a few invites"
+		broadcast "            &e ##invite-rewards &fon &bdiscord"
+	broadcast "&c&m--&6&m--&e&m--&a&m--&b&m--&c&m--&6&m--&e&m--&a&m--&b&m--&c&m--&6&m--&e&m--&a&m--&b&m--&c&m--&6&m--&e&m--&a&m--&b&m--"
+	
+	
+command /tipforums:
+	permission: is.Pluto
+	trigger:
+		message "&c&m--&6&m--&e&m--&a&m--&b&m--&c&m--&6&m--&e&m--&a&m--&b&m--&c&m--&6&m--&e&m--&a&m--&b&m--&c&m--&6&m--&e&m--&a&m--&b&m--"
+		message "      &b&lTip &7Join the forums at"
+		message "             &bsnapmc.com"
+		message "&c&m--&6&m--&e&m--&a&m--&b&m--&c&m--&6&m--&e&m--&a&m--&b&m--&c&m--&6&m--&e&m--&a&m--&b&m--&c&m--&6&m--&e&m--&a&m--&b&m--"
+	
+	

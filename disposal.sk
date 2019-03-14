@@ -1,0 +1,4 @@
+command /disposal:
+	aliases: trash
+	trigger:
+		open chest with 4 row named "             &8-=[ &1Trash &8]=-" to player

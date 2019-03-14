@@ -1,0 +1,1039 @@
+on command "//confirm":
+	message "&8[&6WE&8] &7No permission"
+	cancel event
+on command "//fast":
+	message "&8[&6WE&8] &7No permission"
+	cancel event
+command /wehelp:
+	trigger:
+		message "&8[&bSnap&8]&e snapmc.com/threads/world-edit-guide.164/"
+on command:
+	if command contains "/":
+		if command is not "/set" or "/sphere" or "/hsphere" or "/drain" or "/up" or "/wand" or "/setbiome" or "/biomelist":
+			if player is not in world "BedWars":
+				if player does not have permission "is.Pluto":
+					message "&8[&6WE&8] &7No permission"
+					cancel event
+					
+command /worldeditcolors:
+	trigger:
+		if player is not in world "spawn" or "world" or "world_nether" or "world_the_end" or "Creative":
+			message "&8[&bSnap&8] &eThis guide is only useful in /survival and /creative"
+			stop
+		give player 1 of {item::worldeditcolors}
+		message "&8[&bSnap&8] &eA world edit color guide book has been placed in your inventory"
+
+on command "/worldedit":
+	cancel event
+	message ""
+	message "&cGuide to World Edit&7:&b snapmc.com/threads/world-edit-guide.164/"
+	message ""
+command /regs:
+	trigger:
+		message "list"
+		message "%regions at player%"
+		
+on command:
+	if command contains "worldedit:":
+		cancel event
+		message "&cNope"
+on left click:
+	if player's tool is wooden axe:
+		if player does not have permission "snap.worldedit":
+			stop
+		if "%clicked block%" != "<none>":
+			if player is not in world "world" or "Prison" or "Creative" or "Avalon" or "world_nether" or "world_the_end":
+				if player does not have permission "is.op":
+					message "&8[&bSnap&8] &7You can only use that in the main build world"
+					cancel event
+					stop
+			if clicked block is a wall sign:
+				stop
+			show mob spawner flames at the clicked block to player
+			stopEffect "%player%-WE-pos1"
+			drawSphere style 4, particle "redstone", center location of clicked block, id "%player%-WE-pos1", rainbowMode true, radius 1, density 70, visibleRange 32, pulseDelay 1
+			set metadata "worldedit.pos1" of player to location of clicked block
+			# set {_worldedit.pos1} to location of clicked block
+			display hologram "&8[&6WE&8] &b&lPosition 1;&7%clicked block%;|;|;V" at block 2 above clicked block to player for 5 seconds
+			
+			
+			if {_worldedit.pos2} is set:
+
+				set {_x1} to rounded down x coordinate of {_worldedit.pos1}
+				set {_x2} to rounded down x coordinate of {_worldedit.pos2}
+				set {_y1} to rounded down y coordinate of {_worldedit.pos1}
+				set {_y2} to rounded down y coordinate of {_worldedit.pos2}
+				set {_z1} to rounded down z coordinate of {_worldedit.pos1}
+				set {_z2} to rounded down z coordinate of {_worldedit.pos2}
+				
+				set {_xLength} to {_x1} - {_x2}
+				if {_xLength} < 0:
+					set {_xLength} to 0 - {_xLength}
+				add 1 to {_xlength}
+				set {_yLength} to {_y1} - {_y2}
+				if {_yLength} < 0:
+					set {_yLength} to 0 - {_yLength}
+				add 1 to {_ylength}
+				set {_zLength} to {_z1} - {_z2}
+				if {_zLength} < 0:
+					set {_zLength} to 0 - {_zLength}
+				add 1 to {_zlength}
+				
+				set {_volume} to {_xLength} * {_yLength} * {_zLength}
+				
+				message "&8[&6WE&8] &aVolume selected: &f%{_volume}%"
+			else:
+				message "&8[&6WE&8] &aRight click to select other corner"
+			wait 10 ticks
+			stopEffect "%player%-WE-pos1"
+			
+		
+on right click:
+	if player's tool is wooden axe:
+		if player does not have permission "snap.worldedit":
+			stop
+		if "%clicked block%" != "<none>":
+			if player is not in world "world" or "Prison" or "Creative" or "Avalon" or "world_nether" or "world_the_end":
+				if player does not have permission "is.op":
+					message "&8[&bSnap&8] &7You can only use that in the main build world"
+					cancel event
+					stop
+			if clicked block is a wall sign:
+				stop
+			show mob spawner flames at the clicked block to player
+			stopEffect "%player%-WE-pos2"
+			drawSphere style 4, particle "redstone", center location of clicked block, id "%player%-WE-pos2", rainbowMode true, radius 1, density 70, visibleRange 32, pulseDelay 1
+			set metadata "worldedit.pos2" of player to location of clicked block
+			# set {_worldedit.pos2} to location of clicked block
+			display hologram "&8[&6WE&8] &a&lPosition 2;&7%clicked block%;|;|;V" at block 2 above clicked block to player for 5 seconds
+			
+			if {_worldedit.pos1} is set:
+				set {_x1} to rounded down x coordinate of {_worldedit.pos1}
+				set {_x2} to rounded down x coordinate of {_worldedit.pos2}
+				set {_y1} to rounded down y coordinate of {_worldedit.pos1}
+				set {_y2} to rounded down y coordinate of {_worldedit.pos2}
+				set {_z1} to rounded down z coordinate of {_worldedit.pos1}
+				set {_z2} to rounded down z coordinate of {_worldedit.pos2}
+				
+				set {_xLength} to {_x1} - {_x2}
+				if {_xLength} < 0:
+					set {_xLength} to 0 - {_xLength}
+				add 1 to {_xlength}
+				set {_yLength} to {_y1} - {_y2}
+				if {_yLength} < 0:
+					set {_yLength} to 0 - {_yLength}
+				add 1 to {_ylength}
+				set {_zLength} to {_z1} - {_z2}
+				if {_zLength} < 0:
+					set {_zLength} to 0 - {_zLength}
+				add 1 to {_zlength}
+					
+				set {_volume} to {_xLength} * {_yLength} * {_zLength}
+				
+				message "&8[&6WE&8] &aVolume selected: &f%{_volume}%"
+			else:
+				message "&8[&6WE&8] &aRight click to select other corner"
+			wait 10 ticks
+			stopEffect "%player%-WE-pos2"
+
+command /setprice <int> <int> <text> :
+	permission: is.Pluto
+	trigger:
+		if arg-3 is set:
+			set {_price} to arg-1 / arg-2
+		else:
+			set {_price} to arg-1
+		set {worldedit.price::%arg-3%} to {_price}
+		message "&8[&bSnap&8] &7Set the price of &e%arg-3% &7to &a$%{_price}%"
+
+command /delprice <text>:
+	permission: is.Pluto
+	trigger:
+		delete {worldedit.price::%arg-1%}
+		message "&7Deleted"
+		
+command /listprices <text>:
+	trigger:
+		set {_i} to 0
+		loop {worldedit.price::*}:
+			add 1 to {_i}
+			if loop-index contains arg-1:
+				message "&f%{_i}%. &e%loop-index% &7: &a$%loop-value%"
+			
+command /deleteprice <text>:
+	permission: is.staff
+	trigger:
+		if {worldedit.price::%arg-1%} is not set:
+			message "&8[&bSnap&8] &cNo price set for &e%arg-1%"
+			stop
+		delete {worldedit.price::%arg-1%}
+		message "&8[&bSnap&8] &cDeleted price for &e%arg-1%"
+		
+command /getprice <text>:
+	permission: is.staff
+	trigger:
+		message "&8[&bSnap&8] &7The price of &e%arg-1% &7is &a$%{worldedit.price::%arg-1%}%"
+		
+		
+
+		
+on command "//set":
+	if arguments != "<none>":
+		if player is not in world "world" or "Creative" or "Avalon" or "world_nether" or "world_the_end":
+			if player does not have permission "is.op":
+				message "&8[&bSnap&8] &7You can only use that in the main build world"
+				cancel event
+				stop
+		set {_worldedit.grace} to metadata "worldedit.grace" of player
+		if {_worldedit.grace} is not true:
+			set metadata "worldedit.grace" of player to false
+			cancel event
+			set {_block} to arguments
+			if player has permission "is.cosmic":
+				if {_block} contains " -s":
+					set {_noMenu} to true
+					replace all " -s" with "" in {_block}
+				
+			set {_worldedit.pos1} to metadata "worldedit.pos1" of player
+			if {_worldedit.pos1} is not set:
+				message "&8[&bSnap&8] &7Select position 1, left click with a wooden axe"
+
+				cancel event
+				stop
+			set {_worldedit.pos2} to metadata "worldedit.pos2" of player
+			if {_worldedit.pos2} is not set:
+				message "&8[&bSnap&8] &7Select position 2, right click with a wooden axe"
+				cancel event
+				stop
+			if {worldedit.price::%{_block}%} is not set:
+				message "&8[&bSnap&8] &7No price has been set for &e%{_block}% &7ask a staff to set a price"
+				cancel event
+				stop
+			set {_editLocation1} to {_worldedit.pos1}
+			set {_editLocation2} to {_worldedit.pos2}
+			set {_editWorld1} to {_editLocation1}'s world	
+			set {_editWorld2} to {_editLocation2}'s world		
+			if player's world != {_editWorld1}:
+				message "&8[&bSnap&8] &eMust be in the same world as your edit!"
+				stop
+			if player's world != {_editWorld2}:
+				message "&8[&bSnap&8] &eMust be in the same world as your edit!"
+				message "&a%{_editWorld1}%"
+				message "&a%player's world%"
+				stop
+			if world of {_worldedit.pos1} != world of {_worldedit.pos2}:
+				message "&8[&bSnap&8] &eCorners must be in the same word!"
+				stop
+			set {_x1} to rounded down x coordinate of {_worldedit.pos1}
+			set {_x2} to rounded down x coordinate of {_worldedit.pos2}
+			set {_y1} to rounded down y coordinate of {_worldedit.pos1}
+			set {_y2} to rounded down y coordinate of {_worldedit.pos2}
+			set {_z1} to rounded down z coordinate of {_worldedit.pos1}
+			set {_z2} to rounded down z coordinate of {_worldedit.pos2}
+			
+			set {_xLength} to {_x1} - {_x2}
+			if {_xLength} < 0:
+				set {_xLength} to 0 - {_xLength}
+			add 1 to {_xlength}
+			set {_yLength} to {_y1} - {_y2}
+			if {_yLength} < 0:
+				set {_yLength} to 0 - {_yLength}
+			add 1 to {_ylength}
+			set {_zLength} to {_z1} - {_z2}
+			if {_zLength} < 0:
+				set {_zLength} to 0 - {_zLength}
+			add 1 to {_zlength}
+				
+			set {_volume} to {_xLength} * {_yLength} * {_zLength}
+			if {_volume} > 5000:
+				if player has permission "is.vortex.max":
+					if {_volume} > 85000:
+						cancel event
+						message "&8[&cSnap&8] &cYou can only edit up to 85k blocks"
+						stop
+				else if player has permission "is.vortex":
+					if {_volume} > 70000:
+						cancel event
+						message "&8[&cSnap&8] &cYou can only edit up to 75k blocks"
+						stop
+				else if player has permission "is.cosmic":
+					if {_volume} > 50000:
+						cancel event
+						message "&8[&cSnap&8] &cYou can only edit up to 50k blocks"
+						stop
+				else:
+					cancel event
+					message "&8[&cSnap&8] &cYou can only edit up to 5000 blocks"
+					stop
+			set {_price} to {_volume} * {worldedit.price::%{_block}%}
+			if player has permission "is.vortex.max":
+				set {_price} to rounded up ({_price} * 0.65)
+			else if player has permission "is.vortex":
+				set {_price} to rounded up ({_price} * 0.70)
+			else if player has permission "is.cosmic":
+				set {_price} to rounded up ({_price} * 0.75)
+			if player's balance < {_price}:
+				message "&8[&bSnap&8] &7You don't have &a$%{_price}%"
+				stop
+			
+			set metadata "worldedit.block" of player to {_block}
+			set metadata "worldedit.price" of player to {_price}
+			set metadata "worldedit.volume" of player to {_volume}
+			
+			if player is in world "Creative":
+				set metadata "worldedit.price" of player to 0
+				execute console command "/executeset %player%"
+				stop
+				
+		
+			if {_noMenu} is true:
+				execute console command "/executeset %player%"
+				stop
+			open chest with 3 row named "        &8-=[ &1World Edit &8]=-" to player
+			wait 1 ticks									
+			set {_i} to 0									
+			loop 27 times:									
+				format slot {_i} of player with gray stained glass pane named "&7Cancel" to close
+				add 1 to {_i}	
+			format slot 12 of player with red wool named "&4&lCancel" with lore "", "  &eClick to cancel", " " to close
+			format slot 14 of player with green wool block named "&a&lSet &7: &e&l%{_block}%" with lore "", "  ", "   &6Volume&7: &e%{_volume}%", "   &6Cost: &a$%{_price}% ", "", "  &eClick to confirm", " ", " ", "  &c&lWarning&7: &cAny block", "  &coutside your claim", "  &cwill not be changed.", " " to close then run "executeset %player%"
+			stop
+			
+	
+on command "//replace":
+	if arguments != "<none>":
+		if player does not have permission "is.vortex":
+			message "&8[&bSnap&8] &7You can only use that with the &dVortex Rank"
+			cancel event
+			stop
+		if player is not in world "world" or "Creative" or "Avalon" or "world_nether" or "world_the_end":
+			if player does not have permission "is.op":
+				message "&8[&bSnap&8] &7You can only use that in the main build world"
+				cancel event
+				stop
+		set {_worldedit.grace} to metadata "worldedit.grace" of player
+		if {_worldedit.grace} is not true:
+			set metadata "worldedit.grace" of player to false
+			cancel event
+			set {_allArgs} to arguments
+			set {_args::*} to {_allArgs} split at " "			
+			set {_block} to {_args::2}
+			
+			if player has permission "is.cosmic":
+				if {_block} contains " -s":
+					set {_noMenu} to true
+					replace all " -s" with "" in {_block}
+				
+			set {_worldedit.pos1} to metadata "worldedit.pos1" of player
+			if {_worldedit.pos1} is not set:
+				message "&8[&bSnap&8] &7Select position 1, left click with a wooden axe"
+
+				cancel event
+				stop
+			set {_worldedit.pos2} to metadata "worldedit.pos2" of player
+			if {_worldedit.pos2} is not set:
+				message "&8[&bSnap&8] &7Select position 2, right click with a wooden axe"
+				cancel event
+				stop
+			if {worldedit.price::%{_block}%} is not set:
+				message "&8[&bSnap&8] &7No price has been set for &e%{_block}% &7ask a staff to set a price"
+				cancel event
+				stop
+			set {_editLocation1} to {_worldedit.pos1}
+			set {_editLocation2} to {_worldedit.pos2}
+			set {_editWorld1} to {_editLocation1}'s world	
+			set {_editWorld2} to {_editLocation2}'s world		
+			if player's world != {_editWorld1}:
+				message "&8[&bSnap&8] &eMust be in the same world as your edit!"
+				stop
+			if player's world != {_editWorld2}:
+				message "&8[&bSnap&8] &eMust be in the same world as your edit!"
+				message "&a%{_editWorld1}%"
+				message "&a%player's world%"
+				stop
+			if world of {_worldedit.pos1} != world of {_worldedit.pos2}:
+				message "&8[&bSnap&8] &eCorners must be in the same word!"
+				stop
+			set {_x1} to rounded down x coordinate of {_worldedit.pos1}
+			set {_x2} to rounded down x coordinate of {_worldedit.pos2}
+			set {_y1} to rounded down y coordinate of {_worldedit.pos1}
+			set {_y2} to rounded down y coordinate of {_worldedit.pos2}
+			set {_z1} to rounded down z coordinate of {_worldedit.pos1}
+			set {_z2} to rounded down z coordinate of {_worldedit.pos2}
+			
+			set {_xLength} to {_x1} - {_x2}
+			if {_xLength} < 0:
+				set {_xLength} to 0 - {_xLength}
+			add 1 to {_xlength}
+			set {_yLength} to {_y1} - {_y2}
+			if {_yLength} < 0:
+				set {_yLength} to 0 - {_yLength}
+			add 1 to {_ylength}
+			set {_zLength} to {_z1} - {_z2}
+			if {_zLength} < 0:
+				set {_zLength} to 0 - {_zLength}
+			add 1 to {_zlength}
+				
+			set {_volume} to {_xLength} * {_yLength} * {_zLength}
+			if {_volume} > 5000:
+				if player has permission "is.vortex.max":
+					if {_volume} > 85000:
+						cancel event
+						message "&8[&cSnap&8] &cYou can only edit up to 85k blocks"
+						stop
+				else if player has permission "is.vortex":
+					if {_volume} > 70000:
+						cancel event
+						message "&8[&cSnap&8] &cYou can only edit up to 75k blocks"
+						stop
+				else if player has permission "is.cosmic":
+					if {_volume} > 50000:
+						cancel event
+						message "&8[&cSnap&8] &cYou can only edit up to 50k blocks"
+						stop
+				else:
+					cancel event
+					message "&8[&cSnap&8] &cYou can only edit up to 5000 blocks"
+					stop
+			set {_price} to {_volume} * {worldedit.price::%{_block}%}
+			if player has permission "is.vortex.max":
+				set {_price} to rounded up ({_price} * 0.65)
+			else if player has permission "is.vortex":
+				set {_price} to rounded up ({_price} * 0.70)
+			else if player has permission "is.cosmic":
+				set {_price} to rounded up ({_price} * 0.75)
+			if player's balance < {_price}:
+				message "&8[&bSnap&8] &7You don't have &a$%{_price}%"
+				stop
+			
+			if player is in world "Creative":
+				set {_price} to 0
+				execute console command "/executereplace %player%  %{_block}%  %{_price}%  %{_volume}%  %{_args::1}%"
+				stop
+				
+		
+			if {_noMenu} is true:
+				execute console command "/executereplace %player%  %{_block}%  %{_price}%  %{_volume}%  %{_args::1}%"
+				stop
+			open chest with 3 row named "        &8-=[ &1World Edit &8]=-" to player
+			wait 1 ticks									
+			set {_i} to 0									
+			loop 27 times:									
+				format slot {_i} of player with gray stained glass pane named "&7Cancel" to close
+				add 1 to {_i}	
+			wait 1 tick
+			format slot 12 of player with red wool block named "&4&lCancel" with lore "", "", "  &eClick to cancel", " " to close
+			format slot 14 of player with green wool block named "&a&lSet &7: &e&l%{_block}%" with lore "", "  ", "   &6Volume&7: &e%{_volume}%", "   &6Cost: &a$%{_price}% ", "", "  &eClick to confirm", " ", " ", "  &c&lWarning&7: &cAny block", "  &coutside your claim", "  &cwill not be changed.", " " to close then run "executereplace %player%  %{_block}%  %{_price}%  %{_volume}%  %{_args::1}%"
+			
+			stop
+
+command /listargs [<text>]:
+	trigger:
+		message "%arguments%"
+on load:
+	delete {worldedit.grace::*}
+
+on right click on sign:
+	if player's tool is a wooden axe:
+		cancel event
+on left click on sign:
+	if player's tool is a wooden axe:
+		cancel event
+on command "//sphere":
+	if arguments != "<none>":
+		if player is not in world "world" or "Creative" or "Avalon" or "world_nether" or "world_the_end":
+			if player does not have permission "is.op":
+				message "&8[&bSnap&8] &7You can only use that in the main build world"
+				cancel event
+				stop
+
+		set {_worldedit.grace} to metadata "worldedit.grace" of player
+		if {_worldedit.grace} is not true:
+			set metadata "worldedit.grace" of player to false
+			cancel event
+				
+			if arguments contains ",":
+				message "&8[&bSnap&8] &cSorry you cannot use a comma in the command"
+				stop
+			set {_args::*} to arguments split at " "
+			if {_args::2} is not set:
+				message "&8[&bSnap&8] &cUsage &7//sphere (block) (radius)"
+				stop
+			if {_args::3} is set:
+				if player has permission "is.cosmic":
+					if {_args::3} = "-s":
+						set {_noMenu} to true
+				else:
+					message "&8[&bSnap&8] &cUsage &7//sphere (block) (radius)"
+					stop
+			set {_block} to "%{_args::1}%"
+			if {worldedit.price::%{_block}%} is not set:
+				message "&8[&bSnap&8] &7No price has been set for &e%{_block}% &7ask a staff to set a price"
+				cancel event
+				stop
+			set {_radius} to "%{_args::2}%"
+			set {_volume} to 0
+			
+			if "%{_radius}%" != "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9":
+				message "&8[&bSnap&8] &cMaximum radius of 9"
+				stop
+			if "%{_radius}%" = "1":
+				set {_volume} to 56
+			else if "%{_radius}%" = "2":
+				set {_volume} to 160
+			else if "%{_radius}%" = "3":
+				set {_volume} to 312
+			else if "%{_radius}%" = "4":
+				set {_volume} to 624
+			else if "%{_radius}%" = "5":
+				set {_volume} to 1064
+			else if "%{_radius}%" = "6":
+				set {_volume} to 1640
+			else if "%{_radius}%" = "7":
+				set {_volume} to 2368
+			else if "%{_radius}%" = "8":
+				set {_volume} to 3280
+			else if "%{_radius}%" = "9":
+				set {_volume} to 4632
+			else:
+				message "&8[&bSnap&8] &cError 101 Tell Pluto"
+				stop
+				
+			set {_price} to {_volume} * {worldedit.price::%{_block}%}
+			
+			if player has permission "is.vortex.max":
+				set {_price} to rounded up ({_price} * 0.65)
+			else if player has permission "is.vortex":
+				set {_price} to rounded up ({_price} * 0.70)
+			else if player has permission "is.cosmic":
+				set {_price} to rounded up ({_price} * 0.75)
+			if player's balance < {_price}:
+				message "&8[&bSnap&8] &7You don't have &a$%{_price}%"
+				stop
+			
+		
+			if player is in world "Creative":
+				set {_price} to 0
+				execute console command "/executesphere %player%  %{_block}%  %{_price}%  %{_volume}%  %{_radius}%"
+				stop
+			if {_noMenu} is true:
+				execute console command "/executesphere %player%  %{_block}%  %{_price}%  %{_volume}%  %{_radius}%"
+				stop
+			
+			open chest with 3 row named "        &8-=[ &1World Edit &8]=-" to player
+			wait 1 ticks									
+			set {_i} to 0									
+			loop 27 times:									
+				format slot {_i} of player with gray stained glass pane named "&7Cancel" to close
+				add 1 to {_i}	 														
+			format slot 12 of player with red wool block named "&4&lCancel" with lore "", " ", "", "  &eClick to cancel", " " to close
+			format slot 14 of player with green wool block named "&a&lSphere &7of &e&l%{_block}%" with lore "", "   &6Volume&7: &e%{_volume}%", "   &6Cost: &a$%{_price}% ", "", "  &eClick to confirm", " ", " ", "  &c&lWarning&7: &cAny block", "  &coutside your claim", "  &cwill not be changed.", " " to close then run "executesphere %player%  %{_block}%  %{_price}%  %{_volume}%  %{_radius}%"
+			stop
+			
+on command "//hsphere":
+	if arguments != "<none>":
+		if player is not in world "world" or "Creative" or "Avalon" or "world_nether" or "world_the_end":
+			if player does not have permission "is.op":
+				message "&8[&bSnap&8] &7You can only use that in the main build world"
+				cancel event
+				stop
+		set {_worldedit.grace} to metadata "worldedit.grace" of player
+		if {_worldedit.grace} is not true:
+			set metadata "worldedit.grace" of player to false
+			cancel event
+			if arguments contains ",":
+				message "&8[&bSnap&8] &cSorry you cannot use a comma in the command"
+				stop
+			set {_args::*} to arguments split at " "
+			if {_args::2} is not set:
+				message "&8[&bSnap&8] &cUsage &7//hsphere (block) (radius)"
+				stop
+			if {_args::3} is set:
+				if player has permission "is.cosmic":
+					if {_args::3} = "-s":
+						set {_noMenu} to true
+				else:
+					message "&8[&bSnap&8] &cUsage &7//sphere (block) (radius)"
+					stop
+			set {_block} to "%{_args::1}%"
+			if {worldedit.price::%{_block}%} is not set:
+				message "&8[&bSnap&8] &7No price has been set for &e%{_block}% &7ask a staff to set a price"
+				cancel event
+				stop
+			set {_radius} to "%{_args::2}%"
+			set {_volume} to 0
+			
+			if "%{_radius}%" != "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9" or "10" or "11" or "12" or "13" or "14" or "15":
+				message "&8[&bSnap&8] &cMaximum radius of 15"
+				stop
+			if "%{_radius}%" = "1":
+				set {_volume} to 48
+			else if "%{_radius}%" = "2":
+				set {_volume} to 96
+			else if "%{_radius}%" = "3":
+				set {_volume} to 152
+			else if "%{_radius}%" = "4":
+				set {_volume} to 264
+			else if "%{_radius}%" = "5":
+				set {_volume} to 368
+			else if "%{_radius}%" = "6":
+				set {_volume} to 528
+			else if "%{_radius}%" = "7":
+				set {_volume} to 656
+			else if "%{_radius}%" = "8":
+				set {_volume} to 840
+			else if "%{_radius}%" = "9":
+				set {_volume} to 1056
+			else if "%{_radius}%" = "10":
+				set {_volume} to 1256
+			else if "%{_radius}%" = "11":
+				set {_volume} to 1512
+			else if "%{_radius}%" = "12":
+				set {_volume} to 1760
+			else if "%{_radius}%" = "13":
+				set {_volume} to 2064
+			else if "%{_radius}%" = "14":
+				set {_volume} to 2352
+			else if "%{_radius}%" = "15":
+				set {_volume} to 2640
+			else:
+				message "&8[&bSnap&8] &cError 102 Tell Pluto"
+				stop
+				
+			set {_price} to {_volume} * {worldedit.price::%{_block}%}
+			
+			if player has permission "is.vortex.max":
+				set {_price} to rounded up ({_price} * 0.65)
+			else if player has permission "is.vortex":
+				set {_price} to rounded up ({_price} * 0.70)
+			else if player has permission "is.cosmic":
+				set {_price} to rounded up ({_price} * 0.75)
+			if player's balance < {_price}:
+				message "&8[&bSnap&8] &7You don't have &a$%{_price}%"
+				stop
+			
+		
+			
+			if player is in world "Creative":
+				set {_price} to 0
+				execute console command "/executeset %player%  %{_block}%  %{_price}%  %{_volume}%"
+				stop
+			if {_noMenu} is true:
+				execute console command "/executehsphere %player%  %{_block}%  %{_price}%  %{_volume}%  %{_radius}%"
+				stop
+			open chest with 3 row named "        &8-=[ &1World Edit &8]=-" to player
+			wait 1 ticks									
+			set {_i} to 0									
+			loop 27 times:									
+				format slot {_i} of player with gray stained glass pane named "&7Cancel" to close
+				add 1 to {_i}	 														
+			format slot 12 of player with red wool block named "&4&lCancel" with lore "", " ", "", "  &eClick to cancel", " " to close
+			format slot 14 of player with green wool block named "&a&lHollow Sphere &7of &e&l%{_block}%" with lore "", "   &6Volume&7: &e%{_volume}%", "   &6Cost: &a$%{_price}% ", "", "  &eClick to confirm", " ", " ", "  &c&lWarning&7: &cAny block", "  &coutside your claim", "  &cwill not be changed.", " " to close then run "executehsphere %player%  %{_block}%  %{_price}%  %{_volume}%  %{_radius}%"
+			stop
+			
+on command "//drain":
+	if arguments != "<none>":
+		if player is not in world "world" or "Creative" or "Avalon" or "world_nether" or "world_the_end":
+			if player does not have permission "is.op":
+				message "&8[&bSnap&8] &7You can only use that in the main build world"
+				cancel event
+				stop
+		set {_worldedit.grace} to metadata "worldedit.grace" of player
+		if {_worldedit.grace} is not true:
+			set metadata "worldedit.grace" of player to false
+			cancel event
+			if block at player is not water or lava:
+				message "&8[&bSnap&8] &cYou must be standing in water or lava first"
+				stop
+			if arguments contains ",":
+				message "&8[&bSnap&8] &cSorry you cannot use a comma in the command"
+				stop
+			set {_args::*} to arguments split at " "
+			if {_args::1} is not set:
+				message "&8[&bSnap&8] &cUsage &7//drain (radius)"
+				stop
+			if {_args::2} is set:
+				if player has permission "is.cosmic":
+					if {_args::2} = "-s":
+						set {_noMenu} to true
+				else:
+					message "&8[&bSnap&8] &cUsage &7//drain (radius)"
+					stop
+			
+			set {_radius} to "%{_args::1}%"
+		
+			
+			if "%{_radius}%" != "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9" or "10" or "11" or "12" or "13" or "14" or "15":
+				message "&8[&bSnap&8] &cMaximum radius of 15"
+				stop
+			
+			loop blocks in radius {_radius} parsed as integer of player:
+				if loop-block is water or lava:
+					add 1 to {_volume}
+			if {_volume} = 0:
+				message "&8[&bSnap&8] &cNo liquids found in radius %{_radius}%"
+				stop
+			if {_volume} > 5000:
+				if player has permission "is.cosmic":
+					
+					if {_volume} > 50000:
+						cancel event
+						message "&8[&cSnap&8] &cYou can only edit up to 50000 blocks"
+						stop
+				else:
+					cancel event
+					message "&8[&cSnap&8] &cYou can only edit up to 5000 blocks"
+					stop
+			set {_price} to {_volume} * 2
+			if player's balance < {_price}:
+				message "&8[&bSnap&8] &7You don't have &a$%{_price}%"
+				stop
+			
+			
+			if player is in world "Creative":
+				set {_price} to 0
+				execute console command "/executeset %player%  %{_block}%  %{_price}%  %{_volume}%"
+				stop
+			if {_noMenu} is true:
+				execute console command "/executedrain %player%  %{_price}%  %{_volume}%  %{_radius}%"
+				stop
+			open chest with 3 row named "        &8-=[ &1World Edit &8]=-" to player
+			wait 1 ticks									
+			set {_i} to 0									
+			loop 27 times:									
+				format slot {_i} of player with gray stained glass pane named "&7Cancel" to close
+				add 1 to {_i}	 														
+			format slot 12 of player with red wool block named "&4&lCancel" with lore "", " ", "", "  &eClick to cancel", " " to close
+			format slot 14 of player with green wool block named "&a&lDrain" with lore "", "  ", "   &6Volume&7: &e%{_volume}%", "   &6Cost: &a$%{_price}% ", "", "  &eClick to confirm", " ", " ", "  &c&lWarning&7: &cAny block", "  &coutside your claim", "  &cwill not be changed.", " " to close then run "executedrain %player%  %{_price}%  %{_volume}%  %{_radius}%"
+			stop			
+
+on command "//setbiome":
+	if arguments != "<none>":
+		if player is not in world "world" or "Creative" or "Avalon" or "world_nether" or "world_the_end":
+			if player does not have permission "is.op":
+				message "&8[&bSnap&8] &7You can only use that in the main build world"
+				cancel event
+				stop
+		
+		set {_worldedit.grace} to metadata "worldedit.grace" of player
+		if {_worldedit.grace} is not true:
+			set metadata "worldedit.grace" of player to false
+			cancel event
+			set {_args::*} to arguments split at " "
+			if {_args::1} is not set:
+				message "&8[&bSnap&8] &cUsage &7//setbiome (biome)"
+				stop
+			if {_args::2} is set:
+				if player has permission "is.cosmic":
+					if {_args::2} = "-s":
+						set {_noMenu} to true
+				else:
+					message "&8[&bSnap&8] &cUsage &7//setbiome (biome)"
+					stop
+			
+			set {_biome} to "%{_args::1}%"
+			
+			if {worldedit.biomelist::%{_biome}%} is not set:
+				message "&8[&bSnap&8] &cThat biome is not on //biomelist"
+				stop
+				
+			set {_worldedit.pos1} to metadata "worldedit.pos2" of player
+			if {_worldedit.pos1} is not set:
+				message "&8[&bSnap&8] &7Select position 1, left click with a wooden axe"
+				cancel event
+				stop
+				
+			set {_worldedit.pos2} to metadata "worldedit.pos2" of player
+			if {_worldedit.pos2} is not set:
+				message "&8[&bSnap&8] &7Select position 2, right click with a wooden axe"
+				cancel event
+				stop
+				
+			set {_editLocation1} to {_worldedit.pos1}
+			set {_editLocation2} to {_worldedit.pos2}
+			set {_editWorld1} to {_editLocation1}'s world	
+			set {_editWorld2} to {_editLocation2}'s world		
+			if player's world != {_editWorld1}:
+				message "&8[&bSnap&8] &eMust be in the same world as your edit!"
+				message "%player's world%"
+				message "%{_editWorld1}%"
+				stop
+			if player's world != {_editWorld2}:
+				message "&8[&bSnap&8] &eMust be in the same world as your edit!"
+				stop
+			if world of {_worldedit.pos1} != world of {_worldedit.pos2}:
+				message "&8[&bSnap&8] &eCorners must be in the same word!"
+				stop
+			
+			set {_x1} to rounded down x coordinate of {_worldedit.pos1}
+			set {_x2} to rounded down x coordinate of {_worldedit.pos2}
+			set {_y1} to rounded down y coordinate of {_worldedit.pos1}
+			set {_y2} to rounded down y coordinate of {_worldedit.pos2}
+			set {_z1} to rounded down z coordinate of {_worldedit.pos1}
+			set {_z2} to rounded down z coordinate of {_worldedit.pos2}
+			
+			set {_xLength} to {_x1} - {_x2}
+			if {_xLength} < 0:
+				set {_xLength} to 0 - {_xLength}
+			add 1 to {_xlength}
+			set {_yLength} to {_y1} - {_y2}
+			if {_yLength} < 0:
+				set {_yLength} to 0 - {_yLength}
+			add 1 to {_ylength}
+			set {_zLength} to {_z1} - {_z2}
+			if {_zLength} < 0:
+				set {_zLength} to 0 - {_zLength}
+			add 1 to {_zlength}
+				
+			set {_volume} to {_xLength} * {_zLength}
+			
+			set {_price} to {_volume} * 3
+					
+			if {_volume} > 5000:
+				
+				if player has permission "is.vortex.max":
+					if {_volume} > 85000:
+						cancel event
+						message "&8[&cSnap&8] &cYou can only edit up to 85k blocks"
+						stop
+				else if player has permission "is.vortex":
+					if {_volume} > 70000:
+						cancel event
+						message "&8[&cSnap&8] &cYou can only edit up to 75k blocks"
+						stop
+				else if player has permission "is.cosmic":
+					
+					if {_volume} > 50000:
+						cancel event
+						message "&8[&cSnap&8] &cYou can only edit up to 50k blocks"
+						stop
+				else:
+					cancel event
+					message "&8[&cSnap&8] &cYou can only edit up to 5000 blocks"
+					stop
+					
+			if player has permission "is.vortex.max":
+				set {_price} to rounded up ({_price} * 0.65)
+			else if player has permission "is.vortex":
+				set {_price} to rounded up ({_price} * 0.70)
+			else if player has permission "is.cosmic":
+				set {_price} to rounded up ({_price} * 0.75)
+			if player's balance < {_price}:
+				message "&8[&bSnap&8] &7You don't have &a$%{_price}%"
+				stop
+			
+		 
+			if player's balance < {_price}:
+				message "&8[&bSnap&8] &7You don't have &a$%{_price}%"
+				stop
+		
+			
+			if player is in world "Creative":
+				set {_price} to 0
+				execute console command "/executeset %player%  %{_block}%  %{_price}%  %{_volume}%"
+				stop
+			if {_noMenu} is true:
+				execute console command "/executesetbiome %player%  %{_price}%  %{_volume}%  %{_biome}%"
+				stop	
+			open chest with 3 row named "        &8-=[ &1World Edit &8]=-" to player
+			wait 1 ticks									
+			set {_i} to 0									
+			loop 27 times:									
+				format slot {_i} of player with gray stained glass pane named "&7Cancel" to close
+				add 1 to {_i}	 														
+			format slot 12 of player with red wool block named "&4&lCancel" with lore "", " ", "", "  &eClick to cancel", " " to close
+			format slot 14 of player with green wool block named "&a&lSet Biome &7: &e&l%{_biome}%" with lore "", "  ", "   &6Volume&7: &e%{_volume}%", "   &6Cost: &a$%{_price}% ", "", "  &eClick to confirm", " ", " ", "  &c&lWarning&7: &cAny block", "  &coutside your claim", "  &cwill not be changed.", " " to close then run "executesetbiome %player%  %{_price}%  %{_volume}%  %{_biome}%"
+			stop			
+					
+command /addbiome <text>:
+	permission: is.op
+	trigger:
+		set {worldedit.biomelist::%arg-1%} to true
+		message "&aAdded &e%arg-1% &ato the list"
+		
+command /executeset <player>:
+	permission: is.op
+	trigger:
+		# arg-2
+		set {_block} to metadata "worldedit.block" of arg-1
+	#	send "%{_block}%" to 
+		# arg-3
+		set {_price} to metadata "worldedit.price" of arg-1
+		
+		# arg-4
+		set {_volume} to metadata "worldedit.volume" of arg-1
+		set metadata "worldedit.grace" of arg-1 to true
+		# set {worldedit.grace::%arg-1%} to true
+		wait 1 tick
+		execute console command "sudo %arg-1% /set %{_block}%"
+		remove {_price} from arg-1's balance
+		send "&8[&bSnap&8] &7Attempting to set &e%{_block}%&7, cost: &a$%{_price}%" to arg-1
+		wait 1 tick
+		set metadata "worldedit.grace" of arg-1 to false
+		# delete {worldedit.grace::%arg-1%}
+		
+command /executereplace <player> <text> <number> <number> <text>:
+	permission: is.op
+	trigger:
+		set metadata "worldedit.grace" of arg-1 to true
+		# set {worldedit.grace::%arg-1%} to true
+		wait 1 tick
+		execute console command "sudo %arg-1% /replace %arg-5%  %arg-2%"
+		remove arg-3 from arg-1's balance
+		send "&8[&bSnap&8] &7Attempting to set &e%arg-2%&7, cost: &a$%arg-3%" to arg-1
+		wait 1 tick
+		set metadata "worldedit.grace" of arg-1 to false
+		# delete {worldedit.grace::%arg-1%}
+				
+command /executesphere <player> <text> <number> <number> <int>:
+	permission: is.op
+	trigger:
+		set metadata "worldedit.grace" of arg-1 to true
+		# set {worldedit.grace::%arg-1%} to true
+		wait 1 tick
+		execute console command "sudo %arg-1% /sphere %arg-2%  %arg-5%"
+		remove arg-3 from arg-1's balance
+		send "&8[&bSnap&8] &7Attempting to sphere &e%arg-2%&7, cost: &a$%arg-3%" to arg-1
+		wait 1 tick
+		set metadata "worldedit.grace" of arg-1 to false
+		# delete {worldedit.grace::%arg-1%}
+ 	
+ 
+command /executehsphere <player> <text> <number> <number> <int>:
+	permission: is.op
+	trigger:
+		set metadata "worldedit.grace" of arg-1 to true
+		# set {worldedit.grace::%arg-1%} to true
+		wait 1 tick
+		execute console command "sudo %arg-1% /hsphere %arg-2%  %arg-5%"
+		remove arg-3 from arg-1's balance
+		send "&8[&bSnap&8] &7Attempting to set &e%arg-2%&7, cost: &a$%arg-3%" to arg-1
+		wait 1 tick
+		set metadata "worldedit.grace" of arg-1 to false
+		# delete {worldedit.grace::%arg-1%}
+ 	
+ 		
+command /executedrain <player> <number> <number> <int>:
+	permission: is.op
+	trigger:
+		set metadata "worldedit.grace" of arg-1 to true
+		# set {worldedit.grace::%arg-1%} to true
+		wait 1 tick
+		execute console command "sudo %arg-1% /drain %arg-4%"
+		remove arg-3 from arg-1's balance
+		send "&8[&bSnap&8] &7Draining blocks &7for &a$%arg-2%" to arg-1
+		wait 1 tick
+		set metadata "worldedit.grace" of arg-1 to false
+		# delete {worldedit.grace::%arg-1%}
+
+
+command /executesetbiome <player> <number> <number> <text>:
+	permission: is.op
+	trigger:
+		set metadata "worldedit.grace" of arg-1 to true
+		# set {worldedit.grace::%arg-1%} to true
+		wait 1 tick
+		execute console command "sudo %arg-1% /setbiome %arg-4%"
+		remove arg-3 from arg-1's balance
+		send "&8[&bSnap&8] &7Setting &e%arg-4% &7biome for &a$%arg-2%" to arg-1
+		wait 1 tick
+		set metadata "worldedit.grace" of arg-1 to false
+		# delete {worldedit.grace::%arg-1%}
+
+every hour:
+	loop {worldedit.timeout::*}:
+		subtract 1 from {worldedit.timeout::%loop-index%}
+		if {worldedit.timeout::%loop-index%} <= 0:
+			execute console command "/removeworldeditperms %loop-index%"
+
+
+
+command /wehours:
+	trigger:
+		if {worldedit.timeout::%player%} is not set:
+			message "&8[&bSnap&8] &7You have no hours"
+		else:
+			message "&8[&bSnap&8] &7You have &a%{worldedit.timeout::%player%}% &7hours left"
+			
+command /grantworldeditperms <text> <int>:
+	permission: is.op
+	trigger:
+		if {worldedit.timeout::%arg-1%} is not set:
+			set {worldedit.timeout::%arg-1%} to arg-2
+		else:
+			add arg-2 to {worldedit.timeout::%arg-1%}
+		execute console command "/pex user %arg-1% add worldedit.wand"
+		execute console command "/pex user %arg-1% add worldedit.selection.pos"
+		execute console command "/pex user %arg-1% add worldedit.region.set"
+		execute console command "/pex user %arg-1% add worldedit.generation.sphere"
+		execute console command "/pex user %arg-1% add worldedit.drain"
+		execute console command "/pex user %arg-1% add worldedit.navigation.up"
+		execute console command "/pex user %arg-1% add worldedit.biome.set"
+		execute console command "/pex user %arg-1% add worldedit.biome.list"
+		execute console command "/pex user %arg-1% add fawe.griefprevention"
+		execute console command "/pex user %arg-1% add snap.worldedit"
+		set {worldedit.hasperms::%arg-1%} to true
+		
+		
+		
+		
+command /removeworldeditperms <text>:	
+	permission: is.staff
+	trigger:
+		execute console command "/pex user %arg-1% remove worldedit.wand"
+		execute console command "/pex user %arg-1% remove worldedit.selection.pos"
+		execute console command "/pex user %arg-1% remove worldedit.region.set"
+		execute console command "/pex user %arg-1% remove worldedit.generation.sphere"
+		execute console command "/pex user %arg-1% remove worldedit.navigation.up"
+		execute console command "/pex user %arg-1% remove worldedit.biome.set"
+		execute console command "/pex user %arg-1% remove worldedit.biome.list"
+		execute console command "/pex user %arg-1% remove worldedit.drain"
+		execute console command "/pex user %arg-1% remove fawe.griefprevention"
+		execute console command "/pex user %arg-1% remove snap.worldedit"
+		delete {worldedit.hasperms::%arg-1%}
+		delete {worldedit.timeout::%arg-1%}
+ 
+ 
+on command "//pos1":
+	cancel event
+on command "//pos2":
+	cancel event 
+on command "//posa":
+	cancel event 
+on command "//posb":
+	cancel event 
+on command "/posa":
+	cancel event 
+on command "/posb":
+	cancel event 
+on command "/hposa":
+	cancel event 
+on command "/hposb":
+	cancel event 
+on command "/hpos1":
+	cancel event 
+on command "/hpos2":
+	cancel event 
+on command "//hpos1":
+	cancel event
+on command "//hpos2":
+	cancel event
+command /togglewe:
+	permission: is.op
+	trigger:
+		set {_worldedit.grace} to metadata "worldedit.grace" of player
+		if {_worldedit.grace} is not set:
+			# delete {_worldedit.grace}
+			set metadata "worldedit.grace" of player to true
+			message "&8[&bSnap&8] &7Player World Edit enabled"
+		else if {_worldedit.grace} is true:
+			set metadata "worldedit.grace" of player to false
+			message "&8[&bSnap&8] &cPlayer World Edit disabled"
+			
+		else:
+			set metadata "worldedit.grace" of player to true
+			message "&8[&bSnap&8] &7Admin World Edit Enabled"
+ 
+ 
+ 
+ 

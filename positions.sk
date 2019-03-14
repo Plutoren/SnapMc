@@ -1,0 +1,14 @@
+command /setpos <text>:
+	permission: is.op
+	trigger:
+		message "&8[&bSnap&8] &7Set positon %arg-1%"
+		set {pos::%arg-1%} to location of player
+		set {posyaw::%arg-1%} to yaw of player
+		set {pospitch::%arg-1%} to pitch of player
+command /pos <text>:
+	permission: is.op
+	trigger:
+		teleport player to {pos::%arg-1%}
+		
+		
+		

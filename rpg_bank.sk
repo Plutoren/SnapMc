@@ -1,0 +1,263 @@
+on right click on ender chest:
+	if player is in world "RPG":
+		execute player command "/rpgbank 1"
+		cancel event
+		
+command /rpgbank <int>:
+	trigger:
+		if player is in world "RPG":
+			if target block of player is ender chest:
+				if arg-1 != 1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9 or 10:
+					stop
+				open chest with 6 row named "           -=[ &1Bank %arg-1% &8]=-" to player
+				wait 1 tick
+				set metadata "rpg.bank.current.page" of player to arg-1
+				if name of current inventory of player does not contain "           -=[ &1Bank":
+					close inventory of player
+					stop
+				set {_balance} to 0
+				set {_balanceBlocks} to 0
+				set {_balance} to number of emeralds in player's inventory
+				set {_balanceBlocks} to number of emerald blocks in player's inventory
+				set {_balanceBlocks} to {_balanceBlocks} * 64
+				add {_balanceBlocks} to {_balance}
+				
+				# Side Bar
+				set {_slot} to 7
+				loop 6 times:
+					set slot {_slot} of player's current inventory to item frame named "&7"
+					add 9 to {_slot}
+				set {_slot} to 8
+				loop 6 times:
+					set slot {_slot} of player's current inventory to snow layer named "&7"
+					add 9 to {_slot}
+					
+				set {_nextLevel} to arg-1 + 1
+				set {_lastLevel} to arg-1
+				subtract 1 from {_lastLevel}
+				if {rpg.bank.player.pages::%uuid of player%} is not set:
+					set {rpg.bank.player.pages::%uuid of player%} to 1
+				
+				if {rpg.bank.player.pages::%uuid of player%} < {_nextLevel}:
+					if {rpg.player.level::%uuid of player%} is not set:
+						set {rpg.player.level::%uuid of player%} to 1
+					set {_page} to arg-1 
+					set {_cost} to {_page} * 25
+					set {_levelCost} to {_page} * 10
+					if {rpg.player.level::%uuid of player%} >= {_levelCost}:
+						if {_balance} >= {_cost}:
+							set slot 17 of player's current inventory to TNT minecart named "&fPage %{_nextLevel}% &c>&4>&c>&4>&c>" with lore "&7Purchase the page||&7to unlock it||&6Price:|| &6- &a&l✔ &7Min. Lv: &f%{_levelCost}%|| &6- &a&l✔ &7Price: &7$&f%{_cost}%"  
+						else:
+							set slot 17 of player's current inventory to TNT minecart named "&fPage %{_nextLevel}% &c>&4>&c>&4>&c>" with lore "&7Purchase the page||&7to unlock it||&6Price:|| &6- &a&l✔ &7Min. Lv: &f%{_levelCost}%|| &6- &c&l✘ &7Price: &7$&f%{_cost}%"  
+				
+					else:
+						if {_balance} >= {_cost}:
+							set slot 17 of player's current inventory to TNT minecart named "&fPage %{_nextLevel}% &c>&4>&c>&4>&c>" with lore "&7Purchase the page||&7to unlock it||&6Price:|| &6- &c&l✘ &7Min. Lv: &f%{_levelCost}%|| &6- &a&l✔ &7Price: &7$&f%{_cost}%"  
+						else:
+							set slot 17 of player's current inventory to TNT minecart named "&fPage %{_nextLevel}% &c>&4>&c>&4>&c>" with lore "&7Purchase the page||&7to unlock it||&6Price:|| &6- &c&l✘ &7Min. Lv: &f%{_levelCost}%|| &6- &c&l✘ &7Price: &7$&f%{_cost}%" 			
+					if {_lastLevel} > 0:
+						set slot 26 of player's current inventory to furnace minecart named "&fPage %{_lastLevel}%" 
+						
+				# Owns Next Page		
+				else:
+					if {_nextLevel} <= 10:
+						if {_lastLevel} > 0:
+							set slot 17 of player's current inventory to hopper minecart named "&fPage %{_nextLevel}%" 
+							set slot 26 of player's current inventory to furnace minecart named "&fPage %{_lastLevel}%" 
+						else:
+							set slot 17 of player's current inventory to hopper minecart named "&fPage %{_nextLevel}%" 
+						
+					else:
+						set slot 26 of player's current inventory to TNT minecart named "&fPage %{_lastLevel}%" 
+						
+						
+				set {_page} to arg-1
+				loop {rpg.bank.item::%uuid of player%::%{_page}%::*}:
+					set slot loop-index parsed as number of player's current inventory to loop-value
+					# format slot loop-index parsed as a number of player with loop-value to be unstealable
+					
+command /rpgbankpurchasepage:
+	trigger:
+		if player is in world "RPG":
+			if name of current inventory of player does not contain "           -=[ &1Bank":
+				stop
+			if {rpg.bank.player.pages::%uuid of player%} is not set:
+				set {rpg.bank.player.pages::%uuid of player%} to 1
+			set {_page} to {rpg.bank.player.pages::%uuid of player%}
+			set {_nextPage} to {_page} + 1
+			if {rpg.player.level::%uuid of player%} is not set:
+				set {rpg.player.level::%uuid of player%} to 1
+			set {_level} to {rpg.player.level::%uuid of player%}
+			set {_cost} to {_page} * 25
+			set {_levelCost} to {_page} * 10
+			set {_balance} to 0
+			set {_balanceBlocks} to 0
+			set {_emeralds} to number of emeralds in player's inventory
+			set {_balance} to {_emeralds}
+			set {_blocks} to number of emerald blocks in player's inventory
+			set {_balanceBlocks} to {_blocks} * 64
+			add {_balanceBlocks} to {_balance}
+			
+			if {_balance} < {_cost}:
+				message "&8[&6RPG&8] &7You do not have enough money"	
+				stop
+			if {_level} < {_levelCost}:
+				message "&8[&6RPG&8] &7You need to be at least level %{_levelCost}%"
+				stop
+			if {_nextPage} >= 11:
+				message "&8[&6RPG&8] &7You have maxed out your bank!"
+				stop
+			while {_cost} > 63:
+				if {_blocks} > 0:
+					remove 1 emerald block from inventory of player
+					subtract 1 from {_blocks}
+					subtract 64 from {_cost}
+				else:
+					stop loop
+			while {_cost} > 0:
+				if {_emeralds} > 0:
+					remove 1 emerald block from inventory of player
+					subtract 1 from {_emeralds}
+					subtract 1 from {_cost}
+				else:
+					message "Error 202"
+					stop loop
+			
+			set {rpg.bank.player.pages::%uuid of player%} to {_nextPage}
+			message "&8[&6RPG&8] &aPage %{_nextPage}% Purchased"
+			make player execute "/rpgbank %{_nextPage}%"
+				
+					
+				
+			
+				
+			
+on inventory click:
+	if player is in world "RPG":
+		if type of clicked item is a nether star:
+			if name of clicked item contains "mana":
+				cancel event
+				stop
+		if clicked item is a book:
+			if name of clicked item contains "stats":
+				cancel event
+				stop
+		if clicked item is a compass:
+			if name of clicked item contains "character":
+				cancel event
+				stop
+		if name of current inventory of player does not contain "           -=[ &1Bank":
+			stop
+		set {_page} to metadata "rpg.bank.current.page" of player
+		if {_page} is not set:
+			stop
+		if "%clicked inventory%" is "inventory of <none>":
+			if clicked slot is 7 or 8 or 16 or 17 or 25 or 26 or 34 or 35 or 43 or 44 or 52 or 53:
+				if clicked slot is 17:
+					set {_nextPage} to {_page} + 1
+					if {rpg.bank.player.pages::%uuid of player%} < {_nextPage}:
+						make player execute "/rpgbankpurchasepage"
+					else:
+						make player execute "/rpgbank %{_nextPage}%"
+				if clicked slot is 26:
+					set {_lastPage} to {_page} - 1
+					if {_lastPage} > 0:
+						make player execute "/rpgbank %{_lastPage}%"
+				cancel event
+				stop
+			if "%cursor item of player%" = "0 air":
+				if {rpg.bank.item::%uuid of player%::%{_page}%::%clicked slot%} is set:
+					
+					# set cursor item of player to {rpg.bank.item::%uuid of player%::%{_page}%::%clicked slot%} 
+					if clicked type is left mouse button or left mouse button with shift:
+						delete {rpg.bank.item::%uuid of player%::%{_page}%::%clicked slot%} 
+					
+					else if clicked type is right mouse button:
+						set {_quantity} to amount of {rpg.bank.item::%uuid of player%::%{_page}%::%clicked slot%}
+						set {_quantity} to rounded down {_quantity} / 2
+						set {rpg.bank.item::%uuid of player%::%{_page}%::%clicked slot%} to {_quantity} of {rpg.bank.item::%uuid of player%::%{_page}%::%clicked slot%} 
+					else:	
+						cancel event
+			
+			
+			else:
+				if clicked type is double click:
+					cancel event
+					stop
+				if {rpg.bank.item::%uuid of player%::%{_page}%::%clicked slot%} is set:
+					if 1 of {rpg.bank.item::%uuid of player%::%{_page}%::%clicked slot%} = 1 of clicked cursor:
+						set {_quantity} to amount of {rpg.bank.item::%uuid of player%::%{_page}%::%clicked slot%}
+						if clicked type is right mouse button:
+							set {_quantityAdded} to 1
+						else:
+							set {_quantityAdded} to amount of clicked cursor
+						set {_total} to {_quantity} + {_quantityAdded}
+						set {rpg.bank.item::%uuid of player%::%{_page}%::%clicked slot%} to {_total} of clicked cursor
+					else:
+						set {rpg.bank.item::%uuid of player%::%{_page}%::%clicked slot%} to clicked cursor
+	
+				else:
+					set {rpg.bank.item::%uuid of player%::%{_page}%::%clicked slot%} to clicked cursor
+		else:
+			if clicked type is left mouse button with shift:
+				
+				clicked item is not air
+				set {_i} to 0
+				set {_quantity} to amount of clicked item
+				
+				set {_loops} to 0
+				while {_quantity} > 0:
+					set {_found} to false
+					add 1 to {_loops}
+					if {_loops} > 54:
+						message "RPG: Error 101"
+						stop
+					loop 54 times:
+						if {_i} is not 7 or 8 or 16 or 17 or 25 or 26 or 34 or 35 or 43 or 44 or 52 or 53:
+					
+							if 1 of {rpg.bank.item::%uuid of player%::%{_page}%::%{_i}%} = 1 of clicked item:
+								
+								if amount of {rpg.bank.item::%uuid of player%::%{_page}%::%{_i}%} < maximum stack size of clicked item:
+									set {_found} to true
+									set {_newQuantity} to {_quantity} + amount of {rpg.bank.item::%uuid of player%::%{_page}%::%{_i}%}
+				
+									if {_newQuantity} > maximum stack size of clicked item:
+										set {_quantity} to {_newQuantity} - maximum stack size of clicked item
+										set {_newQuantity} to maximum stack size of clicked item
+									else:
+										set {_quantity} to 0
+									set {rpg.bank.item::%uuid of player%::%{_page}%::%{_i}%} to {_newQuantity} of clicked item
+									
+						add 1 to {_i}
+						
+					if {_found} is false:
+						stop loop
+					if {_quantity} = 0:
+						stop
+
+			
+				set {_i} to 0
+				loop 54 times:
+					if {_i} is not 7 or 8 or 16 or 17 or 25 or 26 or 34 or 35 or 43 or 44 or 52 or 53:
+				
+						if {rpg.bank.item::%uuid of player%::%{_page}%::%{_i}%} is not set:
+							set {rpg.bank.item::%uuid of player%::%{_page}%::%{_i}%} to {_quantity} of clicked item
+							stop
+					add 1 to {_i}
+# import:
+#    org.bukkit.event.inventory.InventoryDragEvent
+# on InventoryDragEvent:
+
+on inventory close:
+	if player is in world "RPG":
+		if name of current inventory of player does not contain "           -=[ &1Bank":
+			stop	
+		set {_page} to metadata "rpg.bank.current.page" of player
+		if {_page} is not set:
+			stop
+		loop all items in current inventory of player:
+			set {_slot} to "%loop-slot%"
+			set {_var::*} to {_slot} parsed as "inventory slot %integer% of inventory of %text%"
+			if {_var::1} is not 7 or 8 or 16 or 17 or 25 or 26 or 34 or 35 or 43 or 44 or 52 or 53:
+				set {rpg.bank.item::%uuid of player%::%{_page}%::%{_var::1}%} to loop-item
+			
