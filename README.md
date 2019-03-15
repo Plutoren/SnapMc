@@ -2,6 +2,7 @@
 The official SnapMc Repository
 
 Visit the server running these Skripts with the IP snapmc.com
+
 Feel free to contact us through our discord https://discord.gg/8VzQTEB
 
 ## Why Open Source
