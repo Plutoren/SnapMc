@@ -21,3 +21,6 @@ No, please don't ask for our plugins or Skript addons.
 
 ## Is everything here?
 Pretty much, the only files ommited are our discord bot and our buycraft virtual currency because they contain private keys.
+
+## Please Don't
+Don't tell me part of the code is terrible. I am WELL aware. This collection took over a year in the making and I wasn't very good at Skript when it first started, so a lot of the code is either outdated, or using poor conventions, if you want to fix it for me be my guest.
